@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainRoomView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="@color/transparent"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/_5ssp"
+    android:paddingLeft="@dimen/_5ssp"
+    android:paddingBottom="@dimen/_5ssp">
+
+    <FrameLayout
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_8ssp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent">
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/comeInUserProfile"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder_img"
+            app:civ_border_color="@color/old_primary"
+            app:civ_border_width="1dp" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/et_comeInName"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_16sdp"
+        android:layout_gravity="center"
+        android:background="@drawable/name_bar_nine2"
+        android:gravity="center"
+        android:maxLines="1"
+        android:minHeight="@dimen/_16sdp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_8sdp" />
+
+</LinearLayout>

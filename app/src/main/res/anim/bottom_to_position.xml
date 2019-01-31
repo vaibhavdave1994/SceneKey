@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:anim/linear_interpolator"
+    >
+
+    <translate
+        android:toYDelta="0%p"
+        android:fromYDelta="100%p"
+        android:duration="700"
+        />
+</set>
+
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:duration="800"
+        android:fromYDelta="1500"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:toXDelta="0" />
+    <translate
+        android:duration="300"
+        android:fromYDelta="0%p"
+        android:repeatCount="0"
+        android:startOffset="800"
+        android:toYDelta="5%p" />
+    <translate
+        android:duration="300"
+        android:fromYDelta="0%p"
+        android:repeatCount="0"
+        android:startOffset="950"
+        android:toYDelta="-5%p" />
+    <translate
+        android:duration="300"
+        android:fromYDelta="0%p"
+        android:repeatCount="0"
+        android:startOffset="1100"
+        android:toYDelta="1%p" />
+    <translate
+        android:duration="300"
+        android:fromYDelta="0%p"
+        android:repeatCount="0"
+        android:startOffset="1250"
+        android:toYDelta="-1%p" />
+</set>
+
+-->
+
+
+
+<!--
+    <?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+<translate
+    android:duration="800"
+    android:fromYDelta="1500"
+    android:interpolator="@android:anim/accelerate_interpolator"
+    android:toXDelta="0" />
+<translate
+    android:duration="150"
+    android:fromYDelta="0%p"
+    android:repeatCount="0"
+    android:startOffset="800"
+    android:toYDelta="5%p" />
+<translate
+    android:duration="150"
+    android:fromYDelta="0%p"
+    android:repeatCount="0"
+    android:startOffset="950"
+    android:toYDelta="-5%p" />
+<translate
+    android:duration="150"
+    android:fromYDelta="0%p"
+    android:repeatCount="0"
+    android:startOffset="1100"
+    android:toYDelta="1%p" />
+<translate
+    android:duration="200"
+    android:fromYDelta="0%p"
+    android:repeatCount="0"
+    android:startOffset="1250"
+    android:toYDelta="-1%p" />
+</set>
+-->

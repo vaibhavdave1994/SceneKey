@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="nudge_fonts">
+        <item>@font/hara_bara</item>
+    </array>
+</resources>

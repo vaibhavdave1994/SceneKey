@@ -1,0 +1,64 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/new_white_bg"
+    tools:context="com.scenekey.fragment.Trending_Fragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcViewTrending"
+        android:layout_width="match_parent"
+        android:overScrollMode="always"
+        android:paddingBottom="@dimen/_42sdp"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ScrollView
+        android:id="@+id/no_data_trending"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_32sdp"
+                    android:src="@drawable/sk_logo_black" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginLeft="@dimen/_18sdp"
+                android:layout_marginRight="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:id="@+id/txt_sorry3"
+                android:gravity="center"
+                android:textColor="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/raleway_regular"
+                android:text="@string/sorrytrending"
+                android:textSize="@dimen/_16ssp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

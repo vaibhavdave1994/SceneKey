@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/_30sdp"
+    android:layout_marginBottom="@dimen/_3sdp"
+    android:layout_marginRight="@dimen/_5sdp"
+    android:alpha="0.6"
+    android:background="@drawable/btn_bg"
+    android:layout_marginEnd="@dimen/_5sdp">
+
+    <!-- content -->
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:clickable="true"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:layout_marginEnd="@dimen/_5sdp">
+
+        <!-- label -->
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/montserrat_light"
+            android:textSize="@dimen/_9sdp" />
+
+        <!--android:singleLine="true"-->
+
+        <!-- remove button -->
+        <ImageView
+            android:id="@+id/delete_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/_2sdp"
+            android:visibility="gone"
+            android:src="@drawable/cross_primary" />
+
+    </LinearLayout>
+
+</RelativeLayout>

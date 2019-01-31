@@ -1,0 +1,8969 @@
+[{
+    "character": "😚",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "kissing closed eyes"
+},{
+    "character": "💒",
+    "aliases": [
+        "church"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "wedding"
+}, {
+    "character": "9️⃣",
+    "aliases": [
+        "9"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "nine"
+}, {
+    "character": "🚉",
+    "aliases": [
+        "train",
+        "train station"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "station"
+}, {
+    "character": "💢",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "anger"
+}, {
+    "character": "💺",
+    "aliases": [
+        "chair"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "seat"
+}, {
+    "character": "🏁",
+    "aliases": [],
+    "groups": [
+        "flag"
+    ],
+    "name": "checkered flag"
+}, {
+    "character": "📚",
+    "aliases": [
+        "textbooks"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "books"
+}, {
+    "character": "🏆",
+    "aliases": [
+        "award",
+        "medal"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "trophy"
+}, {
+    "character": "🚤",
+    "aliases": [
+        "boat",
+        "motorboat",
+        "motor boat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "speed boat"
+}, {
+    "character": "🐋",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "large whale"
+}, {
+    "character": "🌹",
+    "aliases": [
+        "flower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "rose"
+}, {
+    "character": "💦",
+    "aliases": [
+        "water",
+        "sweat",
+        "tears"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "drops"
+}, {
+    "character": "↔",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "left right arrow"
+}, {
+    "character": "👫",
+    "aliases": [
+        "friends",
+        "people"
+    ],
+    "groups": [
+        "people"
+    ],
+    "name": "couple"
+}, {
+    "character": "📝",
+    "aliases": [
+        "note"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "memo"
+}, {
+    "character": "🐦",
+    "aliases": [
+        "pidgin",
+        "beak"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "bird"
+}, {
+    "character": "🔞",
+    "aliases": [
+        "age",
+        "alcohol law",
+        "law"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "underage"
+}, {
+    "character": "📩",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "envelope with arrow"
+}, {
+    "character": "💶",
+    "aliases": [
+        "cash",
+        "money",
+        "currency",
+        "europe"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "euro"
+}, {
+    "character": "🕝",
+    "aliases": [
+        "watch",
+        "time",
+        "2:30"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 2:30"
+}, {
+    "character": "📖",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "book"
+}, {
+    "character": "🐩",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "poodle"
+}, {
+    "character": "🐂",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "ox"
+}, {
+    "character": "📥",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "inbox tray"
+}, {
+    "character": "📑",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bookmark tabs"
+}, {
+    "character": "👞",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "mans shoe"
+}, {
+    "character": "4️⃣",
+    "aliases": [
+        "4"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "four"
+}, {
+    "character": "🍦",
+    "aliases": [
+        "cone"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "soft ice cream"
+}, {
+    "character": "⁉",
+    "aliases": [
+        "!?",
+        "exclamation",
+        "question mark"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "interrobang"
+}, {
+    "character": "🏮",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "lantern"
+}, {
+    "character": "🐁",
+    "aliases": [
+        "rat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mouse"
+}, {
+    "character": "🕐",
+    "aliases": [
+        "1",
+        "watch",
+        "time",
+        "1:00"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 1:00"
+}, {
+    "character": "🎫",
+    "aliases": [
+        "stub"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ticket"
+}, {
+    "character": "♌",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "leo"
+}, {
+    "character": "👰",
+    "aliases": [
+        "wedding bride",
+        "white dress",
+        "veil"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bride"
+}, {
+    "character": "🐜",
+    "aliases": [
+        "insect",
+        "bug"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "ant"
+}, {
+    "character": "📈",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "chart upwards trend"
+}, {
+    "character": "⛵",
+    "aliases": [
+        "boat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sailboat"
+}, {
+    "character": "⚾",
+    "aliases": ["ball"],
+    "groups": [
+    "sport"    ],
+    "name": "baseball"
+}, {
+    "character": "🌘",
+    "aliases": [
+        "moon"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "waning crescent moon"
+}, {
+    "character": "🍗",
+    "aliases": [
+        "chicken",
+        "drumstick"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "poultry leg"
+}, {
+    "character": "🆕",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "new"
+}, {
+    "character": "👮",
+    "aliases": [
+        "police"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cop"
+}, {
+    "character": "🐎",
+    "aliases": [
+        "horse"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "racehorse"
+}, {
+    "character": "⛲",
+    "aliases": [
+        "water fountain"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fountain"
+}, {
+    "character": "🚓",
+    "aliases": [
+        "cop car"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "police car"
+}, {
+    "character": "⚡",
+    "aliases": ["lightning"],
+    "groups": ["other"],
+    
+    
+    "name": "zap"
+}, {
+    "character": "⛵",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "boat"
+}, {
+    "character": "🌱",
+    "aliases": [
+        "leaf"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "seedling"
+}, {
+    "character": "🍁",
+    "aliases": [
+        "fall leaf",
+        "autumn leaf",
+        "leaf"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "maple leaf"
+}, {
+    "character": "😿",
+    "aliases": [
+        "cry",
+        "tear"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "crying cat face"
+}, {
+    "character": "💝",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "gift heart"
+}, {
+    "character": "✋",
+    "aliases": [
+        "stop"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hand"
+}, {
+    "character": "🌗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "last quarter moon"
+}, {
+    "character": "🚫",
+    "aliases": [
+        "stop"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "no entry sign"
+}, {
+    "character": "💷",
+    "aliases": [
+        "cash",
+        "money",
+        "currency",
+        "uk",
+        "england"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "pound"
+}, {
+    "character": "🎻",
+    "aliases": [],
+    "groups": [
+        "instrument"
+    ],
+    "name": "violin"
+}, {
+    "character": "😝",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "stuck out tongue closed eyes"
+}, {
+    "character": "🔱",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "trident"
+}, {
+    "character": "👸",
+    "aliases": [
+        "woman"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "princess"
+}, {
+    "character": "😋",
+    "aliases": [
+        "delicious",
+        "tasty"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "yum"
+}, {
+    "character": "👢",
+    "aliases": [
+        "shoe"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "boot"
+}, {
+    "character": "🏃",
+    "aliases": [
+        "run",
+        "athlete"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "runner"
+}, {
+    "character": "👷",
+    "aliases": [
+        "worker"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "construction worker"
+}, {
+    "character": "💅",
+    "aliases": [
+        "manicure",
+        "nail polish",
+        "polish",
+        "makeup"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "nail care"
+}, {
+    "character": "➕",
+    "aliases": [
+        "+"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "plus sign"
+}, {
+    "character": "◻️",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "white square"
+}, {
+    "character": "🔦",
+    "aliases": [
+        "light",
+        "torch"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "flashlight"
+}, {
+    "character": "😦",
+    "aliases": [
+        "sad",
+        "frown",
+        "upset",
+        "unhappy",
+        ":("
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "frowning"
+}, {
+    "character": "♎",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "libra"
+}, {
+    "character": "☔",
+    "aliases": [
+        "rain"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "umbrella"
+}, {
+    "character": "🏢",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "office"
+}, {
+    "character": "🔡",
+    "aliases": [
+        "alphabet",
+        "abcd"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "lowercase abcd"
+}, {
+    "character": "💄",
+    "aliases": [
+        "makeup"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "lipstick"
+}, {
+    "character": "😑",
+    "aliases": [
+        "-_-"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "expressionless"
+}, {
+    "character": "😜",
+    "aliases": [
+        ";p",
+        ":p"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "stuck out tongue winking eye"
+}, {
+    "character": "🆒",
+    "aliases": [
+        "cold"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cool"
+}, {
+    "character": "🔶",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "orange diamond"
+}, {
+    "character": "😆",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "satisfied"
+}, {
+    "character": "🚲",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bike"
+}, {
+    "character": "👝",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "pouch"
+}, {
+    "character": "🚃",
+    "aliases": [
+        "train",
+        "tram",
+        "muni"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "railway car"
+}, {
+    "character": "😊",
+    "aliases": [
+        "smile",
+        "happy",
+        ":)"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "blush"
+}, {
+    "character": "🍂",
+    "aliases": [
+        "fall leaves",
+        "autumn leaves"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fallen leaf"
+}, {
+    "character": "👥",
+    "aliases": [
+        "couple"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "silhouettes"
+}, {
+    "character": "🍱",
+    "aliases": [
+        "japanese"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "bento"
+}, {
+    "character": "🐾",
+    "aliases": [
+        "paws",
+        "feet"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "paw prints"
+}, {
+    "character": "®",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "registered"
+}, {
+    "character": "👵",
+    "aliases": [
+        "woman",
+        "aged woman"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "old woman"
+}, {
+    "character": "🛅",
+    "aliases": [
+        "suitcase"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "left luggage"
+}, {
+    "character": "🌓",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "first quarter moon"
+}, {
+    "character": "😖",
+    "aliases": [
+        ":(",
+        "frown",
+        "cry",
+        "confused"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "confounded"
+}, {
+    "character": "🇬🇧",
+    "aliases": [
+        "united kingdom",
+        "england"
+    ],
+    "groups": [
+        "flag"
+    ],
+    "name": "uk flag"
+}, {
+    "character": "🚞",
+    "aliases": [
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mountain railway"
+}, {
+    "character": "💥",
+    "aliases": [
+        "boom"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "collision"
+}, {
+    "character": "🌛",
+    "aliases": [
+        "moon",
+        "half moon"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "first quarter moon with face"
+}, {
+    "character": "🇮🇹",
+    "aliases": [
+        "italy"
+    ],
+    "groups": [
+        "flag"
+    ],
+    "name": "italian flag"
+}, {
+    "character": "🍹",
+    "aliases": [
+        "alcohol"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tropical drink"
+}, {
+    "character": "🐱",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "cat face"
+}, {
+    "character": "📧",
+    "aliases": [
+        "mail",
+        "inbox"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "e-mail"
+}, {
+    "character": "👴",
+    "aliases": [
+        "aged man"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "old man"
+}, {
+    "character": "🗼",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "tokyo tower"
+}, {
+    "character": "👾",
+    "aliases": [
+        "alien"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "space invader"
+}, {
+    "character": "❤",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "heart"
+}, {
+    "character": "🔖",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bookmark"
+}, {
+    "character": "😕",
+    "aliases": [
+        ":/"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "confused"
+}, {
+    "character": "👟",
+    "aliases": [
+        "shoe"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "athletic shoe"
+}, {
+    "character": "😱",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "scream"
+}, {
+    "character": "👳",
+    "aliases": [
+        "sikh"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "turban"
+}, {
+    "character": "📍",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "round pushpin"
+}, {
+    "character": "📆",
+    "aliases": [
+        "date"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "calendar"
+}, {
+    "character": "🇷🇺",
+    "aliases": [],
+    "groups": [
+        "flag"
+    ],
+    "name": "russian flag"
+}, {
+    "character": "🚘",
+    "aliases": [
+        "car"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "oncoming automobile"
+}, {
+    "character": "📄",
+    "aliases": [
+        "paper"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "page"
+}, {
+    "character": "👊",
+    "aliases": [
+        "fist"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "punch"
+}, {
+    "character": "💫",
+    "aliases": [
+        "dizzy"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "shooting star"
+}, {
+    "character": "🙀",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "scream cat"
+}, {
+    "character": "🔍",
+    "aliases": [
+        "lens"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "left magnifying glass"
+}, {
+    "character": "😥",
+    "aliases": [
+        ":("
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "disappointed relieved"
+}, {
+    "character": "📣",
+    "aliases": [
+        "loudspeaker"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "megaphone"
+}, {
+    "character": "📎",
+    "aliases": [
+        "clip"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "paperclip"
+}, {
+    "character": "🐳",
+    "aliases": [
+        "dolphin"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "whale"
+}, {
+    "character": "💐",
+    "aliases": [
+        "roses",
+        "flowers"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bouquet"
+}, {
+    "character": "👞",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "shoe"
+}, {
+    "character": "↗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow upper right"
+}, {
+    "character": "🍘",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "rice cracker"
+}, {
+    "character": "😭",
+    "aliases": [
+        ":(",
+        ":'(",
+        "cry",
+        "crying"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "sob"
+}, {
+    "character": "🎌",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "crossed flags"
+}, {
+    "character": "😬",
+    "aliases": [
+        "grin",
+        "teeth"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "grimacing"
+}, {
+    "character": "◀",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow backward"
+}, {
+    "character": "🎓",
+    "aliases": [
+        "hat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "graduation hat"
+}, {
+    "character": "🍌",
+    "aliases": [
+        "peel"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "banana"
+}, {
+    "character": "3️⃣",
+    "aliases": [
+        "3"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "three"
+}, {
+    "character": "🚮",
+    "aliases": [
+        "litter"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "put litter in its place"
+}, {
+    "character": "👙",
+    "aliases": [
+        "bathing suit"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bikini"
+}, {
+    "character": "🚇",
+    "aliases": [
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "metro"
+}, {
+    "character": "📘",
+    "aliases": [
+        "book"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "blue book"
+}, {
+    "character": "🔀",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "twisted arrows"
+}, {
+    "character": "🌃",
+    "aliases": [
+        "night",
+        "city",
+        "nightlife"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "stars"
+}, {
+    "character": "🌴",
+    "aliases": [
+        "tropical tree"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "palm tree"
+}, {
+    "character": "⚠",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "warning"
+}, {
+    "character": "🌵",
+    "aliases": [
+        "desert"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "cactus"
+}, {
+    "character": "🎯",
+    "aliases": [
+        "target"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dart"
+}, {
+    "character": "🐆",
+    "aliases": [
+        "tiger"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "leopard"
+}, {
+    "character": "🐼",
+    "aliases": [
+        "bear",
+        "china"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "panda face"
+}, {
+    "character": "✊",
+    "aliases": [
+        "hand"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fist"
+}, {
+    "character": "💸",
+    "aliases": [
+        "cash",
+        "money"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "money with wings"
+}, {
+    "character": "😟",
+    "aliases": [
+        ":("
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "worried"
+}, {
+    "character": "💽",
+    "aliases": [
+        "disk",
+        "album"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cd"
+}, {
+    "character": "😎",
+    "aliases": [
+        "cool",
+        "stud"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "sunglasses"
+}, {
+    "character": "🕗",
+    "aliases": [
+        "8",
+        "watch",
+        "time",
+        "8:00"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 8:00"
+}, {
+    "character": "❇",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "sparkle"
+}, {
+    "character": "🍼",
+    "aliases": [
+        "milk",
+        "bottle"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "baby bottle"
+}, {
+    "character": "📟",
+    "aliases": [
+        "beeper"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "pager"
+}, {
+    "character": "♈",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "aries"
+}, {
+    "character": "🕣",
+    "aliases": [
+        "8:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 8:30"
+}, {
+    "character": "🎒",
+    "aliases": [
+        "backpack",
+        "school satchel",
+        "satchel"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "backpack"
+}, {
+    "character": "ℹ",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "information"
+}, {
+    "character": "🚯",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "do not litter"
+}, {
+    "character": "↖",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow upper left"
+}, {
+    "character": "🎭",
+    "aliases": [
+        "play",
+        "masks",
+        "drama",
+        "theater"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "performing arts"
+}, {
+    "character": "💞",
+    "aliases": [
+        "love"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "revolving hearts"
+}, {
+    "character": "📴",
+    "aliases": [
+        "cell phone off"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mobile phone off"
+}, {
+    "character": "🎑",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "rice scene"
+}, {
+    "character": "😻",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "heart eyes cat"
+}, {
+    "character": "⛺",
+    "aliases": [
+        "camp",
+        "night",
+        "adventure"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tent"
+}, {
+    "character": "🐨",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "koala"
+}, {
+    "character": "✂",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "scissors"
+}, {
+    "character": "🔢",
+    "aliases": [
+        "numbers"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "1234"
+}, {
+    "character": "🚚",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "truck"
+}, {
+    "character": "🏇",
+    "aliases": [
+        "horse",
+        "racehorse"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "horse racing"
+}, {
+    "character": "🌅",
+    "aliases": [
+        "sun",
+        "morning"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sunrise"
+}, {
+    "character": "🍏",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "green apple"
+}, {
+    "character": "🔑",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "key"
+}, {
+    "character": "💳",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "credit card"
+}, {
+    "character": "🌊",
+    "aliases": [
+        "wave",
+        "beach"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ocean"
+}, {
+    "character": "🐹",
+    "aliases": [
+        "mouse",
+        "rat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hamster"
+}, {
+    "character": "☕",
+    "aliases": [
+        "cafe",
+        "tea",
+        "drink"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "coffee"
+}, {
+    "character": "➡",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow right"
+}, {
+    "character": "↩",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "leftwards arrow"
+}, {
+    "character": "💟",
+    "aliases": [
+        "love"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "heart decoration"
+}, {
+    "character": "😤",
+    "aliases": [
+        "glorious"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "triumph"
+}, {
+    "character": "😸",
+    "aliases": [
+        ":)"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "smile cat"
+}, {
+    "character": "🕠",
+    "aliases": [
+        "5:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 5:30"
+}, {
+    "character": "🍑",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "peach"
+}, {
+    "character": "📵",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "no mobile phones"
+}, {
+    "character": "😽",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "kissing cat"
+}, {
+    "character": "🔧",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "wrench"
+}, {
+    "character": "💯",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "100"
+}, {
+    "character": "🙇",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bow"
+}, {
+    "character": "🏂",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "snowboarder"
+}, {
+    "character": "♨",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "hotsprings"
+}, {
+    "character": "5️⃣",
+    "aliases": [
+        "5"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "five"
+}, {
+    "character": "🎢",
+    "aliases": [
+        "amusement park"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "roller coaster"
+}, {
+    "character": "🎩",
+    "aliases": [
+        "hat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tophat"
+}, {
+    "character": "🏦",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bank"
+}, {
+    "character": "🚆",
+    "aliases": [
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "oncoming train"
+}, {
+    "character": "📌",
+    "aliases": [
+        "pushpin"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "thumbtack"
+}, {
+    "character": "💓",
+    "aliases": [
+        "love",
+        "beat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "heartbeat"
+}, {
+    "character": "👍",
+    "aliases": [
+        "thumb",
+        "up",
+        "+1"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "thumbsup"
+}, {
+    "character": "👲",
+    "aliases": [
+        "hat"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "man with gua pi mao"
+}, {
+    "character": "1️⃣",
+    "aliases": [
+        "1"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "one"
+}, {
+    "character": "🎋",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "tanabata tree"
+}, {
+    "character": "🚶",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "walking"
+}, {
+    "character": "👀",
+    "aliases": [
+        "peek"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "eyes"
+}, {
+    "character": "🍴",
+    "aliases": [
+        "utencils",
+        "silverware",
+        "dinner"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "fork and knife"
+}, {
+    "character": "↕",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow up down"
+}, {
+    "character": "☀",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "sunny"
+}, {
+    "character": "👤",
+    "aliases": [
+        "man"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "silhouette"
+}, {
+    "character": "☺",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "relaxed"
+}, {
+    "character": "📼",
+    "aliases": [
+        "cassette",
+        "tape"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "vhs"
+}, {
+    "character": "⏪",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "rewind"
+}, {
+    "character": "🍰",
+    "aliases": [
+        "dessert"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "cake"
+}, {
+    "character": "♍",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "virgo"
+}, {
+    "character": "©",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "copyright"
+}, {
+    "character": "🏠",
+    "aliases": [
+        "home"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "house"
+}, {
+    "character": "🔟",
+    "aliases": [
+        "10"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "keycap ten"
+}, {
+    "character": "🕧",
+    "aliases": [
+        "12:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 12:30"
+}, {
+    "character": "🔠",
+    "aliases": [
+        "alphabet",
+        "abcd"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "capital abcd"
+}, {
+    "character": "🚻",
+    "aliases": [
+        "bathroom",
+        "loo"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "restroom"
+}, {
+    "character": "♦",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "diamonds"
+}, {
+    "character": "🚹",
+    "aliases": [
+        "bathroom",
+        "loo"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mens restroom"
+}, {
+    "character": "🌔",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "waxing gibbous moon"
+}, {
+    "character": "🎂",
+    "aliases": [
+        "cake"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "birthday"
+}, {
+    "character": "🐈",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "cat"
+}, {
+    "character": "🚍",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "oncoming bus"
+}, {
+    "character": "💲",
+    "aliases": [
+        "cash",
+        "money",
+        "$"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dollar sign"
+}, {
+    "character": "🌁",
+    "aliases": [
+        "mountain",
+        "fog",
+        "cloud"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "foggy"
+}, {
+    "character": "🍆",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "eggplant"
+}, {
+    "character": "👂",
+    "aliases": [
+        "listen"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ear"
+}, {
+    "character": "🎵",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "musical note"
+}, {
+    "character": "🎹",
+    "aliases": [
+        "piano"
+    ],
+    "groups": [
+        "instrument"
+    ],
+    "name": "musical keyboard"
+}, {
+    "character": "✨",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "sparkles"
+}, {
+    "character": "💀",
+    "aliases": [
+        "halloween",
+        "RIP"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "skull"
+}, {
+    "character": "🎮",
+    "aliases": [
+        "controller"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "video game"
+}, {
+    "character": "⛅",
+    "aliases": [
+        "cloud",
+        "sun"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "partly sunny"
+}, {
+    "character": "📇",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "card index"
+}, {
+    "character": "😞",
+    "aliases": [
+        ":("
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "disappointed"
+}, {
+    "character": "⭐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "star"
+}, {
+    "character": "🕛",
+    "aliases": [
+        "12",
+        "12:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 12:00"
+}, {
+    "character": "🚔",
+    "aliases": [
+        "cop"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "oncoming police car"
+}, {
+    "character": "🍛",
+    "aliases": [
+        "dinner"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "curry and rice"
+}, {
+    "character": "😢",
+    "aliases": [
+        "crying",
+        ":'('"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "cry"
+}, {
+    "character": "🛁",
+    "aliases": [
+        "tub"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bathtub"
+}, {
+    "character": "🚁",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "helicopter"
+}, {
+    "character": "🕞",
+    "aliases": [
+        "3:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 3:30"
+}, {
+    "character": "❗",
+    "aliases": [
+        "!"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "exclamation"
+}, {
+    "character": "⤵",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow heading down"
+}, {
+    "character": "🌕",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "full moon"
+}, {
+    "character": "😀",
+    "aliases": [
+        ":)"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "grinning"
+}, {
+    "character": "🌖",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "waning gibbous moon"
+}, {
+    "character": "😔",
+    "aliases": [
+        ":("
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "pensive"
+}, {
+    "character": "🌲",
+    "aliases": [
+        "christmas tree",
+        "pine tree"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "evergreen tree"
+}, {
+    "character": "📮",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "postbox"
+}, {
+    "character": "▶",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "play"
+}, {
+    "character": "👡",
+    "aliases": [
+        "shoe"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sandal"
+}, {
+    "character": "⛽",
+    "aliases": [
+        "gas",
+        "fuel",
+        "pump",
+        "gas station"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fuelpump"
+}, {
+    "character": "6️⃣",
+    "aliases": [
+        "6"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "six"
+}, {
+    "character": "🏃",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "running"
+}, {
+    "character": "🍶",
+    "aliases": [
+        "alcohol"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sake"
+}, {
+    "character": "🐣",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "hatching chick"
+}, {
+    "character": "🏣",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "post office"
+}, {
+    "character": "🌞",
+    "aliases": [
+        "sun"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sun with face"
+}, {
+    "character": "✌",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "peace"
+}, {
+    "character": "🎦",
+    "aliases": [
+        "movie",
+        "theater"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cinema"
+}, {
+    "character": "🎈",
+    "aliases": [
+        "birthday"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "balloon"
+}, {
+    "character": "👦",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "boy"
+}, {
+    "character": "🐓",
+    "aliases": [
+        "chicken"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "rooster"
+}, {
+    "character": "💹",
+    "aliases": [
+        "graph"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "chart"
+}, {
+    "character": "📀",
+    "aliases": [
+        "disk",
+        "album",
+        "cd"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dvd"
+}, {
+    "character": "🎿",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "ski"
+}, {
+    "character": "📪",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "mailbox closed"
+}, {
+    "character": "👌",
+    "aliases": [
+        "perfect"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ok hand"
+}, {
+    "character": "🔪",
+    "aliases": [
+        "cutlery",
+        "hocho",
+        "silverware"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "knife"
+}, {
+    "character": "🌉",
+    "aliases": [
+        "night",
+        "golden gate bridge"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bridge"
+}, {
+    "character": "🔁",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "repeat"
+}, {
+    "character": "🌒",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "waxing crescent moon"
+}, {
+    "character": "🔄",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrows counterclockwise"
+}, {
+    "character": "🚽",
+    "aliases": [
+        "bathroom",
+        "pee"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "toilet"
+}, {
+    "character": "🚛",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "green truck"
+}, {
+    "character": "😛",
+    "aliases": [
+        ":p",
+        "tongue"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "stuck out tongue"
+}, {
+    "character": "🌈",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "rainbow"
+}, {
+    "character": "🔬",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "microscope"
+}, {
+    "character": "🗽",
+    "aliases": [
+        "new york city"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "statue of liberty"
+}, {
+    "character": "🍔",
+    "aliases": [
+        "hamburger"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "burger"
+}, {
+    "character": "🆗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "ok"
+}, {
+    "character": "🚐",
+    "aliases": [
+        "bus"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "minibus"
+}, {
+    "character": "♉",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "taurus"
+}, {
+    "character": "🌑",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "new moon"
+}, {
+    "character": "🇩🇪",
+    "aliases": [],
+    "groups": [
+        "flag"
+    ],
+    "name": "denmark flag"
+}, {
+    "character": "🔔",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bell"
+}, {
+    "character": "🍻",
+    "aliases": [
+        "alcohol",
+        "drinks"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "beers"
+}, {
+    "character": "😰",
+    "aliases": [
+        "nervous"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "cold sweat"
+}, {
+    "character": "😫",
+    "aliases": [
+        ":("
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "tired face"
+}, {
+    "character": "↘",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow lower right"
+}, {
+    "character": "💛",
+    "aliases": [
+        "heart"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "yellow heart"
+}, {
+    "character": "👈",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "point left"
+}, {
+    "character": "📃",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "page with curl"
+}, {
+    "character": "🕜",
+    "aliases": [
+        "1:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 1:30"
+}, {
+    "character": "🍄",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "mushroom"
+}, {
+    "character": "📫",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "mailbox"
+}, {
+    "character": "🌜",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "last quarter moon with face"
+}, {
+    "character": "♣",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "clubs"
+}, {
+    "character": "🐚",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "shell"
+}, {
+    "character": "🐴",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "horse"
+}, {
+    "character": "🚗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "red car"
+}, {
+    "character": "▫",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "white small square"
+}, {
+    "character": "👻",
+    "aliases": [
+        "halloween",
+        "scary",
+        "scare"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ghost"
+}, {
+    "character": "🐵",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "monkey face"
+},{
+    "character": "⏱️",
+    "aliases": ["recent"],
+    "groups": [
+        "recent"
+    ],
+    "name": "recent"
+},{
+    "character": "🎅",
+    "aliases": [
+        "christmas"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "santa"
+}, {
+    "character": "💑",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "couple with heart"
+}, {
+    "character": "😇",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "innocent"
+}, {
+    "character": "🔣",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "symbols"
+}, {
+    "character": "🎪",
+    "aliases": [
+        "carnival"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "circus tent"
+}, {
+    "character": "🐥",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "hatched chick"
+}, {
+    "character": "👭",
+    "aliases": ["people"],
+    "groups": [
+        "people"
+    ],
+    "name": "two women holding hands"
+}, {
+    "character": "♒",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "aquarius"
+}, {
+    "character": "🎬",
+    "aliases": [
+        "movie",
+        "film",
+        "theater"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clapper"
+}, {
+    "character": "😳",
+    "aliases": [
+        "big eyes",
+        "eyes",
+        "stare"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "flushed"
+}, {
+    "character": "📯",
+    "aliases": [],
+    "groups": [
+        "instrument"
+    ],
+    "name": "postal horn"
+}, {
+    "character": "🚎",
+    "aliases": [
+        "bus"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "trolleybus"
+}, {
+    "character": "🌝",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "full moon with face"
+}, {
+    "character": "🐙",
+    "aliases": [
+        "squid"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "octopus"
+}, {
+    "character": "🍇",
+    "aliases": [
+        "raisins"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "grapes"
+}, {
+    "character": "🎺",
+    "aliases": [],
+    "groups": [
+        "instrument"
+    ],
+    "name": "trumpet"
+}, {
+    "character": "📔",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "yellow notebook"
+}, {
+    "character": "😍",
+    "aliases": [
+        "love"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "heart eyes"
+}, {
+    "character": "💍",
+    "aliases": [
+        "diamond"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ring"
+}, {
+    "character": "🔏",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "lock with ink pen"
+}, {
+    "character": "🍭",
+    "aliases": [
+        "candy"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "lollipop"
+}, {
+    "character": "🍒",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "cherries"
+}, {
+    "character": "🏤",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "european post office"
+}, {
+    "character": "❄",
+    "aliases": [
+        "flake",
+        "flurry"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "snowflake"
+}, {
+    "character": "💈",
+    "aliases": [
+        "haircut"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "barber"
+},{
+    "character": "🐫",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "camel"
+}, {
+    "character": "✖",
+    "aliases": [
+        "x",
+        "*"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "multiplication x"
+}, {
+    "character": "👿",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "imp"
+}, {
+    "character": "💊",
+    "aliases": [
+        "medicine",
+        "drugs"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "pill"
+}, {
+    "character": "🐞",
+    "aliases": [
+        "ladybug",
+        "insect"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "beetle"
+}, {
+    "character": "💩",
+    "aliases": [
+        "shit"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "poop"
+}, {
+    "character": "🚷",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "no pedestrians"
+}, {
+    "character": "📶",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "signal strength"
+}, {
+    "character": "🙉",
+    "aliases": [
+        "money"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hear no evil"
+}, {
+    "character": "📐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "triangular ruler"
+}, {
+    "character": "🎁",
+    "aliases": [
+        "present",
+        "birthday gift"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "gift"
+}, {
+    "character": "🚄",
+    "aliases": [
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bullettrain"
+}, {
+    "character": "🔓",
+    "aliases": [
+        "lock"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "unlock"
+}, {
+    "character": "🔹",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "small blue diamond"
+}, {
+    "character": "🏰",
+    "aliases": [
+        "building",
+        "palace"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "european castle"
+}, {
+    "character": "♠",
+    "aliases": [
+        "cards"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "spades"
+}, {
+    "character": "📒",
+    "aliases": [
+        "book",
+        "notebook"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ledger"
+}, {
+    "character": "🎉",
+    "aliases": [
+        "confetti",
+        "party",
+        "birthday party"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tada"
+}, {
+    "character": "🗻",
+    "aliases": [
+        "mountain",
+        "hike"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mount fuji"
+}, {
+    "character": "😣",
+    "aliases": [
+        ":("
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "persevere"
+}, {
+    "character": "🕡",
+    "aliases": [
+        "6:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 6:30"
+}, {
+    "character": "🐏",
+    "aliases": [
+        "sheep",
+        "goat"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "ram"
+}, {
+    "character": "🅱",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "b"
+}, {
+    "character": "☝",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "point up"
+}, {
+    "character": "⛄",
+    "aliases": [
+        "snow man",
+        "snow"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "snowman"
+}, {
+    "character": "🍥",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "fish cake"
+}, {
+    "character": "🕒",
+    "aliases": [
+        "3",
+        "3:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 3:00"
+}, {
+    "character": "📕",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "closed book"
+}, {
+    "character": "🏭",
+    "aliases": [
+        "smoke"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "factory"
+}, {
+    "character": "2️⃣",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "two"
+}, {
+    "character": "😉",
+    "aliases": [
+        ";)"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "wink"
+}, {
+    "character": "🌄",
+    "aliases": [
+        "sun",
+        "dawn",
+        "morning"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sunrise over mountains"
+}, {
+    "character": "🎠",
+    "aliases": [
+        "carnival",
+        "horse",
+        "ride",
+        "amusement park"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "carousel horse"
+}, {
+    "character": "🇪🇸",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "es"
+}, {
+    "character": "🌂",
+    "aliases": [
+        "rain"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "closed umbrella"
+}, {
+    "character": "🍝",
+    "aliases": [
+        "pasta",
+        "italian"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "spaghetti"
+}, {
+    "character": "🅰",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "a"
+}, {
+    "character": "🎳",
+    "aliases": [
+        "bowling alley",
+        "bowl",
+        "ball",
+        "pin"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bowling"
+}, {
+    "character": "👕",
+    "aliases": [
+        "tshirt",
+        "shirt"
+    ],
+    "groups": [
+        "cloth"
+    ],
+    "name": "t-shirt"
+}, {
+    "character": "💣",
+    "aliases": [
+        "boom",
+        "explode",
+        "dangerous"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bomb"
+}, {
+    "character": "🚠",
+    "aliases": [
+        "lift",
+        "ski lift"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mountain cableway"
+}, {
+    "character": "➿",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "loop"
+}, {
+    "character": "🔐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "closed lock with key"
+}, {
+    "character": "🎷",
+    "aliases": [
+        "sax"
+    ],
+    "groups": [
+        "instrument"
+    ],
+    "name": "saxophone"
+}, {
+    "character": "🐊",
+    "aliases": [
+        "alligator",
+        "reptile"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "crocodile"
+}, {
+    "character": "🚃",
+    "aliases": [
+        "trolley",
+        "tram"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "train car"
+}, {
+    "character": "🚖",
+    "aliases": [
+        "car",
+        "cab",
+        "taxi"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "oncoming taxi"
+}, {
+    "character": "📹",
+    "aliases": [
+        "camcorder"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "video camera"
+}, {
+    "character": "👽",
+    "aliases": [
+        "mask",
+        "halloween"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "alien"
+}, {
+    "character": "👄",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "lips"
+}, {
+    "character": "😵",
+    "aliases": [
+        "xox",
+        "xxx"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "dizzy face"
+}, {
+    "character": "👕",
+    "aliases": [],
+    "groups": [
+        "cloth"
+    ],
+    "name": "shirt"
+}, {
+    "character": "🚭",
+    "aliases": [
+        "cigarrette"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "no smoking"
+}, {
+    "character": "⭕",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "o"
+}, {
+    "character": "👜",
+    "aliases": [
+        "pocketbook"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "handbag"
+}, {
+    "character": "🌷",
+    "aliases": [
+        "flower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tulip"
+}, {
+    "character": "🍬",
+    "aliases": [
+        "sweet"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "candy"
+}, {
+    "character": "🗾",
+    "aliases": [
+        "island"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "japan"
+}, {
+    "character": "👣",
+    "aliases": [
+        "prints"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "footprints"
+}, {
+    "character": "📱",
+    "aliases": [
+        "mobile",
+        "cell",
+        "phone"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "iphone"
+}, {
+    "character": "🍅",
+    "aliases": [
+        "vegetable"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "tomato"
+}, {
+    "character": "🍉",
+    "aliases": [
+        "fruit"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "watermelon"
+}, {
+    "character": "🌋",
+    "aliases": [
+        "erupt"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "volcano"
+}, {
+    "character": "✔",
+    "aliases": [
+        "correct",
+        "tik"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "check mark"
+}, {
+    "character": "😘",
+    "aliases": [
+        "kiss",
+        "love",
+        "heart"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "kissing heart"
+}, {
+    "character": "🍪",
+    "aliases": [
+        "chocolate chip"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "cookie"
+}, {
+    "character": "🍜",
+    "aliases": [
+        "noodles",
+        "korean food",
+        "chinese food"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "ramen"
+}, {
+    "character": "🚰",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "potable water"
+}, {
+    "character": "😌",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "relieved"
+}, {
+    "character": "💾",
+    "aliases": [
+        "diskette"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "floppy disk"
+}, {
+    "character": "😒",
+    "aliases": [
+        "pissed",
+        "annoyed",
+        "rolls eyes",
+        "rolled eyes",
+        "eyes rolled"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "unamused"
+}, {
+    "character": "🍙",
+    "aliases": [
+        "chinese food"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "rice ball"
+}, {
+    "character": "🚥",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "traffic light"
+}, {
+    "character": "🍕",
+    "aliases": [
+        "slice"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "pizza"
+}, {
+    "character": "💁",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "information desk person"
+}, {
+    "character": "🌐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "globe meridians"
+}, {
+    "character": "♋",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "cancer"
+}, {
+    "character": "💎",
+    "aliases": [
+        "diamond"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "gem"
+}, {
+    "character": "🌳",
+    "aliases": [],
+    "groups": [
+        "plant"
+    ],
+    "name": "deciduous tree"
+}, {
+    "character": "🍐",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "pear"
+}, {
+    "character": "♥",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "hearts"
+}, {
+    "character": "🍚",
+    "aliases": [
+        "bowl"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "rice"
+}, {
+    "character": "👊",
+    "aliases": [
+        "punch",
+        "fist"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "facepunch"
+}, {
+    "character": "🔴",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "red circle"
+}, {
+    "character": "🚱",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "non-potable water"
+}, {
+    "character": "🐲",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "dragon face"
+}, {
+    "character": "🏯",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "japanese castle"
+}, {
+    "character": "➖",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "minus sign"
+}, {
+    "character": "😴",
+    "aliases": [
+        "zzz",
+        "sleep",
+        "drowzy",
+        "tired"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "sleeping"
+}, {
+    "character": "😼",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "smirk cat"
+}, {
+    "character": "💪",
+    "aliases": [
+        "bicep",
+        "strong",
+        "arm"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "muscle"
+}, {
+    "character": "🎥",
+    "aliases": [
+        "movie",
+        "theater",
+        "film",
+        "camcorder"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "movie camera"
+}, {
+    "character": "💏",
+    "aliases": [
+        "love",
+        "kiss"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "couplekiss"
+}, {
+    "character": "😪",
+    "aliases": [
+        "tired",
+        "drowzy"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "sleepy"
+}, {
+    "character": "⏳",
+    "aliases": [
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hourglass flowing sand"
+}, {
+    "character": "🎊",
+    "aliases": [
+        "birthday",
+        "celebrate"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "confetti ball"
+}, {
+    "character": "👏",
+    "aliases": [
+        "hands"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clap"
+}, {
+    "character": "💬",
+    "aliases": [
+        "talk",
+        "speak",
+        "bubble"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "speech balloon"
+}, {
+    "character": "🎶",
+    "aliases": [
+        "music"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "notes"
+}, {
+    "character": "🗿",
+    "aliases": [
+        "statue"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "moyai"
+}, {
+    "character": "🌻",
+    "aliases": [
+        "flower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sunflower"
+}, {
+    "character": "💖",
+    "aliases": [
+        "love",
+        "heart"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sparkling heart"
+}, {
+    "character": "😗",
+    "aliases": [
+        "kiss"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "kissing"
+}, {
+    "character": "🌇",
+    "aliases": [
+        "morning"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "city sunrise"
+}, {
+    "character": "🍧",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "shaved ice"
+}, {
+    "character": "🚢",
+    "aliases": [
+        "boat",
+        "cruise"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ship"
+}, {
+    "character": "🔇",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "mute"
+}, {
+    "character": "💇",
+    "aliases": [
+        "barber"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "haircut"
+}, {
+    "character": "🔂",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "repeat one"
+}, {
+    "character": "🏧",
+    "aliases": [
+        "cash"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "atm"
+}, {
+    "character": "⏬",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow double down"
+}, {
+    "character": "⚓",
+    "aliases": [
+        "ship anchor"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "anchor"
+}, {
+    "character": "🔭",
+    "aliases": [
+        "space"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "telescope"
+}, {
+    "character": "✈",
+    "aliases": [
+        "plane",
+        "airport"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "airplane"
+}, {
+    "character": "🔤",
+    "aliases": [
+        "alphabet"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "abc"
+}, {
+    "character": "❕",
+    "aliases": [
+        "!"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "grey exclamation"
+}, {
+    "character": "🍍",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "pineapple"
+}, {
+    "character": "🌀",
+    "aliases": [
+        "hurricane",
+        "tornado",
+        "swirl",
+        "twirl"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cyclone"
+}, {
+    "character": "🌍",
+    "aliases": [
+        "globe"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "earth africa"
+}, {
+    "character": "☁",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "cloud"
+}, {
+    "character": "♏",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "scorpius"
+}, {
+    "character": "🐷",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "pig"
+}, {
+    "character": "🔊",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "speaker"
+}, {
+    "character": "🐧",
+    "aliases": [
+        "bird"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "penguin"
+}, {
+    "character": "💮",
+    "aliases": [
+        "flower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "white flower"
+}, {
+    "character": "✏",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "pencil"
+}, {
+    "character": "🐄",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "cow"
+}, {
+    "character": "💘",
+    "aliases": [
+        "heart",
+        "love"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cupid"
+}, {
+    "character": "💤",
+    "aliases": [
+        "sleep"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "zzz"
+}, {
+    "character": "😅",
+    "aliases": [
+        "nervous"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "sweat smile"
+}, {
+    "character": "💗",
+    "aliases": [
+        "throb",
+        "heart",
+        "heart throb"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "heartpulse"
+}, {
+    "character": "🍸",
+    "aliases": [
+        "drink",
+        "alcohol",
+        "martini"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cocktail"
+}, {
+    "character": "✅",
+    "aliases": [
+        "ok",
+        "checkmark",
+        "tik"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "white check mark"
+}, {
+    "character": "⚽",
+    "aliases": [],
+    "groups": [
+        "sport"
+    ],
+    "name": "soccer ball"
+}, {
+    "character": "⛔",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "no entry"
+}, {
+    "character": "🅿",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "parking"
+}, {
+    "character": "🌰",
+    "aliases": [
+        "nut"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "chestnut"
+}, {
+    "character": "🏥",
+    "aliases": [
+        "infirmary"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hospital"
+}, {
+    "character": "🔯",
+    "aliases": [
+        "jewish star",
+        "star of david",
+        "david"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "six pointed star"
+}, {
+    "character": "🐸",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "frog face"
+}, {
+    "character": "♊",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "gemini"
+}, {
+    "character": "🎎",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "dolls"
+}, {
+    "character": "❗",
+    "aliases": [
+        "!"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "exclamation mark"
+}, {
+    "character": "👩",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "woman"
+}, {
+    "character": "🍋",
+    "aliases": [
+        "lime"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "lemon"
+}, {
+    "character": "📞",
+    "aliases": [
+        "phone",
+        "home phone"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "telephone"
+}, {
+    "character": "💚",
+    "aliases": [
+        "love",
+        "heart"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "green heart"
+}, {
+    "character": "🔫",
+    "aliases": [
+        "weapon"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "gun"
+}, {
+    "character": "📢",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "loudspeaker"
+}, {
+    "character": "😧",
+    "aliases": [
+        ":("
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "anguished"
+}, {
+    "character": "🍷",
+    "aliases": [
+        "alcohol"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "wine glass"
+}, {
+    "character": "🎾",
+    "aliases": [],
+    "groups": [
+        "sport"
+    ],
+    "name": "tennis ball"
+}, {
+    "character": "🌏",
+    "aliases": [
+        "globe",
+        "world"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "earth asia"
+}, {
+    "character": "👪",
+    "aliases": ["people"],
+    "groups": [
+        "people"
+    ],
+    "name": "family"
+}, {
+    "character": "⏰",
+    "aliases": [
+        "watch"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "alarm clock"
+}, {
+    "character": "💃",
+    "aliases": [
+        "performer"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dancer"
+}, {
+    "character": "👗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "dress"
+}, {
+    "character": "🏡",
+    "aliases": [
+        "tree"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "house with garden"
+}, {
+    "character": "👶",
+    "aliases": [
+        "boy",
+        "toddler"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "baby"
+}, {
+    "character": "❔",
+    "aliases": [
+        "?"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "grey question"
+}, {
+    "character": "👚",
+    "aliases": [
+        "shirt"
+    ],
+    "groups": [
+        "cloth"
+    ],
+    "name": "womans clothes"
+}, {
+    "character": "🍞",
+    "aliases": [
+        "loaf"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "bread"
+}, {
+    "character": "📳",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "vibration mode"
+}, {
+    "character": "🛃",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "customs"
+}, {
+    "character": "🔆",
+    "aliases": [
+        "sun"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "high brightness"
+}, {
+    "character": "🇺🇸",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "us"
+}, {
+    "character": "🍠",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "sweet potato"
+}, {
+    "character": "👒",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "womans hat"
+}, {
+    "character": "🔷",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "large blue diamond"
+}, {
+    "character": "🍮",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "custard"
+}, {
+    "character": "🕦",
+    "aliases": [
+        "11:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 11:30"
+}, {
+    "character": "🔥",
+    "aliases": [
+        "hot"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fire"
+}, {
+    "character": "📤",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "outbox tray"
+}, {
+    "character": "🌾",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "ear of rice"
+}, {
+    "character": "#️⃣",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "hash"
+}, {
+    "character": "🏉",
+    "aliases": [
+        "football",
+        "ball"
+    ],
+    "groups": [
+        "sport"
+    ],
+    "name": "rugby football"
+}, {
+    "character": "💥",
+    "aliases": [
+        "bomb",
+        "explode"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "boom"
+}, {
+    "character": "🐌",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "snail"
+}, {
+    "character": "🚩",
+    "aliases": [],
+    "groups": [
+        "flag"
+    ],
+    "name": "red flag"
+}, {
+    "character": "📲",
+    "aliases": [
+        "phone",
+        "mobile",
+        "iphone"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "calling"
+}, {
+    "character": "😄",
+    "aliases": [
+        ":D",
+        ":)",
+        "happy"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "smile"
+}, {
+    "character": "🌸",
+    "aliases": [
+        "flower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cherry blossom"
+}, {
+    "character": "🐀",
+    "aliases": [
+        "mouse"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "rat"
+}, {
+    "character": "❎",
+    "aliases": [
+        "x"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "green x"
+}, {
+    "character": "📷",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "camera"
+}, {
+    "character": "🇫🇷",
+    "aliases": [
+        "france"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fr"
+}, {
+    "character": "💵",
+    "aliases": [
+        "cash",
+        "money",
+        "currency",
+        "$"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dollar"
+}, {
+    "character": "🍡",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "dango"
+}, {
+    "character": "🚴",
+    "aliases": [
+        "athlete",
+        "bike"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bicyclist"
+}, {
+    "character": "🎲",
+    "aliases": [
+        "game",
+        "die"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dice"
+}, {
+    "character": "📻",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "radio"
+}, {
+    "character": "😁",
+    "aliases": [
+        "smile",
+        "fake smile"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "grin"
+}, {
+    "character": "🎍",
+    "aliases": [
+        "chinese",
+        "shoots"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "bamboo"
+}, {
+    "character": "😈",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "smiling imp"
+}, {
+    "character": "🐢",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "turtle"
+}, {
+    "character": "0️⃣",
+    "aliases": [
+        "0"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "zero"
+}, {
+    "character": "🎡",
+    "aliases": [
+        "carnival",
+        "amusement park"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ferris wheel"
+}, {
+    "character": "🆔",
+    "aliases": [
+        "identification"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "id"
+}, {
+    "character": "🚾",
+    "aliases": [
+        "washroom"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "wc"
+}, {
+    "character": "🚕",
+    "aliases": [
+        "taxi",
+        "yellow cab"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cab"
+}, {
+    "character": "👔",
+    "aliases": [
+        "tie",
+        "shirt"
+    ],
+    "groups": [
+        "cloth"
+    ],
+    "name": "necktie"
+}, {
+    "character": "😃",
+    "aliases": [
+        ":D",
+        "happy"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "smiley"
+}, {
+    "character": "🎴",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "flower playing cards"
+}, {
+    "character": "😾",
+    "aliases": [
+        "mad",
+        "pissed"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "pouting cat"
+}, {
+    "character": "📡",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "satellite"
+}, {
+    "character": "⬛",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "black large square"
+}, {
+    "character": "🎣",
+    "aliases": [
+        "pole",
+        "fish"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fishing"
+}, {
+    "character": "🍃",
+    "aliases": [
+        "weed"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "leaves"
+}, {
+    "character": "🔙",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "back"
+}, {
+    "character": "🔜",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "soon"
+}, {
+    "character": "📠",
+    "aliases": [
+        "fax machine"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fax"
+}, {
+    "character": "🏄",
+    "aliases": [
+        "surf"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "surfer"
+}, {
+    "character": "😏",
+    "aliases": [
+        "smile"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "smirk"
+}, {
+    "character": "🙈",
+    "aliases": [
+        "mokey"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "see no evil"
+}, {
+    "character": "🐔",
+    "aliases": [
+        "rooster",
+        "bird"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "chicken"
+}, {
+    "character": "😠",
+    "aliases": [
+        "pissed",
+        "mad"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "angry"
+}, {
+    "character": "🕚",
+    "aliases": [
+        "11",
+        "11:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 11:00"
+}, {
+    "character": "🍊",
+    "aliases": [
+        "orange",
+        "fruit"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "tangerine"
+}, {
+    "character": "💼",
+    "aliases": [
+        "suitcase",
+        "luggage",
+        "bag"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "briefcase"
+}, {
+    "character": "🎤",
+    "aliases": [
+        "mic"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "microphone"
+}, {
+    "character": "🔨",
+    "aliases": [
+        "tool"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hammer"
+}, {
+    "character": "🙌",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "raised hands"
+}, {
+    "character": "💆",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "massage"
+}, {
+    "character": "🐭",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "mouse face"
+}, {
+    "character": "⌛",
+    "aliases": [
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hourglass"
+}, {
+    "character": "🍈",
+    "aliases": [
+        "fruit"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "melon"
+}, {
+    "character": "📁",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "file folder"
+}, {
+    "character": "🎱",
+    "aliases": [
+        "pool"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "8ball"
+}, {
+    "character": "🐘",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "elephant"
+}, {
+    "character": "↪",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow right hook"
+}, {
+    "character": "👑",
+    "aliases": [
+        "king",
+        "queen",
+        "prince",
+        "princess",
+        "gem"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "crown"
+}, {
+    "character": "💨",
+    "aliases": [
+        "fart"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dash"
+}, {
+    "character": "🔵",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "large blue circle"
+}, {
+    "character": "👧",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "girl"
+}, {
+    "character": "💭",
+    "aliases": [
+        "cloud",
+        "dream"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "thought balloon"
+}, {
+    "character": "🚪",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "door"
+}, {
+    "character": "👋",
+    "aliases": [
+        "hi",
+        "hello"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "wave"
+}, {
+    "character": "💉",
+    "aliases": [
+        "shot"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "syringe"
+}, {
+    "character": "💔",
+    "aliases": [
+        "heartbroken"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "broken heart"
+}, {
+    "character": "⌚",
+    "aliases": [
+        "iwatch"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "watch"
+}, {
+    "character": "❓",
+    "aliases": [
+        "?"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "question"
+}, {
+    "character": "🔺",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "small red triangle"
+}, {
+    "character": "❌",
+    "aliases": [
+        "x"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "red x"
+}, {
+    "character": "🐻",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "bear face"
+}, {
+    "character": "⬅",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow left"
+}, {
+    "character": "🔉",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "sound"
+}, {
+    "character": "🐶",
+    "aliases": [
+        "pug"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "dog face"
+}, {
+    "character": "🎽",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "running shirt with sash"
+}, {
+    "character": "😆",
+    "aliases": [
+        "haha",
+        "lol"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "laughing"
+}, {
+    "character": "🙍",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "person frowning"
+}, {
+    "character": "🍷",
+    "aliases": [
+        "glass of wine"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "wine"
+}, {
+    "character": "👅",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "tongue"
+}, {
+    "character": "💿",
+    "aliases": [
+        "disk",
+        "album"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "cd"
+}, {
+    "character": "🚳",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "no bicycles"
+}, {
+    "character": "◼",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "black medium square"
+}, {
+    "character": "⚪",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "white circle"
+}, {
+    "character": "👠",
+    "aliases": [
+        "shoe",
+        "woman",
+        "heel"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "high heel"
+}, {
+    "character": "🐯",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "tiger face"
+}, {
+    "character": "👓",
+    "aliases": [
+        "glasses",
+        "spectacles",
+        "specs"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "eyeglasses"
+}, {
+    "character": "🌿",
+    "aliases": [
+        "weed"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "herb"
+}, {
+    "character": "🚺",
+    "aliases": [
+        "bathroom",
+        "loo"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "womens restroom"
+}, {
+    "character": "🐗",
+    "aliases": [
+        "pig"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "boar"
+}, {
+    "character": "🇨🇳",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "cn"
+}, {
+    "character": "🕘",
+    "aliases": [
+        "9",
+        "9:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 9:00"
+}, {
+    "character": "🍣",
+    "aliases": [
+        "seafood"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "sushi"
+}, {
+    "character": "😯",
+    "aliases": [
+        "ooo"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "hushed"
+}, {
+    "character": "🐖",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "pig"
+}, {
+    "character": "🅾",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "o2"
+}, {
+    "character": "🔽",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow down small"
+}, {
+    "character": "📓",
+    "aliases": [
+        "book"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "notebook"
+}, {
+    "character": "™",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "tm"
+}, {
+    "character": "🐤",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "baby chick"
+}, {
+    "character": "🔝",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "top"
+}, {
+    "character": "🏊",
+    "aliases": [
+        "pool",
+        "beach",
+        "swim"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "swimmer"
+}, {
+    "character": "🕙",
+    "aliases": [
+        "10",
+        "10:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 10:00"
+}, {
+    "character": "🎊",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "confetti"
+}, {
+    "character": "🐑",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "sheep"
+}, {
+    "character": "🎧",
+    "aliases": [
+        "ipod",
+        "music",
+        "mp3",
+        "player",
+        "earphones"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "headphones"
+}, {
+    "character": "📦",
+    "aliases": [
+        "box"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "package"
+}, {
+    "character": "♓",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "pisces"
+}, {
+    "character": "🕤",
+    "aliases": [
+        "9:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 9:30"
+}, {
+    "character": "😨",
+    "aliases": [
+        "afraid",
+        "scared",
+        "terrified"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fearful"
+}, {
+    "character": "🍢",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "oden"
+}, {
+    "character": "🕓",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "clock4"
+}, {
+    "character": "🐮",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "cow face"
+}, {
+    "character": "🎼",
+    "aliases": [
+        "note"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "musical score"
+}, {
+    "character": "🏀",
+    "aliases": [
+        "ball"
+    ],
+    "groups": [
+        "sport"
+    ],
+    "name": "basketball"
+}, {
+    "character": "🇯🇵",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "jp"
+}, {
+    "character": "🕢",
+    "aliases": [
+        "7:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 7:30"
+}, {
+    "character": "🏨",
+    "aliases": [
+        "building",
+        "motel",
+        "inn"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "hotel"
+}, {
+    "character": "🙆",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "ok woman"
+}, {
+    "character": "✉",
+    "aliases": [
+        "mail",
+        "message"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "envelope"
+}, {
+    "character": "🔳",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "white square button"
+}, {
+    "character": "👨",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "man"
+}, {
+    "character": "💙",
+    "aliases": [
+        "love",
+        "heart"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "blue heart"
+}, {
+    "character": "🔕",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "no bell"
+}, {
+    "character": "💱",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "currency exchange"
+}, {
+    "character": "🚈",
+    "aliases": [
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "light rail"
+}, {
+    "character": "🎄",
+    "aliases": [],
+    "groups": [
+        "plant"
+    ],
+    "name": "christmas tree"
+}, {
+    "character": "🚝",
+    "aliases": [
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "monorail"
+}, {
+    "character": "🛄",
+    "aliases": [
+        "suitcase"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "baggage claim"
+}, {
+    "character": "🔩",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "nut and bolt"
+}, {
+    "character": "💧",
+    "aliases": [
+        "water",
+        "sweat",
+        "tear"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "droplet"
+}, {
+    "character": "⛪",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "church"
+}, {
+    "character": "⛳",
+    "aliases": [
+        "course"
+    ],
+    "groups": [
+        "sport"
+    ],
+    "name": "golf"
+}, {
+    "character": "☎",
+    "aliases": [
+        "phone"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "telephone"
+}, {
+    "character": "🃏",
+    "aliases": [
+        "deck",
+        "cards"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "black joker"
+}, {
+    "character": "💰",
+    "aliases": [
+        "cash",
+        "money",
+        "currency",
+        "bag",
+        "stash",
+        "$"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "moneybag"
+}, {
+    "character": "📜",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "scroll"
+}, {
+    "character": "🙊",
+    "aliases": [
+        "monkey"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "speak no evil"
+}, {
+    "character": "🍀",
+    "aliases": [],
+    "groups": [
+        "plant"
+    ],
+    "name": "four leaf clover"
+}, {
+    "character": "🚨",
+    "aliases": [
+        "police",
+        "cop"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "rotating light"
+}, {
+    "character": "📊",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bar chart"
+}, {
+    "character": "🏪",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "convenience store"
+}, {
+    "character": "🌔",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "moon"
+}, {
+    "character": "🌼",
+    "aliases": [
+        "flower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "blossom"
+}, {
+    "character": "🐝",
+    "aliases": [
+        "honeybee",
+        "honey",
+        "buzz",
+        "insect"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "bee"
+}, {
+    "character": "🌙",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "crescent moon"
+}, {
+    "character": "📂",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "open file folder"
+}, {
+    "character": "🔛",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "on"
+}, {
+    "character": "📗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "green book"
+}, {
+    "character": "🔗",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "link"
+}, {
+    "character": "💂",
+    "aliases": [
+        "security",
+        "bouncer",
+        "guard"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "guardsman"
+}, {
+    "character": "💜",
+    "aliases": [
+        "love"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "purple heart"
+}, {
+    "character": "🛀",
+    "aliases": [
+        "shower"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bath"
+}, {
+    "character": "👹",
+    "aliases": [
+        "devil"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "japanese ogre"
+}, {
+    "character": "🐡",
+    "aliases": [
+        "fish"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "blowfish"
+}, {
+    "character": "👯",
+    "aliases": [
+        "performers",
+        "people"
+    ],
+    "groups": [
+        "people"
+    ],
+    "name": "dancers"
+}, {
+    "character": "🎏",
+    "aliases": [],
+    "groups": [
+        "flag"
+    ],
+    "name": "flags"
+}, {
+    "character": "⬇",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow down"
+}, {
+    "character": "🚊",
+    "aliases": [
+        "train",
+        "metro"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tram"
+}, {
+    "character": "👃",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "nose"
+}, {
+    "character": "💌",
+    "aliases": [
+        "message",
+        "heart"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "love letter"
+}, {
+    "character": "🍎",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "red apple"
+}, {
+    "character": "🍵",
+    "aliases": [
+        "green tea",
+        "drink"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tea"
+}, {
+    "character": "🐃",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "water buffalo"
+}, {
+    "character": "📰",
+    "aliases": [
+        "news",
+        "paper",
+        "periodical"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "newspaper"
+}, {
+    "character": "🚙",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "blue car"
+}, {
+    "character": "🚣",
+    "aliases": [
+        "boat",
+        "rowing"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "rowboat"
+}, {
+    "character": "🐐",
+    "aliases": [
+        "sheep",
+        "lamb"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "goat"
+}, {
+    "character": "👺",
+    "aliases": [
+        "devil",
+        "halloween",
+        "scary"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "japanese goblin"
+}, {
+    "character": "🔻",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "small red triangle down"
+}, {
+    "character": "🐽",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "pig nose"
+}, {
+    "character": "🍓",
+    "aliases": [
+        "fruit",
+        "berry"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "strawberry"
+}, {
+    "character": "🌽",
+    "aliases": [
+        "maize",
+        "vegetable"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "corn"
+}, {
+    "character": "♿",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "wheelchair"
+}, {
+    "character": "📬",
+    "aliases": [
+        "post",
+        "message",
+        "envelope"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mailbox with mail"
+}, {
+    "character": "📖",
+    "aliases": [
+        "book",
+        "study"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "open book"
+}, {
+    "character": "🕥",
+    "aliases": [
+        "10:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 10:30"
+}, {
+    "character": "🚑",
+    "aliases": [
+        "emergency",
+        "hospital"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ambulance"
+}, {
+    "character": "📙",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "orange book"
+}, {
+    "character": "📨",
+    "aliases": [
+        "mail",
+        "post",
+        "message"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "incoming envelope"
+}, {
+    "character": "✉",
+    "aliases": [
+        "e-mail",
+        "envelope",
+        "mail"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "email"
+}, {
+    "character": "🆓",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "free"
+}, {
+    "character": "📏",
+    "aliases": [
+        "edge",
+        "straight edge",
+        "measurement"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "straight ruler"
+}, {
+    "character": "🎀",
+    "aliases": [
+        "bow",
+        "gift",
+        "present"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "ribbon"
+}, {
+    "character": "🐰",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "rabbit face"
+}, {
+    "character": "👖",
+    "aliases": [
+        "pants"
+    ],
+    "groups": [
+        "cloth"
+    ],
+    "name": "jeans"
+}, {
+    "character": "🚀",
+    "aliases": [
+        "spaceship"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "rocket"
+}, {
+    "character": "🍨",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "ice cream"
+}, {
+    "character": "👆",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "point up 2"
+}, {
+    "character": "💻",
+    "aliases": [
+        "notebook",
+        "computer"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "laptop"
+}, {
+    "character": "📉",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "chart with downwards trend"
+}, {
+    "character": "📺",
+    "aliases": [
+        "telivision"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tv"
+}, {
+    "character": "😙",
+    "aliases": [],
+    "groups": [
+        "face"
+    ],
+    "name": "kissing smiling eyes"
+}, {
+    "character": "7️⃣",
+    "aliases": [
+        "7"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "seven"
+}, {
+    "character": "🆚",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "vs"
+}, {
+    "character": "🍫",
+    "aliases": [
+        "candy"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "chocolate bar"
+}, {
+    "character": "⬜",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "white large square"
+}, {
+    "character": "⏫",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow double up"
+}, {
+    "character": "👬",
+    "aliases": [
+        "friends",
+        "people"
+    ],
+    "groups": [
+        "people"
+    ],
+    "name": "two men holding hands"
+}, {
+    "character": "🐪",
+    "aliases": [
+        "dessert"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "camel"
+}, {
+    "character": "🌟",
+    "aliases": [
+        "shine"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "shining star"
+}, {
+    "character": "🆎",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "ab"
+}, {
+    "character": "☎",
+    "aliases": [
+        "telephone"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "phone"
+}, {
+    "character": "🎰",
+    "aliases": [
+        "gamble"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "slot machine"
+}, {
+    "character": "😷",
+    "aliases": [
+        "face mask",
+        "pollution mask"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "mask"
+}, {
+    "character": "🙋",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "raising hand"
+}, {
+    "character": "🏫",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "school"
+}, {
+    "character": "👇",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "point down"
+}, {
+    "character": "♐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "sagittarius"
+}, {
+    "character": "🍖",
+    "aliases": [
+        "chicken",
+        "dog food",
+        "turkey"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "meat on bone"
+}, {
+    "character": "🕑",
+    "aliases": [
+        "2",
+        "2:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 2:00"
+}, {
+    "character": "🔮",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "crystal ball"
+}, {
+    "character": "🚅",
+    "aliases": [
+        "bullettrain",
+        "metro"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "train"
+}, {
+    "character": "💡",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bulb"
+}, {
+    "character": "➗",
+    "aliases": [
+        "/"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "heavy division sign"
+}, {
+    "character": "🐍",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "snake"
+}, {
+    "character": "🎆",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "fireworks"
+}, {
+    "character": "🐟",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "fish"
+}, {
+    "character": "😐",
+    "aliases": [
+        "-_-",
+        "straight face",
+        "neutral"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "ambivalent"
+}, {
+    "character": "🚟",
+    "aliases": [
+        "lift",
+        "train"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "suspension railway"
+}, {
+    "character": "😩",
+    "aliases": [
+        "tired"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "weary"
+}, {
+    "character": "🚌",
+    "aliases": [
+        "schoolbus"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bus"
+}, {
+    "character": "👼",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "angel"
+}, {
+    "character": "🌌",
+    "aliases": [
+        "space",
+        "stars"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "milky way"
+}, {
+    "character": "🔒",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "lock"
+}, {
+    "character": "🚕",
+    "aliases": [
+        "cab",
+        "car"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "taxi"
+}, {
+    "character": "🕟",
+    "aliases": [
+        "4:30",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 4:30"
+}, {
+    "character": "😂",
+    "aliases": [
+        "laughing",
+        "happy"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "joy"
+}, {
+    "character": "👐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "open hands"
+}, {
+    "character": "📭",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "mailbox with no mail"
+}, {
+    "character": "🎃",
+    "aliases": [
+        "pumpkin",
+        "halloween"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "jack o lantern"
+}, {
+    "character": "🙅",
+    "aliases": [
+        "block"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "no good"
+}, {
+    "character": "🎐",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "wind chime"
+}, {
+    "character": "🚒",
+    "aliases": [
+        "fire truck",
+        "truck"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "fire engine"
+}, {
+    "character": "😶",
+    "aliases": [
+        "speechless",
+        "no words",
+        "expressionless"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "no mouth"
+}, {
+    "character": "😺",
+    "aliases": [
+        "happy",
+        "joy"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "smiley cat"
+}, {
+    "character": "💕",
+    "aliases": [
+        "love"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "two hearts"
+}, {
+    "character": "💴",
+    "aliases": [
+        "cash",
+        "money",
+        "currency",
+        "japan"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "yen"
+}, {
+    "character": "👘",
+    "aliases": [
+        "japanese outfit",
+        "dress"
+    ],
+    "groups": [
+        "cloth"
+    ],
+    "name": "kimono"
+}, {
+    "character": "🐕",
+    "aliases": [
+        "pug"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "dog"
+}, {
+    "character": "🙎",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "person with pouting face"
+}, {
+    "character": "🆘",
+    "aliases": [
+        "emergency"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sos"
+}, {
+    "character": "🍳",
+    "aliases": [
+        "breakfast",
+        "pan",
+        "cook"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "egg"
+}, {
+    "character": "💋",
+    "aliases": [
+        "lipstick",
+        "lips"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "kiss"
+}, {
+    "character": "🕖",
+    "aliases": [
+        "7",
+        "7:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 7:00"
+}, {
+    "character": "😮",
+    "aliases": [
+        "oo",
+        ":o",
+        "surprised",
+        "learn",
+        "knowledge"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "open mouth"
+}, {
+    "character": "〽",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "part alternation mark"
+}, {
+    "character": "🏮",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "lantern"
+}, {
+    "character": "🍤",
+    "aliases": [
+        "seafood"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "fried shrimp"
+}, {
+    "character": "🔋",
+    "aliases": [
+        "cell"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "battery"
+}, {
+    "character": "🇰🇷",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "kr"
+}, {
+    "character": "🌆",
+    "aliases": [
+        "dusk"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "city sunset"
+}, {
+    "character": "🔅",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "low brightness"
+}, {
+    "character": "🌎",
+    "aliases": [
+        "globe",
+        "world"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "earth americas"
+}, {
+    "character": "🐬",
+    "aliases": [
+        "whale",
+        "dolphin"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "flipper"
+}, {
+    "character": "✴",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "eight pointed black star"
+}, {
+    "character": "🌚",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "new moon with face"
+}, {
+    "character": "😓",
+    "aliases": [
+        "nervous",
+        "uneasy"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sweat"
+}, {
+    "character": "◽",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "white medium small square"
+}, {
+    "character": "👎",
+    "aliases": [
+        "-1",
+        "down",
+        "thumb"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "thumbsdown"
+}, {
+    "character": "📝",
+    "aliases": [
+        "note",
+        "write",
+        "pencil"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "note pencil"
+}, {
+    "character": "🐛",
+    "aliases": [
+        "bug",
+        "critter"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "caterpillar"
+}, {
+    "character": "🙏",
+    "aliases": [
+        "folded hands",
+        "hands",
+        "god",
+        "meditate",
+        "namaste",
+        "greet"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "pray"
+}, {
+    "character": "🛂",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "passport control"
+}, {
+    "character": "🌺",
+    "aliases": [
+        "flower"
+    ],
+    "groups": [
+        "plant"
+    ],
+    "name": "hibiscus"
+}, {
+    "character": "🍲",
+    "aliases": [
+        "soup",
+        "hot"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "stew"
+}, {
+    "character": "🚬",
+    "aliases": [
+        "drug",
+        "cigarrette"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "smoking"
+}, {
+    "character": "🐅",
+    "aliases": [
+        "leapord"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "tiger"
+}, {
+    "character": "🍺",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "beer"
+}, {
+    "character": "😹",
+    "aliases": [
+        "laughing",
+        "funny",
+        "happy",
+        "lol",
+        "lmfao"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "joy cat"
+}, {
+    "character": "🔸",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "small orange diamond"
+}, {
+    "character": "🍟",
+    "aliases": [
+        "french fries",
+        "fast food"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "fries"
+}, {
+    "character": "🚗",
+    "aliases": [
+        "red car"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "car"
+}, {
+    "character": "😲",
+    "aliases": [
+        "xox",
+        "astonished",
+        "die"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "dead"
+}, {
+    "character": "🚏",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "bus stop"
+}, {
+    "character": "🕔",
+    "aliases": [
+        "5",
+        "5:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 5:00"
+}, {
+    "character": "🚧",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "construction"
+}, {
+    "character": "🚦",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "vertical traffic light"
+}, {
+    "character": "🚡",
+    "aliases": [
+        "tram",
+        "lift"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "aerial tramway"
+}, {
+    "character": "🍩",
+    "aliases": [
+        "donut",
+        "chocolate"
+    ],
+    "groups": [
+        "food"
+    ],
+    "name": "doughnut"
+}, {
+    "character": "🏬",
+    "aliases": [
+        "building"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "department store"
+}, {
+    "character": "🐠",
+    "aliases": [
+        "fish"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "tropical fish"
+}, {
+    "character": "📋",
+    "aliases": [
+        "board"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clipboard"
+}, {
+    "character": "♻",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "recycle"
+}, {
+    "character": "🔌",
+    "aliases": [
+        "electricity",
+        "port",
+        "socket"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "electric plug"
+}, {
+    "character": "🎇",
+    "aliases": [
+        "shooting star",
+        "star"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "sparkler"
+}, {
+    "character": "😡",
+    "aliases": [
+        "angry",
+        "pissed",
+        "upset"
+    ],
+    "groups": [
+        "face"
+    ],
+    "name": "rage"
+}, {
+    "character": "🏈",
+    "aliases": [
+        "ball"
+    ],
+    "groups": [
+        "sport"
+    ],
+    "name": "football"
+}, {
+    "character": "👉",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "point right"
+}, {
+    "character": "⬆",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "arrow up"
+}, {
+    "character": "♑",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "capricorn"
+}, {
+    "character": "‼",
+    "aliases": [
+        "!!"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "bangbang"
+}, {
+    "character": "🐺",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "wolf face"
+}, {
+    "character": "🚂",
+    "aliases": [
+        "train",
+        "choo choo"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "steam locomotive"
+}, {
+    "character": "🚼",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "baby symbol"
+}, {
+    "character": "🐉",
+    "aliases": [
+        "beast"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "dragon"
+}, {
+    "character": "8️⃣",
+    "aliases": ["8"],
+    "groups": ["other"],
+    
+    
+    "name": "eight"
+}, {
+    "character": "🕕",
+    "aliases": [
+        "6",
+        "6:00",
+        "watch",
+        "time"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "clock 6:00"
+}, {
+    "character": "👛",
+    "aliases": [
+        "bag"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "purse"
+}, {
+    "character": "🚿",
+    "aliases": [
+        "water",
+        "bath",
+        "faucet"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "shower"
+}, {
+    "character": "🚜",
+    "aliases": [
+        "trailer"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "tractor"
+}, {
+    "character": "🎸",
+    "aliases": [],
+    "groups": [
+        "instrument"
+    ],
+    "name": "guitar"
+}, {
+    "character": "🔚",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "end"
+}, {
+    "character": "🚵",
+    "aliases": [
+        "bicycle",
+        "mountain",
+        "bike",
+        "athlete"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "mountain bicyclist"
+}, {
+    "character": "🎨",
+    "aliases": [
+        "palette",
+        "art"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "paint"
+}, {
+    "character": "🐇",
+    "aliases": [
+        "bunny"
+    ],
+    "groups": [
+        "animal"
+    ],
+    "name": "rabbit"
+}, {
+    "character": "👱",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "person with blond hair"
+}, {
+    "character": "🐒",
+    "aliases": [],
+    "groups": [
+        "animal"
+    ],
+    "name": "monkey"
+}, {
+    "character": "🍯",
+    "aliases": [],
+    "groups": [
+        "food"
+    ],
+    "name": "honey pot"
+}, {
+    "character": "🏩",
+    "aliases": [
+        "building",
+        "hotel",
+        "motel"
+    ],
+    "groups": ["other"],
+    
+    
+    "name": "love hotel"
+}, {
+    "character": "⏩",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "fast forward"
+}, {
+    "character": "🆙",
+    "aliases": [],
+    "groups": ["other"],
+    
+    
+    "name": "up"
+},
+{
+    "groups": ["other"],
+    
+    
+    "character": "☣",
+    "name": "biohazard sign",
+    "aliases": [
+        "dangerous"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☮",
+    "name": "peace symbol",
+    "aliases": [
+        "hippie"
+    ]
+}, {
+    "groups": [
+        "food"
+    ],
+    "character": "🍿",
+    "name": "popcorn",
+    "aliases": [
+        "movies",
+        "theater",
+        "corn"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕋",
+    "name": "kaaba",
+    "aliases": [
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🏌",
+    "name": "golfer",
+    "aliases": []
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☠",
+    "name": "skull and crossbones",
+    "aliases": [
+        "danger",
+        "dangerous"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛋",
+    "name": "couch and lamp",
+    "aliases": [
+        "sofa",
+        "seat",
+        "chill",
+        "bum"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗜",
+    "name": "compression",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚒",
+    "name": "hammer and pick",
+    "aliases": [
+        "tools"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗒",
+    "name": "spiral note pad",
+    "aliases": [
+        "notebook"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🚋",
+    "name": "tram car",
+    "aliases": [
+        "train"
+    ]
+}, {
+    "aliases": [
+        "lens"
+    ],
+    "groups": ["other"],
+    
+    
+    "character": "🔎",
+    "name": "right magnifying glass"
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "📿",
+    "name": "prayer beads",
+    "aliases": [
+        "religion",
+        "pray",
+        "meditate"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖕",
+    "name": "middle finger",
+    "aliases": [
+        "fuck you",
+        "hand"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🔘",
+    "name": "radio button",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛢",
+    "name": "oil drum",
+    "aliases": [
+        "gas",
+        "crude"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖨",
+    "name": "printer",
+    "aliases": [
+        "copy",
+        "print"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏋",
+    "name": "weight lifter",
+    "aliases": [
+        "exercise",
+        "athlete",
+        "gym",
+        "dumbell",
+        "strong"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏜",
+    "name": "desert",
+    "aliases": [
+        "cactus"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗡",
+    "name": "dagger knife",
+    "aliases": [
+        "weapon",
+        "stab",
+        "sword"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🏏",
+    "name": "cricket",
+    "aliases": [
+        "bat",
+        "ball"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛎",
+    "name": "bellhop bell",
+    "aliases": []
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🤕",
+    "name": "face with head-bandage",
+    "aliases": [
+        "injured",
+        "beat up",
+        "hurt",
+        "bandage",
+        "wrap"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "📽",
+    "name": "film projector",
+    "aliases": [
+        "movie",
+        "theater"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏅",
+    "name": "sports medal",
+    "aliases": [
+        "award"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "⛹",
+    "name": "dribble",
+    "aliases": [
+        "basketball",
+        "ball"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎞",
+    "name": "film frames",
+    "aliases": [
+        "theater"
+    ]
+}, {
+    "groups": [
+        "weather"
+    ],
+    "character": "🌧",
+    "name": "cloud with rain",
+    "aliases": [
+        "drizzle",
+        "rain",
+        "clouds"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖐",
+    "name": "hand with fingers splayed",
+    "aliases": [
+        "5",
+        "five",
+        "high five",
+        "high-five"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🤐",
+    "name": "zipper-mouth face",
+    "aliases": [
+        "zipped",
+        "sealed",
+        "lips",
+        "secret"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕎",
+    "name": "menorah",
+    "aliases": [
+        "hanukkah",
+        "chanukah",
+        "jewish"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☃",
+    "name": "snowman outline",
+    "aliases": [
+        "snow man",
+        "snow"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏯",
+    "name": "play pause",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗑",
+    "name": "wastebasket",
+    "aliases": [
+        "can",
+        "trash",
+        "bin",
+        "basket"
+    ]
+}, {
+    "groups": [
+        "building"
+    ],
+    "character": "🏘",
+    "name": "house buildings",
+    "aliases": [
+        "houses",
+        "homes"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖍",
+    "name": "crayon",
+    "aliases": [
+        "red crayon",
+        "art",
+        "draw",
+        "marker"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛫",
+    "name": "takeoff",
+    "aliases": [
+        "airplane",
+        "departure",
+        "plane"
+    ]
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🙁",
+    "name": "slightly frowning face",
+    "aliases": [
+        "frown",
+        "sad",
+        ":/",
+        "upset",
+        "unhappy"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏙",
+    "name": "cityscape",
+    "aliases": [
+        "city",
+        "skyline"
+    ]
+}, {
+    "groups": [
+        "animal"
+    ],
+    "character": "🐿",
+    "name": "chipmunk",
+    "aliases": [
+        "squirrel"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖱",
+    "name": "mouse",
+    "aliases": [
+        "trackpad",
+        "laser mouse",
+        "computer",
+        "desktop"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏕",
+    "name": "camping",
+    "aliases": [
+        "tent",
+        "camp"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗣",
+    "name": "speaking silhouette",
+    "aliases": [
+        "talking"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛠",
+    "name": "hammer wrench",
+    "aliases": [
+        "tools"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖼",
+    "name": "framed picture",
+    "aliases": [
+        "photo"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🤓",
+    "name": "nerd face",
+    "aliases": [
+        "geek",
+        "scientist",
+        "dork",
+        "glasses"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "📸",
+    "name": "camera with flash",
+    "aliases": [
+        "photographer"
+    ]
+}, {
+    "groups": [
+        "flag"
+    ],
+    "character": "🏴",
+    "name": "waving black flag",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛳",
+    "name": "passenger ship",
+    "aliases": [
+        "ship",
+        "cruise",
+        "boat"
+    ]
+}, {
+    "groups": [
+        "weather"
+    ],
+    "character": "🌫",
+    "name": "fog",
+    "aliases": [
+        "clouds"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕯",
+    "name": "candle",
+    "aliases": [
+        "fire",
+        "lit"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "✍",
+    "name": "writing hand outline",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "✡",
+    "name": "star of david",
+    "aliases": [
+        "jewish"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚔",
+    "name": "crossed swords",
+    "aliases": [
+        "sword",
+        "weapon"
+    ]
+}, {
+    "groups": [
+        "animal"
+    ],
+    "character": "🦀",
+    "name": "crab",
+    "aliases": [
+        "lobster"
+    ]
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🙂",
+    "name": "slightly smiling face",
+    "aliases": [
+        "happy",
+        "smiley"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🌬",
+    "name": "wind blowing face",
+    "aliases": [
+        "blow",
+        "smoke",
+        "hookah"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕹",
+    "name": "joystick",
+    "aliases": [
+        "videogame",
+        "play",
+        "game",
+        "controller"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏺",
+    "name": "amphora",
+    "aliases": [
+        "jar",
+        "urn"
+    ]
+}, {
+    "groups": [
+        "food"
+    ],
+    "character": "🌭",
+    "name": "hot dog",
+    "aliases": [
+        "hotdog",
+        "mustard"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛎",
+    "name": "ophiuchus",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏹",
+    "name": "bow and arrow",
+    "aliases": [
+        "weapon"
+    ]
+}, {
+    "groups": [
+        "building"
+    ],
+    "character": "🏛",
+    "name": "classical building",
+    "aliases": [
+        "government",
+        "pillars",
+        "greek"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏔",
+    "name": "snow capped mountain",
+    "aliases": [
+        "hill"
+    ]
+}, {
+    "groups": ["other"],
+    "character": "🏚",
+    "name": "old house",
+    "aliases": [
+        "derelict",
+        "beat up",
+        "poor",
+        "home"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕶",
+    "name": "dark sunglasses",
+    "aliases": [
+        "shades",
+        "glasses"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎖",
+    "name": "military medal",
+    "aliases": [
+        "award",
+        "trophy"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗨",
+    "name": "left speech bubble",
+    "aliases": [
+        "talk",
+        "speak"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎚",
+    "name": "level slider",
+    "aliases": [
+        "switch"
+    ]
+}, {
+    "groups": [
+        "weather"
+    ],
+    "character": "🌤",
+    "name": "partly cloudy",
+    "aliases": [
+        "sun",
+        "cloud"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏱",
+    "name": "stopwatch",
+    "aliases": [
+        "timer",
+        "alarm"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "💠",
+    "name": "diamond with a dot",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕌",
+    "name": "mosque",
+    "aliases": [
+        "masjid"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "❣",
+    "name": "heavy heart",
+    "aliases": [
+        "sad"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏹",
+    "name": "stop button",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖋",
+    "name": "fountain pen",
+    "aliases": [
+        "ink"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🌩",
+    "name": "cloud with lightning",
+    "aliases": [
+        "weather",
+        "thunder",
+        "bolt",
+        "cloud"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🧀",
+    "name": "cheese wedge",
+    "aliases": [
+        "slice",
+        "swiss"
+    ]
+},{
+    "groups": ["other"],
+    
+    
+    "character": "🌶",
+    "name": "hot pepper",
+    "aliases": [
+        "red pepper",
+        "spicy",
+        "hot"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕸",
+    "name": "spider web",
+    "aliases": [
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🤖",
+    "name": "robot face",
+    "aliases": [
+        "android"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🤘",
+    "name": "sign of the horns",
+    "aliases": [
+        "horns",
+        "longhorns",
+        "texas",
+        "university of texas",
+        "ut"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🍾",
+    "name": "bottle with popping cork",
+    "aliases": [
+        "wine",
+        "alcohol",
+        "champagne"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛸",
+    "name": "ice skate",
+    "aliases": [
+        "skating"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "👁",
+    "name": "eye",
+    "aliases": [
+        "eyeball",
+        "pupil"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🤗",
+    "name": "hug",
+    "aliases": [
+        "hands",
+        "happy"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕵",
+    "name": "detective",
+    "aliases": [
+        "sleuth",
+        "spy"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖌",
+    "name": "paintbrush",
+    "aliases": [
+        "brush",
+        "art"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗂",
+    "name": "card index dividers",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗞",
+    "name": "rolled-up newspaper",
+    "aliases": [
+        "news",
+        "paper",
+        "periodical"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏺",
+    "name": "record button",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕴",
+    "name": "floating",
+    "aliases": [
+        "levitating"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖊",
+    "name": "ballpoint pen",
+    "aliases": [
+        "ink"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚖",
+    "name": "scales",
+    "aliases": [
+        "equal",
+        "level",
+        "weight",
+        "balance"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☪",
+    "name": "star and crescent",
+    "aliases": [
+        "muslim",
+        "islam",
+        "flag"
+    ]
+}, {
+    "groups": [
+        "animal"
+    ],
+    "character": "🦃",
+    "name": "turkey",
+    "aliases": [
+        "bird",
+        "thanksgiving"
+    ]
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🤒",
+    "name": "face with thermometer",
+    "aliases": [
+        "sick",
+        "temperature",
+        "cold",
+        "fever"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗯",
+    "name": "right anger bubble",
+    "aliases": [
+        "talk",
+        "speak"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛥",
+    "name": "motor boat",
+    "aliases": [
+        "boat",
+        "speedboat",
+        "speed boat"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏸",
+    "name": "pause button",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚙",
+    "name": "gear",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": [
+        "sport"
+        
+    ],
+    "character": "🏐",
+    "name": "volleyball",
+    "aliases": ["ball"]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛏",
+    "name": "bed",
+    "aliases": [
+        "sleep"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏷",
+    "name": "label",
+    "aliases": [
+        "tag"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🌪",
+    "name": "tornado",
+    "aliases": [
+        "gust",
+        "hurricane",
+        "twister"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🌥",
+    "name": "mostyle cloudy",
+    "aliases": [
+        "sun",
+        "cloud",
+        "weather"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏭",
+    "name": "next track button",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕳",
+    "name": "hole",
+    "aliases": [
+        "ditch"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⌨",
+    "name": "keyboard",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": [
+        "animal"
+    ],
+    "character": "🕷",
+    "name": "spider",
+    "aliases": [
+        "bug"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛰",
+    "name": "mountain",
+    "aliases": [
+        "hill"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛤",
+    "name": "railway track",
+    "aliases": [
+        "train track",
+        "railroad track"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏵",
+    "name": "rosette",
+    "aliases": [
+        "flower"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕊",
+    "name": "dove of peace",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🤑",
+    "name": "money-mouth face",
+    "aliases": [
+        "cash",
+        "money",
+        "rich",
+        "money minded",
+        "wealthy",
+        "tongue"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏞",
+    "name": "national park",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕰",
+    "name": "mantelpiece clock",
+    "aliases": [
+        "watch",
+        "time"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏍",
+    "name": "racing motorcycle",
+    "aliases": [
+        "bike",
+        "bicycle",
+        "motorbike"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛌",
+    "name": "sleeping",
+    "aliases": [
+        "bed"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏖",
+    "name": "beach",
+    "aliases": [
+        "umbrella"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎛",
+    "name": "knobs",
+    "aliases": [
+        "stove"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚱",
+    "name": "funeral urn",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": [
+        "animal"
+    ],
+    "character": "🦁",
+    "name": "lion face",
+    "aliases": [
+        "cub"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛡",
+    "name": "shield",
+    "aliases": [
+        "protection",
+        "security"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🏑",
+    "name": "field hockey",
+    "aliases": [
+        "stick",
+        "ball"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🚸",
+    "name": "children crossing",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛰",
+    "name": "satellite",
+    "aliases": [
+        "space"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗓",
+    "name": "spiral calendar",
+    "aliases": [
+        "pad"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☄",
+    "name": "comet",
+    "aliases": [
+        "space",
+        "meteor"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏳",
+    "name": "white flag",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🌡",
+    "name": "thermometer",
+    "aliases": [
+        "temperature"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☢",
+    "name": "radioactive sign",
+    "aliases": [
+        "danger"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖥",
+    "name": "desktop",
+    "aliases": [
+        "computer",
+        "imac"
+    ]
+}, {
+    "groups": [
+        "food"
+    ],
+    "character": "🌮",
+    "name": "taco",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛩",
+    "name": "shinto shrine",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☦",
+    "name": "orthodox cross",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎙",
+    "name": "studio microphone",
+    "aliases": [
+        "sing",
+        "megaphone",
+        "record"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛴",
+    "name": "ferry",
+    "aliases": [
+        "boat",
+        "ship"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏗",
+    "name": "construction",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗺",
+    "name": "world map",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": [
+        "animal"
+    ],
+    "character": "🦂",
+    "name": "scorpion",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗳",
+    "name": "ballot box",
+    "aliases": [
+        "vote",
+        "elect"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "✝",
+    "name": "latin cross",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛏",
+    "name": "pick",
+    "aliases": [
+        "tool",
+        "hook"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚰",
+    "name": "coffin",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎟",
+    "name": "raffle tickets",
+    "aliases": [
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛷",
+    "name": "skier",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☂",
+    "name": "umbrella",
+    "aliases": [
+        "rain"
+    ]
+}, {
+    "groups": [
+        "weather"
+    ],
+    "character": "🌨",
+    "name": "cloud with snow",
+    "aliases": [
+        "hail"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "📅",
+    "name": "large calendar",
+    "aliases": [
+        "date"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🏓",
+    "name": "table tennis",
+    "aliases": [
+        "ping",
+        "pong",
+        "paddle",
+        "ball"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🍽",
+    "name": "fork and knife with plate",
+    "aliases": [
+        "dinner",
+        "silverware",
+        "cutlery"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏮",
+    "name": "previous track",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": [
+        "weather"
+    ],
+    "character": "🌦",
+    "name": "sunny with showers",
+    "aliases": [
+        "sun",
+        "clouds",
+        "rain",
+        "partly cloudy"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⏲",
+    "name": "timer clock",
+    "aliases": [
+        "stopwatch"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛱",
+    "name": "beach umbrella",
+    "aliases": [
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗄",
+    "name": "file cabinet",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☘",
+    "name": "shamrock",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗃",
+    "name": "file box",
+    "aliases": [
+        "cabinet"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🎗",
+    "name": "reminder ribbon",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛣",
+    "name": "motorway",
+    "aliases": [
+        "highway",
+        "freeway"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛩",
+    "name": "small airplane",
+    "aliases": [
+        "plane",
+        "takeoff"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🗝",
+    "name": "old key",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    
+    "character": "🕍",
+    "name": "synagogue",
+    "aliases": [
+        "jewish"
+    ]
+}, {
+    "groups": [
+        "weather"
+    ],
+    "character": "⛈",
+    "name": "thunder cloud and rain",
+    "aliases": [
+        "lightning"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🏒",
+    "name": "ice hockey",
+    "aliases": [
+        "stick",
+        "puck"
+    ]
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🤔",
+    "name": "thinking face",
+    "aliases": [
+        "thought"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "〰",
+    "name": "wavy dash",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": [
+        "food"
+    ],
+    "character": "🌯",
+    "name": "burrito",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛓",
+    "name": "chains",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "☯",
+    "name": "yin yang",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏟",
+    "name": "stadium",
+    "aliases": [
+        "colosseum",
+        "coliseum"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🖲",
+    "name": "trackball",
+    "aliases": [
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⚛",
+    "name": "atom symbol",
+    "aliases": [
+        "neutron",
+        "subatomic"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🦄",
+    "name": "unicorn",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛬",
+    "name": "airplane landing",
+    "aliases": [
+        "plane",
+        "runway"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖇",
+    "name": "linked paperclips",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🖖",
+    "name": "vulcan salute",
+    "aliases": [
+        "starwars",
+        "star",
+        "wars",
+        "hand",
+        "fingers"
+    ]
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🙃",
+    "name": "upside-down face",
+    "aliases": [
+        "upside down",
+        "happy",
+        "smiley"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🔈",
+    "name": "speaker",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🕉",
+    "name": "om symbol",
+    "aliases": [
+        
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🌠",
+    "name": "shooting star",
+    "aliases": [
+        "space"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏝",
+    "name": "tropical island",
+    "aliases": [
+        "beach",
+        "palm tree"
+    ]
+}, {
+    "groups": [
+        "sport"
+    ],
+    "character": "🏸",
+    "name": "badminton",
+    "aliases": [
+        "racket",
+        "racquet",
+        "shuttlecock"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🏎",
+    "name": "race car",
+    "aliases": [
+        "racecar"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "🛍",
+    "name": "shopping bags",
+    "aliases": [
+        "spree"
+    ]
+}, {
+    "groups": [
+        "face"
+    ],
+    "character": "🙄",
+    "name": "face with rolling eyes",
+    "aliases": [
+        "unamused",
+        "bored"
+    ]
+}, {
+    "groups": ["other"],
+    
+    
+    "character": "⛑",
+    "name": "helmet",
+    "aliases": [
+        "construction",
+        "red"
+    ]
+}]

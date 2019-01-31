@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_24sdp"
+        android:background="@color/white"/>
+    <TextView
+        android:id="@+id/txt_profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_165sdp"
+        android:background="@drawable/half_circle_img"
+        android:gravity="center"
+        android:paddingBottom="@dimen/_25sdp"
+        android:fontFamily="@font/raleway_medium"
+        android:textColor="@color/old_primary"
+        android:textSize="@dimen/_16ssp" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/img_back"
+        android:layout_width="@dimen/top_bar_profile"
+        android:layout_height="@dimen/top_bar_profile"
+        android:padding="@dimen/_12sdp"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_back_icon"  />
+
+    <ImageView
+        android:id="@+id/img_setting"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:src="@drawable/slider_icon"
+        android:padding="@dimen/_3sdp"
+        android:layout_marginTop="@dimen/_10sdp" />
+
+    <ImageView
+        android:id="@+id/img_profile_pic"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_115sdp"
+        android:background="@drawable/bg_blue_ring"
+        android:padding="@dimen/_4sdp"
+        android:src="@drawable/image_default_profile" />
+
+    <LinearLayout
+        android:id="@+id/lnr_event_count"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_180sdp"
+        android:background="@drawable/rounded_rect_box"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="match_parent"
+           android:padding="@dimen/_2sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/key" />
+        <TextView
+            android:id="@+id/txt_event_count"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+           android:gravity="left|center_vertical"
+
+            android:fontFamily="@font/raleway_bold"
+            android:text="0 events"
+            android:textColor="@color/old_primary"
+            android:textSize="@dimen/_10ssp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_below="@+id/lnr_event_count"
+        android:background="@color/black"
+        android:visibility="gone" />
+
+
+
+ <!-- //for facebook and count
+   <ImageView
+        android:id="@+id/img_fb"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/_17sdp"
+        android:layout_marginRight="@dimen/_17sdp"
+        android:layout_marginTop="@dimen/_170sdp"
+        android:background="@drawable/bg_primary_circle"
+        android:padding="@dimen/_7sdp"
+        android:visibility="gone"
+        android:src="@drawable/fb" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/txt_f2_badge"
+        android:layout_width="@dimen/_22sdp"
+        android:layout_height="@dimen/_22sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_160sdp"
+        android:background="@drawable/bg_gray_ring"
+        android:gravity="center"
+        android:textColor="@color/old_primary"
+        android:textSize="@dimen/_10sdp" />-->
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/img_capture"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_180sdp"
+        android:background="@drawable/rounded_rect_box"
+        android:paddingBottom="@dimen/_6sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_photo_camera" />
+
+
+
+
+</RelativeLayout>

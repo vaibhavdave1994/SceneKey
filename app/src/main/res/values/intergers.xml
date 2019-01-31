@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="one">600</integer>
+    <integer name="onedelay">500</integer>
+    <integer name="two">600</integer>
+    <integer name="twodelay">1100</integer>
+    <integer name="three">600</integer>
+    <integer name="threedealy">1700</integer>
+    <integer name="four">600</integer>
+    <integer name="fourdelay">2300</integer>
+
+
+    <!--try button-->
+
+    <integer name="fragmtnslide">300</integer>
+
+</resources>

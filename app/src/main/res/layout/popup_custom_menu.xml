@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/transparent"
+    android:gravity="center">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/tv_camera"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:textSize="@dimen/_14sdp"
+        android:gravity="center"
+        android:layout_margin="@dimen/_10sdp"
+        app:srcCompat="@drawable/ic_photo_camera2"
+        android:padding="@dimen/_15sdp"
+        android:background="@drawable/bg_circular_btn"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/tv_gallery"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:textSize="@dimen/_14sdp"
+        android:layout_margin="@dimen/_10sdp"
+        app:srcCompat="@drawable/ic_gallery"
+        android:padding="@dimen/_15sdp"
+        android:background="@drawable/bg_circular_btn"
+        android:gravity="center"/>
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/tv_cancel"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:textSize="@dimen/_14sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/bg_circular_btn"
+        android:src="@drawable/letter_x"
+        android:padding="@dimen/_22sdp"
+        android:gravity="center"/>
+
+
+
+
+</LinearLayout>
+

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".verticleViewPager.ChildFragment">
+
+
+
+  <!--  <ImageView
+        android:id="@+id/img_profile_pagger_child"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:background="@color/white"/>-->
+
+    <com.scenekey.verticleViewPager.VerticalViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewPager"
+        />
+
+
+  <include
+      android:id="@+id/img_bullets"
+      layout="@layout/view_profile_image_bullets"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_margin="@dimen/_15sdp" />
+
+
+
+  <LinearLayout
+      android:id="@+id/demo_View_dot"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_margin="@dimen/_15sdp"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/d_btn1"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:src="@drawable/inactive_profile_img_bullet" />
+
+    <ImageView
+        android:id="@+id/d_btn2"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:src="@drawable/inactive_profile_img_bullet"
+       />
+
+    <ImageView
+        android:id="@+id/d_btn3"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:src="@drawable/inactive_profile_img_bullet"
+       />
+
+    <ImageView
+        android:id="@+id/d_btn4"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:src="@drawable/inactive_profile_img_bullet"
+        />
+
+    <ImageView
+        android:id="@+id/d_btn5"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:src="@drawable/inactive_profile_img_bullet"
+       />
+
+  </LinearLayout>
+
+
+
+</RelativeLayout>

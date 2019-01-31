@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/new_white_bg"
+    android:orientation="vertical"
+    tools:context="com.scenekey.fragment.Home_No_Event_Fragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_32sdp"
+                    android:src="@drawable/sk_logo_black" />
+
+                <!-- <TextView
+                     android:id="@+id/tvSplashLogoName"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:scaleType="fitCenter"
+                     android:textSize="@dimen/_28ssp"
+                     android:gravity="center"
+                     android:layout_gravity="center"
+                     android:textColor="@color/old_primary"
+                     android:fontFamily="@font/hara_bara"
+                     android:text="@string/app_name" />-->
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_sorry1"
+                style="@style/text_no_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:text="@string/Sorry"
+                android:visibility="gone"
+                android:textSize="@dimen/_20sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:id="@+id/txt_sorry2"
+                android:gravity="center"
+                android:textColor="@color/top_bar_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_regular"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/Sorry2_new"
+                android:textSize="@dimen/_15ssp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_15sdp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvTryDemo"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/_28sdp"
+                    android:background="@drawable/button_bg_change"
+                    android:gravity="center"
+                    android:text="@string/tryDemo"
+                    android:fontFamily="@font/raleway_medium"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15ssp" />
+
+                <View
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tvSearch"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/_28sdp"
+                    android:background="@drawable/button_bg_change"
+                    android:gravity="center"
+                    android:text="@string/search"
+                    android:fontFamily="@font/raleway_medium"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15ssp" />
+
+            </LinearLayout>
+
+            <!--android:background="@drawable/bg_try_demo"-->
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginLeft="@dimen/_50sdp"
+                android:layout_marginRight="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_20sdp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

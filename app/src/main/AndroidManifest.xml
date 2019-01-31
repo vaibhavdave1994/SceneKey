@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.scenekey">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".util.SceneKey"
+        android:allowBackup="false"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@drawable/app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/BaseTheme"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.IntroActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD7FD58JtRhyz60u6EQw9ZqyLGstHdvfYc" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <service android:name=".fcm.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".fcm.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".activity.ImageUploadActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.BioActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".cropper.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CropImage" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="0445c68fedcc2d2c04d5210e1b5b51dceaf192af" />
+
+        <!-- New Code -->
+        <activity
+            android:name=".activity.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TheRoomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.DemoCommentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DemoMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.DemoProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.ReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.TryAndDemoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.DemoUserProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".activity.NotificationDemoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".liveSideWork.LiveRoomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity
+            android:name=".liveSideWork.LiveProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".liveSideWork.NotificationLiveActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme" />
+        <activity android:name=".activity.ForNotificactionActivity" />
+        <activity android:name=".activity.FeedUserProfileActivity" />
+        <activity android:name=".activity.DemoFeedUser" />
+        <activity android:name=".activity.EventDetailsActivity" />
+        <activity android:name=".activity.SettingActivtiy" />
+        <activity android:name=".activity.Edit_NAmeActivity" />
+        <activity android:name=".activity.ChangePasswordActivity"></activity>
+    </application>
+
+</manifest>

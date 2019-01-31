@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/new_white_bg"
+    tools:context=".fragment.OfferSFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/offerRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_42sdp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    <ScrollView
+        android:id="@+id/no_data_inOffer"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_32sdp"
+                    android:src="@drawable/sk_logo_black" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:id="@+id/txt_sorry3"
+                android:gravity="center"
+                android:textColor="@color/top_bar_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/raleway_regular"
+                android:text="@string/sorry4"
+                android:textSize="@dimen/_16ssp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

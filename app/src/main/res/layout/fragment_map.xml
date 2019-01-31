@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:paddingBottom="@dimen/_42sdp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.scenekey.fragment.Map_Fragment"
+    android:orientation="vertical">
+
+<com.google.android.gms.maps.MapView
+    android:id="@+id/map_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false" >
+
+</com.google.android.gms.maps.MapView>
+
+<RelativeLayout
+    android:id="@+id/all"
+    android:layout_width="@dimen/_260sdp"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:gravity="center"
+    android:visibility="gone"
+    android:background="@color/transparent"
+    android:layout_marginBottom="@dimen/_30sdp">
+
+<include layout="@layout/adapter_custom_map_info"/>
+
+
+</RelativeLayout>
+
+</RelativeLayout>

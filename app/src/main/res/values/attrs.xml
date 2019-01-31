@@ -1,0 +1,238 @@
+<resources>
+
+    <item type="id" name="statusbarutil_fake_status_bar_view" />
+    <item type="id" name="statusbarutil_translucent_view" />
+
+    <declare-styleable name="FloatingActionButton">
+        <attr name="fab_colorNormal" format="color" />
+        <attr name="fab_colorPressed" format="color" />
+        <attr name="fab_colorDisabled" format="color" />
+        <attr name="fab_colorRipple" format="color" />
+        <attr name="fab_showShadow" format="boolean" />
+        <attr name="fab_shadowColor" format="color" />
+        <attr name="fab_shadowRadius" format="dimension" />
+        <attr name="fab_shadowXOffset" format="dimension" />
+        <attr name="fab_shadowYOffset" format="dimension" />
+        <attr name="fab_size" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
+        </attr>
+        <attr name="fab_showAnimation" format="reference" />
+        <attr name="fab_hideAnimation" format="reference" />
+        <attr name="fab_label" format="string" />
+        <attr name="fab_elevationCompat" format="dimension" />
+        <attr name="fab_progress_color" format="color" />
+        <attr name="fab_progress_backgroundColor" format="color" />
+        <attr name="fab_progress_indeterminate" format="boolean" />
+        <attr name="fab_progress_max" format="integer" />
+        <attr name="fab_progress" format="integer" />
+        <attr name="fab_progress_showBackground" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="FloatingActionMenu">
+        <attr name="menu_showShadow" format="boolean" />
+        <attr name="menu_buttonSpacing" format="dimension" />
+        <attr name="menu_labels_margin" format="dimension" />
+        <attr name="menu_labels_showAnimation" format="reference" />
+        <attr name="menu_labels_hideAnimation" format="reference" />
+        <attr name="menu_labels_paddingTop" format="dimension" />
+        <attr name="menu_labels_paddingLeft" format="dimension" />
+        <attr name="menu_labels_paddingRight" format="dimension" />
+        <attr name="menu_labels_paddingBottom" format="dimension" />
+        <attr name="menu_labels_padding" format="dimension" />
+        <attr name="menu_labels_textColor" format="reference|color" />
+        <attr name="menu_labels_textSize" format="dimension" />
+        <attr name="menu_labels_cornerRadius" format="dimension" />
+        <attr name="menu_labels_showShadow" format="boolean" />
+        <attr name="menu_labels_colorNormal" format="color" />
+        <attr name="menu_labels_colorPressed" format="color" />
+        <attr name="menu_labels_colorRipple" format="color" />
+        <attr name="menu_labels_position" format="enum">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="menu_icon" format="reference" />
+        <attr name="menu_animationDelayPerItem" format="integer" />
+        <attr name="menu_buttonToggleAnimation" format="reference" />
+        <attr name="menu_labels_singleLine" format="boolean" />
+        <attr name="menu_labels_ellipsize" format="enum">
+            <enum name="none" value="0" />
+            <enum name="start" value="1" />
+            <enum name="middle" value="2" />
+            <enum name="end" value="3" />
+            <enum name="marquee" value="4" />
+        </attr>
+        <attr name="menu_labels_maxLines" format="integer" />
+        <attr name="menu_fab_size" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="mini" value="1" />
+        </attr>
+        <attr name="menu_labels_style" format="reference" />
+        <attr name="menu_labels_customFont" format="string" />
+        <attr name="menu_shadowColor" format="color" />
+        <attr name="menu_shadowRadius" format="dimension" />
+        <attr name="menu_shadowXOffset" format="dimension" />
+        <attr name="menu_shadowYOffset" format="dimension" />
+        <attr name="menu_colorNormal" format="color" />
+        <attr name="menu_colorPressed" format="color" />
+        <attr name="menu_colorRipple" format="color" />
+        <attr name="menu_openDirection" format="enum">
+            <enum name="up" value="0" />
+            <enum name="down" value="1" />
+        </attr>
+        <attr name="menu_backgroundColor" format="color" />
+        <attr name="menu_fab_label" format="string" />
+        <attr name="menu_fab_show_animation" format="reference" />
+        <attr name="menu_fab_hide_animation" format="reference" />
+    </declare-styleable>
+<!--
+    <declare-styleable name="CompactTextView">
+        <attr name="font" format="string" />
+        <attr name="textStyle" format="integer" />
+    </declare-styleable>-->
+
+
+    <declare-styleable name="SwipeCardView">
+        <attr name="SwipeFlingStyle" format="reference" />
+        <attr name="rotation_degrees" format="float" />
+        <attr name="min_adapter_stack" format="integer" />
+        <attr name="max_visible" format="integer" />
+        <attr name="left_swipe_detect" format="boolean" />
+        <attr name="right_swipe_detect" format="boolean" />
+        <attr name="top_swipe_detect" format="boolean" />
+        <attr name="bottom_swipe_detect" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SwipePageView">
+        <attr name="SwipeFlingPageStyle" format="reference" />
+        <attr name="min_adapter_stack_page" format="integer" />
+        <!--<attr name="max_visible" format="integer"/>-->
+    </declare-styleable>
+
+
+    <!--                         Arc menu -->
+    <declare-styleable name="ArcMenu">
+        <attr name="menuChildSize" format="dimension|reference" />
+        <attr name="menuChildAnim" format="boolean" />
+        <attr name="menuClickAnim" format="boolean" />
+        <attr name="menuShadowElevation" format="boolean" />
+        <attr name="menuImage" format="integer" />
+        <attr name="menuChildRadius" format="integer" />
+        <attr name="menuMarginRight" format="dimension" />
+        <attr name="menuMarginLeft" format="dimension" />
+        <attr name="menuMarginTop" format="dimension" />
+        <attr name="menuMarginBottom" format="dimension" />
+        <attr name="menuNormalColor" format="color" />
+        <attr name="menuPressedColor" format="color" />
+        <attr name="menuRippleColor" format="color" />
+        <attr name="menuGravity" format="integer">
+            <enum name="Top_Left" value="0xF01" />
+            <enum name="Top_Right" value="0xF02" />
+            <enum name="Top_Middle" value="0xF03" />
+            <enum name="Bottom_Left" value="0xF04" />
+            <enum name="Bottom_Right" value="0xF05" />
+            <enum name="Bottom_Middle" value="0xF06" />
+            <enum name="Right_Middle" value="0xF07" />
+            <enum name="Left_Middle" value="0xF08" />
+            <enum name="Center" value="0xF09" />
+        </attr>
+        <attr name="menuType" format="enum">
+            <enum name="large" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="mini" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FloatingActionButtons">
+        <attr name="fab_backgroundColor" format="reference|color" />
+        <attr name="fab_backgroundAnimDuration" format="reference|integer" />
+        <attr name="fab_radius" format="reference|dimension" />
+        <attr name="fab_elevation" format="reference|dimension" />
+        <attr name="fab_iconSrc" format="reference" />
+        <attr name="fab_iconLineMorphing" format="reference" />
+        <attr name="fab_iconSize" format="reference|dimension" />
+        <attr name="fab_interpolator" format="reference" />
+        <attr name="fab_animDuration" format="reference|integer" />
+    </declare-styleable>
+
+    <attr name="rd_style" format="reference" />
+    <attr name="rd_enable" format="boolean" />
+
+    <declare-styleable name="RippleView">
+        <attr name="rd_style" />
+        <attr name="rd_enable" />
+    </declare-styleable>
+
+    <declare-styleable name="ThemableView">
+        <attr name="v_styleId" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RippleDrawable">
+        <attr name="rd_backgroundColor" format="reference|color" />
+        <attr name="rd_backgroundAnimDuration" format="reference|integer" />
+        <attr name="rd_maxRippleRadius" format="reference|dimension|integer">
+            <enum name="match_view" value="0x00000000" />
+        </attr>
+        <attr name="rd_rippleColor" format="reference|color" />
+        <attr name="rd_rippleAnimDuration" format="reference|integer" />
+        <attr name="rd_inInterpolator" format="reference" />
+        <attr name="rd_outInterpolator" format="reference" />
+        <attr name="rd_maskType" format="integer">
+            <enum name="rectangle" value="0x00000000" />
+            <enum name="oval" value="0x00000001" />
+        </attr>
+        <attr name="rd_rippleType" format="integer">
+            <enum name="touch" value="0x00000000" />
+            <enum name="wave" value="0x00000001" />
+        </attr>
+        <attr name="rd_cornerRadius" format="reference|dimension" />
+        <attr name="rd_topLeftCornerRadius" format="reference|dimension" />
+        <attr name="rd_topRightCornerRadius" format="reference|dimension" />
+        <attr name="rd_bottomLeftCornerRadius" format="reference|dimension" />
+        <attr name="rd_bottomRightCornerRadius" format="reference|dimension" />
+        <attr name="rd_padding" format="reference|dimension" />
+        <attr name="rd_leftPadding" format="reference|dimension" />
+        <attr name="rd_topPadding" format="reference|dimension" />
+        <attr name="rd_rightPadding" format="reference|dimension" />
+        <attr name="rd_bottomPadding" format="reference|dimension" />
+        <attr name="rd_delayClick" format="integer">
+            <enum name="none" value="0x00000000" />
+            <enum name="untilRelease" value="0x00000001" />
+            <enum name="afterRelease" value="0x00000002" />
+        </attr>
+        <attr name="rd_delayRipple" format="reference|integer" />
+    </declare-styleable>
+
+    <declare-styleable name="LineMorphingDrawable">
+        <attr name="lmd_state" format="reference" />
+        <attr name="lmd_curState" format="integer" />
+        <attr name="lmd_padding" format="reference|dimension" />
+        <attr name="lmd_paddingLeft" format="reference|dimension" />
+        <attr name="lmd_paddingTop" format="reference|dimension" />
+        <attr name="lmd_paddingRight" format="reference|dimension" />
+        <attr name="lmd_paddingBottom" format="reference|dimension" />
+        <attr name="lmd_animDuration" format="reference|integer" />
+        <attr name="lmd_interpolator" format="reference" />
+        <attr name="lmd_strokeSize" format="reference|dimension" />
+        <attr name="lmd_strokeColor" format="reference|color" />
+        <attr name="lmd_strokeCap" format="integer">
+            <enum name="butt" value="0x00000000" />
+            <enum name="round" value="0x00000001" />
+            <enum name="square" value="0x00000002" />
+        </attr>
+        <attr name="lmd_strokeJoin" format="integer">
+            <enum name="miter" value="0x00000000" />
+            <enum name="round" value="0x00000001" />
+            <enum name="bevel" value="0x00000002" />
+        </attr>
+        <attr name="lmd_clockwise" format="boolean" />
+        <attr name="lmd_layoutDirection" format="integer">
+            <enum name="ltr" value="0x00000000" />
+            <enum name="rtl" value="0x00000001" />
+            <enum name="locale" value="0x00000003" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CropImageView"><attr name="cropGuidelines"><enum name="off" value="0"/><enum name="onTouch" value="1"/><enum name="on" value="2"/></attr><attr name="cropScaleType"><enum name="fitCenter" value="0"/><enum name="center" value="1"/><enum name="centerCrop" value="2"/><enum name="centerInside" value="3"/></attr><attr name="cropShape"><enum name="rectangle" value="0"/><enum name="oval" value="1"/></attr><attr name="cropAutoZoomEnabled" format="boolean"/><attr name="cropMaxZoom" format="integer"/><attr name="cropMultiTouchEnabled" format="boolean"/><attr name="cropFixAspectRatio" format="boolean"/><attr name="cropAspectRatioX" format="integer"/><attr name="cropAspectRatioY" format="integer"/><attr name="cropInitialCropWindowPaddingRatio" format="float"/><attr name="cropBorderLineThickness" format="dimension"/><attr name="cropBorderLineColor" format="color"/><attr name="cropBorderCornerThickness" format="dimension"/><attr name="cropBorderCornerOffset" format="dimension"/><attr name="cropBorderCornerLength" format="dimension"/><attr name="cropBorderCornerColor" format="color"/><attr name="cropGuidelinesThickness" format="dimension"/><attr name="cropGuidelinesColor" format="color"/><attr name="cropBackgroundColor" format="color"/><attr name="cropSnapRadius" format="dimension"/><attr name="cropTouchRadius" format="dimension"/><attr name="cropShowCropOverlay" format="boolean"/><attr name="cropShowProgressBar" format="boolean"/><attr name="cropMinCropWindowWidth" format="dimension"/><attr name="cropMinCropWindowHeight" format="dimension"/><attr name="cropMinCropResultWidthPX" format="float"/><attr name="cropMinCropResultHeightPX" format="float"/><attr name="cropMaxCropResultWidthPX" format="float"/><attr name="cropMaxCropResultHeightPX" format="float"/></declare-styleable><!--For image zoom gallery effect--><declare-styleable name="ZoomageView"><attr name="zoomage_zoomable" format="boolean"/><attr name="zoomage_translatable" format="boolean"/><attr name="zoomage_restrictBounds" format="boolean"/><attr name="zoomage_animateOnReset" format="boolean"/><attr name="zoomage_autoCenter" format="boolean"/><attr name="zoomage_minScale" format="float"/><attr name="zoomage_maxScale" format="float"/><attr name="zoomage_autoResetMode" format="enum"><enum name="UNDER" value="0"/><enum name="OVER" value="1"/><enum name="ALWAYS" value="2"/><enum name="NEVER" value="3"/></attr></declare-styleable><!--For Status or my story Timer--><declare-styleable name="LinearTimerView"><attr name="radius" format="dimension"/><attr name="strokeWidth" format="dimension"/><attr name="initialColor" format="color"/><attr name="progressColor" format="color"/><attr name="startingPoint" format="integer"/><attr name="preFillPoint" format="integer"/></declare-styleable><declare-styleable name="AvatarImageBehavior"><attr name="finalYPosition" format="dimension"/><attr name="startXPosition" format="dimension"/><attr name="startToolbarPosition" format="dimension"/><attr name="startHeight" format="dimension"/><attr name="finalHeight" format="dimension"/></declare-styleable>
+
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="@dimen/profile_bg_pading"
+        android:left="@dimen/profile_bg_pading"
+        android:right="@dimen/profile_bg_pading"
+        android:top="@dimen/profile_bg_pading">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="oval">
+            <solid android:color="@color/white" />
+            <stroke
+                android:width="@dimen/_2sdp"
+                android:color="@color/stop_red_color" />
+            <size
+                android:width="@dimen/_60sdp"
+                android:height="@dimen/_60sdp" />
+        </shape>
+    </item>
+</layer-list>
+

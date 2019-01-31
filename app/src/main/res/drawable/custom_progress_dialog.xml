@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/loading_circles"
+    android:duration="1"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:startOffset="0"
+    android:toDegrees="1080">
+
+    <!-- <right_arrow_shape
+         android:innerRadiusRatio="4"
+         android:right_arrow_shape="ring"
+         android:thicknessRatio="20"
+         android:useLevel="false" >
+
+         <size
+             android:height="80dip"
+             android:width="80dip" />
+
+         <gradient
+             android:angle="0"
+             android:endColor="@color/transperant"
+             android:centerColor="@color/colorPrimary"
+             android:startColor="@android:color/white"
+             android:type="sweep"
+             android:useLevel="false" />
+     </right_arrow_shape>-->
+    <!-- <?xml version="1.0" encoding="utf-8"?>
+     <animated-rotate xmlns:android="http://schemas.android.com/apk/res/android"
+         android:drawable="@drawable/ico_gift_active"
+         android:pivotX="50%"
+         android:pivotY="50%"
+         android:fromDegrees="45"
+         android:toDegrees="45"
+         android:startOffset="0"
+         />
+ -->
+</rotate>
+

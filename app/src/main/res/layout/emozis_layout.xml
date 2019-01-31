@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="2dp"
+    android:background="@color/new_white_bg">
+
+        <LinearLayout
+            android:id="@+id/clickOnSmily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:background="@drawable/transparent_border">
+
+            <ImageView
+                android:id="@+id/iv_emozie"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:paddingLeft="2dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/inactive_happiness_ico"/>
+
+
+           <TextView
+                android:id="@+id/tv_emozie"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:paddingLeft="2dp"/>
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:fontFamily="@font/montserrat_light"
+                android:text="1"
+                android:textColor="@color/gray2"
+                android:paddingLeft="5dp"/>
+
+            <ImageView
+                android:id="@+id/iv_plus"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:padding="5dp"
+                android:src="@drawable/plus_ico"/>
+
+        </LinearLayout>
+
+</LinearLayout>
