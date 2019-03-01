@@ -1559,16 +1559,17 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         };
         mHandler.postDelayed(mRunnable, 3000);
 
+
+
+
         if (dialog != null) {
             dialog.show();
         }
     }
 
-
     public String getCurrentTimeInFormat() {
         return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).format(new Date(System.currentTimeMillis()));
     }
-
 
     /****
      * This method is used when The user is not exist in the event to first time key in the user
