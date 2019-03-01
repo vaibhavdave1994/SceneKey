@@ -1543,6 +1543,9 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.gravity = Gravity.TOP;
+
+
+
         dialog.getWindow().setAttributes(lp);
 
         TextView tvKeyPoint;
@@ -1553,14 +1556,12 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void run() {
                 if (dialog != null) {
+                    if (dialog != null)
                     dialog.dismiss();
                 }
             }
         };
         mHandler.postDelayed(mRunnable, 3000);
-
-
-
 
         if (dialog != null) {
             dialog.show();
