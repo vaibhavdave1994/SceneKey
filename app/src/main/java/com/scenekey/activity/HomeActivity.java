@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -51,7 +53,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.scenekey.R;
 import com.scenekey.aws_service.Aws_Web_Service;
 import com.scenekey.fragment.Alert_fragment;
-import com.scenekey.fragment.Demo_Event_Fragment;
 import com.scenekey.fragment.Event_Fragment;
 import com.scenekey.fragment.Home_No_Event_Fragment;
 import com.scenekey.fragment.Map_Fragment;
@@ -66,10 +67,8 @@ import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.Permission;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.arc_menu.ArcMenu;
 import com.scenekey.listener.BackPressListner;
 import com.scenekey.listener.StatusBarHide;
-import com.scenekey.listener.TabLayoutListener;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Events;
 import com.scenekey.model.NotificationModal;
@@ -94,8 +93,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener,LocationListener {
 
     public static int ActivityWidth;
     public static int ActivityHeight;
@@ -110,7 +110,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout frame_fragments;
     private TextView tvHomeTitle, tv_key_points;
     private RelativeLayout rl_title_view;
-    private ArcMenu arcMenu;
     private RelativeLayout rtlv_alert, rtlv_home, rtlv_reward, lastclicked;
     private ImageView img_home_logo, img_three_one;
     private View view, bottom_margin_view, top_status;
@@ -131,9 +130,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private String isBroadCast;
     private boolean isBgNoti = false;
     private TextView txt_five;
-    private TabLayoutListener tabLayoutListener;
     private ImageView img_setting;
-    private boolean clicked;
     private boolean myProfile;
 
     private RelativeLayout rl_title_view_home, rl_title_main_view,rl_toolbar_alert,rl_profileView;
@@ -168,10 +165,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             // TODO: The system bars are visible. Make any desired
                             Utility.e(TAG, "Status bar visible");
 
-                            Fragment fragment = getCurrentFragment();
+                          /*  Fragment fragment = getCurrentFragment();
                             if (fragment instanceof Event_Fragment | fragment instanceof Demo_Event_Fragment) {
                                 hideStatusBar();
-                            }
+                            }*/
+
+
                         } else {
                             // TODO: The system bars are NOT visible. Make any desired
                             // adjustments to your UI, such as hiding the action bar or
@@ -214,8 +213,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //        .....................................................................
 
 
-
-
         //Alert Screen Toolbar...............................................
         tablayout_alert = findViewById(R.id.tablayout_alert);
         tablayout_alert.addTab(tablayout_alert.newTab().setText("Alert"));
@@ -254,13 +251,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tablayout_home.addTab(tablayout_home.newTab().setIcon(R.drawable.ic_flame));
         tablayout_home.addTab(tablayout_home.newTab().setIcon(R.drawable.ic_location));
         tablayout_home.addTab(tablayout_home.newTab().setIcon(R.drawable.ic_search));
+
+        Objects.requireNonNull(Objects.requireNonNull(tablayout_home.getTabAt(0)).getIcon()).setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+
         tablayout_home.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
                         if (isPermissionAvail) {
-                            position = 1;
+                            assert tab.getIcon() != null;
                             tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                             replaceFragment(new Trending_Fragment());
                             //setBottomBar((RelativeLayout) v, lastclicked);
@@ -272,7 +272,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     case 1:
                         if (isPermissionAvail) {
-                            position = 2;
+                            assert tab.getIcon() != null;
                             tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                             //setBottomBar((RelativeLayout) v, lastclicked);
                             if (map_fragment == null) map_fragment = new Map_Fragment();
@@ -284,23 +284,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         break;
 
                     case 2:
+                        assert tab.getIcon() != null;
                         tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                         replaceFragment(new Search_Fragment());
-                        //setBottomBar((RelativeLayout) v, lastclicked);
                         break;
 
                     default:
                         if (isPermissionAvail) {
-                            position = 1;
+                            assert tab.getIcon() != null;
                             tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                             replaceFragment(new Trending_Fragment());
-                            //setBottomBar((RelativeLayout) v, lastclicked);
                         } else {
                             utility.snackBar(rtlv_home, "Location permission not available", 0);
                         }
-
                 }
             }
+
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -404,8 +403,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if (currentScreen.equals("HomeScreen")) {
                     if (isBroadCast.equals("isBroadCast")) {
                         rewardNotification(notificationMessage);
-                        /*txt_notification.setVisibility(View.VISIBLE);
-                        txt_notification.setText("1");*/
                     } else {
                         isBgNoti = true;
                     }
@@ -458,172 +455,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
 
     }
-
-/*    public void getNotifyAllData(final String eventId) {
-        if (utility==null) utility = new Utility(context);
-
-        if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.LISTEVENTFEED, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.e("Responce129", response);
-                    // get response
-                    try { if (response != null) getResponse(response);
-                    else Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        dismissProgDialog();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    dismissProgDialog();
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-
-                    params.put("event_id", eventId);
-                    params.put("user_id", userInfo().userid);
-
-                    Utility.e(TAG, " params " + params.toString());
-                    return params;
-                }
-            };
-
-            VolleySingleton.getInstance(context).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(20000, 0, 1));
-        } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
-            dismissProgDialog();
-        }
-    }*/
-
-    /* when notification receive fragment start here */
-   /*
-    public void getEventData(String eventId){
-        if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.EVENT_DETAIL+eventId, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    dismissProgDialog();
-                    // get response
-                    try {
-                        JSONObject jo = new JSONObject(response);
-
-                        if (jo.has("success")) {
-                            int status = jo.getInt("success");
-                            if (status == 0){
-                                dismissProgDialog();
-                                try {
-                                    Toast.makeText(context,jo.getString("message"),Toast.LENGTH_SHORT).show();
-                                    if (eventsArrayList == null) eventsArrayList = new ArrayList<>();
-                                    else eventsArrayList.clear();
-                                    setRecyclerView();
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            //else if()
-                        } else {
-
-                            if (jo.has("eventDetail")) {
-                                if (eventsArrayList == null) eventsArrayList = new ArrayList<>();
-                                else eventsArrayList.clear();
-                                JSONArray eventAr = jo.getJSONArray("events");
-                                for (int i = 0; i < eventAr.length(); i++) {
-                                    JSONObject object = eventAr.getJSONObject(i);
-                                    Events events = new Events();
-                                    if (object.has("venue"))
-                                        events.setVenueJSON(object.getJSONObject("venue"));
-                                    if (object.has("artists"))
-                                        events.setArtistsArray(object.getJSONArray("artists"));
-                                    if (object.has("events"))
-                                        events.setEventJson(object.getJSONObject("events"));
-                                    try{
-                                        events.setOngoing(events.checkWithTime(events.getEvent().event_date , events.getEvent().interval));
-                                    }catch (Exception e){
-                                        Utility.e("Date exception",e.toString());
-                                    }
-                                    try {
-                                        events.settimeFormat();
-                                    }catch (Exception e){
-                                        Utility.e("Exception time",e.toString());
-                                    }
-                                    try {
-                                        events.setRemainingTime();
-                                    }
-                                    catch (Exception e){
-                                        Utility.e("Exception Remaining",e.toString());
-                                    }
-                                    eventsArrayList.add(events);
-                                    // Util.printLog("Result",events.toString());
-                                }
-                                if (eventsArrayList.size() <= 0) {
-                                    Toast.makeText(context, "No Event found near your location", Toast.LENGTH_LONG).show();
-                                }
-                                setRecyclerView();
-                            }
-                            dismissProgDialog();
-                        }
-                    } catch (Exception e) {
-                        dismissProgDialog();
-                        Utility.showToast(context,getString(R.string.somethingwentwrong),0);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    dismissProgDialog();
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("lat",lat);
-                    params.put("long",lng);
-                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userID + "");
-
-                    Utility.e(TAG," params "+params.toString());
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(context).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-        }else{
-            utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
-            dismissProgDialog();
-        }
-    }
-*/
-
-  /*  @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        switch (tab.getPosition()) {
-            case 0:
-                replaceFragment(new OfferSFragment());
-                break;
-
-            case 1:
-                replaceFragment(new WalletsFragment());
-                break;
-            default:
-                replaceFragment(new OfferSFragment());
-        }
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-    }*/
 
     @Override
     protected void onStart() {
@@ -691,7 +522,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tv_key_points.setText(userInfo.key_points);
 
 
-        tvHomeTitle.setText(userInfo().fullname + " " + userInfo().lastName);
+        //tvHomeTitle.setText(userInfo().fullname + " " + userInfo().lastName);
+        tvHomeTitle.setText(userInfo().fullname);
 
         //initArc();
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -759,70 +591,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public UserInfo userInfo() {
-        if (userInfo == null) {
+
+        if (!SceneKey.sessionManager.isLoggedIn()) {
+            SceneKey.sessionManager.logout(HomeActivity.this);
+        }
+       /* if (userInfo == null) {
             if (!SceneKey.sessionManager.isLoggedIn()) {
                 SceneKey.sessionManager.logout(HomeActivity.this);
             }
             userInfo = SceneKey.sessionManager.getUserInfo();
-        }
-        return userInfo;
+        }*/
+        return SceneKey.sessionManager.getUserInfo();
     }
-
-    /*private void setBottomBar(RelativeLayout v, final RelativeLayout lastClicked) {
-        setRtlvText(v, true);
-        if (lastClicked != null) {
-
-            setRtlvText(lastClicked, false);
-
-            switch (lastClicked.getId()) {
-                case R.id.rtlv_one:
-                    getImgV(lastClicked).setImageResource(R.drawable.flame);
-                    break;
-                case R.id.rtlv_two:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_map_icon);
-                    break;
-                case R.id.rtlv_home:
-                    img_three_logo.setImageResource(R.drawable.ic_logo);
-                    img_three_logo.setBackgroundResource(R.drawable.bg_white_key);
-                    img_three_logo.setColorFilter(ContextCompat.getColor(context, R.color.black30p), PorterDuff.Mode.SRC_ATOP);
-                    getImgV(lastClicked).setImageResource(R.drawable.transparent);
-                    break;
-                case R.id.rtlv_search:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_search_icon);
-                    break;
-                case R.id.rtlv_reward:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_add_icon);
-                    break;
-
-            }
-
-        }
-        switch (v.getId()) {
-            case R.id.rtlv_one:
-                getImgV(v).setImageResource(R.drawable.active_flame);
-                break;
-            case R.id.rtlv_two:
-                getImgV(v).setImageResource(R.drawable.ic_selected_map_icon);
-                break;
-            case R.id.rtlv_home:
-                //img_three_logo.setVisibility(View.VISIBLE);
-                img_three_logo.setBackgroundResource(R.drawable.transparent);
-                img_three_logo.setImageResource(R.drawable.ic_logo_selected);
-                img_three_logo.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.MULTIPLY);
-                img_three_one.setVisibility(View.INVISIBLE);
-                ((TextView) v.getChildAt(1)).setTextColor(getResources().getColor(R.color.white));
-                getImgV(v).setImageResource(R.drawable.selected_key_icon4);
-                break;
-            case R.id.rtlv_search:
-                getImgV(v).setImageResource(R.drawable.ic_selected_search_icon);
-                break;
-            case R.id.rtlv_reward:
-                getImgV(v).setImageResource(R.drawable.ic_selected_add_icon);
-                break;
-        }
-
-        this.lastclicked = v;
-    }*/
 
 
     //Shubham.................................
@@ -841,6 +621,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (isPermissionAvail) {
                     replaceFragment(new Trending_Fragment());
+                    tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+
                     setBottomBar((RelativeLayout) v, lastclicked);
 
                 } else {
@@ -868,96 +650,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
             case R.id.img_setting:
-
                 Intent seetingIntet = new Intent(this,SettingActivtiy.class);
-                seetingIntet.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(seetingIntet);
-               /* if (!clicked) {
-                    //TODo Remove autocomplete fragment before call.
-                    if (myProfile)
-                        addFragment(new Setting_Fragment().setData(this), 1);//TODO check button color in both case (own ,other)
-                    clicked = true;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            clicked = false;
-                        }
-                    }, 4000);
-                }*/
+
                 break;
 
-            /*case R.id.rtlv_two:
-                rl_title_view_home.setVisibility(View.GONE);
-                rl_title_main_view.setVisibility(View.VISIBLE);
-                txt_five.setTextColor(getResources().getColor(R.color.black));
-                if (position != 2) {
-                    if (isPermissionAvail) {
-                        position = 2;
-                        setBottomBar((RelativeLayout) v, lastclicked);
-                        if (map_fragment == null) map_fragment = new Map_Fragment();
-                        replaceFragment(map_fragment);
-                    } else {
-                        utility.snackBar(rtlv_home, "Location permission not available", 0);
-                    }
-                }
-                break;*/
-
-
-              /*  txt_five.setTextColor(getResources().getColor(R.color.black));
-                if (position != 3) {
-                    position = 3;
-                    replaceFragment(new Home_No_Event_Fragment());
-                    setBottomBar((RelativeLayout) v, lastclicked);
-                    if (eventsArrayList != null) eventsArrayList.clear();
-                    if (eventsNearbyList != null) eventsNearbyList.clear();
-                    if (latitude == 0.0d && longitude == 0.0d) {
-                        if (userInfo.makeAdmin.equals(Constant.ADMIN_YES)) {
-                            try {
-                                checkEventAvailablity(true);
-                            } catch (IllegalStateException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            showErrorPopup("rtlv_home");
-                        }
-                    } else {
-                        try {
-                            checkEventAvailablity(true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }*/
-
-
             case R.id.rtlv_profile:
-                /*rl_title_view_home.setVisibility(View.GONE);
-                rl_title_main_view.setVisibility(View.VISIBLE);*/
 
-                //checkFregment();
-
-
-              /*  txt_five.setTextColor(getResources().getColor(R.color.black));
-                if (position != 4) {
-                    position = 4;
-                    replaceFragment(new Profile_Fragment());
-                    setBottomBar((RelativeLayout) v, lastclicked);
-                }*/
                 rl_profileView.setVisibility(View.VISIBLE);
                 rl_toolbar_alert.setVisibility(View.GONE);
                 rl_title_view_home.setVisibility(View.GONE);
                 rl_title_main_view.setVisibility(View.GONE);
 
-
                 if (isPermissionAvail) {
-                    replaceFragment(new ProfileNew_fragment());
+
+                    EventAttendy attendy = new EventAttendy();
+                    attendy.userid = (userInfo.userid);
+                    attendy.userFacebookId = (userInfo.userFacebookId);
+                    attendy.setUserimage(userInfo.getUserImage());
+                    attendy.username = (userInfo.userName);
+                    VolleySingleton.getInstance(this.getBaseContext()).cancelPendingRequests("HomeApi");
+                    replaceFragment(new ProfileNew_fragment().setData(attendy, true, null, 0));
+                    //replaceFragment(new Profile_Fragment());
                     setBottomBar((RelativeLayout) v, lastclicked);
                 } else {
                     utility.snackBar(rtlv_home, "Location permission not available", 0);
                 }
 
-
-                //replaceFragment(new Profile_Fragment());
                 break;
 
             case R.id.rtlv_reward:
@@ -998,6 +717,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Event_Fragment event_fragment = (Event_Fragment) fragment;
             event_fragment.getAllData();
             event_fragment.onResume();
+        }else if(fragment instanceof ProfileNew_fragment){
+
+            ProfileNew_fragment profileNew_fragment = (ProfileNew_fragment) fragment;
+            tvHomeTitle.setText(userInfo().fullname);
+            profileNew_fragment.onResume();
         }
         super.onResume();
 
@@ -1629,7 +1353,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setTitle(String title) {
         try {
-            //tvHomeTitle.setText(title);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1663,6 +1386,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public String[] getLatLng() {
         String latLng[] = new String[2];
+
         if (userInfo.makeAdmin.contains(Constant.ADMIN_YES) && userInfo().currentLocation) {
             latLng[0] = userInfo.adminLat = (latitudeAdmin + "");
             latLng[1] = userInfo.adminLong = (longitudeAdmin + "");
@@ -1833,30 +1557,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public void hideStatusBar() {
         View decorView = getWindow().getDecorView();
-       /* if (!(SceneKey.sessionManager.isSoftKey())) {
-
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide status bar and nav bar after a short delay, or if the user interacts with the middle of the screen
-            );
-            //decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_FULLSCREEN|View.SYSTEM_UI_FLAG_IMMERSIVE);
-        } else {
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY // hide status bar and nav bar after a short delay, or if the user interacts with the middle of the screen
-                    | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            );
-            //decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-        top_status.setVisibility(View.GONE);*/
     }
 
     public void showStatusBar() {
@@ -1885,23 +1585,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setStatusBarVisible() {
-       /* if (!(SceneKey.sessionManager.isSoftKey())) {
-            top_status.setVisibility(View.VISIBLE);
-        }*/
+
     }
-
-  /*  public void onPopUpBackstage() {
-        Fragment fragment = getCurrentFragment();
-
-        if (fragment instanceof StatusBarHide) {
-            hideStatusBar();
-        } else showStatusBar();
-
-        if (fragment != null && fragment instanceof Profile_Fragment) {
-            Profile_Fragment profileFragment = (Profile_Fragment) fragment;
-            profileFragment.onResume();
-        }
-    }*/
 
     public void onPopUpBackstage() {
         Fragment fragment = getCurrentFragment();
@@ -1936,30 +1621,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    /*public void checkFregment() {
-
-        Fragment fragment = getCurrentFragment();
-        assert fragment != null;
-
-        if (fragment instanceof Profile_Fragment) {
-            Toast.makeText(context, "Profile_Fragment", Toast.LENGTH_SHORT).show();
-        } else if (fragment instanceof Trending_Fragment) {
-            Toast.makeText(context, "Trending_Fragment", Toast.LENGTH_SHORT).show();
-
-        } else if (fragment instanceof Alert_fragment) {
-            Toast.makeText(context, "Alert_fragment", Toast.LENGTH_SHORT).show();
-        } else if (fragment instanceof Reward_Fragment) {
-            Toast.makeText(context, "Reward_Fragment", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-
-/*    public boolean isForeground() {
-        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
-        ActivityManager.getMyMemoryState(appProcessInfo);
-        return (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE);
-    }*/
 
     //TODO message on increment or decrement
     public void incrementKeyPoints(String msg) {

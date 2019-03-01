@@ -40,6 +40,7 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
     private TextView tv_for_remainChar;
     private EditText et_for_enterTxt;
     private CustomProgressBar prog;
+    private String fromScreen ="";
 
 
     @Override
@@ -58,6 +59,9 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.btn_for_done).setOnClickListener(this);
         findViewById(R.id.img_f1_back).setOnClickListener(this);
 
+
+        et_for_enterTxt.setText(userInfo.bio);
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -74,6 +78,11 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
             }
         };
         et_for_enterTxt.addTextChangedListener(textWatcher);
+
+
+        if(getIntent().getStringExtra("from")!= null){
+            fromScreen  = getIntent().getStringExtra("from");
+        }
 
     }
 
@@ -181,7 +190,13 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
                             userInfo.bio = bio;
                             SceneKey.sessionManager.createSession(userInfo);
 
-                            callIntent();
+                            if(fromScreen.equals("setting")){
+                              onBackPressed();
+                            }else {
+
+                                callIntent();
+                            }
+
                         } else {
                             Utility.showToast(BioActivity.this, message, 0);
                         }

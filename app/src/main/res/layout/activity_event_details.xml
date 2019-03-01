@@ -7,8 +7,8 @@
     android:background="@color/white"
     android:clickable="true"
     android:fitsSystemWindows="true"
+    android:focusable="true"
     tools:context=".activity.HomeActivity">
-
 
     <RelativeLayout
         android:id="@+id/toolbar"
@@ -18,7 +18,7 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/img_eventDetail_back"
-            android:layout_width="@dimen/top_bar_profile"
+            android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/top_bar_profile"
             android:layout_centerVertical="true"
             android:padding="@dimen/_12sdp"
@@ -27,53 +27,47 @@
         <TextView
             android:id="@+id/txt_event_name"
             style="@style/fragment_txt_top"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/lnrLeft"
+            android:layout_toLeftOf="@+id/lnrLeft"
+            android:layout_toEndOf="@+id/img_eventDetail_back"
             android:layout_toRightOf="@+id/img_eventDetail_back"
-            android:layout_toLeftOf="@+id/img_no_member"
             android:fontFamily="@font/montserrat_medium"
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/sample_event"
             android:textColor="@color/black2"
-            android:textSize="@dimen/_16ssp" />
+            android:textSize="@dimen/_14ssp" />
 
-
-        <ImageView
-            android:id="@+id/img_no_member"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_centerInParent="true"
+        <LinearLayout
+            android:id="@+id/lnrLeft"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/black_circle_user_ico" />
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/img_no_member"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/black_circle_user_ico"
+                android:visibility="gone" />
 
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/comeInUser_lnr"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_50sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@+id/txt_event_name"
+            android:layout_centerVertical="true"
             android:gravity="center">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/usercomeInRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:visibility="gone"
-                android:orientation="horizontal"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
         </RelativeLayout>
-
 
     </RelativeLayout>
 
@@ -83,20 +77,20 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomBar"
         android:layout_below="@id/toolbar"
-        android:background="@color/new_white_bg"
+        android:background="@color/white"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/addButtonForKeyIn"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/_70sdp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/_5sdp"
-        app:srcCompat="@drawable/add_icn" />
-
+        android:layout_marginBottom="@dimen/_70sdp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/add_ico" />
 
     <View
         android:id="@+id/bottomView"
@@ -105,25 +99,23 @@
         android:layout_above="@+id/bottomBar"
         android:background="@color/black20p" />
 
-
-
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:gravity="center"
-        android:layout_alignParentBottom="true">
+        android:gravity="center">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/bordertxtview"
             android:orientation="horizontal">
 
@@ -133,9 +125,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/_10sdp"
+                android:gravity="center"
                 android:text="post"
                 android:textColor="@color/gray2" />
 
@@ -165,48 +157,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/_5sdp"
+                android:layout_toLeftOf="@+id/img_postImage"
+                android:background="@color/white"
                 android:hint="Write here..."
                 android:paddingLeft="@dimen/_10sdp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/gray2"
-                android:layout_toLeftOf="@+id/img_postImage"
-                android:background="@color/white"/>
+                android:textColorHint="@color/gray2" />
 
             <TextView
                 android:id="@+id/tv_no_members"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_toLeftOf="@+id/view2"
                 android:fontFamily="@font/raleway_regular"
                 android:gravity="center_vertical"
                 android:text="@string/no_members_in_room"
                 android:textSize="@dimen/_14sdp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/_10sdp"
+                tools:ignore="SpUsage" />
 
 
         </RelativeLayout>
 
-    </LinearLayout>
+        <View
+            android:id="@+id/blurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:background="@color/white"
+            android:visibility="gone" />
 
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/txt_hide_all"
+        android:id="@+id/txt_show_emojies"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black80p"
         android:fontFamily="@font/montserrat_regular"
-        android:gravity="center_horizontal"
-        android:paddingLeft="@dimen/_20sdp"
-        android:paddingRight="@dimen/_20sdp"
-        android:paddingTop="@dimen/_60sdp"
-        android:text="@string/PTBS2"
+        android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="@dimen/_18ssp"
+        android:textSize="@dimen/_50ssp"
         android:visibility="gone" />
-
 
 </RelativeLayout>

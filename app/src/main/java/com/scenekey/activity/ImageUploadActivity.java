@@ -429,7 +429,12 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                     finish();
                 } else {
                     ImageSessionManager.getInstance().setScreenFlag(2);
-                    startActivity(new Intent(context, BioActivity.class));
+                    //startActivity(new Intent(context, BioActivity.class));
+
+                    Intent bioIntent = new Intent(context, BioActivity.class);
+                    bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    bioIntent.putExtra("from", "imageUplode");
+                    startActivity(bioIntent);
                 }
                 break;
 

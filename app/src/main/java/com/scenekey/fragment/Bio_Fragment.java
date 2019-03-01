@@ -131,7 +131,7 @@ public class Bio_Fragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateBio(final String bio) {
-        activity.showProgDialog(false,TAG);
+        activity.showProgDialog(false);
         final Utility utility=new Utility(context);
 
         if (utility.checkInternetConnection()) {

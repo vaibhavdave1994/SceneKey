@@ -40,7 +40,7 @@ public class EventDetails {
             this.tagList.add(tags);
         }
 
-        fragment.addChips(this.tagList);
+        //fragment.addChips(this.tagList);
     }
 
     public void setAttendyJson(JSONArray Json,Event_Fragment fragment) throws JSONException {
@@ -183,7 +183,7 @@ public class EventDetails {
         if (JSon.has("like")) {
             profile_rating.setLike(JSon.getInt("like") + "");
             if (profile_rating.getLike().equals("1")) {
-                fragment.fabMenu1_like.setImageDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.active_like));
+                //fragment.fabMenu1_like.setImageDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.active_like));
             }
         }
 

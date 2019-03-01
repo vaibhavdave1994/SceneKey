@@ -1,134 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp">
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/img_search"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/_5sdp"
-            app:srcCompat="@drawable/ic_search" />
-
-        <EditText
-            android:id="@+id/et_search"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_toRightOf="@+id/img_search"
-            android:layout_toLeftOf="@+id/tv_cancle"
-            android:fontFamily="@font/montserrat_light"
-            android:gravity="start|center_vertical"
-            android:singleLine="true"
-            android:textColorHint="@color/gray2"
-            android:hint="@string/Search"
-            android:textColor="@color/black2"
-            android:textSize="@dimen/_12ssp" />
-
-
-        <TextView
-            android:id="@+id/tv_cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:padding="@dimen/_5sdp"
-            android:textColor="@color/gray2"
-            android:textSize="@dimen/_14sdp"
-            android:text="Cancel"/>
-
-    </RelativeLayout>
-
-
-
-   <!-- <LinearLayout
-        android:id="@+id/lnr_frequently_used"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_frequently"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:textColor="@color/gray2"
-            android:fontFamily="@font/montserrat_light"
-            android:textSize="@dimen/_12sdp"
-            android:text="Frequently Used"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/usercomeInRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-    </LinearLayout>-->
-
+    android:background="@color/white">
 
 
     <LinearLayout
-        android:id="@+id/lnr_people"
+        android:id="@+id/uperView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:background="@color/white"
-        android:layout_margin="5dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/lowerView"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_people"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:textColor="@color/gray2"
-            android:fontFamily="@font/montserrat_light"
-            android:textSize="@dimen/_12sdp"
-            android:text="People"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp">
 
-        <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gridview"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:columnWidth="90dp"
-            android:numColumns="4"
-            android:verticalSpacing="5dp"
-            android:horizontalSpacing="5dp"
-            android:stretchMode="columnWidth"
-            />-->
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/img_search"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                app:srcCompat="@drawable/ic_search" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/gridview"
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/tv_cancle"
+                android:layout_toRightOf="@+id/img_search"
+                android:fontFamily="@font/montserrat_light"
+                android:gravity="start|center_vertical"
+                android:hint="@string/Search"
+                android:singleLine="true"
+                android:textColor="@color/black2"
+                android:textColorHint="@color/gray2"
+                android:textSize="@dimen/_12ssp" />
+
+
+            <TextView
+                android:id="@+id/tv_cancle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_5sdp"
+                android:text="Cancel"
+                android:textColor="@color/gray2"
+                android:textSize="@dimen/_14sdp" />
+
+        </RelativeLayout>
+
+
+        <!-- <LinearLayout
+             android:id="@+id/lnr_frequently_used"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/white"
+             android:layout_margin="5dp"
+             android:orientation="vertical">
+
+             <TextView
+                 android:id="@+id/tv_frequently"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:padding="@dimen/_5sdp"
+                 android:textColor="@color/gray2"
+                 android:fontFamily="@font/montserrat_light"
+                 android:textSize="@dimen/_12sdp"
+                 android:text="Frequently Used"/>
+
+             <android.support.v7.widget.RecyclerView
+                 android:id="@+id/usercomeInRecyclerView"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:paddingLeft="5dp"
+                 android:paddingRight="5dp"
+                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+         </LinearLayout>-->
+
+
+        <LinearLayout
+            android:id="@+id/lnr_people"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            android:layout_margin="5dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+          <!--  <TextView
+                android:id="@+id/tv_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_light"
+                android:padding="@dimen/_5sdp"
+                android:text="People"
+                android:textColor="@color/gray2"
+                android:textSize="@dimen/_12sdp" />-->
+
+            <!--<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/gridview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:columnWidth="90dp"
+                android:numColumns="4"
+                android:verticalSpacing="5dp"
+                android:horizontalSpacing="5dp"
+                android:stretchMode="columnWidth"
+                />-->
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gridview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/filterSmilyReclerView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_50sdp"
-        android:orientation="horizontal"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/lowerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/new_white_bg"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray2"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/filterSmilyReclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+    </RelativeLayout>
+</RelativeLayout>

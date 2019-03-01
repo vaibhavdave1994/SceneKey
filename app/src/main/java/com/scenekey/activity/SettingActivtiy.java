@@ -1,13 +1,19 @@
 package com.scenekey.activity;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,14 +38,9 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.scenekey.R;
-import com.scenekey.fragment.Bio_Fragment;
-import com.scenekey.fragment.ChangePassword_Fragment;
-import com.scenekey.fragment.Edit_NameFragment;
-import com.scenekey.fragment.Profile_Fragment;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.CustomeClick;
-import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.StatusBarHide;
 import com.scenekey.model.UserInfo;
@@ -56,25 +57,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
-public class SettingActivtiy extends AppCompatActivity implements View.OnClickListener{
+public class SettingActivtiy extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
+    public static UserInfo userInfo;
     private final String TAG = SettingActivtiy.class.toString();
     public LinearLayout linLayBio, linLayChangePassword;
     public PlaceAutocompleteFragment autocompleteFragment;
-    private Context context;
+    public boolean isApiM;
     private Utility utility;
-    private Profile_Fragment fragment;
-    private ImageView img_default_location;
-    private TextView txt_location, txt_first_name, txt_last_name, txt_email, txt_feedback, txt_logout, txt_admin;
+    private TextView txt_location;
+    private TextView txt_first_name;
+    private TextView txt_last_name;
+    private TextView txt_logout;
     private LatLng latLng;
     private RelativeLayout lnr_location;
-    private LinearLayout lnr_deatils, lnr_lastName;
-    private LoginActivity loginActivity;
     private CustomProgressBar customProgressBar;
-    public static UserInfo userInfo;
-    public boolean isApiM;
-    private HomeActivity activity;
+    private double latitude = 0.0, longitude = 0.0;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,80 +87,83 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
 
     private void inItView() {
 
-        loginActivity = new LoginActivity();
         utility = new Utility(this);
-        activity = new HomeActivity();
         customProgressBar = new CustomProgressBar(this);
+
+        UserInfo updateUserInfo = SceneKey.sessionManager.getUserInfo();
 
         LinearLayout linLayTnC = findViewById(R.id.linLayTnC);
         LinearLayout linLayPriPolicy = findViewById(R.id.linLayPriPolicy);
-        ImageView img_f1_back = findViewById(R.id.img_f1_back);
         LinearLayout mainLayout = findViewById(R.id.mainlayout);
+        LinearLayout lnr_deatils = findViewById(R.id.lnr_deatils);
+        LinearLayout lnr_lastName = findViewById(R.id.lnr_lastName);
+
         lnr_location = findViewById(R.id.lnr_location);
         txt_first_name = findViewById(R.id.txt_first_name);
         txt_last_name = findViewById(R.id.txt_last_name);
-        txt_email = findViewById(R.id.txt_email);
         linLayBio = findViewById(R.id.linLayBio);
         txt_location = findViewById(R.id.txt_location);
         txt_logout = findViewById(R.id.txt_logout);
-        txt_feedback = findViewById(R.id.txt_feedback);
-        img_default_location = findViewById(R.id.img_default_location);
-        txt_admin = findViewById(R.id.txt_admin);
 
-        //Shubham
+        TextView txt_email = findViewById(R.id.txt_email);
+        TextView txt_feedback = findViewById(R.id.txt_feedback);
+        TextView txt_admin = findViewById(R.id.txt_admin);
+        ImageView img_f1_back = findViewById(R.id.img_f1_back);
+        ImageView img_default_location = findViewById(R.id.img_default_location);
+
         linLayChangePassword = findViewById(R.id.linLayChangePassword);
-        lnr_deatils = findViewById(R.id.lnr_deatils);
-        lnr_lastName = findViewById(R.id.lnr_lastName);
+
+
+        setClick(txt_email, lnr_lastName, lnr_deatils, txt_last_name, linLayBio, linLayTnC, linLayPriPolicy, mainLayout, txt_logout, txt_feedback, img_f1_back, img_default_location);
         linLayChangePassword.setOnClickListener(this);
 
-
-        String facebookId = userInfo().userFacebookId;
-        final String userID = userInfo().userid;
+        if (!updateUserInfo.socialType.equals("facebook") && !updateUserInfo.socialType.equals("gmail")) {
+            linLayChangePassword.setVisibility(View.VISIBLE);
+        } else {
+            linLayChangePassword.setVisibility(View.GONE);
+        }
 
         try {
-            if (userInfo().makeAdmin.contains(Constant.ADMIN_NO)) {
+            if (updateUserInfo.makeAdmin.contains(Constant.ADMIN_NO)) {
                 txt_admin.setVisibility(View.GONE);
                 lnr_location.setVisibility(View.GONE);
             } else {
                 txt_admin.setVisibility(View.VISIBLE);
                 lnr_location.setVisibility(View.VISIBLE);
-                if (userInfo().address == null || userInfo().address.length() < 2) {
-                    txt_location.setText(getAddress(Double.parseDouble(userInfo().lat), Double.parseDouble(userInfo().longi)));
-                } else if (userInfo().currentLocation) {
-                    txt_location.setText(getAddress(Double.parseDouble(userInfo().lat), Double.parseDouble(userInfo().longi)));
-                } else if (userInfo().address.length() > 60) {
-                    txt_location.setText(userInfo().address.substring(0, 60) + "...");
+                if (updateUserInfo.address == null || updateUserInfo.address.length() < 2) {
+                    txt_location.setText(getAddress(Double.parseDouble(updateUserInfo.lat), Double.parseDouble(updateUserInfo.longi)));
+                } else if (updateUserInfo.currentLocation) {
+                    txt_location.setText(getAddress(Double.parseDouble(updateUserInfo.lat), Double.parseDouble(updateUserInfo.longi)));
+                } else if (updateUserInfo.address.length() > 60) {
+                    txt_location.setText(updateUserInfo.address.substring(0, 60) + "...");
                 } else {
-                    //txt_location.setText(getAddress(Double.parseDouble(activity.userInfo.latitude), Double.parseDouble(activity.userInfo.longitude)));
-                    // New Code
-                    txt_location.setText(userInfo().address);
+                    txt_location.setText(updateUserInfo.address);
                 }
             }
 
-            txt_first_name.setText(userInfo().fullname);
-            if (!userInfo().lastName.isEmpty())
-                txt_last_name.setText(userInfo().lastName);
+            txt_first_name.setText(updateUserInfo.fullname);
+            if (!updateUserInfo.lastName.equals("0"))
+                txt_last_name.setText(updateUserInfo.lastName);
             else
                 txt_last_name.setText(R.string.na);
 
-            if (!userInfo().userEmail.contains(userInfo().userFacebookId))
-                txt_email.setText(userInfo().userEmail);
-            else if (userInfo().userFacebookId.isEmpty()) {
-                txt_email.setText(userInfo().userEmail);
+            if (!updateUserInfo.userEmail.contains(updateUserInfo.userFacebookId))
+                txt_email.setText(updateUserInfo.userEmail);
+            else if (updateUserInfo.userFacebookId.isEmpty()) {
+                txt_email.setText(updateUserInfo.userEmail);
             } else txt_email.setText(getString(R.string.noemail));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        setClick(txt_email, lnr_lastName, lnr_deatils, txt_last_name, linLayBio, linLayTnC, linLayPriPolicy, mainLayout, txt_logout, txt_feedback, img_f1_back, img_default_location);
+
 
         try {
             autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
-                    //address = place.getAddress().toString();
                     txt_location.setText(place.getAddress().toString());
                     latLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
                     if (userInfo().makeAdmin.contains(Constant.ADMIN_YES)) {
@@ -183,9 +187,41 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
 
+    /*.........................initLocation....................................*/
+    private void initLocation() {
+        try {
+            // get GPS status
+            boolean checkGPS = locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            // get network provider status
+            boolean checkNetwork = locationManager != null && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            if (!checkGPS && !checkNetwork) {
+                Utility.e(TAG, "GPS & Provider not available");
+            } else {
+                if (checkGPS) {
+                    assert locationManager != null;
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, this);
+                    locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
+                if (checkNetwork) {
+                    assert locationManager != null;
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, this);
+                    locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*.........................userInfo Session update....................................*/
     public UserInfo userInfo() {
         if (userInfo == null) {
             if (!SceneKey.sessionManager.isLoggedIn()) {
@@ -196,13 +232,14 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         return userInfo;
     }
 
-
+    /*.........................setClick()....................................*/
     private void setClick(View... views) {
         for (View view : views) {
             view.setOnClickListener(this);
         }
     }
 
+    /*.........................getAddress()....................................*/
     private String getAddress(double latitude, double longitude) {
         String result = null;
         Geocoder geocoder;
@@ -212,15 +249,11 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String address = addresses.get(0).getAddressLine(0);
             String city = addresses.get(0).getLocality();
-            String addressLine = addresses.get(0).getAddressLine(1);
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
-            String postalCode = addresses.get(0).getPostalCode();
-            String knownName = addresses.get(0).getFeatureName();
-            //result = knownName + " ," + addressLine + " , " + city + "," + state + "," + country + " counter" + counter;// Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            result = address + "," + city + "," + state + "," + country;// Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            result = address + "," + city + "," + state + "," + country;
             txt_location.setText(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,55 +262,33 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
     }
 
 
+    /*.........................onClick()....................................*/
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
 
             case R.id.txt_logout:
-
-              /*  if(sessionManager.getLoginType().equals("gmail")){
-                    loginActivity.signOut();
-                }else if(sessionManager.getLoginType().equals("facebook")){
-
-                }*/
                 SceneKey.sessionManager.logout(this);
                 break;
 
             case R.id.txt_last_name:
-               /* try {
-                    addFragment(new Edit_NameFragment(), 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
 
-
-                Intent seetingIntet = new Intent(this,Edit_NAmeActivity.class);
+                Intent seetingIntet = new Intent(this, Edit_NAmeActivity.class);
                 seetingIntet.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(seetingIntet);
                 break;
 
             case R.id.lnr_deatils:
-               /* try {
-                    addFragment(new Edit_NameFragment(), 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
 
-                Intent intent = new Intent(this,Edit_NAmeActivity.class);
+                Intent intent = new Intent(this, Edit_NAmeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
 
             case R.id.linLayChangePassword:
-              /*  try {
-                    addFragment(new ChangePassword_Fragment(), 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
 
-
-                Intent changePassword = new Intent(this,ChangePasswordActivity.class);
+                Intent changePassword = new Intent(this, ChangePasswordActivity.class);
                 changePassword.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(changePassword);
                 break;
@@ -292,6 +303,8 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
                 break;
+
+
             case R.id.img_f1_back:
                 onBackPressed();
                 break;
@@ -302,50 +315,49 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                     i.setData(Uri.parse(WebServices.TERMS_));
                     startActivity(i);
                 } catch (ActivityNotFoundException e) {
-                    Utility.showToast(context, getString(R.string.enoactivity), 0);
+                    Utility.showToast(this, getString(R.string.enoactivity), 0);
                 } catch (Exception e) {
-                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
                 }
                 break;
-            case R.id.linLayBio:
-              /*  try {
-                    addFragment(new Bio_Fragment(), 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
 
-                Intent bioIntent = new Intent(this,BioActivity.class);
+
+            case R.id.linLayBio:
+                Intent bioIntent = new Intent(this, BioActivity.class);
                 bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                bioIntent.putExtra("from", "setting");
                 startActivity(bioIntent);
                 break;
             case R.id.img_default_location:
                 UserInfo userInfo = userInfo();
-                userInfo.lat = (activity.getLatitude() + "");
-                userInfo.longi = (activity.getLongitude() + "");
+                userInfo.lat = (latitude + "");
+                userInfo.longi = (longitude + "");
                 userInfo.adminLat = userInfo.lat;
                 userInfo.adminLong = userInfo.longi;
-                userInfo.address = (getAddress(activity.getLatitude(), activity.getLongitude()));
+                userInfo.address = (getAddress(latitude, longitude));
                 userInfo.currentLocation = (true);
                 updateSession(userInfo);
                 updateLocation(userInfo);
                 break;
+
+
             case R.id.linLayPriPolicy:
                 try {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(WebServices.PRIVACY_));
                     startActivity(i);
                 } catch (ActivityNotFoundException e) {
-                    Utility.showToast(context, getString(R.string.enoactivity), 0);
+                    Utility.showToast(this, getString(R.string.enoactivity), 0);
                 } catch (Exception e) {
-                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
                 }
                 break;
         }
 
     }
 
+    /*.........................updateLocation()....................................*/
     private void updateLocation(final UserInfo userInfo) {
-
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.EVENT_BY_LOCAL, new Response.Listener<String>() {
                 @Override
@@ -372,12 +384,6 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                             if (user.has("longi"))
                                 userInfo.longi = (user.getString("longi"));
 
-                            /*if (user.has("adminLat"))
-                                userInfo.adminLat = (user.getString("adminLat"));
-
-                            if (user.has("adminLong"))
-                                userInfo.adminLong = (user.getString("adminLong"));*/
-
                             if (user.has("adminLat")) {
                                 if (user.getString("adminLat").isEmpty()) {
                                     userInfo.adminLat = user.getString("lat");
@@ -402,12 +408,12 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                             updateSession(userInfo);
 
                         } else {
-                            Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                            Utility.showToast(SettingActivtiy.this, getString(R.string.somethingwentwrong), 0);
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                        Utility.showToast(SettingActivtiy.this, getString(R.string.somethingwentwrong), 0);
                     }
 
                 }
@@ -431,73 +437,64 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                     return params;
                 }
             };
-            VolleySingleton.getInstance(context).addToRequestQueue(request);
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             utility.snackBar(txt_logout, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
-
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
-
         CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
             @Override
             public void onTextChange(UserInfo user) {
-                //userInfo = user;
-
-                if(user!= null){
-                    txt_first_name.setText(user.fullname == null? "":user.fullname);
+                if (user != null) {
+                    txt_first_name.setText(user.fullname == null ? "" : user.fullname);
                     if (!user.lastName.isEmpty())
                         txt_last_name.setText(user.lastName);
                     else
                         txt_last_name.setText(R.string.na);
-                }  else
+                } else
                     txt_last_name.setText(R.string.na);
             }
         });
 
-        Log.e("Test"," Setting-OnResume");
+        Log.e("Test", " Setting-OnResume");
     }
 
 
     public void updateSession(UserInfo user) {
         SceneKey.sessionManager.createSession(user);
         userInfo = SceneKey.sessionManager.getUserInfo();
-        try {
-            //Picasso.with(this).load(userInfo.getUserImage()).placeholder(R.drawable.image_default_profile).into(img_profile);
-            //tv_key_points.setText(userInfo.key_points);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
 
     @Override
     public void onStart() {
-        Log.e("Test"," Setting-OnStart");
+        Log.e("Test", " Setting-OnStart");
         super.onStart();
+        initLocation();
     }
 
     @Override
     public void onStop() {
-        Log.e("Test"," Setting-OnStop");
+        Log.e("Test", " Setting-OnStop");
         super.onStop();
     }
 
     @Override
     public void onPause() {
-        Log.e("Test"," Setting-OnPause");
+        Log.e("Test", " Setting-OnPause");
         super.onPause();
     }
 
 
-
-    public void showProgDialog(boolean b, String TAG) {
+    /*............................showProgDialog..............................*/
+    public void showProgDialog(boolean b) {
         try {
             customProgressBar.setCanceledOnTouchOutside(b);
             customProgressBar.setCancelable(b);
@@ -507,6 +504,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /*............................dismissProgDialog..............................*/
     public void dismissProgDialog() {
         try {
             if (customProgressBar != null) customProgressBar.dismiss();
@@ -515,33 +513,32 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
+    /*............................showStatusBar..............................*/
     public void showStatusBar() {
         getWindow().clearFlags((WindowManager.LayoutParams.FLAG_FULLSCREEN));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View decor = getWindow().getDecorView();
             decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            // top_status.setBackgroundResource(R.color.white);
             isApiM = true;
         } else {
             StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
         }
     }
 
-
+    /*............................hideKeyBoard..............................*/
     public void hideKeyBoard() {
         try {
             InputMethodManager inputManager = (InputMethodManager) getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             assert inputManager != null;
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
+    /*............................addFragment..............................*/
     public Fragment addFragment(Fragment fragmentHolder, int animationValue) {
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -568,4 +565,28 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /*............................Location..............................*/
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            // Logic to handle location object
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 }

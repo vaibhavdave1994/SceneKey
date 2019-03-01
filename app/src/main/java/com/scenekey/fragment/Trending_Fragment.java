@@ -205,28 +205,12 @@ public class Trending_Fragment extends Fragment {
                             if (status == 0) {
                                 activity.dismissProgDialog();
                                 try {
-                                    //Toast.makeText(activity, jo.getString("message"), Toast.LENGTH_SHORT).show();
-                                   /* if (eventsArrayList == null)
-                                        eventsArrayList = new ArrayList<>();
-                                    else eventsArrayList.clear();*/
                                     no_data_trending.setVisibility(View.VISIBLE);
-//                                    setRecyclerView();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                             try {
-                                /*if (jo.has("myInfo")) {
-                                    UserInfo userInfo = activity.userInfo();
-                                    JSONObject user = jo.getJSONObject("myInfo");
-                                    if(user.has("makeAdmin"))   userInfo.makeAdmin=(user.getString("makeAdmin"));
-                                    if(user.has("lat"))         userInfo.latitude=(user.getString("lat"));
-                                    if(user.has("longi"))       userInfo.longitude=(user.getString("longi"));
-                                    if(user.has("address"))       userInfo.address=(user.getString("address"));
-                                    if(user.has("fullname"))       userInfo.fullName=(user.getString("fullname"));
-                                    if(user.has("key_points"))userInfo.keyPoints=(user.getString("key_points"));
-                                    activity.updateSession(userInfo);
-                                }*/
 
                                 // New Code
                                 if (jo.has("userInfo")) {
@@ -261,26 +245,8 @@ public class Trending_Fragment extends Fragment {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            //else if()
                         } else {
                             try {
-                               /* if (jo.has("myInfo")) {
-                                    UserInfo userInfo = activity.userInfo();
-                                    JSONObject user = jo.getJSONObject("myInfo");
-                                    if (user.has("makeAdmin"))
-                                        userInfo.makeAdmin = (user.getString("makeAdmin"));
-                                    if (user.has("lat"))
-                                        userInfo.latitude = (user.getString("lat"));
-                                    if (user.has("longi"))
-                                        userInfo.longitude = (user.getString("longi"));
-                                    if (user.has("address"))
-                                        userInfo.address = (user.getString("address"));
-                                    if (user.has("fullname"))
-                                        userInfo.fullName = (user.getString("fullname"));
-                                    if (user.has("key_points"))
-                                        userInfo.keyPoints = (user.getString("key_points"));
-                                    activity.updateSession(userInfo);
-                                }*/
 
                                 // New Code
                                 if (jo.has("userInfo")) {
@@ -316,6 +282,10 @@ public class Trending_Fragment extends Fragment {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+
+
+
+
                             if (jo.has("events")) {
                                 if (eventsArrayList == null) eventsArrayList = new ArrayList<>();
                                 else eventsArrayList.clear();
@@ -469,7 +439,6 @@ public class Trending_Fragment extends Fragment {
                         if (!isKeyInAble && activity.userInfo().key_points.equals("0")) {
                             Toast.makeText(context, "Sorry! you have run out of key points! Earn more by connecting on the scene!", Toast.LENGTH_SHORT).show();
                         } else {
-
 
                             Intent intent = new Intent(context,EventDetailsActivity.class);
                             intent.putExtra("event_id", event_id);

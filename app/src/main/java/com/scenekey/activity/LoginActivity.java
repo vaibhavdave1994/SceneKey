@@ -122,8 +122,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleApiClient mGoogleApiClient;
     public String loginstatus = "";
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -423,89 +421,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
                         dismissProgDialog();
                     }
-
-
-                    // Old Code
-                    /*try {
-                        JSONObject jsonObject = new JSONObject(data);
-
-                        String status = jsonObject.getString("status");
-                        String message = jsonObject.getString("message");
-
-                        if (status.equalsIgnoreCase("SUCCESS")) {
-                            dismissProgDialog();
-
-                            JSONObject userDetail = jsonObject.getJSONObject("userDetail");
-                            UserInfo userInfo = new UserInfo();
-                            userInfo.userID = userDetail.getString("userid");
-                            userInfo.facebookId = userDetail.getString("userFacebookId");
-                            String socialType = userDetail.getString("socialType");
-                            userInfo.userName = userDetail.getString("userName");
-                            userInfo.email = userDetail.getString("userEmail");
-
-                           *//* userInfo.fullName = userDetail.getString("fullname");
-                            String[] split = userInfo.fullName.split(" ");
-                            if (split.length == 2) {
-                                userInfo.firstName = split[0].substring(0, 1).toUpperCase() + split[0].substring(1);
-                                userInfo.lastName = split[1].substring(0, 1).toUpperCase() + split[1].substring(1);
-                            } else {
-                                userInfo.firstName = userInfo.fullName.substring(0, 1).toUpperCase() + userInfo.fullName.substring(1);
-                                userInfo.lastName = "";
-                            }*//*
-
-                            // New Code
-                            userInfo.fullName = userDetail.getString("fullname") + " " + userDetail.getString("lastName");
-                            userInfo.firstName = userDetail.getString("fullname");
-                            userInfo.lastName = userDetail.getString("lastName");
-
-                            userInfo.password = userDetail.getString("password");
-                            userInfo.userImage = userDetail.getString("userImage");
-                            String age = userDetail.getString("age");
-                            String dob = userDetail.getString("dob");
-                            String gender = userDetail.getString("gender");
-                            String userDeviceId = userDetail.getString("userDeviceId");
-                            String deviceType = userDetail.getString("deviceType");
-                            userInfo.userGender = userDetail.getString("userGender");
-                            String userStatus = userDetail.getString("userStatus");
-                            userInfo.loginTime = userDetail.getString("userLastLogin");
-                            String registered_date = userDetail.getString("registered_date");
-                            String usertype = userDetail.getString("usertype");
-                            String artisttype = userDetail.getString("artisttype");
-                            String stagename = userDetail.getString("stagename");
-                            userInfo.venuName = userDetail.getString("venuename");
-                            userInfo.address = userDetail.getString("address");
-                            String fullAddress = userDetail.getString("fullAddress");
-                            userInfo.latitude = userDetail.getString("lat");
-                            userInfo.longitude = userDetail.getString("longi");
-                            if (!(userDetail.getString("adminLat").isEmpty() && userDetail.getString("adminLat").isEmpty())) {
-                                userInfo.latitude = userDetail.getString("adminLat");
-                                userInfo.longitude = userDetail.getString("adminLong");
-                            }
-                            String user_status = userDetail.getString("user_status");
-
-                            // New Code
-                            userInfo.user_status = userDetail.getString("user_status");
-
-                            userInfo.makeAdmin = userDetail.getString("makeAdmin");
-                            userInfo.keyPoints = userDetail.getString("key_points");
-                            userInfo.bio = userDetail.getString("bio");
-
-                            sessionManager.createSession(userInfo);
-                            sessionManager.setPassword(password);
-
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-
-                        } else {
-                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                            dismissProgDialog();
-                        }
-
-                    } catch (Throwable t) {
-                        Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
-                        dismissProgDialog();
-                    }*/
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -591,7 +506,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /* facebook api start here */
     private void facebookLoginApi() {
-        loginstatus = "faceebook";
+        loginstatus = "facebook";
         objFbCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
         LoginManager.getInstance().registerCallback(objFbCallbackManager, new FacebookCallback<LoginResult>() {
@@ -613,12 +528,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     userInfo.userImage = "https://graph.facebook.com/" + userInfo.userFacebookId + "/picture?type=large";
                                     userInfo.userGender = "";//object.getString("gender");
                                     userInfo.gender = "";//object.getString("gender");
-
-                                    /*if (object.has("email")) {
-                                        userInfo.email = object.getString("email");
-                                    } else {
-                                        userInfo.email = userInfo.facebookId + ".scenekey" + "@fb.com";
-                                    }*/
 
                                     // New Code
                                     if (object.has("email")) {
@@ -689,19 +598,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             fbUserInfo = userInfo;
                             openSelectGenderDialog();
+                            //doRegistration(fbUserInfo);
                         }
-
-                      /*  //registered user
-                        if (statusCode == 1) {
-                            registerSocialDetails(userInfo);
-                        } else if (statusCode == 0) {  //already registered user
-                            if (manageSession(jsonObject, userInfo))
-                                callIntent(btnFB.getId(),false);
-                        } else {
-                            Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
-                        }
-
-*/
 
                     } catch (Exception ex) {
                         customProgressBar.cancel();
@@ -735,7 +633,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-   /* private void registerSocialDetails(final UserInfo userInfo) {
+    /*private void registerSocialDetails(final UserInfo userInfo) {
         showProgDialog(false);
 
         if (utility.checkInternetConnection()) {
@@ -983,7 +881,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        if (loginstatus.equals("faceebook")) {
+        if (loginstatus.equals("facebook")) {
 
             Log.v("requestCode",""+requestCode);
             objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -1080,8 +978,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String data = new String(response.data);
                     Log.e("Response", data);
 
-                    signOut();
-                    LoginManager.getInstance().logOut();
+                    //signOut();
+                    //LoginManager.getInstance().logOut();
 
                     try {
                         JSONObject jsonObject = new JSONObject(data);

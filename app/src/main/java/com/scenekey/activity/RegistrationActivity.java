@@ -106,7 +106,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Context context = this;
     private EditText etRegiFirstName, etRegiLastName, etRegiEmail, etRegiPwd;
     private Button btnRegiSignUp, btnGmailSignUp, btnFBSignUp;
-    private ImageView imgRegiMale, imgRegiFemale, imgUserImage,dialog_decline_button;
+    private ImageView imgRegiMale, imgRegiFemale, imgUserImage, dialog_decline_button;
     private Utility utility;
     private CustomProgressBar customProgressBar;
     private SessionManager sessionManager;
@@ -148,7 +148,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             window.setStatusBarColor(getResources().getColor(R.color.bgImage));
         }
     }
-
 
     private void initView() {
         etRegiFirstName = findViewById(R.id.etRegiFirstName);
@@ -296,8 +295,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
                     if (latitude != 0.0d && longitude != 0.0d) {
                         facebookLoginApi();
-                    }
-                    else if (!checkGPS) {
+                    } else if (!checkGPS) {
                         utility.checkGpsStatus();
                     } else {
                         showErrorPopup("facebook");
@@ -333,7 +331,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     /* facebook api start here */
     private void facebookLoginApi() {
-        loginstatus = "faceebook";
+        loginstatus = "facebook";
         objFbCallbackManager = CallbackManager.Factory.create();
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
@@ -356,7 +354,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     userInfo.userImage = "https://graph.facebook.com/" + userInfo.userFacebookId + "/picture?type=large";
                                     userInfo.userGender = "";//object.getString("gender");
                                     userInfo.gender = "";//object.getString("gender");
-
+                                    userInfo.password = "123456";
                                     // New Code
                                     if (object.has("email")) {
                                         userInfo.userEmail = object.getString("email");
@@ -366,7 +364,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                                     fbUserImage = userInfo.userImage;
                                     getBitmapFromURL(userInfo.userImage);
-                                    checkSocialDetail(userInfo, loginstatus,userInfo.userFacebookId);
+                                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
                                     getAddressFromLatLong(latitude, longitude);
                                     //registerSocialDetails(userInfo);
                                 } catch (JSONException e) {
@@ -441,11 +439,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         dialog.dismiss();
 
                         //btnRegiSignUp.callOnClick();
-                        if(type.equals("facebook")){
+                        if (type.equals("facebook")) {
                             btnFBSignUp.callOnClick();
-                        }else if(type.equals("gmail")){
+                        } else if (type.equals("gmail")) {
                             btnRegiSignUp.callOnClick();
-                        }else{
+                        } else {
                             btnRegiSignUp.callOnClick();
                         }
 
@@ -463,7 +461,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         dialog.show();
     }
 
-    private void doRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {
+
+    // New Code
+    private void doNewRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {
 
         if (utility.checkInternetConnection()) {
 
@@ -473,25 +473,96 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.REGISTRATION, new Response.Listener<NetworkResponse>() {
                 @Override
                 public void onResponse(NetworkResponse response) {
+                    Log.v("respose", "" + response);
                     String data = new String(response.data);
                     Log.e("Response", data);
 
-                    //Logout From Facebook and gmail
-                    LoginManager.getInstance().logOut();
-                    signOut();
-                    // New Code
-                    ImageSessionManager.getInstance().setScreenFlag(1);
+                    //signOut();
+                    //LoginManager.getInstance().logOut();
 
                     try {
                         JSONObject jsonObject = new JSONObject(data);
 
                         String status = jsonObject.getString("status");
                         String message = jsonObject.getString("message");
+                        String messageCode = jsonObject.getString("messageCode");
 
-                        if (status.equalsIgnoreCase("success")) {
+                        // New Code
+                        if (message.equalsIgnoreCase("User registered successfully")) {
+
                             JSONObject userDetail = jsonObject.getJSONObject("userDetail");
                             UserInfo userInfo = new UserInfo();
+                            userInfo.userid = userDetail.getString("userid");
+                            userInfo.userFacebookId = userDetail.getString("userFacebookId");
+                            userInfo.socialType = userDetail.getString("socialType");
+                            userInfo.userName = userDetail.getString("userName");
+                            userInfo.userEmail = userDetail.getString("userEmail");
+                            userInfo.mauticContactId = userDetail.getString("mauticContactId");
+                            userInfo.fullname = userDetail.getString("fullname");
+                            userInfo.lastName = userDetail.getString("lastName");
+                            userInfo.password = userDetail.getString("password");
+                            userInfo.userImage = userDetail.getString("userImage");
+                            userInfo.age = userDetail.getString("age");
+                            userInfo.dob = userDetail.getString("dob");
+                            userInfo.gender = userDetail.getString("gender");
+                            userInfo.userDeviceId = userDetail.getString("userDeviceId");
+                            userInfo.deviceType = userDetail.getString("deviceType");
+                            userInfo.userGender = userDetail.getString("userGender");
+                            userInfo.userStatus = userDetail.getString("userStatus");
+                            userInfo.userLastLogin = userDetail.getString("userLastLogin");
+                            userInfo.registered_date = userDetail.getString("registered_date");
+                            userInfo.usertype = userDetail.getString("usertype");
+                            userInfo.artisttype = userDetail.getString("artisttype");
+                            userInfo.stagename = userDetail.getString("stagename");
+                            userInfo.venuename = userDetail.getString("venuename");
+                            userInfo.address = userDetail.getString("address");
+                            userInfo.fullAddress = userDetail.getString("fullAddress");
+                            userInfo.lat = userDetail.getString("lat");
+                            userInfo.longi = userDetail.getString("longi");
 
+                            if (userDetail.getString("adminLat").isEmpty()) {
+                                userInfo.adminLat = userDetail.getString("lat");
+                                userInfo.adminLong = userDetail.getString("longi");
+                                userInfo.currentLocation = true;
+                            } else {
+                                userInfo.adminLat = userDetail.getString("adminLat");
+                                userInfo.adminLong = userDetail.getString("adminLong");
+                                userInfo.currentLocation = false;
+                            }
+
+                            userInfo.user_status = userDetail.getString("user_status");
+                            userInfo.makeAdmin = userDetail.getString("makeAdmin");
+                            userInfo.key_points = userDetail.getString("key_points");
+                            userInfo.bio = userDetail.getString("bio");
+                            userInfo.appBadgeCount = userDetail.getString("appBadgeCount");
+
+                            sessionManager.createSession(userInfo);
+
+                            ImageSessionManager.getInstance().setScreenFlag(1);
+
+                            ImageSessionManager.getInstance().createImageSession(fbUserImage, false);
+                            AWSImage awsImage = new AWSImage(RegistrationActivity.this);
+
+                            try {
+                                if (profileImageBitmap != null) {
+                                    awsImage.initItem(profileImageBitmap);
+                                    dismissProgDialog();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                dismissProgDialog();
+                            }
+                            dismissProgDialog();
+
+                            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+
+
+                        } else if (message.equalsIgnoreCase("Logged in successfully")) {
+
+                            JSONObject userDetail = jsonObject.getJSONObject("userDetail");
+                            UserInfo userInfo = new UserInfo();
                             userInfo.userid = userDetail.getString("userid");
                             userInfo.userFacebookId = userDetail.getString("userFacebookId");
                             userInfo.socialType = userDetail.getString("socialType");
@@ -540,23 +611,226 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             userInfo.appBadgeCount = userDetail.getString("appBadgeCount");
 
                             sessionManager.createSession(userInfo);
-                            sessionManager.setPassword(pwd);
-
-                            AWSImage awsImage = new AWSImage(RegistrationActivity.this);
-                            try {
-                                if (profileImageBitmap != null) {
-                                    awsImage.initItem(profileImageBitmap);
-                                    dismissProgDialog();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                dismissProgDialog();
-                            }
                             dismissProgDialog();
-                            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+
+                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
+                        }
 
+                    } catch (Throwable t) {
+                        dismissProgDialog();
+                        Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    NetworkResponse networkResponse = error.networkResponse;
+                    Log.i("Error", networkResponse + "");
+                    Toast.makeText(RegistrationActivity.this, networkResponse + "", Toast.LENGTH_SHORT).show();
+                    dismissProgDialog();
+                    error.printStackTrace();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+
+                    // New Code
+                    params.put("userEmail", email);
+                    params.put("password", "123456");
+                    params.put("fullname", firstName);
+                    params.put("fullAddress", fullAddress);
+                    params.put("address", city);
+                    params.put("userGender", maleFemale);
+                    params.put("lat", String.valueOf(latitude));
+                    params.put("longi", String.valueOf(longitude));
+                    params.put("userDeviceId", FirebaseInstanceId.getInstance().getToken());
+                    params.put("deviceType", "2");
+                    params.put("fbusername", firstName);
+                    params.put("userFacebookId", userFbAndGmail);
+                    params.put("socialType", loginstatus);
+
+                    Utility.e("Registration send data", params.toString());
+                    return params;
+                }
+
+               /* @Override
+                protected Map<String, DataPart> getByteData() {
+                    Map<String, DataPart> params = new HashMap<String, DataPart>();
+                    if (profileImageBitmap != null) {
+                        params.put("profileImage", new VolleyMultipartRequest.DataPart("profilePic.jpg", AppHelper.getFileDataFromDrawable(profileImageBitmap), "image/jpeg"));
+                    }
+                    return params;
+                }*/
+            };
+
+            multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(RegistrationActivity.this).addToRequestQueue(multipartRequest);
+        } else {
+            Toast.makeText(RegistrationActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    //Old Api
+    private void doRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {
+
+        if (utility.checkInternetConnection()) {
+
+            customProgressBar = new CustomProgressBar(context);
+            showProgDialog(false);
+
+            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.REGISTRATION, new Response.Listener<NetworkResponse>() {
+                @Override
+                public void onResponse(NetworkResponse response) {
+                    String data = new String(response.data);
+                    Log.e("Response", data);
+
+                    //Logout From Facebook and gmail
+//                    ............................................................................
+                    //LoginManager.getInstance().logOut();
+                    //signOut();
+                    // New Code
+                    ImageSessionManager.getInstance().setScreenFlag(1);
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(data);
+
+                        String status = jsonObject.getString("status");
+                        String message = jsonObject.getString("message");
+
+                        if (status.equalsIgnoreCase("success")) {
+
+                            if (message.equalsIgnoreCase("Logged in successfully")) {
+                                JSONObject userDetail = jsonObject.getJSONObject("userDetail");
+                                UserInfo userInfo = new UserInfo();
+                                userInfo.userid = userDetail.getString("userid");
+                                userInfo.userFacebookId = userDetail.getString("userFacebookId");
+                                userInfo.socialType = userDetail.getString("socialType");
+                                userInfo.userName = userDetail.getString("userName");
+                                userInfo.userEmail = userDetail.getString("userEmail");
+                                userInfo.mauticContactId = userDetail.getString("mauticContactId");
+                                userInfo.fullname = userDetail.getString("fullname");
+                                userInfo.lastName = userDetail.getString("lastName");
+                                userInfo.password = userDetail.getString("password");
+                                userInfo.userImage = userDetail.getString("userImage");
+                                userInfo.age = userDetail.getString("age");
+                                userInfo.dob = userDetail.getString("dob");
+                                userInfo.gender = userDetail.getString("gender");
+                                userInfo.userDeviceId = userDetail.getString("userDeviceId");
+                                userInfo.deviceType = userDetail.getString("deviceType");
+                                userInfo.userGender = userDetail.getString("userGender");
+                                userInfo.userStatus = userDetail.getString("userStatus");
+                                userInfo.userLastLogin = userDetail.getString("userLastLogin");
+                                userInfo.registered_date = userDetail.getString("registered_date");
+                                userInfo.usertype = userDetail.getString("usertype");
+                                userInfo.artisttype = userDetail.getString("artisttype");
+                                userInfo.stagename = userDetail.getString("stagename");
+                                userInfo.venuename = userDetail.getString("venuename");
+                                userInfo.address = userDetail.getString("address");
+                                userInfo.fullAddress = userDetail.getString("fullAddress");
+                                userInfo.lat = userDetail.getString("lat");
+                                userInfo.longi = userDetail.getString("longi");
+
+                            /*userInfo.adminLat = userDetail.getString("adminLat");
+                            userInfo.adminLong = userDetail.getString("adminLong");*/
+
+                                if (userDetail.getString("adminLat").isEmpty()) {
+                                    userInfo.adminLat = userDetail.getString("lat");
+                                    userInfo.adminLong = userDetail.getString("longi");
+                                    userInfo.currentLocation = true;
+                                } else {
+                                    userInfo.adminLat = userDetail.getString("adminLat");
+                                    userInfo.adminLong = userDetail.getString("adminLong");
+                                    userInfo.currentLocation = false;
+                                }
+
+                                userInfo.user_status = userDetail.getString("user_status");
+                                userInfo.makeAdmin = userDetail.getString("makeAdmin");
+                                userInfo.key_points = userDetail.getString("key_points");
+                                userInfo.bio = userDetail.getString("bio");
+                                userInfo.appBadgeCount = userDetail.getString("appBadgeCount");
+
+                                sessionManager.createSession(userInfo);
+                                sessionManager.setPassword(pwd);
+                                dismissProgDialog();
+
+                                Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            } else {
+                                JSONObject userDetail = jsonObject.getJSONObject("userDetail");
+                                UserInfo userInfo = new UserInfo();
+
+                                userInfo.userid = userDetail.getString("userid");
+                                userInfo.userFacebookId = userDetail.getString("userFacebookId");
+                                userInfo.socialType = userDetail.getString("socialType");
+                                userInfo.userName = userDetail.getString("userName");
+                                userInfo.userEmail = userDetail.getString("userEmail");
+                                userInfo.mauticContactId = userDetail.getString("mauticContactId");
+                                userInfo.fullname = userDetail.getString("fullname");
+                                userInfo.lastName = userDetail.getString("lastName");
+                                userInfo.password = userDetail.getString("password");
+                                userInfo.userImage = userDetail.getString("userImage");
+                                userInfo.age = userDetail.getString("age");
+                                userInfo.dob = userDetail.getString("dob");
+                                userInfo.gender = userDetail.getString("gender");
+                                userInfo.userDeviceId = userDetail.getString("userDeviceId");
+                                userInfo.deviceType = userDetail.getString("deviceType");
+                                userInfo.userGender = userDetail.getString("userGender");
+                                userInfo.userStatus = userDetail.getString("userStatus");
+                                userInfo.userLastLogin = userDetail.getString("userLastLogin");
+                                userInfo.registered_date = userDetail.getString("registered_date");
+                                userInfo.usertype = userDetail.getString("usertype");
+                                userInfo.artisttype = userDetail.getString("artisttype");
+                                userInfo.stagename = userDetail.getString("stagename");
+                                userInfo.venuename = userDetail.getString("venuename");
+                                userInfo.address = userDetail.getString("address");
+                                userInfo.fullAddress = userDetail.getString("fullAddress");
+                                userInfo.lat = userDetail.getString("lat");
+                                userInfo.longi = userDetail.getString("longi");
+
+                            /*userInfo.adminLat = userDetail.getString("adminLat");
+                            userInfo.adminLong = userDetail.getString("adminLong");*/
+
+                                if (userDetail.getString("adminLat").isEmpty()) {
+                                    userInfo.adminLat = userDetail.getString("lat");
+                                    userInfo.adminLong = userDetail.getString("longi");
+                                    userInfo.currentLocation = true;
+                                } else {
+                                    userInfo.adminLat = userDetail.getString("adminLat");
+                                    userInfo.adminLong = userDetail.getString("adminLong");
+                                    userInfo.currentLocation = false;
+                                }
+
+                                userInfo.user_status = userDetail.getString("user_status");
+                                userInfo.makeAdmin = userDetail.getString("makeAdmin");
+                                userInfo.key_points = userDetail.getString("key_points");
+                                userInfo.bio = userDetail.getString("bio");
+                                userInfo.appBadgeCount = userDetail.getString("appBadgeCount");
+
+                                sessionManager.createSession(userInfo);
+                                sessionManager.setPassword(pwd);
+
+                                AWSImage awsImage = new AWSImage(RegistrationActivity.this);
+                                try {
+                                    if (profileImageBitmap != null) {
+                                        awsImage.initItem(profileImageBitmap);
+                                        dismissProgDialog();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    dismissProgDialog();
+                                }
+                                dismissProgDialog();
+                                Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                            }
 
                         } else {
                             dismissProgDialog();
@@ -761,7 +1035,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //   Bitmap bitmap;
 
-        if (loginstatus.equals("faceebook")) {
+        if (loginstatus.equals("facebook")) {
 
             objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
         } else if (loginstatus.equals("gmail")) {
@@ -833,7 +1107,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     super.onActivityResult(requestCode, resultCode, data);
                     break;
             }
-        } /*else if (loginstatus.equals("faceebook")) {
+        } /*else if (loginstatus.equals("facebook")) {
 
             objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
         } else if (loginstatus.equals("gmail")) {
@@ -866,7 +1140,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
             }
 
-            userInfo.fullname = userInfo.userName+" "+userInfo.lastName;
+            userInfo.fullname = userInfo.userName + " " + userInfo.lastName;
            /* String firstName = fullName[0];
             String lastName = fullName[1];*/
 
@@ -882,7 +1156,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 getBitmapFromURL(userInfo.userImage);
             }
 
-            checkSocialDetail(userInfo, loginstatus,userInfo.userFacebookId);
+            checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
             getAddressFromLatLong(latitude, longitude);
         }
     }
@@ -903,12 +1177,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         jsonObject = new JSONObject(response);
                         Utility.e(" login response", response);
-                        //  int statusCode = jsonObject.getInt("success");
+                        //int statusCode = jsonObject.getInt("success");
                         String message = jsonObject.getString("message");
                         // New Code
                         String status = jsonObject.getString("status");
                         if (status.equals("success")) {
+
                             doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
+                            //doNewRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
                         } else {
                             fbUserInfo = userInfo;
                             openSelectGenderDialog(userInfo);
@@ -971,7 +1247,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-       ///genderDialog.findViewById(R.id.dialog_decline_button).setOnClickListener(this);
+        ///genderDialog.findViewById(R.id.dialog_decline_button).setOnClickListener(this);
 
         //genderDialog.findViewById(R.id.btn_select_gender).setOnClickListener(this);
 

@@ -7,21 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
 import com.scenekey.activity.TheRoomActivity;
-import com.scenekey.lib_sources.SwipeCard.Card;
-import com.scenekey.liveSideWork.LiveRoomActivity;
 import com.scenekey.model.EventAttendy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

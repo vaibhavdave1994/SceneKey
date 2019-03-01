@@ -66,14 +66,9 @@ import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomeClick;
 import com.scenekey.helper.Permission;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.Floting_menuAction.FloatingActionButton;
-import com.scenekey.lib_sources.Floting_menuAction.FloatingActionMenu;
 import com.scenekey.lib_sources.SwipeCard.Card;
-import com.scenekey.listener.CheckEventStatusListener;
-import com.scenekey.listener.MyListenerForProfile;
 import com.scenekey.listener.StatusBarHide;
 import com.scenekey.model.EventAttendy;
-import com.scenekey.model.EventDetails;
 import com.scenekey.model.Events;
 import com.scenekey.model.Feeds;
 import com.scenekey.model.NotificationData;
@@ -108,16 +103,12 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
     public final String TAG = Event_Fragment.class.toString();
     public boolean canCallWebservice, isInfoVisible, isPopUpShowing, canGetNotification;
     public Double latitude, longitude;
-    public TextView txt_event_name, txt_discrp, txt_f2_badge,
-            txt_hide_all_two, btn_got_it, txt_discipI_f2, txt_hide_all;
+    public TextView txt_event_name, txt_discrp, txt_f2_badge, btn_got_it, txt_discipI_f2, txt_hide_all;
     public ArrayList<Card> cardsList;
-    public FloatingActionButton fabMenu1_like, fabMenu2_picture, fabMenu3_comment;
     private LinearLayout info_view;
-    private RelativeLayout rtlv_top, demoView; //Demo Screen
-    private ImageView img_infoget_f2, img_f10_back, image_map, img_notif;
+    private ImageView img_infoget_f2, img_f10_back;
     private RecyclerView usercomeInRecyclerView;
     private ScrollView scrl_all;
-    private FloatingActionMenu floatBtn;
     private Context context;
     private HomeActivity activity;
     private Utility utility;
@@ -138,6 +129,9 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
     private ProfilePopUp_Notification popup;
     private AWSImage awsImage;
     private CognitoCredentialsProvider credentialsProvider;
+
+
+
     //New Code Shubham
     private RecyclerView listViewFragProfile;
     private Profile_Adapter adapter;
@@ -165,7 +159,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                 from_tab = getArguments().getString(FROM_TAB);
             }
         }
-
     }
 
     @Override
@@ -178,41 +171,17 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         activity.setTopStatus();
         activity.showProgDialog(false, TAG);
         //TODO handling on grid adapter click if user is not key in
-
-        txt_discipI_f2 = view.findViewById(R.id.txt_discipI_f2);
-        info_view = view.findViewById(R.id.info_view);
-
-        usercomeInRecyclerView = view.findViewById(R.id.usercomeInRecyclerView);
-
-        txt_f2_badge = view.findViewById(R.id.txt_f2_badge);
-
-        txt_discrp = view.findViewById(R.id.txt_discrp);
-
-        scrl_all = view.findViewById(R.id.scrl_all);
-        image_map = view.findViewById(R.id.image_map);
-        rtlv_top = view.findViewById(R.id.rtlv_top);
+        //usercomeInRecyclerView = view.findViewById(R.id.usercomeInRecyclerView);
 
         map_view = view.findViewById(R.id.map_view);
         map_view.onCreate(savedInstanceState);
         map_view.onResume();
 
-
-        txt_hide_all_two = view.findViewById(R.id.txt_hide_all_two);
-        demoView = view.findViewById(R.id.demoView);
-        btn_got_it = view.findViewById(R.id.btn_got_it);
-
         // New Code
         userLIst = new ArrayList<>();
-        img_f10_back = view.findViewById(R.id.img_f10_back);
         txt_event_name = view.findViewById(R.id.txt_event_name);
-        img_infoget_f2 = view.findViewById(R.id.img_infoget_f2);
-        img_notif = view.findViewById(R.id.img_notif);
-        floatBtn = view.findViewById(R.id.floatBtn);
-        fabMenu1_like = view.findViewById(R.id.fabMenu1_like);
-        fabMenu2_picture = view.findViewById(R.id.fabMenu2_picture);
-        fabMenu3_comment = view.findViewById(R.id.fabMenu3_comment);
+
         txt_hide_all = view.findViewById(R.id.txt_hide_all);
-        fabMenu1_like.setTextView(new TextView[]{txt_hide_all});
         tv_no_members = view.findViewById(R.id.tv_no_members);
 
         activity.setBBVisibility(View.GONE, TAG);
@@ -235,19 +204,12 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         listViewFragProfile = view.findViewById(R.id.listViewFragProfile);
 
         feedsList = new ArrayList<>();
-        adapter = new Profile_Adapter(context, userInfo.userid,feedsList, myProfile,userLIst,eventId,null,null);
+        adapter = new Profile_Adapter(context, userInfo.userid,feedsList,userLIst,eventId,null,null,null,null);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         listViewFragProfile.setLayoutManager(layoutManager);
         listViewFragProfile.setAdapter(adapter);
 
-       /* handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                activity.showProgDialog(false, TAG);
-                getListEventFeed();
-            }
-        }, 200);*/
+
         /*..................................................................*/
 
         //keypoint decrement if event distance is more than 100m
@@ -258,154 +220,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
 
         return view;
     }
-
-   /* private void getListEventFeed() {
-
-        if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.LISTEVENTFEED, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Utility.printBigLogcat(TAG, response);
-                    try {
-                        getComentResponse(response);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (feedsList == null) {
-                        feedsList = new ArrayList<>();
-                    }
-                    activity.dismissProgDialog();
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("event_id", eventId);
-                    params.put("user_id", attendy.userid);
-
-                    Utility.e(TAG, " params " + params.toString());
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(context).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-        } else {
-            utility.snackBar(listViewFragProfile, getString(R.string.internetConnectivityError), 0);
-            activity.dismissProgDialog();
-        }
-    }
-
-    private synchronized void getComentResponse(String response) throws JSONException {
-        if (feedsList == null) {
-            feedsList = new ArrayList<>();
-            feedsList.clear();
-        }
-        JSONObject object = new JSONObject(response);
-
-        try {
-            if (object.has("myInfo")) {
-                UserInfo userInfo = activity.userInfo();
-                JSONObject user = object.getJSONObject("myInfo");
-                if (user.has("makeAdmin")) userInfo.makeAdmin = (user.getString("makeAdmin"));
-                if (user.has("lat")) userInfo.lat = (user.getString("lat"));
-                if (user.has("longi")) userInfo.longi = (user.getString("longi"));
-                if (user.has("address")) userInfo.address = (user.getString("address"));
-                if (user.has("fullname")) userInfo.fullname = (user.getString("fullname"));
-                if (user.has("key_points")) userInfo.key_points = (user.getString("key_points"));
-
-                Utility.e("Profile session update.", userInfo.getUserImage());
-                activity.updateSession(userInfo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (object.has("allfeeds")) {
-
-            Object objectType = object.get("allfeeds");
-            if (objectType instanceof String) {
-                String jsonStringType = (String) objectType;
-
-                if (feedsList.size() == 0) {
-                    if (object.has("event_profile_rating")) {
-                        JSONObject obj = object.getJSONObject("event_profile_rating");
-
-                        Feeds feeds = new Feeds();
-                        String event_name = obj.getString("event_name");
-                        String[] event_name_array = event_name.split("@");
-                        feeds.username = event_name_array[1];
-
-                        feeds.userimage = event.getVenue().getImage();
-                        feeds.type = Constant.FEED_TYPE_COMMENT;
-
-                        if (from_tab.equals("event_tab")) {
-                            if (isKeyInAble) {
-                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
-                            } else {
-                                feeds.feed = "Hi " + activity.userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                                floatBtn.open(true);
-                                getListEventFeed();
-                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
-                            }
-
-                        } else if (from_tab.equals("trending")) {
-                            if (isKeyInAble) {
-                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
-                            } else {
-                                feeds.feed = "Hi " + activity.userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                            }
-                        }
-                        feedsList.add(feeds);
-                    }
-
-                    adapter.notifyDataSetChanged();
-                }
-
-            } else if (objectType instanceof JSONArray) {
-                JSONArray jsonArrayType = (JSONArray) objectType;
-
-                JSONArray array = object.getJSONArray("allfeeds");
-                for (int i = 0; i < array.length(); i++) {
-                    Feeds feeds = new Feeds();
-                    JSONObject feedJson = array.getJSONObject(i);
-
-                    if (feedJson.has("username")) feeds.username = (feedJson.getString("username"));
-                    if (feedJson.has("userid")) feeds.userid = (feedJson.getString("userid"));
-                    if (feedJson.has("userFacebookId"))
-                        feeds.userFacebookId = (feedJson.getString("userFacebookId"));
-                    if (feedJson.has("event_id")) feeds.event_id = (feedJson.getString("event_id"));
-                    if (feedJson.has("ratetype")) feeds.ratetype = (feedJson.getString("ratetype"));
-                    if (feedJson.has("event_name"))
-                        feeds.event_name = (feedJson.getString("event_name"));
-                    if (feedJson.has("userimage"))
-                        feeds.userimage = (feedJson.getString("userimage"));
-                    if (feedJson.has("type")) feeds.type = (feedJson.getString("type"));
-                    if (feedJson.has("location")) feeds.location = (feedJson.getString("location"));
-                    if (feedJson.has("date")) feeds.date = (feedJson.getString("date"));
-                    if (feedJson.has("feed")) feeds.feed = (feedJson.getString("feed"));
-
-                    feedsList.add(feeds);
-                    if (i == 1) activity.dismissProgDialog();
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-
-        }
-
-        if (object.has("keyin_count")) {
-            //txt_event_count.setText(object.getInt("keyin_count") + " events");
-        }
-        //setRecyclerView();
-        //rclv_f3_trending.setHasFixedSize(true);
-    }*/
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -420,7 +234,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         });
 
         if (userInfo().firstTimeDemo) {
-            demoView.setVisibility(View.VISIBLE);
             userInfo().firstTimeDemo = (false);
             activity.updateSession(userInfo());
 
@@ -433,7 +246,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         txt_event_name.setText("");
 
         // New Code
-        setOnClick(tv_no_members, img_f10_back, img_infoget_f2, img_notif, txt_hide_all, fabMenu1_like, fabMenu2_picture, fabMenu3_comment); //mainlayout
+        setOnClick(tv_no_members, img_f10_back, img_infoget_f2); //mainlayout
 
         cardsList = new ArrayList<>();
         info_view.setVisibility(View.GONE);
@@ -505,228 +318,18 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         }
     }
 
-    private void animateInfo(boolean currentVisible) {
-        if (!currentVisible) {
-            Animation trnslate_animate = AnimationUtils.loadAnimation(getActivity(), R.anim.translet_up_down);
-            info_view.setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) info_view.getLayoutParams();
-            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            info_view.setLayoutParams(layoutParams);
-            scrl_all.smoothScrollTo(0, 0);
-            info_view.setAnimation(trnslate_animate);
-            //  rtlv2_animate_f2.setAnimation(trnslate_animate);
-            // rclv_grid.setAnimation(trnslate_animate);
-
-            isInfoVisible = true;
-        } else {
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) info_view.getLayoutParams();
-            layoutParams.height = 0;
-            info_view.setLayoutParams(layoutParams);
-            Animation trnslate_animate = AnimationUtils.loadAnimation(getActivity(), R.anim.translet_up_down);
-            //  rtlv2_animate_f2.setAnimation(trnslate_animate);
-            //  rclv_grid.setAnimation(trnslate_animate);
-            isInfoVisible = false;
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
-            case R.id.img_f10_back:
-                activity.onBackPressed();
-                break;
 
             case R.id.tv_no_members:
                 Intent intent = new Intent(context, TheRoomActivity.class);
                 intent.putExtra("noMemberYet", "No");
                 startActivity(intent);
                 break;
-
-            case R.id.img_infoget_f2:
-                try {
-                    animateInfo(isInfoVisible);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-
-
-            case R.id.fabMenu1_like:
-
-                floatBtn.close(true);
-                try {
-                    if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval()))) {
-                        addUserIntoEvent(0, null);
-                    } else if (activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval()))) {
-                        if (searchEvent.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
-                            addUserIntoEvent(0, null);
-                        } else likeEvent();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
-                }
-
-                break;
-            case R.id.fabMenu2_picture:
-                floatBtn.close(true);
-                try {
-                    if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval()))) {
-                        captureImage();
-                    } else if (activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval()))) {
-                        captureImage();
-                    } /*else {
-                        cantJoinDialog();
-                    }*/
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
-                }
-
-                break;
-            case R.id.fabMenu3_comment:
-                floatBtn.close(true);
-                try {
-
-                    if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval()))) {
-                        canCallWebservice = false;
-                        activity.addFragment(new Search_Detail_Comment_Fragment().setData(currentLatLng, searchEvent.getProfile_rating().getKey_in(), eventId, searchEvent.getProfile_rating().getEvent_date(), searchEvent.getProfile_rating().getEvent_name(), this), 1);
-                    } else if (activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval()))) {
-                        canCallWebservice = false;
-                        activity.addFragment(new Search_Detail_Comment_Fragment().setData(currentLatLng, searchEvent.getProfile_rating().getKey_in(), eventId, searchEvent.getProfile_rating().getEvent_date(), searchEvent.getProfile_rating().getEvent_name(), this), 1);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
-                }
-                break;
-            case R.id.txt_hide_all:
-                floatBtn.close(true);
-                break;
-
-            case R.id.img_notif:
-                canGetNotification = true;
-                if (noNotify > 0) getNudges();
-                else noNotification();
-                break;
-
-            case R.id.image_map:
-                try {
-                    if (searchEvent.getProfile_rating().getVenue_long() != null)
-                        activity.addFragment(new SingleMap_Fragment().setData(searchEvent.getProfile_rating().getVenue_lat(), searchEvent.getProfile_rating().getVenue_long()), 1);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.rtlv_top:
-                break;
-
-            case R.id.btn_got_it:
-                demoView.setVisibility(View.GONE);
-                break;
-            case R.id.img_edit_i1:
-                //functionality comment
-              /*  try{if(searchEvent.getProfile_rating().getEvent_date() != null){
-                    Event_Profile_Rating rating = searchEvent.getProfile_rating();
-                    if(rating !=null)activity.addFragment(new Add_Event_Fragment().setData(rating.getVenue_id(), rating.getEvent_date(), rating.getEvent_name(), rating.getInterval(), getEventId(),rating.getVenue_detail(),rating.getDescription(),this),1);}
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }*/
-                break;
         }
     }
 
-    public boolean keyInEventCheck() {
-        boolean a = false;
-        Utility.e("Event fragment", currentLatLng[0] + " " + currentLatLng[1]);
-        try {
-            a = (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) | (activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && activity.checkWithTime(searchEvent.getProfile_rating().getEvent_date(), Double.parseDouble(searchEvent.getProfile_rating().getInterval())));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return a;
-    }
-
-
-    /***
-     * For getting the nudge at notification popUp and show on it
-     */
-    private void getNudges() {
-        canGetNotification = false;
-
-        if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.GET_NUDGE, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    activity.dismissProgDialog();
-                    // get response
-                    try {
-                        JSONObject nudgeJson = new JSONObject(response);
-                        if (nudgeJson.has("success") && nudgeJson.getInt("success") == 0) {
-                            Toast.makeText(getContext(), "No nudge available", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        NotificationData nudge = new NotificationData();
-                        if (nudgeJson.has("nudges"))
-                            nudge.nudges = ((nudgeJson.getString("nudges")));
-                        if (nudgeJson.has("user_id"))
-                            nudge.user_id = (nudgeJson.getString("user_id"));
-                        if (nudgeJson.has("facebook_id"))
-                            nudge.facebook_id = (nudgeJson.getString("facebook_id"));
-                        if (nudgeJson.has("username"))
-                            nudge.username = (nudgeJson.getString("username"));
-                        if (nudgeJson.has("bio"))
-                            nudge.bio = (nudgeJson.getString("bio"));
-                        if (nudgeJson.has("userimage"))
-                            nudge.userimage = (nudgeJson.getString("userimage"));
-                        if (nudge.nudges.equals(Constant.NUDGE_YOUR)) nudge.message = false;
-                        {
-                            if (nudgeList == null) nudgeList = new ArrayList<>();
-                            nudgeList.add(nudge);
-                            noNotify -= 1;
-                            setTextBadge();
-                        }
-                        if (!isPopUpShowing) popupNotification_New();
-                        else {
-                            currentNudge = nudgeList.size() - 1;
-                            popup.updateData(nudgeList.get(currentNudge));
-                        }
-                        canGetNotification = true;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        canGetNotification = true;
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
-                    canGetNotification = true;
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-
-                    params.put("user_id", userInfo().userid);
-                    params.put("event_id", eventId);
-                    params.put("nudges_no", noNotify + "");
-
-                    Utility.e(TAG, " params " + params.toString());
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(context).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-        } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
-            activity.dismissProgDialog();
-        }
-    }
 
     private void captureImage() {
 
@@ -763,8 +366,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         });
 
         dialog.show();
-
-
     }
 
     private void callIntent(int caseId) {
@@ -863,12 +464,10 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                         JSONObject object = new JSONObject(response);
                         if (object.has("success")) if (object.getInt("success") == 1) {
                             if (object.getString("msg").contains(" liked the event.")) {
-                                fabMenu1_like.setImageDrawable(getResources().getDrawable(R.drawable.active_like));
                                 activity.showCustomPopup("You liked this event.", 1);
 
 
                             } else if (object.getString("msg").contains("unliked the event.")) {
-                                fabMenu1_like.setImageDrawable(getResources().getDrawable(R.drawable.heart));
                                 activity.showCustomPopup(getString(R.string.kp_unlike), 0);
                             }
                             getAllData();
@@ -1066,7 +665,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                                     } else {
                                         feeds.feed = "Hi " + activity.userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                                        floatBtn.open(true);
                                         activity.incrementKeyPoints("");
                                         getAllData();
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
@@ -1148,12 +746,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         String url = "http://maps.google.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=12&size=" + width + "x" + height + "&sensor=false";
         Utility.e(TAG, "URL" + url + "Lat lin" + latitude + " : " + longitude);
 
-        try {
-            Picasso.with(activity).load(url).into(image_map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
 
         if (cardsList.size() <= 0) {
             Card card = new Card();
@@ -1161,34 +753,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             card.text = "Welcome to the " + venueName + "! Join the fun! Share your pics & comments right here!";
             cardsList.add(card);
         }
-
-       /* if(searchEvent.getAttendyList()!=null){if(searchEvent.getAttendyList().size()<=0){
-            no_one.setVisibility(View.VISIBLE);
-            try {
-                if(checkWithTime_No_Attendy(searchEvent.getProfile_rating().getEvent_date() , Double.parseDouble(searchEvent.getProfile_rating().getInterval() )))
-                    txt_not_started.setText(getString(R.string.dontBore));
-                else txt_not_started.setText(getString(R.string.not_start));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
-        else {
-            no_one.setVisibility(View.GONE);
-        }}
-
-         else {
-            try {
-                if(checkWithTime_No_Attendy(searchEvent.getProfile_rating().getEvent_date() , Double.parseDouble(searchEvent.getProfile_rating().getInterval() )))
-                    txt_not_started.setText(getString(R.string.dontBore));
-                else txt_not_started.setText(getString(R.string.not_start));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-
-        }*/
     }
 
     private void mapAsyncer(final double lat, final double lng) {
@@ -1272,20 +836,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
 
     }
 
-    private boolean checkWithTime_No_Attendy(final String date, Double interval) throws ParseException {
-
-        return true; //TODO change time check
-       /* String[] dateSplit = (date.replace("TO", "T")).replace(" ", "T").split("T");
-        Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).parse(dateSplit[0] + " " + dateSplit[1]);
-        Date endTime = new Date(startTime.getTime()+(int)(interval* 60 * 60 * 1000));
-        Util.printLog(TAG, " Date "+startTime+" : "+endTime);
-        long currentTime = java.util.Calendar.getInstance().getTime().getTime();
-        if (currentTime > startTime.getTime()) {
-            return true;
-        }
-        return false;*/
-    }
-
     /**
      * text badge count from 15 to 0 sec.
      */
@@ -1294,15 +844,10 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         txt_f2_badge.setText(noNotify + "");
         if (noNotify > 0) {
             txt_f2_badge.setBackground(getResources().getDrawable(R.drawable.bg_circle_red_badge));
-            img_notif.setImageResource(R.drawable.bell_red);
-            img_notif.setBackgroundResource(R.drawable.bg_bell_red);
+
             if (noNotify > 99) txt_f2_badge.setText("99+");
             txt_f2_badge.setVisibility(View.VISIBLE);
         } else {
-            /*txt_f2_badge.setText("0");
-            txt_f2_badge.setBackground(getResources().getDrawable(R.drawable.bg_primary_circle));*/
-            img_notif.setImageResource(R.drawable.notification_icon);
-            // img_notif.setBackgroundResource(R.drawable.bg_bell);
             txt_f2_badge.setVisibility(View.GONE);
         }
     }
@@ -1347,10 +892,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             if (requestCode == Constant.INTENT_CAMERA) {
 
                 if (imageUri != null) {
-                    // final Bitmap eventImg = (Bitmap) data.getExtras().get("data");
-                    //  Bitmap eventImg = ImageUtil.decodeFile(ImageUtil.getRealPathFromUri(getContext(), imageUri));
-                    //   ((ImageView)this.getView().findViewById(R.id.iv_test)).setImageBitmap(eventImg);
-
                     CropImage.activity(imageUri).setCropShape(CropImageView.CropShape.RECTANGLE).setMinCropResultSize(160, 160).setMaxCropResultSize(4000, 3500).setAspectRatio(400, 300).start(context, this);
 
                 } else {
@@ -1419,13 +960,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-          /*  try {
-                ((NearEvent_Fragment) fragment).eventApiRefresh();
-                break;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
         }
 
         super.onDestroy();
@@ -1447,15 +981,15 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
 
     /* common methods used somewhere else  */
 
-    public void addChips(ArrayList<Tags> tag) {
+    /*public void addChips(ArrayList<Tags> tag) {
         try {
             Grid_multiRow layout = this.getView().findViewById(R.id.chip_linear);
             layout.setAdapter(new GridChipsAdapter(context, tag));
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
-    }
+//    }
 
     public Search_Event_Details_Fragment setData(String eventId, String venueName, Events event, String[] currentLatLng, String[] venuLatLng, boolean isKeyInAble) {
         this.eventId = eventId;
@@ -1632,7 +1166,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             @Override
             public void onNextClick(ImageView textView, ProfilePopUp_Notification profilePopUp) {
                 if (currentNudge == (nudgeList.size() - 1) && canGetNotification) {
-                    getNudges();
                 } else {
                     currentNudge += 1;
                     updateData(nudgeList.get(currentNudge));
@@ -1704,5 +1237,4 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             activity.dismissProgDialog();
         }
     }
-
 }

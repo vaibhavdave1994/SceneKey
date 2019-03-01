@@ -44,7 +44,7 @@ public class FilterAdapter  extends RecyclerView.Adapter<FilterAdapter.ViewHolde
             holder.ln_view.setVisibility(View.VISIBLE);
             //holder.ln_view.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark_new));
         } else {
-            holder.ln_view.setVisibility(View.GONE);
+            holder.ln_view.setVisibility(View.INVISIBLE);
             //holder.ln_view.setTextColor(context.getResources().getColor(R.color.white));
         }
 
@@ -75,7 +75,9 @@ public class FilterAdapter  extends RecyclerView.Adapter<FilterAdapter.ViewHolde
             switch (view.getId()) {
 
                 case R.id.iv_filterIcon:
-                    Toast.makeText(context, filterModal.filterType, Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i < emoziesList.size(); i++) {
+                        emoziesList.get(i).isSelected = "no";
+                    }
                     filterModal.isSelected = "yes";
                     filterListener.getFilterName(filterModal);
                     notifyDataSetChanged();

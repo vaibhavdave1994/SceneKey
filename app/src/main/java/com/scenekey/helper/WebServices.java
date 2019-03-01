@@ -26,9 +26,10 @@ public class WebServices {
 
     public final static String CHECK_EVENT_STATUS = BASE_URL + "webservices/checkeventstatus";
 
-
-
-
+    public final static String DELETE_FEED = BASE_URL + "deleteFeed";
+    public final static String REACTION_USER = BASE_URL + "reactionUser";
+    public final static String ADDREACTION_USER = BASE_URL + "addReaction";
+    public final static String DELETEREACTION_USER = BASE_URL + "deleteReaction";
 
     /*Old Code*/
     public final static String TERMS_ = "https://scenekey.com/Terms&conditions.pdf";
@@ -48,7 +49,8 @@ public class WebServices {
     public final static String LOGIN = BASE_URL + "webservices/facebookLogin";
     public final static String BIO = BASE_URL + "webservices/updateBio";
     public final static String EVENT_BY_LOCAL = BASE_URL + "eventByLocation";
-    public final static String TRENDING = BASE_URL + "trending";
+    //public final static String TRENDING = BASE_URL + "trending";
+    public final static String TRENDING = BASE_URL + "trendingNew";
     public final static String LISTUSEREVENT = BASE_URL + "webservices/listofuserattendedevent";
     public final static String LISTEVENTFEED = BASE_URL + "webservices/listofeventfeeds";
     public final static String VENUE_SEARCH = BASE_URL + "venueSearch";

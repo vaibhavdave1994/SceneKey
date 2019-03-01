@@ -22,7 +22,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,7 +33,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -58,7 +56,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
 
-import com.scenekey.activity.ForNotificactionActivity;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.TheRoomActivity;
 import com.scenekey.adapter.GridChipsAdapter;
@@ -73,13 +70,8 @@ import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomeClick;
 import com.scenekey.helper.Permission;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.Floting_menuAction.FloatingActionButton;
-import com.scenekey.lib_sources.Floting_menuAction.FloatingActionMenu;
 import com.scenekey.lib_sources.SwipeCard.Card;
-import com.scenekey.listener.MyListenerForProfile;
 import com.scenekey.listener.StatusBarHide;
-import com.scenekey.liveSideWork.LiveProfileActivity;
-import com.scenekey.liveSideWork.NotificationLiveActivity;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.EventDetails;
 import com.scenekey.model.Events;
@@ -102,15 +94,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static android.app.Activity.RESULT_OK;
 
 public class Event_Fragment extends Fragment implements View.OnClickListener, StatusBarHide {
 
@@ -122,14 +111,12 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
     public Double latitude, longitude;
     public TextView txt_event_name, txt_discrp, txt_f2_badge, txt_hide_all_two, btn_got_it, txt_discipI_f2, txt_hide_all;
     public ArrayList<Card> cardsList;
-    public FloatingActionButton fabMenu1_like, fabMenu2_picture, fabMenu3_comment;
     public String evenName;
     private LinearLayout info_view;
     private RelativeLayout rtlv_top, demoView; //Demo Screen
     private ImageView img_infoget_f2, img_f10_back, image_map, img_notifnew;
     private RecyclerView usercomeInRecyclerView;
     private ScrollView scrl_all;
-    private FloatingActionMenu floatBtn;
     private Context context;
     private HomeActivity activity;
     private Utility utility;
@@ -153,7 +140,6 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
 
 
     private ProfilePopUp_Notification popup;
-    private ForNotificactionActivity forNotificactionActivity;
 
     private AWSImage awsImage;
     private CognitoCredentialsProvider credentialsProvider;
@@ -210,7 +196,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
 
         initView(view);
 
-        floatBtn.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+      /*  floatBtn.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean opened) {
                 if (opened) {
@@ -230,40 +216,17 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                 }
             }
         });
+        */
         return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initView(View view) {
-        txt_discipI_f2 = view.findViewById(R.id.txt_discipI_f2);
-        info_view = view.findViewById(R.id.info_view);
-
-        usercomeInRecyclerView = view.findViewById(R.id.usercomeInRecyclerView);
-
-        txt_f2_badge = view.findViewById(R.id.txt_f2_badge);
-        txt_discrp = view.findViewById(R.id.txt_discrp);
-
-        scrl_all = view.findViewById(R.id.scrl_all);
-        image_map = view.findViewById(R.id.image_map);
-        rtlv_top = view.findViewById(R.id.rtlv_top);
-
-        txt_hide_all_two = view.findViewById(R.id.txt_hide_all_two);
-        demoView = view.findViewById(R.id.demoView);
-        btn_got_it = view.findViewById(R.id.btn_got_it);
 
         // New Code
-        img_f10_back = view.findViewById(R.id.img_f10_back);
         txt_event_name = view.findViewById(R.id.txt_event_name);
-        img_infoget_f2 = view.findViewById(R.id.img_infoget_f2);
-        img_notifnew = view.findViewById(R.id.img_notifnew);
-        floatBtn = view.findViewById(R.id.floatBtn);
-        fabMenu1_like = view.findViewById(R.id.fabMenu1_like);
-        fabMenu2_picture = view.findViewById(R.id.fabMenu2_picture);
-        fabMenu3_comment = view.findViewById(R.id.fabMenu3_comment);
-        txt_hide_all = view.findViewById(R.id.txt_hide_all);
-        fabMenu1_like.setTextView(new TextView[]{txt_hide_all});
+
         tv_no_members = view.findViewById(R.id.tv_no_members);
-        txt_discipI_date = view.findViewById(R.id.txt_discipI_date);
         time = utility.getTimestamp("hh:mm aa");
         date = new SimpleDateFormat("dd-MMM-yyyy hh:mm", Locale.getDefault()).format(new Date());
         cutrrentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
@@ -340,7 +303,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
         // rclv_grid.hasFixedSize();
 
         // New Code
-        setOnClick(tv_no_members, img_f10_back, img_infoget_f2, img_notifnew, txt_hide_all, fabMenu1_like, fabMenu2_picture, fabMenu3_comment); //mainlayout
+        setOnClick(tv_no_members, img_f10_back, img_infoget_f2, img_notifnew, txt_hide_all); //mainlayout
 
         cardsList = new ArrayList<>();
         info_view.setVisibility(View.GONE);
@@ -437,33 +400,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.img_f10_back:
-                if (isInfoVisible) {
-
-                    Animation animation = AnimationUtils.loadAnimation(context,R.anim.viewslidedown);
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) info_view.getLayoutParams();
-                    layoutParams.height = 0;
-                    info_view.setLayoutParams(layoutParams);
-                    info_view.startAnimation(animation);
-                    info_view.setVisibility(View.GONE);
-                    isInfoVisible = false;
-
-
-                } else {
-                    activity.onBackPressed();
-                }
-                break;
-
-            case R.id.img_infoget_f2:
-                try {
-                    animateInfo(isInfoVisible);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case R.id.fabMenu1_like:
-                floatBtn.close(true);
+            /*case R.id.fabMenu1_like:
                 try {
                     if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && activity.checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
                         addUserIntoEvent(0, null);
@@ -477,73 +414,12 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                 } catch (Exception e) {
                     e.printStackTrace();
                     Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
-                }
-
-                break;
-            case R.id.fabMenu2_picture:
-                floatBtn.close(true);
-                try {
-                    if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && activity.checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                        captureImage();
-                    } else if (activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && activity.checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                        captureImage();
-                    } else {
-                        cantJoinDialog();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
-                }
-
-                break;
-            case R.id.fabMenu3_comment:
-                floatBtn.close(true);
-                try {
-                    if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && activity.checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                        canCallWebservice = false;
-                        activity.addFragment(new Comment_Fragment().setData(currentLatLng, eventDetails.getProfile_rating().getKey_in(), eventId, eventDetails.getProfile_rating().getEvent_date(), eventDetails.getProfile_rating().getEvent_name(), this), 1);
-                    } else if (activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && activity.checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                        canCallWebservice = false;
-                        activity.addFragment(new Comment_Fragment().setData(currentLatLng, eventDetails.getProfile_rating().getKey_in(), eventId, eventDetails.getProfile_rating().getEvent_date(), eventDetails.getProfile_rating().getEvent_name(), this), 1);
-                    } else {
-                        cantJoinDialog();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
-                }
-                break;
-            case R.id.txt_hide_all:
-                floatBtn.close(true);
-                break;
+                }*/
 
             case R.id.tv_no_members:
                 Intent intent = new Intent(context, TheRoomActivity.class);
                 intent.putExtra("noMemberYet", "No");
                 startActivity(intent);
-                break;
-
-            case R.id.img_notifnew:
-                if (noNotify > 0) {
-                    notificationView(newNudgeList, noNotify, eventId);
-                } else noNotification();
-                break;
-
-            case R.id.image_map:
-                try {
-                    if (eventDetails.getProfile_rating().getVenue_long() != null)
-                        activity.addFragment(new SingleMap_Fragment().setData(eventDetails.getProfile_rating().getVenue_lat(), eventDetails.getProfile_rating().getVenue_long()), 1);
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case R.id.rtlv_top:
-                break;
-
-            case R.id.btn_got_it:
-                demoView.setVisibility(View.GONE);
-                break;
-            case R.id.img_edit_i1:
                 break;
         }
     }
@@ -781,18 +657,12 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                         JSONObject object = new JSONObject(response);
                         if (object.has("success")) if (object.getInt("success") == 1) {
                             if (object.getString("msg").contains(" liked the event.")) {
-                                fabMenu1_like.setImageDrawable(getResources().getDrawable(R.drawable.active_like));
-                                //activity.showCustomPopup("You liked this event.", 1);
                                 activity.incrementKeyPoints("");
 
                             } else if (object.getString("msg").contains("unliked the event.")) {
-                                fabMenu1_like.setImageDrawable(getResources().getDrawable(R.drawable.heart));
-                                //activity.showCustomPopup(getString(R.string.kp_unlike), 0);
                                 activity.decrementKeyPoints(getString(R.string.kp_like));
                             }
                             getAllData();
-                            //{"success":1,"msg":"your have liked the event."}
-                            //{"success":1,"msg":"your have unliked the event."}
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -969,7 +839,6 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                                     } else {
                                         feeds.feed = "Hi " + activity.userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                                        floatBtn.open(true);
                                         activity.incrementKeyPoints("");
                                         getAllData();
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
@@ -1377,14 +1246,14 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
 
     /* common methods used somewhere else  */
 
-    public void addChips(ArrayList<Tags> tag) {
+   /* public void addChips(ArrayList<Tags> tag) {
         try {
             Grid_multiRow layout = this.getView().findViewById(R.id.chip_linear);
             layout.setAdapter(new GridChipsAdapter(context, tag));
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public Event_Fragment setData(String eventId, String venueName, Events event, String[] currentLatLng, String[] venuLatLng, boolean isKeyInAble) {
         this.eventId = eventId;
@@ -1626,15 +1495,6 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
         popup.show();
     }
 
-    private void notificationView(ArrayList<NotificationData> nudgeList, int noNotify, String eventId) {
-        activity.showProgDialog(false, TAG);
-        Intent intent = new Intent(getContext(), ForNotificactionActivity.class);
-        intent.putExtra("nudgeList", nudgeList);
-        intent.putExtra("noNotify", noNotify);
-        intent.putExtra("eventId", eventId);
-//        startActivity(intent);
-        startActivityForResult(intent, 2);
-    }
 
     private void callAddEventApi(final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
         final Utility utility = new Utility(context);

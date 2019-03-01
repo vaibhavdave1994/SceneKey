@@ -1,5 +1,6 @@
 package com.scenekey.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -7,24 +8,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scenekey.R;
-import com.scenekey.lib_sources.SwipeCard.Card;
+import com.scenekey.listener.LikeFeedListener;
 import com.scenekey.model.EmoziesModal;
+import com.scenekey.model.FeedSmily;
+import com.scenekey.model.Feeds;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class AllEmoziesAdapter  extends RecyclerView.Adapter<AllEmoziesAdapter.ViewHolder> {
+public class AllEmoziesAdapter extends RecyclerView.Adapter<AllEmoziesAdapter.ViewHolder> {
 
-    private Context context;
+    public Feeds feeds;
+    private Dialog emoziesDilog;
     private List<EmoziesModal> emoziesList;
+    private LikeFeedListener likeFeedListener;
+    private String feedId;
 
-    public AllEmoziesAdapter(Context context, List<EmoziesModal> emoziesList) {
-        this.context = context;
+
+    AllEmoziesAdapter(Feeds feeds, String feedId, List<EmoziesModal> emoziesList,
+                      LikeFeedListener likeFeedListener, Dialog emoziesDilog) {
         this.emoziesList = emoziesList;
+        this.likeFeedListener = likeFeedListener;
+        this.feedId = feedId;
+        this.emoziesDilog = emoziesDilog;
+        this.feeds = feeds;
     }
 
     @Override
@@ -36,7 +47,7 @@ public class AllEmoziesAdapter  extends RecyclerView.Adapter<AllEmoziesAdapter.V
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(AllEmoziesAdapter.ViewHolder holder, int position) {
-        EmoziesModal emoziesModal =  emoziesList.get(position);
+        EmoziesModal emoziesModal = emoziesList.get(position);
         holder.iv_smiley.setText(emoziesModal.getCharacter());
     }
 
@@ -60,14 +71,51 @@ public class AllEmoziesAdapter  extends RecyclerView.Adapter<AllEmoziesAdapter.V
         public void onClick(View view) {
 
 
-            EmoziesModal emoziesModal  = emoziesList.get(getAdapterPosition());
+            EmoziesModal emoziesModal = emoziesList.get(getAdapterPosition());
             switch (view.getId()) {
 
                 case R.id.iv_smiley:
+                    int size = feeds.feedSmilies.size();
+                    if (size != 0) {
 
-                    Toast.makeText(context, emoziesModal.getName(), Toast.LENGTH_SHORT).show();
+                        if (size > 1) {
+                            for (int j = 1; j < size; j++) {
 
-                    break;
+                                if (feeds.feedSmilies.get(j).reaction.equals((emoziesModal.getCharacter()))) {
+                                    if (feeds.feedSmilies.get(j).isReaction.equals("1")) {
+                                        likeFeedListener.likeFeedByReaction("", feeds.feedSmilies.get(j).id, "");
+                                        break;
+                                    } else {
+                                        likeFeedListener.likeFeedByReaction(feeds.feedId, "", emoziesModal.getCharacter());
+                                        break;
+                                    }
+                                } else if (j == size - 1) {
+                                    likeFeedListener.likeFeedByReaction(feeds.feedId, "", emoziesModal.getCharacter());
+                                    List<String> mGroups = emoziesModal.getGroups();
+                                    boolean mFlag = false;
+                                    if (mGroups != null) {
+                                        for (String group : mGroups) {
+                                            if (group.equals("recent")) {
+                                                mFlag = true;
+                                                break;
+                                            }
+                                        }
+
+                                        if (!mFlag) {
+                                            mGroups.add("recent");
+                                        }
+                                    }
+
+                                    break;
+                                }
+                            }
+                        } else {
+                            likeFeedListener.likeFeedByReaction(feedId, "", emoziesModal.getCharacter());
+                        }
+
+                        emoziesDilog.dismiss();
+                        break;
+                    }
             }
         }
     }

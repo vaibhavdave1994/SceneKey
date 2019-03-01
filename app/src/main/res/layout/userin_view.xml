@@ -11,21 +11,23 @@
 
     <com.mikhaellopez.circularimageview.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/comeInProfile"
-        android:layout_width="@dimen/_33sdp"
-        android:layout_height="@dimen/_33sdp"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
         android:src="@drawable/image_default_profile"
         app:civ_border_color="@color/old_primary"
+        android:padding="2dp"
         app:civ_border_width="@dimen/_1sdp" />
 
     <TextView
         android:id="@+id/no_count"
-        android:layout_width="@dimen/_33sdp"
-        android:layout_height="@dimen/_33sdp"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
         android:background="@drawable/show_count"
         android:fontFamily="@font/montserrat_medium"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="@dimen/_15sdp"
+        android:padding="2dp"
         android:visibility="gone" />
 
 </RelativeLayout>

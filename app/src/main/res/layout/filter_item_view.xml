@@ -3,21 +3,22 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="5dp"
-    android:background="@color/white">
+    android:layout_marginLeft="5dp"
+    android:background="@color/new_white_bg">
 
     <TextView
         android:id="@+id/ln_view"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:padding="3dp"
+        android:visibility="invisible"
         android:background="@color/colorPrimaryDark_new"/>
 
     <ImageView
         android:id="@+id/iv_filterIcon"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="@dimen/_20sdp"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_gravity="center"
-        android:padding="3dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="2dp"
         android:src="@drawable/inactive_happiness_ico"/>
 </LinearLayout>

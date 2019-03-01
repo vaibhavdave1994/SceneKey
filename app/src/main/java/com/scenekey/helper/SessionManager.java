@@ -211,14 +211,8 @@ public class SessionManager {
         editor.clear();
         editor.commit();
 
-        /*Intent intent = new Intent();
-        activity.startActivity(intent);
-        activity.finish();
-        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
-        homeIntent.addCategory( Intent.CATEGORY_HOME );
-        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        activity.startActivity(homeIntent);
-        activity.finish();*/
+        editor2.clear();
+        editor2.commit();
 
         Intent intent = new Intent(activity, LoginActivity.class);
         // LoginActivity.CALLBACK =0;

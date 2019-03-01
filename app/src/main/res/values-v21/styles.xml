@@ -37,4 +37,5 @@
         <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
+
 </resources>

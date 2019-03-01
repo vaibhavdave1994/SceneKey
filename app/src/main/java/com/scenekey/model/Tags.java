@@ -1,10 +1,12 @@
 package com.scenekey.model;
 
+import java.io.Serializable;
+
 /**
  * Created by mindiii on 15/2/18.
  */
 
-public class Tags {
+public class Tags implements Serializable {
 
     public String id ;
     public String tag ;

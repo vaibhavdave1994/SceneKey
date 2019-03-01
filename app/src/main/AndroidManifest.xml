@@ -21,6 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:replace="android:allowBackup">
+        <activity android:name=".activity.ZoomImageActivity"></activity>
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -95,9 +96,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="0445c68fedcc2d2c04d5210e1b5b51dceaf192af" />
-
-        <!-- New Code -->
+            android:value="0445c68fedcc2d2c04d5210e1b5b51dceaf192af" /> <!-- New Code -->
         <activity
             android:name=".activity.ForgotPasswordActivity"
             android:screenOrientation="portrait" />
@@ -106,14 +105,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
         <activity
-            android:name=".activity.DemoCommentActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.DemoMapActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme" />
-        <activity
-            android:name=".activity.DemoProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
         <activity
@@ -121,15 +113,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
         <activity
-            android:name=".activity.TryAndDemoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme" />
-        <activity
             android:name=".activity.DemoUserProfileActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme" />
-        <activity
-            android:name=".activity.NotificationDemoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
         <activity
@@ -141,17 +125,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name=".liveSideWork.NotificationLiveActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme" />
-        <activity android:name=".activity.ForNotificactionActivity" />
         <activity android:name=".activity.FeedUserProfileActivity" />
-        <activity android:name=".activity.DemoFeedUser" />
         <activity android:name=".activity.EventDetailsActivity" />
         <activity android:name=".activity.SettingActivtiy" />
         <activity android:name=".activity.Edit_NAmeActivity" />
-        <activity android:name=".activity.ChangePasswordActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity" />
+        <activity android:name=".activity.EventSearch_tag_Activity" />
     </application>
 
 </manifest>

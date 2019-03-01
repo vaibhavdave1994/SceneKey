@@ -433,7 +433,7 @@
                     android:layout_below="@+id/img_alert"
                     android:fontFamily="@font/montserrat_medium"
                     android:gravity="center_horizontal"
-                    android:text="@string/trending"
+                    android:text="@string/alert"
                     android:textColor="@color/gray2"
                     android:textSize="@dimen/_6ssp" />
 
@@ -467,7 +467,7 @@
                     android:layout_below="@+id/img_five"
                     android:fontFamily="@font/montserrat_medium"
                     android:gravity="center_horizontal"
-                    android:text="@string/trending"
+                    android:text="@string/reward"
                     android:textColor="@color/gray2"
                     android:textSize="@dimen/_6ssp" />
 
@@ -483,11 +483,10 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/img_four"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_28sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/_2sdp"
-                    android:paddingTop="@dimen/_8sdp"
                     android:scaleType="fitCenter"
                     android:tint="@color/black30p"
                     app:srcCompat="@drawable/ic_user" />

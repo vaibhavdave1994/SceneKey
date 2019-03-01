@@ -14,23 +14,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.facebook.AccessToken;
 import com.scenekey.R;
 
-import com.scenekey.adapter.TheDemoRoomAdapter;
 import com.scenekey.adapter.TheRoomAdapter;
 import com.scenekey.aws_service.Aws_Web_Service;
-import com.scenekey.helper.Constant;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.RoomDemoListener;
 import com.scenekey.listener.RoomListener;
@@ -46,9 +35,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TheRoomActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -59,7 +45,6 @@ public class TheRoomActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayList<EventAttendy> eventAttendyArrayList;
     private ArrayList<Card> rooDemoList;
     private ImageView img_f11_back;
-    private TheDemoRoomAdapter theDemoRoomAdapter;
     private String username;
     private ScrollView no_member_yet;
     private String eventId;
@@ -121,21 +106,6 @@ public class TheRoomActivity extends AppCompatActivity implements View.OnClickLi
             });
             theRoomRecyclerView.setLayoutManager(new GridLayoutManager(TheRoomActivity.this, 3));
             theRoomRecyclerView.setAdapter(theRoomAdapter);
-        }
-
-        if (rooDemoList != null) {
-            theDemoRoomAdapter = new TheDemoRoomAdapter(rooDemoList, this, new RoomDemoListener() {
-                @Override
-                public void getRoomDemoData(int pos, ArrayList<Card> cardArrayList) {
-
-                    Intent intent = new Intent(TheRoomActivity.this, DemoProfileActivity.class);
-                    intent.putExtra("fromRoomAdapterPostion", pos);
-                    intent.putExtra("fromRoomAdapter", cardArrayList);
-                    startActivityForResult(intent, 3);
-                }
-            });
-            theRoomRecyclerView.setLayoutManager(new GridLayoutManager(TheRoomActivity.this, 3));
-            theRoomRecyclerView.setAdapter(theDemoRoomAdapter);
         }
     }
 
@@ -229,20 +199,10 @@ public class TheRoomActivity extends AppCompatActivity implements View.OnClickLi
                         showKeyPoints("+1");
                     }
                 }
-               /* else if(requestCode == 2){
-                    String status = data.getStringExtra("status");
-                    if(status.equals("1")){
-                       String  mstatus = "1";
-                    }else if(status.equals("2")){
-                        String  mstatus = "2";
-                    }else if(status.equals("3")){
-                        String  mstatus = "3";
-                    }
-                }*/
             }
 
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
     }
 }

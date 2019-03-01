@@ -2,6 +2,7 @@ package com.scenekey.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -29,7 +30,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +48,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
 import com.scenekey.adapter.Profile_Adapter;
-import com.scenekey.adapter.UserInAdapter;
+import com.scenekey.adapter.SmilyUserAdapter;
 import com.scenekey.aws_service.Aws_Web_Service;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
@@ -59,14 +59,16 @@ import com.scenekey.helper.Permission;
 import com.scenekey.helper.WebServices;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.ForDeleteFeed;
+import com.scenekey.listener.GetZoomImageListener;
+import com.scenekey.listener.LikeFeedListener;
 import com.scenekey.model.EmoziesModal;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.EventDetailsForActivity;
 import com.scenekey.model.Events;
 import com.scenekey.model.FeedSmily;
 import com.scenekey.model.Feeds;
+import com.scenekey.model.ReactionUserModal;
 import com.scenekey.model.UserInfo;
-import com.scenekey.model.Wallets;
 import com.scenekey.util.ImageUtil;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
@@ -89,6 +91,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -98,34 +101,38 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     private static String FROM_TAB = "from_tab";
     private static Timer timerHttp;
     public final String TAG = EventDetailsActivity.class.toString();
+
     //DataType Decleration...............
     public Double latitude, longitude;
     public ArrayList<Card> cardsList;
     public List<EmoziesModal> all_emaozieList;
-    public ArrayList<FeedSmily> feedlikeList;
+
+
     //Adaaptersss Declartions..............
     public Profile_Adapter adapter;
     // others..............
     public String[] currentLatLng;
     private String eventId;
-    private boolean myProfile;
-    private String date, cutrrentDate, time;
+
+    private String cutrrentDate;
+    private String time;
     private String venueName;
     private String from_tab;
     private boolean isKeyInAble = false;
     private boolean canCallWebservice;
-    //View Declartions...................
-    private ImageView img_eventDetail_back, addButtonForKeyIn, img_postImage;
-    private TextView txt_event_name;
+    private ImageView addButtonForKeyIn;
     private RecyclerView feedLIstRecyclerView;
-    private RecyclerView usercomeInRecyclerView;
-    private TextView txt_post_comment;
     private EditText et_comment_feed;
     private ImageView img_no_member;
+
+
     //LIst Declaration...............
     private ArrayList<Feeds> feedList;
     private ArrayList<EventAttendy> userList;
-    //Modal Declation............
+    private ArrayList<ReactionUserModal> reactionUserLIst;
+
+
+    //Modal Declation................
     private EventDetailsForActivity eventDetails;
     private Uri imageUri;
 
@@ -134,29 +141,62 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     private CustomProgressBar customProgressBar;
     private Events event;
     private String eventName = "";
+    private SmilyUserAdapter smilyUserAdapter;
+    private TextView txt_show_emojies;
+
+    private View blurView;
+    private String userExistOrNotonActivty = "";
+    private Runnable mRunnable;
+    private Handler mHandler = new Handler();
+
+//    ............................................................................
 
     public static List<EmoziesModal> loadCountries(EventDetailsActivity eventDetailsActivity) {
         try {
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.create();
-            Type listType = new TypeToken<List<EmoziesModal>>() {
-            }.getType();
-            List<EmoziesModal> list = gson.fromJson(loadJSONFromAsset(eventDetailsActivity, "AllEmojiNew.json"), listType);
-            ;
-            return list;
+            try {
+                JSONArray mEmoziArray = new JSONArray(loadJSONFromAsset(eventDetailsActivity));
+                List<EmoziesModal> mList = new ArrayList<>();
+                for (int i = 0; i < mEmoziArray.length(); i++) {
+
+                    JSONObject object = mEmoziArray.getJSONObject(i);
+                    EmoziesModal mModal = new EmoziesModal();
+                    mModal.setName(object.getString("name"));
+                    mModal.setCharacter(object.getString("character"));
+
+                    List<String> mAlias = new ArrayList<>();
+                    JSONArray mAliasArray = object.getJSONArray("aliases");
+                    for (int x = 0; x < mAliasArray.length(); x++) {
+                        mAlias.add(mAliasArray.get(x).toString());
+                    }
+                    mModal.setAliases(mAlias);
+
+                    List<String> mGroup = new ArrayList<>();
+                    JSONArray mGroupArray = object.getJSONArray("groups");
+                    for (int x = 0; x < mGroupArray.length(); x++) {
+                        mGroup.add(mGroupArray.get(x).toString());
+                    }
+                    mModal.setGroups(mGroup);
+                    mList.add(mModal);
+                }
+                return mList;
+            } catch (JSONException je) {
+                je.printStackTrace();
+            }
+
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private static String loadJSONFromAsset(Context context, String jsonFileName) {
+    private static String loadJSONFromAsset(Context context) {
         String json = null;
         InputStream is = null;
         try {
             AssetManager manager = context.getAssets();
-            Log.d("JSON Path ", jsonFileName);
-            is = manager.open(jsonFileName);
+            Log.d("JSON Path ", "AllEmojiNew.json");
+            is = manager.open("AllEmojiNew.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -169,13 +209,10 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         return json;
     }
 
-    //EmoziesModal For Emoziesss(Emozies Parsing)
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_details);
-
         inItView();
     }
 
@@ -185,27 +222,29 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         customProgressBar = new CustomProgressBar(this);
         utility = new Utility(this);
 
+        blurView = findViewById(R.id.blurView);
 
-        img_eventDetail_back = findViewById(R.id.img_eventDetail_back);
-        txt_event_name = findViewById(R.id.txt_event_name);
+
+        //View Declartions...................
+        ImageView img_eventDetail_back = findViewById(R.id.img_eventDetail_back);
+        TextView txt_event_name = findViewById(R.id.txt_event_name);
         addButtonForKeyIn = findViewById(R.id.addButtonForKeyIn);
         feedLIstRecyclerView = findViewById(R.id.feedLIstRecyclerView);
-        usercomeInRecyclerView = findViewById(R.id.usercomeInRecyclerView);
-        txt_post_comment = findViewById(R.id.txt_post_comment);
+
+
+        TextView txt_post_comment = findViewById(R.id.txt_post_comment);
         et_comment_feed = findViewById(R.id.et_comment_feed);
-        img_postImage = findViewById(R.id.img_postImage);
+        ImageView img_postImage = findViewById(R.id.img_postImage);
         img_no_member = findViewById(R.id.img_no_member);
+        txt_show_emojies = findViewById(R.id.txt_show_emojies);
 
         //ArraryLIst
         feedList = new ArrayList<>();
         userList = new ArrayList<>();
         cardsList = new ArrayList<>();
-        //feedlikeList = new ArrayList<>();
+        reactionUserLIst = new ArrayList<>();
 
-        //getUserEmoziesList = new ArrayList<>();
-
-
-        setOnClick(img_eventDetail_back, addButtonForKeyIn, txt_post_comment, et_comment_feed, img_postImage);
+        setOnClick(img_no_member, blurView, img_eventDetail_back, addButtonForKeyIn, txt_post_comment, et_comment_feed, img_postImage);
 
         if (getIntent().getStringExtra("event_id") != null) {
             eventId = getIntent().getStringExtra("event_id");
@@ -227,16 +266,9 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         if (timerHttp == null) setDataTimer();
 
-        /*adapter = new Profile_Adapter(this, feedList, myProfile, userList, eventId);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        feedLIstRecyclerView.setLayoutManager(layoutManager);
-        feedLIstRecyclerView.setAdapter(adapter);*/
-
-
-        date = new SimpleDateFormat("dd-MMM-yyyy hh:mm", Locale.getDefault()).format(new Date());
+        String date = new SimpleDateFormat("dd-MMM-yyyy hh:mm", Locale.getDefault()).format(new Date());
         cutrrentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         Log.i("date", date);
-
 
         //callAddEventApi() Api for trending tanb and map tab
         CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
@@ -250,28 +282,55 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-
-        //txt_event_name.setText(venueName);
         txt_event_name.setText(eventName);
-
 
         //......................................................
 
         all_emaozieList = loadCountries(this);
         assert all_emaozieList != null;
 
-
-        //feedlikeList.add(0, null);
-//        adapter = new Profile_Adapter(this, feedList, myProfile, userList, eventId,getUserEmoziesList,all_emaozieList);
-        adapter = new Profile_Adapter(this, userInfo.userid, feedList, myProfile, userList, eventId, all_emaozieList, new ForDeleteFeed() {
+        adapter = new Profile_Adapter(this, userInfo.userid, feedList, userList, eventId, all_emaozieList, new ForDeleteFeed() {
             @Override
-            public void getFeedIdForDelete(String id) {
-                deleteFeed(id);
+            public void getFeedIdForDelete(String feedid, String feedSmilyid, String reaction) {
+
+                if (!feedid.isEmpty()) {
+                    deleteFeed(feedid);
+                }
+
+                if (!feedSmilyid.isEmpty()) {
+                    showFeedSmilyList(feedSmilyid, reaction);
+                }
+
+            }
+        }, new LikeFeedListener() {
+            @Override
+            public void likeFeedByReaction(String addFeedReaction, String deleteFeedRaction, String getReactionFromList) {
+
+                if (!deleteFeedRaction.isEmpty()) {
+                    deletFeedRaction(deleteFeedRaction);
+                }
+
+                if (!getReactionFromList.isEmpty() && !addFeedReaction.isEmpty()) {
+                    addFeedFormListreaction(getReactionFromList, addFeedReaction);
+
+                } else {
+                    addFeedreaction(addFeedReaction);
+                }
+            }
+        }, new GetZoomImageListener() {
+            @Override
+            public void getImageUrl(String imageUrl) {
+                Intent intent = new Intent(EventDetailsActivity.this, ZoomImageActivity.class);
+                intent.putExtra("imageUrl", imageUrl);
+                startActivity(intent);
             }
         });
+
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         feedLIstRecyclerView.setLayoutManager(layoutManager);
         feedLIstRecyclerView.setAdapter(adapter);
+        blurView.setVisibility(View.GONE);
     }
 
     private void setOnClick(View... views) {
@@ -284,21 +343,41 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
 
         switch (view.getId()) {
+
+            case R.id.blurView:
+                break;
+
             case R.id.img_eventDetail_back:
                 onBackPressed();
                 break;
 
+            case R.id.img_no_member:
+
+                if (!userExistOrNotonActivty.equals("")) {
+                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
+
+                } else {
+                    Intent intent = new Intent(this, TheRoomActivity.class);
+                    intent.putExtra("noMemberYet", "No");
+                    startActivity(intent);
+                }
+                break;
+
+
             case R.id.addButtonForKeyIn:
                 //For key in
-
                 if (eventDetails != null && eventDetails.getProfile_rating() != null) {
                     if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
+
                         try {
                             if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                                addUserIntoEvent(-1, null);
+                                addUserIntoEvent(-1);
                             } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                                addUserIntoEvent(-1, null);
-                            } else cantJoinDialog();
+                                addUserIntoEvent(-1);
+                            } else {
+
+                                cantJoinDialog();
+                            }
                         } catch (ParseException d) {
                             d.getMessage();
                         }
@@ -309,51 +388,65 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.img_postImage:
 
-                try {
-                    if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                        captureImage();
-                    } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                        captureImage();
+                if (eventDetails != null && eventDetails.getProfile_rating() != null) {
+                    if (!eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
 
-//                        getAllData();
+                        try {
+                            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
+                                captureImage();
+                            } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
+                                captureImage();
+
+                            } else {
+                                cantJoinDialog();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Utility.showToast(this, getResources().getString(R.string.somethingwentwrong), 0);
+                        }
                     } else {
                         cantJoinDialog();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utility.showToast(this, getResources().getString(R.string.somethingwentwrong), 0);
                 }
+
                 break;
 
 
             case R.id.txt_post_comment:
-                if (!et_comment_feed.getText().toString().isEmpty()) {
-                    try {
-                        if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                            canCallWebservice = false;
-                            showProgDialog(true, TAG);
-                            commentEvent();
-                        } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                            canCallWebservice = false;
-                            showProgDialog(true, TAG);
-                            commentEvent();
+
+                if (eventDetails != null && eventDetails.getProfile_rating() != null) {
+                    if (!eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
+
+                        if (!et_comment_feed.getText().toString().isEmpty()) {
+                            try {
+                                if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
+                                    canCallWebservice = false;
+                                    showProgDialog(true, TAG);
+                                    commentEvent();
+                                } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
+                                    canCallWebservice = false;
+                                    showProgDialog(true, TAG);
+                                    commentEvent();
+                                } else {
+                                    cantJoinDialog();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Utility.showToast(this, getResources().getString(R.string.somethingwentwrong), 0);
+                            }
+
                         } else {
-                            cantJoinDialog();
+
+                            utility.showCustomPopup("Please enter comment", String.valueOf(R.font.montserrat_medium));
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Utility.showToast(this, getResources().getString(R.string.somethingwentwrong), 0);
+                    } else {
+                        cantJoinDialog();
                     }
-
-                } else {
-
-                    utility.showCustomPopup("Please enter comment", String.valueOf(R.font.montserrat_medium));
                 }
 
                 break;
         }
     }
-
 
     private void setDataTimer() {
         if (timerHttp == null) timerHttp = new Timer();
@@ -383,13 +476,10 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 60000);
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         getAllData();
-        //setBBVisibility(View.GONE, TAG);
-        //hideStatusBar();
         dismissProgDialog();
         canCallWebservice = true;
         if (timerHttp == null) setDataTimer();
@@ -403,13 +493,17 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
 
+    //GetAllDataApi...........................................................
+
     @Override
     public void onDestroy() {
         if (timerHttp != null) timerHttp.cancel();
         timerHttp = null;
-
+        mHandler.removeCallbacks(mRunnable);
+        dialog = null;
         super.onDestroy();
     }
+    //endGetAllDataApi........................................................
 
     private void commentEvent() {
         if (utility.checkInternetConnection()) {
@@ -424,7 +518,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     try {
                         if (new JSONObject(response).getString("msg").equals("Success")) {
                             et_comment_feed.setText("");
-                            incrementKeyPoints(getString(R.string.kp_keyin));
+                            //incrementKeyPoints(getString(R.string.kp_keyin));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -462,9 +556,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             dismissProgDialog();
         }
     }
-
-
-    //GetAllDataApi...........................................................
 
     /**
      * GetALl the data for that event
@@ -513,8 +604,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             dismissProgDialog();
         }
     }
-    //endGetAllDataApi........................................................
-
 
     /**
      * @param response the responce provided by getAlldata()
@@ -526,19 +615,17 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         if (eventDetails == null) eventDetails = new EventDetailsForActivity();
         try {
             if (obj1.has("eventattendy")) {
-                // eventDetails.setAttendyJson(obj1.getJSONArray("eventattendy"), this);
                 Object objectType = obj1.get("eventattendy");
 
                 if (objectType instanceof String) {
                     if (eventDetails.getAttendyList() == null) {
                         img_no_member.setVisibility(View.VISIBLE);
-                        usercomeInRecyclerView.setVisibility(View.GONE);
                     }
 
                 } else if (objectType instanceof JSONArray) {
                     eventDetails.setAttendyJson(obj1.getJSONArray("eventattendy"), this);
                     img_no_member.setVisibility(View.GONE);
-                    usercomeInRecyclerView.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -564,10 +651,57 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         try {
             if (obj1.has("allfeeds")) {
-                //  eventDetails.setFeedsJson(obj1.getJSONArray("allfeeds"), this);
                 Object objectType = obj1.get("allfeeds");
 
-                if (objectType instanceof String) {
+                if (objectType.equals("")) {
+                    feedList.clear();
+                    if (obj1.has("event_profile_rating")) {
+                        JSONObject obj = obj1.getJSONObject("event_profile_rating");
+
+                        Feeds feeds = new Feeds();
+                        String event_name = obj.getString("event_name");
+                        String[] event_name_array = event_name.split("@");
+                        feeds.username = event_name_array[1];
+
+                        feeds.userimage = event.getVenue().getImage();
+                        feeds.type = Constant.FEED_TYPE_COMMENT;
+
+                        if (from_tab.equals("event_tab")) {
+                            if (isKeyInAble) {
+                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
+                            } else {
+                                feeds.feed = "Hi " + userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
+                                incrementKeyPoints("");
+                                getAllData();
+                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
+                            }
+
+                        } else if (from_tab.equals("trending")) {
+                            if (isKeyInAble) {
+                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
+                            } else {
+                                feeds.feed = "Hi " + userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
+                            }
+                        } else if (from_tab.equals("map_tab")) {
+                            if (isKeyInAble) {
+                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
+                            } else {
+                                feeds.feed = "Hi " + userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
+                            }
+                        } else if (from_tab.equals("homeTab")) {
+                            if (isKeyInAble) {
+                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
+                            } else {
+                                feeds.feed = "Hi " + userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
+                                getAllData();
+                                feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
+                            }
+                        }
+
+                        feedList.add(feeds);
+                    }
+                    adapter.notifyDataSetChanged();
+                } else if (objectType instanceof String) {
 
                     if (eventDetails.getFeedList() == null) {
                         if (feedList.size() == 0) {
@@ -621,11 +755,13 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     }
                 } else if (objectType instanceof JSONArray) {
                     feedList.clear();
+                    //feedlikeList.add(0, null);
                     eventDetails.setFeedsJson(obj1.getJSONArray("allfeeds"), this);
                     feedList.addAll(eventDetails.getFeedList());
                     adapter.notifyDataSetChanged();
                     Log.e("FEEDS LIST SIZE", eventDetails.getFeedList().size() + "");
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -653,9 +789,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 if (user.has("lat")) userInfo().lat = (user.getString("lat"));
                 if (user.has("longi")) userInfo().longi = (user.getString("longi"));
 
-                /*if (user.has("adminLat")) userInfo().latitude = (user.getString("adminLat"));
-                if (user.has("adminLong")) userInfo().longitude = (user.getString("adminLong"));*/
-
                 if (user.getString("adminLat").isEmpty()) {
                     userInfo.adminLat = user.getString("lat");
                     userInfo.adminLong = user.getString("longi");
@@ -672,38 +805,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
 
-       /* try {
-            if (obj1.has("nudgeList")) {
-                Object objectType = obj1.get("nudgeList");
-
-                if (objectType instanceof String) {
-                    if (eventDetails.getNudgeList() == null) {
-                       *//* tv_no_members.setVisibility(View.GONE);
-                        usercomeInRecyclerView.setVisibility(View.VISIBLE);*//*
-                    }
-                } else if (objectType instanceof JSONArray) {
-                    eventDetails.setNudgeJson(obj1.getJSONArray("nudgeList"), this);
-                   *//* tv_no_members.setVisibility(View.GONE);
-                    usercomeInRecyclerView.setVisibility(View.VISIBLE);*//*
-                }
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
-
-      /*  int height = (int) getResources().getDimension(R.dimen._125sdp);//activity().ActivityWidth;
-        int width = activity.ActivityWidth;
-        String url = "http://maps.google.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=12&size=" + width + "x" + height + "&sensor=false";
-        Utility.e(TAG, "URL" + url + "Lat lin" + latitude + " : " + longitude);
-
-        try {
-            Picasso.with(activity).load(url).into(image_map);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-*/
+        addButtonForKeyIn.callOnClick();
 
         if (cardsList.size() <= 0) {
             Card card = new Card();
@@ -712,7 +814,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             cardsList.add(card);
         }
     }
-
 
     private void callAddEventApi(final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
         final Utility utility = new Utility(this);
@@ -771,7 +872,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
     /***
      * For setting the Grid Layout of room Persons showing at bottom of the Room
      *
@@ -781,85 +881,123 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         userList.clear();
         userList.addAll(list);
         adapter.notifyDataSetChanged();
-        //this.userList  = list;
-        // UserInAdapter adapter = new UserInAdapter(list, this, eventId);
-        // usercomeInRecyclerView.setAdapter(adapter);
+
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup parent = (ViewGroup) findViewById(R.id.comeInUser_lnr);
+        ViewGroup parent = findViewById(R.id.comeInUser_lnr);
         parent.removeAllViews();
         for (int i = 0; i < list.size(); i++) {
 
+            assert inflater != null;
             View v = inflater.inflate(R.layout.userin_view, null);
             CircularImageView comeInUserProfile = v.findViewById(R.id.comeInProfile);
             TextView no_count = v.findViewById(R.id.no_count);
             RelativeLayout marginlayout = v.findViewById(R.id.mainProfileView);
             if (i == 0) {
 
-                parent.addView(v);
+                parent.addView(v, i);
+                String image = "";
+
+                if (!list.get(i).getUserimage().contains("dev-")) {
+                    image = "dev-" + list.get(i).getUserimage();
+                } else {
+                    image = list.get(i).getUserimage();
+                }
+
+                Glide.with(this).load(image)
+                        .thumbnail(0.5f)
+                        .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.placeholder_img)
+                        .error(R.drawable.placeholder_img)
+                        .into(comeInUserProfile);
 
             } else {
+
+                if (i < 4) {
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(10 * i, 0, 0, 0);
+                    marginlayout.setLayoutParams(params);
+                    parent.addView(v, i);
+                    String image = "";
+
+                    if (!list.get(i).getUserimage().contains("dev-")) {
+                        image = "dev-" + list.get(i).getUserimage();
+                    } else {
+                        image = list.get(i).getUserimage();
+                    }
+
+                    Glide.with(this).load(image)
+                            .thumbnail(0.5f)
+                            .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.placeholder_img)
+                            .error(R.drawable.placeholder_img)
+                            .into(comeInUserProfile);
+                }
+            }
+            if (i == 5) {
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT
                 );
-                params.setMargins(30, 0, 0, 0);
+                params.setMargins(30 * i, 0, 0, 0);
                 marginlayout.setLayoutParams(params);
-                parent.addView(v);
+                parent.addView(v, i);
+                no_count.setText("" + (list.size() - 1) + "+");
+                no_count.setVisibility(View.VISIBLE);
             }
-            String image = "";
-
-            if (!list.get(i).getUserimage().contains("dev-")) {
-                image = "dev-" + list.get(i).getUserimage();
-            } else {
-                image = list.get(i).getUserimage();
-            }
-
-            Glide.with(this).load(image)
-                    .thumbnail(0.5f)
-                    .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.placeholder_img)
-                    .error(R.drawable.placeholder_img)
-                    .into(comeInUserProfile);
         }
+
 
         parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EventDetailsActivity.this, TheRoomActivity.class);
-                intent.putExtra("commentPesionList", list);
-                intent.putExtra("eventId", eventId);
-                startActivity(intent);
+                if (!userExistOrNotonActivty.equals("")) {
+                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
+
+                } else {
+                    Intent intent = new Intent(EventDetailsActivity.this, TheRoomActivity.class);
+                    intent.putExtra("commentPesionList", list);
+                    intent.putExtra("eventId", eventId);
+                    startActivity(intent);
+                }
             }
         });
     }
 
+    public void cantJoinNotExixtUserDialog(String userStaus) {
 
-    /* common methods used somewhere else  */
-
-   /* public void addChips(ArrayList<Tags> tag) {
-        try {
-            Grid_multiRow layout = this.getView().findViewById(R.id.chip_linear);
-            layout.setAdapter(new GridChipsAdapter(this, tag));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
-
-    public void cantJoinDialog() {
-
-        if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
+        if (userStaus.equals("notStart")) {
             utility.showCustomPopup(getString(R.string.enotStarted), String.valueOf(R.font.montserrat_medium));
-        } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+        } else if (userStaus.equals("notStart")) {
             utility.showCustomPopup(getString(R.string.enotStarted), String.valueOf(R.font.montserrat_medium));
-        } else {
+        } else if (userStaus.equals("notArrived")) {
             utility.showCustomPopup(getString(R.string.enotat), String.valueOf(R.font.montserrat_medium));
         }
     }
 
+    public void cantJoinDialog() {
 
+        if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
+            blurView.setVisibility(View.VISIBLE);
+            adapter.userExistOrNot = "notStart";
+            userExistOrNotonActivty = "notStart";
+
+        } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+            blurView.setVisibility(View.VISIBLE);
+            adapter.userExistOrNot = "notStart";
+            userExistOrNotonActivty = "notStart";
+        } else {
+            blurView.setVisibility(View.VISIBLE);
+            adapter.userExistOrNot = "notArrived";
+            userExistOrNotonActivty = "notArrived";
+            utility.showCustomPopup(getString(R.string.enotat), String.valueOf(R.font.montserrat_medium));
+        }
+    }
+
+    /*.........................captureImage.............................*/
     private void captureImage() {
-
         final Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_takephoto_layout);
@@ -894,8 +1032,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         dialog.show();
     }
 
-
-    ///////////////////////////////////////////////////////////////////
+    /*.........................deleteFeed.............................*/
     private void deleteFeed(final String id) {
 
         final Dialog dialog = new Dialog(this);
@@ -932,10 +1069,11 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         dialog.show();
     }
 
+    /*.........................deleteFeedApi().............................*/
     private void deleteFeedApi(final String feedId) {
         showProgDialog(false, TAG);
         if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.REWARD_WALLETS, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.DELETE_FEED, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     dismissProgDialog();
@@ -963,7 +1101,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid + "");
-                    Utility.e(TAG, " feed_id " + feedId);
+                    params.put("feed_id", feedId);
                     return params;
                 }
             };
@@ -976,6 +1114,250 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /*.........................showFeedSmilyList().............................*/
+    private void showFeedSmilyList(final String feedSmilyId, String reaction) {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(true);
+
+        dialog.setContentView(R.layout.custom_smyliy_list);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
+
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        RecyclerView smaesamlyUserRview = dialog.findViewById(R.id.smaesamlyUserRview);
+
+        smilyUserAdapter = new SmilyUserAdapter(this, reactionUserLIst);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        smaesamlyUserRview.setLayoutManager(layoutManager);
+        smaesamlyUserRview.setAdapter(smilyUserAdapter);
+
+
+        txt_show_emojies.setText(reaction);
+        txt_show_emojies.setVisibility(View.VISIBLE);
+
+        dialog.setOnCancelListener(
+                new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        txt_show_emojies.setVisibility(View.GONE);
+                        dialog.cancel();
+                    }
+                }
+        );
+
+        getReactionUSerList(feedSmilyId);
+
+        dialog.show();
+    }
+
+    private void deletFeedRaction(final String deleteFeedReaction) {
+
+        showProgDialog(false, TAG);
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.DELETEREACTION_USER, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    dismissProgDialog();
+                    Log.v("response", response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String status = jsonObject.getString("status");
+                        reactionUserLIst.clear();
+                        if (status.equals("success")) {
+                            getAllData();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("feed_reaction_id", deleteFeedReaction);
+                    params.put("user_id", userInfo.userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
+
+
+    }
+
+    private void addFeedFormListreaction(final String getReactionFromList, final String addFeedReaction) {
+
+        showProgDialog(false, TAG);
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADDREACTION_USER, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    dismissProgDialog();
+                    Log.v("response", response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String status = jsonObject.getString("status");
+                        reactionUserLIst.clear();
+                        if (status.equals("success")) {
+                            getAllData();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("event_id", eventId);
+                    params.put("feed_id", addFeedReaction);
+                    params.put("reaction", getReactionFromList);
+                    params.put("user_id", userInfo.userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
+
+
+    }
+
+    private void addFeedreaction(final String addFeedReaction) {
+
+        showProgDialog(false, TAG);
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADDREACTION_USER, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    dismissProgDialog();
+                    Log.v("response", response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String status = jsonObject.getString("status");
+                        reactionUserLIst.clear();
+                        if (status.equals("success")) {
+                            getAllData();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("event_id", eventId);
+                    params.put("feed_id", addFeedReaction);
+                    params.put("reaction", "❤");
+                    params.put("user_id", userInfo.userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
+
+
+    }
+
+    private void getReactionUSerList(final String feedSmilyId) {
+
+        // showProgDialog(false, TAG);
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.REACTION_USER, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // dismissProgDialog();
+                    Log.v("response", response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String status = jsonObject.getString("status");
+                        reactionUserLIst.clear();
+                        if (status.equals("success")) {
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("ractionUser");
+                            for (int r = 0; r < jsonArray.length(); r++) {
+                                JSONObject jsonObject1 = jsonArray.getJSONObject(r);
+                                ReactionUserModal reactionUserModal = new ReactionUserModal();
+                                if (jsonObject1.has("id"))
+                                    reactionUserModal.id = (jsonObject1.getString("id"));
+                                if (jsonObject1.has("user_id"))
+                                    reactionUserModal.user_id = (jsonObject1.getString("user_id"));
+                                if (jsonObject1.has("user_image"))
+                                    reactionUserModal.user_image = (jsonObject1.getString("user_image"));
+                                if (jsonObject1.has("fullname"))
+                                    reactionUserModal.fullname = (jsonObject1.getString("fullname"));
+                                reactionUserLIst.add(reactionUserModal);
+                            }
+
+                            smilyUserAdapter.notifyDataSetChanged();
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("feed_reaction_id", feedSmilyId);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     private void callIntent(int caseId) {
 
@@ -992,7 +1374,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     }
 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    //  intent.putExtra("android.intent.extras.CAMERA_FACING", 1); //for front camera
                     startActivityForResult(intent, Constant.INTENT_CAMERA);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1000,7 +1381,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
-
 
     public int getDistance(Double[] LL) {
         Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
@@ -1016,7 +1396,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         return (int) distance;
     }
-
 
     public boolean checkWithTime(final String date, double interval) throws ParseException {
         String[] dateSplit = (date.replace("TO", "T")).replace(" ", "T").split("T");
@@ -1046,7 +1425,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         super.onBackPressed();
     }
 
-
     public void showProgDialog(boolean b, String TAG) {
         try {
             customProgressBar.setCanceledOnTouchOutside(b);
@@ -1065,7 +1443,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
     public void updateSession(UserInfo user) {
         SceneKey.sessionManager.createSession(user);
         userInfo = SceneKey.sessionManager.getUserInfo();
@@ -1074,7 +1451,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
     }
-
 
     public String getAddress(double latitude, double longitude) {
         String result = null;
@@ -1087,19 +1463,14 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
-            //  String addressLine = addresses.get(0).getAddressLine(1);
             String state = addresses.get(0).getAdminArea();
             String country = addresses.get(0).getCountryName();
-            // String postalCode = addresses.get(0).getPostalCode();
-            // String knownName = addresses.get(0).getFeatureName();
-            //result = knownName + " ," + addressLine + " , " + city + "," + state + "," + country + " counter" + counter;// Here 1 represent max location result to returned, by documents it recommended 1 to 5
             result = address + "," + city + "," + state + "," + country;// Here 1 represent max location result to returned, by documents it recommended 1 to 5
         } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
-
 
     private String getLocation() {
         String result;
@@ -1110,7 +1481,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
         return result;
     }
-
 
     public void decrementKeyPoints(final String msg) {
         final int points = Integer.parseInt(userInfo.key_points);
@@ -1162,9 +1532,9 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             }
         }.updateKeyPoint(points + 1, userInfo.userid);
     }
-
+    Dialog dialog = null;
     private void showKeyPoints(String s) {
-        final Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_keypoint_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -1179,15 +1549,19 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
         tvKeyPoint.setText(s);
-
-        new Handler().postDelayed(new Runnable() {
+        mRunnable = new Runnable() {
             @Override
             public void run() {
-                dialog.dismiss();
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
             }
-        }, 3000);
+        };
+        mHandler.postDelayed(mRunnable, 3000);
 
-        dialog.show();
+        if (dialog != null) {
+            dialog.show();
+        }
     }
 
 
@@ -1201,13 +1575,15 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
      *
      * @param type must be 0 or 1
      */
-    private void addUserIntoEvent(final int type, @Nullable final Bitmap bitmap) {
+    private void addUserIntoEvent(final int type) {
         if (type != -1) showProgDialog(false, TAG);
 
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADD_EVENT, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+
+                    //String userExistOrNot = "no exist";
                     dismissProgDialog();
                     // get response
                     try {
@@ -1216,8 +1592,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                             incrementKeyPoints(getString(R.string.kp_keyin));
                         }
 
-                      /*  if (type == 0) likeEvent();
-                        else if (type == 1) sendPicture(bitmap);*/
                         getAllData();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1259,7 +1633,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
      * @param bitmap the bitmap return by the activity result
      */
     private void sendPicture(final Bitmap bitmap) {
-
+        showProgDialog(false, TAG);
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.EVENT_POST_PIC, new Response.Listener<String>() {
                 @Override
@@ -1272,14 +1646,8 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                         JSONObject respo = new JSONObject(response);
                         if (respo.getInt("success") == 0) {
                             Utility.showToast(EventDetailsActivity.this, respo.getString("msg"), 0);
-                            //activity.showCustomPopup("Photo has been posted successfully.", 1);
-                            decrementKeyPoints("");
-                        } else {
-//                            activity.showCustomPopup("Photo has been posted successfully.", 1);
-                            incrementKeyPoints("");
                         }
                     } catch (Exception e) {
-                        //activity.incrementKeyPoints(getString(R.string.kp_img_post));
                         e.printStackTrace();
                     }
                 }
@@ -1334,6 +1702,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (result != null) {
 
+                        showProgDialog(false, TAG);
                         Feeds feeds = new Feeds();
                         feeds.type = Constant.FEED_TYPE_PICTURE;
                         feeds.date = cutrrentDate;
@@ -1343,13 +1712,12 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                         feeds.feed = result.getUri().toString();
                         feeds.isUri = true;
                         feedList.add(0, feeds);
-                        adapter.notifyItemInserted(0);
+                        adapter.notifyDataSetChanged();
                         feedLIstRecyclerView.scrollToPosition(0);
-
 
                         Bitmap eventImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
                         if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST))
-                            addUserIntoEvent(1, eventImg);
+                            addUserIntoEvent(1);
                         else sendPicture(eventImg);
                     }
 
@@ -1363,7 +1731,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
                     String requiredValue = data.getStringExtra("incresePoint");
                     if (requiredValue.equals("1")) {
-                        //activity.incrementKeyPoints("");
+
                     }
                 }
             }

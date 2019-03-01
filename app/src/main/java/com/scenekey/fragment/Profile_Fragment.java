@@ -81,7 +81,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
     private boolean myProfile;
     private Event_Fragment event_fragment;
     private Key_In_Event_Fragment key_in_event_fragment;
-    private Demo_Event_Fragment demo_event_fragment;
     private Fragment fragment;
 
     private ListView listViewFragProfile;
@@ -212,7 +211,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
                     img_green.setImageResource(R.drawable.bg_green_ring);
                     img_red.setImageResource(R.drawable.ic_active_red_circle);
                     img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-
             }
         }
     }
@@ -270,10 +268,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
                 updateBio(tv_bio.getText().toString().trim());
                 break;
 
-           /* case R.id.img_profile_pic:
-                profileImgClick();
-                break;*/
-
             case R.id.img_cross:
                 crossImgClicked();
                 break;
@@ -292,15 +286,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
                     }, 4000);
                 }
                 break;
-            case R.id.img_capture:
-                if (myProfile) {
-                    Intent i = new Intent(context, ImageUploadActivity.class);
-                    i.putExtra("from", "profile");
-                    startActivityForResult(i, Constant.IMAGE_UPLOAD_CALLBACK);
-                    Constant.DONE_BUTTON_CHECK = 1;
-                }
-                // Utility.showToast(context,getString(R.string.underDevelopment),0);
-                break;
+
             case R.id.img_right:
                 setImage(true);
                 break;
@@ -317,7 +303,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
         activity.setBBVisibility(View.GONE, TAG);
-        //activity.setTopStatus();
         if (event_fragment != null) event_fragment.canCallWebservice = false;
         if (key_in_event_fragment != null) key_in_event_fragment.canCallWebservice = false;
 
@@ -348,18 +333,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
             key_in_event_fragment.canCallWebservice = true;
             activity.hideStatusBar();
         }
-        if (fragment != null && fragment instanceof Add_Event_Fragment) {
-            activity.setBBVisibility(View.VISIBLE, TAG);
-            activity.setTitleVisibility(View.GONE);
-            return;
-        }
-        if (event_fragment == null && key_in_event_fragment == null) {
-            if (demo_event_fragment == null) {
-                activity.setBBVisibility(View.VISIBLE, TAG);
-                activity.setTitleVisibility(View.VISIBLE);
-                activity.backPressToPosition();
-            }
-        }
 
     }
 
@@ -375,11 +348,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //img_profile_pic2.setAlpha(1.0f);
-                //img_profile_pic2.setVisibility(View.VISIBLE);
-
-             /*Animation dimmer = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_to_full);
-               txt_dimmer.startAnimation(dimmer);*/
             }
 
             @Override
@@ -406,10 +374,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //img_profile_pic2.setAlpha(1.0f);
-                //img_profile_pic2.setBorderColor(getResources().getColor(R.color.colorPrimary));
                 Animation dimmer = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_to_o);
-                //txt_dimmer.startAnimation(dimmer);
 
                 img_right.startAnimation(dimmer);
                 img_left.startAnimation(dimmer);
@@ -419,7 +384,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
             public void onAnimationEnd(Animation animation) {
                 txt_dimmer.setVisibility(View.GONE);
                 img_cross.setVisibility(View.GONE);
-                //img_profile_pic2.setVisibility(View.GONE);
 
                 img_right.setVisibility(View.GONE);
                 img_left.setVisibility(View.GONE);
@@ -431,7 +395,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
                 Utility.e(TAG, "Animation Repeat");
             }
         });
-        //img_profile_pic2.startAnimation(animation);
     }
 
     private void setImage(boolean isRight) {
@@ -468,17 +431,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
         return this;
     }
 
-    /**
-     * @param attendy   if do not Eventattendy object just create one , set userId URL and pass it.
-     * @param myProfile if user comming to show his own profile then true otherwise false.
-     * @return setData content
-     */
-    public Profile_Fragment setData(EventAttendy attendy, boolean myProfile, @Nullable Demo_Event_Fragment fragment) {
-        this.attendy = attendy;
-        this.myProfile = myProfile;
-        this.demo_event_fragment = fragment;
-        return this;
-    }
 
     /**
      * @param attendy   if do not Eventattendy object just create one , set userId URL and pass it.

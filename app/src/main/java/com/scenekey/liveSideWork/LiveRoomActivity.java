@@ -2,17 +2,10 @@ package com.scenekey.liveSideWork;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.scenekey.R;
-import com.scenekey.activity.TheRoomActivity;
-import com.scenekey.adapter.TheDemoRoomAdapter;
-import com.scenekey.adapter.TheRoomAdapter;
 import com.scenekey.lib_sources.SwipeCard.Card;
-import com.scenekey.model.EventAttendy;
 
 import java.util.ArrayList;
 

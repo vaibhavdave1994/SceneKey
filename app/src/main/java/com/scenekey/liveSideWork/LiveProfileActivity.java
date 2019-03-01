@@ -213,7 +213,7 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
         iv_for_status.setVisibility(View.VISIBLE);
         //img_profile_pic2.setVisibility(View.VISIBLE);
 
-        if (eventAttendy.username.equalsIgnoreCase(userInfo.userName)) {
+        if (eventAttendy.username.equals(userInfo.fullname)) {
             bottom_sheet.setVisibility(View.GONE);
             bottom_sheet_self_user.setVisibility(View.VISIBLE);
             iv_report.setVisibility(View.GONE);
@@ -291,7 +291,7 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
                 facebookId = eventAttendy.userFacebookId;
                 userid = eventAttendy.userid;
 
-                if (eventAttendy.username.equalsIgnoreCase(userInfo.userName)) {
+                if (eventAttendy.username.equals(userInfo.fullname)) {
                     bottom_sheet.setVisibility(View.GONE);
                     bottom_sheet_self_user.setVisibility(View.VISIBLE);
                     iv_report.setVisibility(View.GONE);

@@ -40,7 +40,7 @@ public class SearchEvent {
             this.tagList.add(tags);
         }
 
-        fragment.addChips(this.tagList);
+        //fragment.addChips(this.tagList);
     }
 
     public void setAttendyJson(JSONArray Json,Search_Event_Details_Fragment fragment) throws JSONException {
@@ -112,8 +112,6 @@ public class SearchEvent {
             feedList.add(feeds);
         }
 
-        //  fragment.setCardAdapter(fragment.cardsList);
-
     }
 
     public void setProfile_ratingJSon(JSONObject JSon,Search_Event_Details_Fragment fragment) throws JSONException {
@@ -122,7 +120,6 @@ public class SearchEvent {
             profile_rating.setEvent_rating(JSon.getString("event_rating"));
         if (JSon.has("venue_detail")) {
             profile_rating.setVenue_detail(JSon.getString("venue_detail"));
-            // txt_address_i1.setText(profile_rating.getVenue_detail().trim());
         }
         if (JSon.has("venue_id")) profile_rating.setVenue_id(JSon.getString("venue_id"));
         if (JSon.has("venue_lat")) {
@@ -137,7 +134,6 @@ public class SearchEvent {
         }
         if (JSon.has("description")) {
             profile_rating.setDescription(JSon.getString("description"));
-            //txt_discipI_f2.setText(dateSplit[0] + " " + dateSplit[1] + " " + dateSplit[2]);
         }
         if (JSon.has("event_name")) {
             profile_rating.setEvent_name(JSon.getString("event_name"));
@@ -153,7 +149,7 @@ public class SearchEvent {
         if (JSon.has("like")) {
             profile_rating.setLike(JSon.getInt("like") + "");
             if (profile_rating.getLike().equals("1")) {
-                fragment.fabMenu1_like.setImageDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.active_like));
+                //fragment.fabMenu1_like.setImageDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.active_like));
             }
         }
 

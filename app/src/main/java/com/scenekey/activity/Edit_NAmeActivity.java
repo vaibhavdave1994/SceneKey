@@ -38,20 +38,15 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
 
     public final String TAG = Edit_NameFragment.class.toString();
     private EditText et_firstName, et_lastName;
-    private TextView txt_updateNAme;
-    private Context context;
-    private HomeActivity activity;
     private Utility utility;
     private CustomProgressBar customProgressBar;
     private Animation shake;
-    private ImageView img_f1_back;
     public static UserInfo userInfo;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_edit__name);
         setContentView(R.layout.fragment_edit__name);
         initView();
     }
@@ -64,8 +59,8 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
         customProgressBar = new CustomProgressBar(this);
         et_firstName = findViewById(R.id.et_firstName);
         et_lastName = findViewById(R.id.et_lastName);
-        txt_updateNAme = findViewById(R.id.txt_updateNAme);
-        img_f1_back = findViewById(R.id.img_f1_back);
+        TextView txt_updateNAme = findViewById(R.id.txt_updateNAme);
+        ImageView img_f1_back = findViewById(R.id.img_f1_back);
         txt_updateNAme.setOnClickListener(this);
         img_f1_back.setOnClickListener(this);
 
@@ -131,12 +126,9 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
                             updateSession(userInfo);
 
                             CustomeClick.getmInctance().onTextChange(userInfo);
-
-                            //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                             onBackPressed();
 
                         } else {
-                            //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -187,12 +179,5 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
     public void updateSession(UserInfo user) {
         SceneKey.sessionManager.createSession(user);
         userInfo = SceneKey.sessionManager.getUserInfo();
-        try {
-            //Picasso.with(this).load(userInfo.getUserImage()).placeholder(R.drawable.image_default_profile).into(img_profile);
-            //tv_key_points.setText(userInfo.key_points);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 }

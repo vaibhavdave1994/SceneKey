@@ -24,7 +24,7 @@ public class NotificationData implements Serializable {
     public boolean message;
 
     public NotificationData(){
-//blank constructor
+     //blank constructor
     }
 
    /* public NotificationData(int img, String nudges ) {

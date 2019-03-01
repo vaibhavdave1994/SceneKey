@@ -16,6 +16,7 @@
     <color name="gray">#5f5f5f</color>
     <color name="gray2">#717171</color>
     <color name="bgImage">#0B0F34</color>
+    <color name="green">#039904</color>
 
     <!-- Splash gravity color -->
     <color name="startColor">#41c9c8</color>

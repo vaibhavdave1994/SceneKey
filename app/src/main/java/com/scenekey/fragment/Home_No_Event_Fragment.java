@@ -1,11 +1,8 @@
 package com.scenekey.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,9 +12,6 @@ import android.view.ViewGroup;
 
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
-import com.scenekey.activity.TryAndDemoActivity;
-import com.scenekey.util.CircleTransform;
-import com.scenekey.util.Utility;
 
 public class Home_No_Event_Fragment extends Fragment implements View.OnClickListener {
 
@@ -69,14 +63,10 @@ public class Home_No_Event_Fragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.tvTryDemo:
-                Intent intent = new Intent(context, TryAndDemoActivity.class);
+             /*   Intent intent = new Intent(context, TryAndDemoActivity.class);
                 startActivity(intent);
-
+*/
                 break;
-
-         /*   case R.id.tvSearch:
-                activity.rtlv_four.callOnClick();
-                break;*/
         }
     }
 }

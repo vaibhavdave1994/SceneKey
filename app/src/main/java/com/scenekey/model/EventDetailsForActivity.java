@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EventDetailsForActivity {
 
@@ -181,7 +182,7 @@ public class EventDetailsForActivity {
                   feeds.feedSmilies.add(feedSmily);
 //                  eventDetailsActivity.feedlikeList.add(feedSmily);
               }
-
+              Collections.reverse(feeds.feedSmilies);
               ///cREATE lIST AND INSERT vALUE
 
             if (feeds.type.equals(Constant.FEED_TYPE_PICTURE)) {

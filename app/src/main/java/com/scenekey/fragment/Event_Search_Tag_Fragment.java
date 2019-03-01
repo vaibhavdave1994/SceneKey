@@ -125,18 +125,6 @@ public class Event_Search_Tag_Fragment extends Fragment implements View.OnClickL
                 @Override
                 public void onResponse(String response) {
                     Utility.e("LOG_VOLLEY R", response);
-                  /*
-                   //using gson
-                   try {
-                        (list_events==null?list_events= new ArrayList<>():list_events).clear();
-                        list_events = new Gson().fromJson(response, new TypeToken<ArrayList<EventsBTag>>() {}.getType() );
-                        setRecyclerViewEvent();
-                        activity.dismissProgDialog();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        activity.dismissProgDialog();
-                    }*/
-
                     try {
                         JSONArray jA = new JSONArray(response);
                         if (list_events == null) list_events = new ArrayList<>();
@@ -270,82 +258,6 @@ public class Event_Search_Tag_Fragment extends Fragment implements View.OnClickL
         activity.frm_bottmbar.setVisibility(View.VISIBLE);
         activity.showStatusBar();
     }
-
-  /*  // New Code
-    public void callAddEventApi(final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
-        final Utility utility = new Utility(context);
-
-        if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADD_EVENT, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String Response) {
-                    // get response
-                    JSONObject jsonObject;
-                    try {
-                        activity.dismissProgDialog();
-                        jsonObject = new JSONObject(Response);
-                        String status = jsonObject.getString("status");
-
-                        *//*String status = jsonObject.getString("status");
-                        boolean isKeyInAble;
-
-                        // If Not exist then isKeyInAble is false
-                        // If exist then isKeyInAble is true
-                        isKeyInAble = !status.equals("not exist");
-
-                        if (!isKeyInAble && activity.userInfo().key_points.equals("0")) {
-                            Toast.makeText(context, "Sorry! you have run out of key points! Earn more by connecting on the scene!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Event_Fragment frg = new Event_Fragment();
-                            frg.setData(event_id, venue_name, object, currentLatLng, strings, isKeyInAble);
-                            activity.addFragment(frg, 0);
-                        }*//*
-
-                        if(status.equals(object.getEvent().status)){
-//                            Search_Event_Details_Fragment frg = Event_Fragment.newInstance("event_tab");
-                            Search_Event_Details_Fragment frg = Search_Event_Details_Fragment.newInstance("search_tab");
-                            frg.setData(event_id, venue_name, object, currentLatLng, strings, true);
-                            activity.addFragment(frg, 0);
-                        }else {
-                            //Event_Fragment frg =  Event_Fragment.newInstance("event_tab");
-                            Search_Event_Details_Fragment frg =  Search_Event_Details_Fragment.newInstance("search_tab");
-                            frg.setData(event_id, venue_name, object, currentLatLng, strings, false);
-                            activity.addFragment(frg, 0);
-                        }
-
-                    } catch (Exception ex) {
-                        activity.dismissProgDialog();
-                        ex.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("userid", activity.userInfo().userid);
-                    params.put("eventname", object.getEvent().event_name);
-                    params.put("eventid", object.getEvent().event_id);
-                    params.put("Eventdate", object.getEvent().event_date);
-
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(context).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-        } else {
-            Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
-            activity.dismissProgDialog();
-        }
-    }
-*/
-
-
 
     // New Code
     private void callCheckEventStatusApi(final String eventName,final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {

@@ -8,14 +8,8 @@
     android:background="@color/centre_solid"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context="com.scenekey.fragment.Setting_Fragment">
-
-    <!-- <View
-         android:id="@+id/top_status"
-         android:layout_width="match_parent"
-         android:layout_height="24dp"
-         android:background="@color/black"
-         android:visibility="gone" />-->
+    tools:context="com.scenekey.fragment.Setting_Fragment"
+    android:focusable="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -88,13 +82,13 @@
 
                     <TextView
                         android:id="@+id/txt_first_name"
-                        android:layout_width="280dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
                         android:textStyle="bold"
                         android:gravity="center_vertical"
-                        android:text="Shubh"
+                        android:text="Name"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"/>
 
@@ -128,7 +122,7 @@
 
                     <TextView
                         android:id="@+id/txt_last_name"
-                        android:layout_width="280dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
@@ -194,7 +188,7 @@
 
                     <TextView
                         android:id="@+id/txt_bio"
-                        android:layout_width="280dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
@@ -232,7 +226,7 @@
 
                     <TextView
                         android:id="@+id/txt_ChangePassword"
-                        android:layout_width="@dimen/_280sdp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@null"
@@ -279,7 +273,7 @@
 
                 <TextView
                     android:id="@+id/edt_terms"
-                    android:layout_width="@dimen/_280sdp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
@@ -318,7 +312,7 @@
 
                 <TextView
                     android:id="@+id/edt_privacy"
-                    android:layout_width="@dimen/_280sdp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
@@ -350,7 +344,8 @@
                     android:gravity="center_vertical"
                     android:text="@string/admin"
                     android:textColor="@color/setting_txt_color"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_14sdp"
+                    tools:ignore="SpUsage" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -379,7 +374,7 @@
 
                         <TextView
                             android:id="@+id/txt_location"
-                            android:layout_width="280dp"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@null"
@@ -440,7 +435,8 @@
                     android:background="@drawable/bg_search_tag_active"
                     android:fontFamily="@font/raleway_medium"
                     android:gravity="center"
-                    android:text="@string/feedback" />
+                    android:text="@string/feedback"
+                    tools:ignore="SpUsage" />
 
                 <TextView
                     android:layout_width="@dimen/_55sdp"
@@ -456,7 +452,8 @@
                     android:background="@drawable/bg_search_tag_active"
                     android:fontFamily="@font/raleway_regular"
                     android:gravity="center"
-                    android:text="@string/logout" />
+                    android:text="@string/logout"
+                    tools:ignore="SpUsage" />
             </LinearLayout>
 
         </LinearLayout>

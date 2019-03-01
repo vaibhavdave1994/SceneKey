@@ -54,15 +54,26 @@
                     android:layout_marginTop="@dimen/_50sdp"
                     android:gravity="center">
 
-                    <com.mikhaellopez.circularimageview.CircularImageView
+
+                    <com.github.siyamed.shapeimageview.CircularImageView
                         android:id="@+id/imgUserImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/placeholder_img"
-                        app:civ_border_color="@color/old_primary"
-                        app:civ_border_width="1dp" />
+                        android:src="@drawable/user_placeholder"
+                        app:siBorderColor="@color/white"
+                        app:siBorderWidth="@dimen/_1sdp" />
+
+                   <!-- <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/imgUserImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/user_placeholder"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="1dp" />-->
 
                    <!-- <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgUserImage"
