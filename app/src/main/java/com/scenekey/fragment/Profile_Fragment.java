@@ -107,8 +107,6 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
     String userImage ="";
     private LinearLayout demo_View_dot;
 
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,7 +114,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.new_profile_fragment, container, false);
         ly_match_profile = v.findViewById(R.id.ly_match_profile);
 
-        listViewFragProfile = v.findViewById(R.id.listViewFragProfile);
+        listViewFragProfile = v.findViewById(R.id.feedLIstRecyclerView);
         bottom_sheet = v.findViewById(R.id.bottom_sheet);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         imageList = new ArrayList<>();

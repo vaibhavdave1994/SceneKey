@@ -28,6 +28,7 @@ import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
 import com.scenekey.model.Events;
 import com.scenekey.model.Tags;
+import com.scenekey.model.Venue;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
 
@@ -88,10 +89,10 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new SearchEvent_Adapter(activity, list_events, new String[]{lat, lng}, new CheckEventStatusListener() {
             @Override
-            public void getCheckEventStatusListener(String eventName, String eventId, String event_id, Events object, String[] currentLatLng, String[] strings) {
+            public void getCheckEventStatusListener(String eventName, String eventId, Venue event_id, Events object, String[] currentLatLng, String[] strings) {
                /* Search_Fragment  Search_Fragment = new Search_Fragment();
                 Search_Fragment.*/
-                callCheckEventStatusApi(eventName,eventId, event_id, object, currentLatLng, strings);
+                callCheckEventStatusApi(eventName,eventId, event_id.getVenue_name(), object, currentLatLng, strings);
             }
         }));
     }

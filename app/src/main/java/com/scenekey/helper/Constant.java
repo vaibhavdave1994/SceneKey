@@ -1,12 +1,17 @@
 package com.scenekey.helper;
 
+import com.scenekey.model.EmoziesModal;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by mindiii on 1/2/18.
  */
 
 public class Constant {
 
-
+    public static List<EmoziesModal> recentEmoziesList = new ArrayList<>();
     public static final int REQUEST_CAMERA = 478;
     public static final int INTENT_CAMERA = 789;
     public static final int RESULT_LOAD = 156;
@@ -24,6 +29,7 @@ public class Constant {
     public static final String LONGITUDE = "LONGITUDE";
 
     public static final int MAXIMUM_DISTANCE = 200;
+//    public static final int MAXIMUM_DISTANCE = 10;
 
     public static final String ADMIN_YES = "yes";
     public static final String ADMIN_NO = "no";

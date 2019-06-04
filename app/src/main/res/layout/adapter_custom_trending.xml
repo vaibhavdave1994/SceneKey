@@ -2,27 +2,25 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/new_white_bg">
 
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginRight="@dimen/_8sdp"
-        app:cardCornerRadius="@dimen/trending_round"
-        app:cardElevation="@dimen/_1sdp">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/rl_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:layout_marginLeft="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/boundry">
 
             <RelativeLayout
                 android:id="@+id/topview"
@@ -42,7 +40,7 @@
                     android:gravity="start"
                     android:maxLines="2"
                     android:text="Shubham"
-                    android:textColor="@color/black"
+                    android:textColor="@color/black2"
                     android:textSize="@dimen/_15ssp" />
 
 
@@ -57,7 +55,6 @@
                     app:srcCompat="@drawable/add_ico" />
 
                 <LinearLayout
-                    android:id="@+id/btm"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_below="@id/txt_eventName"
@@ -86,9 +83,10 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/_20sdp"
                             android:layout_marginLeft="@dimen/_20sdp"
-                            android:fontFamily="@font/raleway_regular"
+                            android:fontFamily="@font/montserrat_light"
                             android:maxLines="1"
-                            android:textColor="@color/btn_bg_color"
+                            android:text=""
+                            android:textColor="@color/colorPrimaryDark_new"
                             android:textSize="@dimen/_10ssp" />
 
                         <android.support.v7.widget.AppCompatImageView
@@ -122,8 +120,8 @@
 
                         <ImageView
                             android:id="@+id/green_dot"
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
+                            android:layout_width="@dimen/_3sdp"
+                            android:layout_height="@dimen/_3sdp"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/abc_dot" />
 
@@ -139,17 +137,11 @@
                                 android:id="@+id/txt_time"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:fontFamily="@font/montserrat_light"
                                 android:gravity="start|center_vertical"
                                 android:textColor="@color/top_bar_text"
-                                android:textSize="@dimen/_10sdp" />
-
-                            <!-- <LinearLayout
-                                 android:id="@+id/like"
-                                 android:layout_width="match_parent"
-                                 android:layout_height="match_parent"
-                                 android:layout_centerInParent="true"
-                                 android:gravity="center"
-                                 android:orientation="vertical">-->
+                                android:textSize="@dimen/_11sdp" />
 
                             <TextView
                                 android:id="@+id/txt_live"
@@ -164,8 +156,7 @@
                                 android:paddingLeft="@dimen/_5sdp"
                                 android:text="Live"
                                 android:textColor="#039904"
-                                android:textSize="@dimen/_10sdp" />
-                            <!--</LinearLayout>-->
+                                android:textSize="@dimen/_13sdp" />
 
                         </RelativeLayout>
                     </LinearLayout>
@@ -177,27 +168,28 @@
             <LinearLayout
                 android:id="@+id/linear_viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_220sdp"
+                android:layout_height="@dimen/_210sdp"
                 android:layout_below="@+id/topview"
+                android:background="@color/transparent"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_200sdp"
+                    android:background="@color/transparent"
                     android:orientation="vertical">
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/image_slider_pager"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_200sdp"
-                        android:background="@color/black">
+                        android:background="@color/transparent">
 
                     </android.support.v4.view.ViewPager>
 
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/indicaterView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/image_slider_pager"
@@ -217,16 +209,18 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_below="@+id/linear_viewPager"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@color/white">
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/heart"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:id="@+id/iv_heart"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
                     android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:padding="2dp"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/inactive_heart_ico" />
@@ -236,77 +230,83 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/heart"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_toEndOf="@+id/iv_heart"
+                    android:layout_toRightOf="@+id/iv_heart"
+                    android:fontFamily="@font/montserrat_light"
                     android:gravity="center"
                     android:text="50"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_10sdp" />
 
                 <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:id="@+id/iv_note_book"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_centerVertical="true"
-                    android:layout_margin="5dp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_toStartOf="@+id/iv_comment"
                     android:layout_toLeftOf="@+id/iv_comment"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/note_book_ico" />
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_comment"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
                     android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/iv_group"
                     android:layout_toLeftOf="@+id/iv_group"
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/chat_ico" />
 
-
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/iv_group"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_toStartOf="@+id/relativeLayout"
+                    android:layout_toLeftOf="@+id/relativeLayout"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/group_ico_circle" />
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="8dp"
-                    android:scaleType="centerInside"
-                    app:srcCompat="@drawable/group_ico" />
+                    android:layout_centerInParent="true">
 
-                <!-- <RelativeLayout
-                     android:id="@+id/lnrLeft"
-                     android:layout_width="@dimen/_35sdp"
-                     android:layout_height="match_parent"
-                     android:layout_alignParentEnd="true"
-                     android:layout_alignParentRight="true"
-                     android:layout_centerVertical="true"
-                     android:layout_margin="5dp"
-                     android:orientation="horizontal">
+                    <RelativeLayout
+                        android:id="@+id/comeInUser_lnr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:gravity="start|center_vertical"
+                        android:visibility="gone">
 
-                     <ImageView
-                         android:id="@+id/iv_group"
-                         android:layout_width="@dimen/_20sdp"
-                         android:layout_height="@dimen/_20sdp"
-                         android:layout_centerVertical="true"
-                         android:src="@drawable/group_ico"
-                         android:visibility="gone" />
+                    </RelativeLayout>
 
-                     <RelativeLayout
-                         android:id="@+id/comeInUser_lnr"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:layout_alignParentRight="true"
-                         android:layout_centerVertical="true"
-                         android:gravity="center">
-
-                     </RelativeLayout>
-                 </RelativeLayout>-->
+                </RelativeLayout>
 
             </RelativeLayout>
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 
 
     <TextView

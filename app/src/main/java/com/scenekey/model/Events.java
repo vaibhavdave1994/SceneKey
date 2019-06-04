@@ -1,7 +1,5 @@
 package com.scenekey.model;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.scenekey.util.Utility;
 
 import org.json.JSONArray;
@@ -57,6 +55,8 @@ public class Events implements Serializable {
         if (venue.has("latitude")) v.setLatitude(venue.getString("latitude"));
         if (venue.has("longitude")) v.setLongitude(venue.getString("longitude"));
         if (venue.has("rating")) v.setRating(venue.getInt("rating"));
+        if (venue.has("is_tag_follow")) v.setIs_tag_follow(venue.getString("is_tag_follow"));
+        if (venue.has("biz_tag_id")) v.setBiz_tag_id(venue.getString("biz_tag_id"));
         this.venue = v;
     }
 
@@ -101,6 +101,7 @@ public class Events implements Serializable {
             }
         }
 
+        if (events.has("isFeed")) event.isFeed = (events.getInt("isFeed"));
 
         if (events.has("keyInUser")) {
             JSONArray feedPost = events.getJSONArray("keyInUser");
@@ -109,7 +110,7 @@ public class Events implements Serializable {
 
                 JSONObject jsonObject = feedPost.getJSONObject(i);
 
-                keyInUserModal keyInUserModal = new keyInUserModal();
+                KeyInUserModal keyInUserModal = new KeyInUserModal();
 
 
                 keyInUserModal.userid = jsonObject.getString("userid");

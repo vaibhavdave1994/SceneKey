@@ -38,10 +38,8 @@ public class SmilyUserAdapter  extends RecyclerView.Adapter<SmilyUserAdapter.Vie
         ReactionUserModal  reactionUserModal = emoziesList.get(position);
         holder.tv_userName.setText(reactionUserModal.fullname);
 
-
         if (position == emoziesList.size() - 1) {
             holder.line_view.setVisibility(View.GONE);
-
         } else {
             holder.line_view.setVisibility(View.VISIBLE);
         }

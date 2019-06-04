@@ -20,6 +20,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHolder> {
     private ArrayList<Wallets> walletsArrayList;
     private Context context;
@@ -34,7 +36,8 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
     @NonNull
     @Override
     public WalletsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallets_view_layout, parent, false);
+        //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.wallets_view_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_adapter_reward, parent, false);
         return new WalletsAdapter.ViewHolder(view);
     }
 
@@ -68,7 +71,8 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView venue_wallets_address,wallets_offerUserName,btn_redeem_wallets,tv_reward_wallets_language,txt_wallets_exp_days;
-        private ImageView venue_wallets_image;
+//        private ImageView venue_wallets_image;
+        private CircleImageView venue_wallets_image;
 
         ViewHolder(View itemView) {
             super(itemView);

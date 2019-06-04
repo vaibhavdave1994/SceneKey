@@ -41,7 +41,7 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
     private EditText et_for_enterTxt;
     private CustomProgressBar prog;
     private String fromScreen ="";
-
+    Utility utility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
         //  StatusBarUtil.setTranslucent(this);
         setContentView(R.layout.fragment_bio);
 
-        setStatusBar();
+        utility = new Utility(this);
         userInfo = SceneKey.sessionManager.getUserInfo();
         prog = new CustomProgressBar(this);
 
@@ -86,39 +86,6 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
 
     }
 
-    private void setStatusBar() {
-       /*   View top_status = findViewById(R.id.top_status);
-
-      if (!(SceneKey.sessionManager.isSoftKey())) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                StatusBarUtil.setStatusBarTranslucent(this, true);
-            } else {
-                top_status.setVisibility(View.GONE);
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                View decor = getWindow().getDecorView();
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                top_status.setBackgroundResource(R.color.white);
-                top_status.setVisibility(View.VISIBLE);
-            } else {
-                StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-                top_status.setVisibility(View.VISIBLE);
-            }
-        } else {
-            StatusBarUtil.setStatusBarColor(this, R.color.white);
-            top_status.setVisibility(View.GONE);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                View decor = getWindow().getDecorView();
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                top_status.setBackgroundResource(R.color.white);
-            } else {
-                StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-            }
-        }*/
-
-    }
 
     private void showProgDialog(boolean cancelable) {
         prog.setCancelable(cancelable);
@@ -143,7 +110,8 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
 
                     // New Code
                     if (bio.isEmpty()) {
-                        Toast.makeText(this, "Please enter Bio", Toast.LENGTH_SHORT).show();
+                        utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
+                       // Toast.makeText(this, "Please enter Bio", Toast.LENGTH_SHORT).show();
                     } else {
                         updateBio(bio);
                     }

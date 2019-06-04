@@ -18,6 +18,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.adapter.OfferAdapter;
@@ -48,6 +50,7 @@ public class OfferSFragment extends Fragment {
     private HomeActivity activity;
     private Utility utility;
     private ScrollView no_data_inOffer;
+    private DatabaseReference mDatabase;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -59,6 +62,7 @@ public class OfferSFragment extends Fragment {
     }
 
     private void inItView(View view) {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         offerRecyclerView = view.findViewById(R.id.offerRecyclerView);
         no_data_inOffer = view.findViewById(R.id.no_data_inOffer);
         offerList = new ArrayList<>();
@@ -68,7 +72,7 @@ public class OfferSFragment extends Fragment {
 
                 Log.v("offers", offers.reward_id);
                 addToWalletList(offers);
-                getOffersList();
+
             }
         });
         offerRecyclerView.setAdapter(offerAdapter);
@@ -104,6 +108,7 @@ public class OfferSFragment extends Fragment {
                         } else {
                             utility.showCustomPopup(message, String.valueOf(R.font.montserrat_medium));
                         }
+                        getOffersList();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -156,22 +161,51 @@ public class OfferSFragment extends Fragment {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject jsonObject2 = (JSONObject) data.get(i);
 
-                                Offers offers = new Offers();
-                                offers.reward_id = jsonObject2.getString("reward_id");
-                                offers.reward_language = jsonObject2.getString("reward_language");
-                                offers.goes_to = jsonObject2.getString("goes_to");
-                                offers.exp = jsonObject2.getString("exp");
-                                offers.venue_name = jsonObject2.getString("venue_name");
-                                offers.venue_address = jsonObject2.getString("venue_address");
-                                offers.venue_image = jsonObject2.getString("venue_image");
-                                offers.venue_lat = jsonObject2.getString("venue_lat");
-                                offers.venue_long = jsonObject2.getString("venue_long");
-                                offers.distance = jsonObject2.getString("distance");
-                                offers.business_name = jsonObject2.getString("business_name");
-                                offers.point = jsonObject2.getString("point");
-                                offerList.add(offers);
+                                if(jsonObject2.getString("alert_type").equalsIgnoreCase("tag")){
+                                    Offers offers = new Offers();
+                                    offers.alert_type = jsonObject2.getString("alert_type");
+                                    offers.cat_id = jsonObject2.getString("cat_id");
+                                    offers.category_name = jsonObject2.getString("category_name");
+                                    offers.biz_tag_id = jsonObject2.getString("biz_tag_id");
+                                    offers.tag_name = jsonObject2.getString("tag_name");
+                                    offers.venue_name = jsonObject2.getString("venue_name");
+                                    offers.venue_image = jsonObject2.getString("venue_image");
+                                    offers.frequency = jsonObject2.getString("frequency");
+                                    offers.other_type = jsonObject2.getString("other_type");
+                                    offers.distance = jsonObject2.getString("distance");
+                                    offers.message = jsonObject2.getString("message");
+                                    if(jsonObject2.has("tag_text")){
+                                        offers.tag_text = jsonObject2.getString("tag_text");
+                                    }
+                                    else {
+                                        offers.tag_text = "";
+                                    }
+                                    offerList.add(offers);
+                                }
+                                else {
+                                    Offers offers = new Offers();
+                                    offers.alert_type = jsonObject2.getString("alert_type");
+                                    offers.reward_id = jsonObject2.getString("reward_id");
+                                    offers.reward_language = jsonObject2.getString("reward_language");
+                                    offers.goes_to = jsonObject2.getString("goes_to");
+                                    offers.exp = jsonObject2.getString("exp");
+                                    offers.venue_name = jsonObject2.getString("venue_name");
+                                    offers.venue_address = jsonObject2.getString("venue_address");
+                                    offers.venue_image = jsonObject2.getString("venue_image");
+                                    if (jsonObject2.has("reward_image")) {
+                                        offers.reward_image = jsonObject2.getString("reward_image");
+                                    } else {
+                                        offers.reward_image = "";
+                                    }
+                                    offers.venue_lat = jsonObject2.getString("venue_lat");
+                                    offers.venue_long = jsonObject2.getString("venue_long");
+                                    offers.distance = jsonObject2.getString("distance");
+                                    offers.business_name = jsonObject2.getString("business_name");
+                                    offers.point = jsonObject2.getString("point");
+                                    offerList.add(offers);
+                                }
                             }
-
+                            setBadgeCountToFireBase();
                         } else {
                             no_data_inOffer.setVisibility(View.VISIBLE);
                         }
@@ -193,6 +227,7 @@ public class OfferSFragment extends Fragment {
                     params.put("lat", SceneKey.sessionManager.getUserInfo().lat);
                     params.put("long", SceneKey.sessionManager.getUserInfo().longi);
                     params.put("userId", SceneKey.sessionManager.getUserInfo().userid + "");
+//                    params.put("userId", "1384");
 
                     Utility.e(TAG, " params " + params.toString());
                     return params;
@@ -205,5 +240,10 @@ public class OfferSFragment extends Fragment {
             Toast.makeText(context, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();
         }
+    }
+
+    public void setBadgeCountToFireBase(){
+        mDatabase.child("dev").child("reward").child(SceneKey.sessionManager.getUserInfo().userid).child("count").setValue("0");
+        activity.tv_alert_badge_count.setVisibility(View.GONE);
     }
 }

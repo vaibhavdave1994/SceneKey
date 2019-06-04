@@ -17,7 +17,6 @@ import com.scenekey.R;
 
 public abstract class CustomAlertDialog extends Dialog {
 
-    private String message, buttonLeft, buttonRight;
     private View pop_up_view;
     private TextView txt_pop10_One, txt_pop10_Two, txt_pop10_message, txt_pop_title;
 

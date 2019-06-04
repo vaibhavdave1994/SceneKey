@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainRoomView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_gravity="center">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/iv_tag_circulerImage"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"
+            android:src="@color/white"
+            app:civ_border_color="#FF0E0E"
+            app:civ_border_width="@dimen/_1sdp" />
+
+        <View
+            android:id="@+id/view_followed"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:visibility="gone"
+            android:background="@drawable/bg_circle_follow"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:id="@+id/iv_imageView"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:padding="@dimen/_12sdp"
+            android:layout_centerInParent="true"/>
+
+
+
+        <!--android:src="@drawable/placeholder_img"-->
+        <TextView
+            android:id="@+id/tag_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_16sdp"
+            android:fontFamily="@font/montserrat_medium"
+            android:maxLines="1"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_below="@+id/iv_imageView"
+            android:minHeight="@dimen/_16sdp"
+            android:text="Shh"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_16sdp"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/montserrat_light"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="@dimen/_16sdp"
+            android:text="(Shubh)"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/iv_checked"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_16sdp"
+            app:srcCompat="@drawable/ic_correct_icon"
+            android:layout_marginLeft="@dimen/_38sdp"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:visibility="gone"
+
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

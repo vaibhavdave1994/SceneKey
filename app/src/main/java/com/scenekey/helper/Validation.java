@@ -131,7 +131,8 @@ public class Validation {
             editText.requestFocus();
             return true;
         } else {
-            editText.setError(context.getString(R.string.passLengthError));
+            utility.showCustomPopup(context.getString(R.string.passLengthError), String.valueOf(R.font.montserrat_medium));
+           // editText.setError(context.getString(R.string.passLengthError));
             editText.requestFocus();
             return false;
         }
@@ -140,7 +141,7 @@ public class Validation {
     public boolean isImageUpload(Bitmap profileImageBitmap) {
         if (profileImageBitmap == null) {
 //            Utility.showToast(context,"Please select profile picture",0);
-            utility.showCustomPopup("Please select profile picture", String.valueOf(R.font.montserrat_medium));
+            utility.showCustomPopup("Please select profile picture.", String.valueOf(R.font.montserrat_medium));
             return false;
         } else return true;
     }

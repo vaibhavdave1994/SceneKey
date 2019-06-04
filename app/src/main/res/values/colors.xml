@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#FFFF</color>
     <color name="colorPrimaryDark">#FFFF</color>
     <color name="colorAccent">#FFFF</color>
@@ -7,8 +7,9 @@
     <color name="colorPrimary_new">#41c9c8</color>
     <color name="colorPrimaryDark_new">#1f9796</color>
     <color name="colorAccent_new">#FFFF</color>
+    <color name="deselect_tabtext">#E44B4B4B</color>
+    <color name="color_rewardtxt">#252525</color>
 
-    <color name="bg_scenepage">#eeeeee</color>
     <color name="colorprimarytop">#4D000000</color>
     <color name="white">#ffff</color>
     <color name="black">#000000</color>
@@ -17,9 +18,9 @@
     <color name="gray2">#717171</color>
     <color name="bgImage">#0B0F34</color>
     <color name="green">#039904</color>
+    <color name="follow_tag_background">#2C097574</color>
 
     <!-- Splash gravity color -->
-    <color name="startColor">#41c9c8</color>
     <color name="endColor">#1f9796</color>
 
     <!-- Login & Registration -->
@@ -33,45 +34,32 @@
 
     <color name="transparent">#00acabab</color>
 
-    <color name="black2">#333333</color>
-    <color name="gray_pop_profile">#ededed</color>
+    <color name="black2" tools:ignore="MissingDefaultResource">#333333</color>
+    <color name="title_color" tools:ignore="MissingDefaultResource">#424242</color>
     <color name="black90p">#E6000000</color>
     <color name="black80p">#CC000000</color>
     <color name="black70p">#B3000000</color>
     <color name="black50p">#80000000</color>
-    <color name="white80p">#CCFFFFFF</color>
-    <color name="white65p">#A6FFFFFF</color>
-    <color name="white50p">#80FFFFFF</color>
     <color name="black30p">#4D000000</color>
     <color name="black20p">#33000000</color>
-    <color name="black03p">#03000000</color>
     <color name="white03p">#03FFFFFF</color>
-    <color name="colorPrimaryTop">#4D000000</color>
     <color name="red_ring">#e10000</color>
-    <color name="green_ring">#14e200</color>
-    <color name="yellow_ring">#fad600</color>
-    <color name="circle_black">#363636</color>
     <color name="border_gray">#dadada</color>
     <color name="centre_solid">#f2f2f2</color>
-    <color name="picker_Divider">#6AC6E7</color>
-    <color name="picker_Dim">#808080</color>
     <color name="blueToastTxt">#FF0140C4</color>
-    <color name="txt_discrip">#FF5B5B5B</color>
-    <color name="txt_no_one">#FF565656</color>
-    <color name="txt_add_event">#A3A3A3</color>
+    <color name="reward_day_color">#828282</color>
 
 
     <color name="top_bar_text">#696969</color>
     <color name="selected_bb_text">#40a6a7</color>
-    <color name="unselected_bb_txt">#828282</color>
     <color name="new_white_bg">#f3f3f3</color>
     <color name="old_primary">#40a6a7</color>
-    <color name="old_primaryLast">#9eeaea</color>
+    <color name="reward_description">#3B3B3B</color>
 
 
     <!--New color-->
-    <color name="bg_scenePage">#eeeeee</color>
     <color name="go_green_color">#46aa81</color>
+    <color name="go_red_color">#df3d3d</color>
     <color name="caution_yellow_color">#efbb6b</color>
     <color name="stop_red_color">#de717f</color>
 

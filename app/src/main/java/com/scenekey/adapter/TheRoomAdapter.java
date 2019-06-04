@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
 import com.scenekey.listener.RoomListener;
-import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.EventAttendy;
 import com.squareup.picasso.Picasso;
 

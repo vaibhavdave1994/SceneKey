@@ -2,38 +2,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <dimen name="design_navigation_separator_vertical_padding" tools:override="true">0dp</dimen>
-    <dimen name="right_margin_event">@dimen/_15sdp</dimen>
-    <dimen name="bottomBar_margin">@dimen/_40sdp</dimen>
     <dimen name="profile_bg_pading">@dimen/_3sdp</dimen>
-    <dimen name="accept_pading">@dimen/_20sdp</dimen>
     <dimen name="profile_bg_pading_pop">@dimen/_3sdp</dimen>
     <dimen name="fab_size_normal">@dimen/_30sdp</dimen>
     <dimen name="fab_size_mini">@dimen/_30sdp</dimen>
-    <dimen name="labels_text_size">@dimen/_14sdp</dimen>
 
-    <dimen name="top_bar">@dimen/_50sdp</dimen>
+    <dimen name="top_bar">@dimen/_45sdp</dimen>
     <dimen name="top_bar_profile">@dimen/_40sdp</dimen>
-    <dimen name="top_bar_profile_padding">@dimen/_4sdp</dimen>
 
-    <dimen name="padding_icon_uploade">@dimen/_100sdp</dimen>
-
-    <dimen name="floting_item_padding">@dimen/_5sdp</dimen>
-    <dimen name="profilepic">@dimen/_35sdp</dimen>
-    <dimen name="profilepic1">@dimen/_50sdp</dimen>
-    <dimen name="profilepic2">@dimen/_25sdp</dimen>
-    <dimen name="badge">@dimen/_30sdp</dimen>
-    <dimen name="profilepic2_cW">@dimen/_55sdp</dimen>
-    <dimen name="new_profile_pop">@dimen/_45sdp</dimen>
-    <dimen name="trending_round">@dimen/_5sdp</dimen>
+    <dimen name="trending_round">@dimen/_8sdp</dimen>
 
     <!-- Default menu dimens,-->
-    <dimen name="menu_child_size">42dp</dimen>
-    <dimen name="menu_child_radius">96dp</dimen>
-    <dimen name="menu_scroll_threshold">4dp</dimen><!-- Default fab dimens,-->
-    <dimen name="fab_size_large">64dp</dimen>
-    <dimen name="fab_size_normal2">56dp</dimen>
-    <dimen name="fab_size_mini2">48dp</dimen>
-    <dimen name="fab_plus_width">16dp</dimen>
+    <!-- Default fab dimens,-->
 
     <!--<dimen name="top_bar">@dimen/_45sdp</dimen>-->
 

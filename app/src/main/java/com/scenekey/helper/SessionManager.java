@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.scenekey.activity.LoginActivity;
+import com.scenekey.activity.RegistrationActivity;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
 
@@ -214,14 +216,13 @@ public class SessionManager {
         editor2.clear();
         editor2.commit();
 
-        Intent intent = new Intent(activity, LoginActivity.class);
+        Intent intent = new Intent(activity, RegistrationActivity.class);
         // LoginActivity.CALLBACK =0;
+        LoginManager.getInstance().logOut();
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
         activity.finish();
-
     }
-
 
     public void setPassword(String password) {
         editor.putString(USER_PASSWORD, password);

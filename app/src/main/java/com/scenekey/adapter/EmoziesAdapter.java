@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scenekey.R;
+import com.scenekey.helper.Constant;
 import com.scenekey.listener.ForDeleteFeed;
 import com.scenekey.listener.LikeFeedListener;
 import com.scenekey.model.EmoziesModal;
@@ -76,8 +78,6 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
     }
 
     private void getfilterImage() {
-
-
         for (int i = 0; i <= 13; i++) {
 
             FilterModal filterModal = new FilterModal();
@@ -152,7 +152,7 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
 
     @Override
     public EmoziesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.emozis_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_emozis_layout, parent, false);
         return new EmoziesAdapter.ViewHolder(itemView);
     }
 
@@ -206,7 +206,8 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, Filterable {
-        private LinearLayout clickOnSmily;
+//        private LinearLayout clickOnSmily;
+        private RelativeLayout clickOnSmily;
         private ImageView iv_plus;
         private ImageView iv_emozie;
         private TextView tv_emozie, tv_count;
@@ -231,7 +232,6 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
                     if (!userExistOrNot.equals("")) {
                         cantJoinNotExixtUserDialog(userExistOrNot);
                     } else {
-
                         deleteFeed.getFeedIdForDelete("", feedSmily.id, feedSmily.reaction);
                     }
 
@@ -249,15 +249,12 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
                     FeedSmily feedSmily = feedlikeList.get(getAdapterPosition());
 
                     if (getAdapterPosition() == 0) {
-
                         if (!userExistOrNot.equals("")) {
                             cantJoinNotExixtUserDialog(userExistOrNot);
                         } else {
-
                             showSetFriendEmailDialog(feeds);
                         }
                     } else {
-
                         if (feedSmily.isReaction.equals("1")) {
                             likeFeedListener.likeFeedByReaction("", feedSmily.id, "");
                         }
@@ -280,7 +277,7 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
              RelativeLayout lowerView = emoziesDilog.findViewById(R.id.lowerView);
             TextView tv_cancle = emoziesDilog.findViewById(R.id.tv_cancle);
             final EditText et_search = emoziesDilog.findViewById(R.id.et_search);
-            RecyclerView filterSmilyReclerView = emoziesDilog.findViewById(R.id.filterSmilyReclerView);
+            final RecyclerView filterSmilyReclerView = emoziesDilog.findViewById(R.id.filterSmilyReclerView);
 
             textwatcherMethod(et_search);
 
@@ -300,9 +297,12 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
             filterSmilyReclerView.setAdapter(filterAdapter);
             filterAdapter.notifyDataSetChanged();
 
-
             if (emozieListFilter.size() != 0) {
-                emoziesList.addAll(emozieListFilter);
+                List<EmoziesModal> emoziesListTemp = new ArrayList<>();
+                emoziesListTemp.addAll(emozieListFilter);
+                emoziesList.clear();
+                emoziesList.addAll(emoziesListTemp);
+                emoziesListTemp.clear();
             }
 
             adapter = new AllEmoziesAdapter(feeds, feedId, emoziesList, likeFeedListener, emoziesDilog);
@@ -332,7 +332,6 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
             emoziesDilog.show();
         }
 
-
         /*................................textwatcherMethod().......................................*/
         private void textwatcherMethod(final EditText stext) {
             stext.addTextChangedListener(new TextWatcher() {
@@ -358,7 +357,6 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
             });
         }
 
-
         @Override
         public Filter getFilter() {
             return new Filter() {
@@ -381,11 +379,17 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
 
                         if (fromsearch.equals("fromfilter")) {
 
-                            for (int i = 0; i < emoziesList.size(); i++) {
+                            if(charSequence.equals("recent")){
+                                filteredList.addAll(Constant.recentEmoziesList);
+                            }
+                            //--------^------ deepaksharma's code
+                            else {
+                                for (int i = 0; i < emoziesList.size(); i++) {
 
-                                for (String group : emoziesList.get(i).getGroups()) {
-                                    if (group.equals(charString)) {
-                                        filteredList.add(emoziesList.get(i));
+                                    for (String group : emoziesList.get(i).getGroups()) {
+                                        if (group.equals(charString)) {
+                                            filteredList.add(emoziesList.get(i));
+                                        }
                                     }
                                 }
                             }

@@ -28,11 +28,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
+import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.adapter.Trending_Adapter;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
+import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.Events;
 import com.scenekey.model.UserInfo;
+import com.scenekey.model.Venue;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
@@ -95,6 +98,8 @@ public class Trending_Fragment extends Fragment {
         super.onResume();
         canCallWebservice = true;
         if (timerHttp == null) setDataTimer();
+
+        getTrendingData();
     }
 
     private void trendingData() {
@@ -174,17 +179,24 @@ public class Trending_Fragment extends Fragment {
         if (trendingAdapter == null) {
             trendingAdapter = new Trending_Adapter(activity, eventsArrayList, new String[]{lat, lng}, new CheckEventStatusListener() {
                 @Override
-                public void getCheckEventStatusListener(String eventNAme,String event_id, String venue_name, Events object, String[] currentLatLng, String[] strings) {
-                    callCheckEventStatusApi(eventNAme,event_id, venue_name, object, currentLatLng, strings);
+                public void getCheckEventStatusListener(String eventNAme, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings) {
+                    callCheckEventStatusApi(eventNAme, event_id, venue_name, object, currentLatLng, strings);
                 }
-            });
+            },
+                    new FollowUnfollowLIstner() {
+                        @Override
+                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id,int position) {
+                            tagFollowUnfollow(followUnfollow,biz_tag_id,position);
+                        }
+                    });
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
             rcViewTrending.setLayoutManager(layoutManager);
             rcViewTrending.setAdapter(trendingAdapter);
             trendingAdapter.notifyDataSetChanged();
             rcViewTrending.setHasFixedSize(true);
-        } else {
+        }
+        else {
             trendingAdapter.notifyDataSetChanged();
             rcViewTrending.setHasFixedSize(true);
         }
@@ -195,7 +207,6 @@ public class Trending_Fragment extends Fragment {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TRENDING, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    activity.dismissProgDialog();
                     // get response
                     try {
                         JSONObject jo = new JSONObject(response);
@@ -211,7 +222,6 @@ public class Trending_Fragment extends Fragment {
                                 }
                             }
                             try {
-
                                 // New Code
                                 if (jo.has("userInfo")) {
                                     UserInfo userInfo = activity.userInfo();
@@ -281,9 +291,8 @@ public class Trending_Fragment extends Fragment {
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
+                                activity.dismissProgDialog();
                             }
-
-
 
 
                             if (jo.has("events")) {
@@ -336,6 +345,7 @@ public class Trending_Fragment extends Fragment {
                             activity.dismissProgDialog();
                             no_data_trending.setVisibility(View.GONE);
                         }
+                        activity.dismissProgDialog();
                     } catch (Exception e) {
                         activity.dismissProgDialog();
                         Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
@@ -359,8 +369,8 @@ public class Trending_Fragment extends Fragment {
                     return params;
                 }
             };
-            VolleySingleton.getInstance(context).addToRequestQueue(request,"HomeApi");
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+            VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
         } else {
             utility.snackBar(rcViewTrending, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
@@ -397,7 +407,7 @@ public class Trending_Fragment extends Fragment {
                                       },
                 //Set how long before to start calling the TimerTask (in milliseconds)
                 60000,
-                //Set the amount of time between each execution (in milliseconds)
+                //Sest the amount of time between each execution (in milliseconds)
                 60000);
     }
 
@@ -416,7 +426,7 @@ public class Trending_Fragment extends Fragment {
     }
 
     // New Code
-    private void callCheckEventStatusApi(final String event_name, final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
+    private void callCheckEventStatusApi(final String event_name, final String event_id, final Venue venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
         final Utility utility = new Utility(context);
 
         if (utility.checkInternetConnection()) {
@@ -439,15 +449,15 @@ public class Trending_Fragment extends Fragment {
                         if (!isKeyInAble && activity.userInfo().key_points.equals("0")) {
                             Toast.makeText(context, "Sorry! you have run out of key points! Earn more by connecting on the scene!", Toast.LENGTH_SHORT).show();
                         } else {
-
-                            Intent intent = new Intent(context,EventDetailsActivity.class);
+                            Intent intent = new Intent(context, EventDetailsActivity.class);
                             intent.putExtra("event_id", event_id);
                             intent.putExtra("fromTab", "trending");
-                            intent.putExtra("venueName", venue_name);
+                            intent.putExtra("venueName", venue_name.getVenue_name());
                             intent.putExtra("currentLatLng", currentLatLng);
                             intent.putExtra("event_name", event_name);
                             intent.putExtra("object", object);
-
+                            intent.putExtra("venueId", venue_name.getVenue_id());
+                            intent.putExtra("fromTrending", true);
                             startActivity(intent);
 
                          /*   Event_Fragment fragment = Event_Fragment.newInstance("trending");
@@ -477,7 +487,7 @@ public class Trending_Fragment extends Fragment {
                 }
             };
             VolleySingleton.getInstance(context).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
         } else {
             Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();
@@ -524,24 +534,6 @@ public class Trending_Fragment extends Fragment {
 
         long elapsedSeconds = different / secondsInMilli;
 
-        /*if (elapsedDays == 0) {
-            if (elapsedHours == 0) {
-                if (elapsedMinutes == 0) {
-                    returnDay = *//*elapsedSeconds +*//* " Just now";
-                } else {
-                    returnDay = elapsedMinutes + " minutes ago";
-                }
-            } else if (elapsedHours == 1) {
-                returnDay = elapsedHours + " hour ago";
-            } else {
-                returnDay = elapsedHours + " hours ago";
-            }
-        } else if (elapsedDays == 1) {
-            returnDay =  *//*elapsedDays + *//*"yesterday";
-        } else {
-            returnDay = elapsedDays + " days ago";
-        }*/
-
         if (different > 0) {
             if (elapsedHours > 0) {
                 events.getEvent().returnDay = elapsedHours + "hr";
@@ -579,6 +571,65 @@ public class Trending_Fragment extends Fragment {
                 // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
                 events.getEvent().returnDay = rating;
             }
+        }
+    }
+
+    //----------------follow / unfollow
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int pos) {
+        if (utility.checkInternetConnection()) {
+            activity.showProgDialog(true, "TAG");
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    activity.dismissProgDialog();
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        if(jo.has("status")){
+                            if(jo.getString("status").equalsIgnoreCase("success")){
+                                if(followUnfollow == 0){
+                                    Venue venue = eventsArrayList.get(pos).getVenue();
+                                    venue.setIs_tag_follow("0");
+                                    eventsArrayList.get(pos).setVenue(venue);
+                                    trendingAdapter.notifyItemChanged(pos);
+                                }else {
+                                    Venue venue = eventsArrayList.get(pos).getVenue();
+                                    venue.setIs_tag_follow("1");
+                                    eventsArrayList.get(pos).setVenue(venue);
+                                    trendingAdapter.notifyItemChanged(pos);
+                                }
+//                                setRecyclerView();
+                               // getTrendingData();
+
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        activity.dismissProgDialog();
+                        Utility.showToast(getActivity(), getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    activity.dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("biz_tag_id",biz_tag_id);
+                    params.put("follow_status", String.valueOf(followUnfollow));
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+           // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
+            activity.dismissProgDialog();
         }
     }
 }

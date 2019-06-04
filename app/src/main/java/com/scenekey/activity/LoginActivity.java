@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -36,12 +37,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -51,6 +56,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.Login;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -73,6 +79,7 @@ import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.Validation;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;
+import com.scenekey.util.GpsUtils;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;
@@ -83,6 +90,7 @@ import com.squareup.picasso.Target;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -95,7 +103,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import static com.scenekey.helper.Constant.REQUEST_ID_MULTIPLE_PERMISSIONS;
-
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -131,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setStatusBarColor();
         initView();
-        utility.checkGpsStatus();
+       // utility.checkGpsStatus();
 
         sessionManager.setSoftKey(hasSoftKeys(getWindowManager()));
     }
@@ -159,9 +166,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             boolean checkNetwork = locationManager != null && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           /* CustomPopup customPopup=new CustomPopup(LoginActivity.this);
-            customPopup.setMessage(getString(R.string.eLocationPermission_new));
-            customPopup.show();*/
                 return;
             }
             if (!checkGPS && !checkNetwork) {
@@ -223,7 +227,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         permission = new Permission(context);
         customProgressBar = new CustomProgressBar(context);
         utility = new Utility(context);
-
     }
 
     @Override
@@ -298,7 +301,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.btn_select_gender:
                 if (!maleFemale.equalsIgnoreCase("")) {
+
                     fbUserInfo.userGender = maleFemale;
+                    showProgDialog(false);
                     doRegistration(fbUserInfo);
                 } else {
                     Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
@@ -320,7 +325,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
 
     public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -506,6 +510,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /* facebook api start here */
     private void facebookLoginApi() {
+        showProgDialog(false);
         loginstatus = "facebook";
         objFbCallbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
@@ -537,9 +542,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     }
 
                                     fbUserImage = userInfo.userImage;
-                                    getBitmapFromURL(userInfo.userImage);
-                                    checkSocialDetail(userInfo, loginstatus);
-                                    getAddressFromLatLong(latitude, longiude);
+
+                                    if(fbUserImage != null && !fbUserImage.equalsIgnoreCase("")){
+                                        getBitmapFromURL(userInfo.userImage,userInfo);
+                                    }
+                                    else {
+                                        checkSocialDetail(userInfo, loginstatus);
+                                        getAddressFromLatLong(latitude, longiude);
+                                    }
+
                                     //registerSocialDetails(userInfo);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -547,6 +558,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             }
                         });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
                 request.executeAsync();
             }
 
@@ -563,7 +577,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     /* facebook api end here */
 
-
     /* gmail api start here */
     private void gmialLoginApi() {
         //sessionManager.setLoginType(loginstatus);
@@ -573,10 +586,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     /* gmail api end here */
 
-
-    private void checkSocialDetail(final UserInfo userInfo, final String loginstatus) {
-        showProgDialog(false);
-
+    private void checkSocialDetail(final UserInfo userInfo, final String loginstatus)
+    {
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.CHECK_FB_LOGIN, new Response.Listener<String>() {
                 @Override
@@ -585,7 +596,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     // get response
                     JSONObject jsonObject;
                     try {
-                        customProgressBar.cancel();
 
                         jsonObject = new JSONObject(response);
                         Utility.e(" login response", response);
@@ -596,6 +606,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (status.equals("success")) {
                             doRegistration(userInfo);
                         } else {
+                            dismissProgDialog();
                             fbUserInfo = userInfo;
                             openSelectGenderDialog();
                             //doRegistration(fbUserInfo);
@@ -632,82 +643,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-
-    /*private void registerSocialDetails(final UserInfo userInfo) {
-        showProgDialog(false);
-
-        if (utility.checkInternetConnection()) {
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.LOGIN, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String Response) {
-                    // get response
-                    JSONObject jsonObject;
-                    try {
-                        customProgressBar.cancel();
-                        // System.out.println(" login response" + response);
-                        jsonObject = new JSONObject(Response);
-                        int statusCode = jsonObject.getInt("success");
-                        String message = jsonObject.getString("msg");
-
-                        //registered user
-                        if (statusCode == 1) {
-                            manageSession(jsonObject, userInfo);
-                            callIntent(btnFB.getId(), true);
-                            new Handler().post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        showProgDialog(false);
-                                        urlToBitmap();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-
-                        } else if (statusCode == 0) {
-                            Utility.showToast(context, message, 0);
-                            Utility.e(TAG, message);
-                        } else {
-                            Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
-                        }
-
-                    } catch (Exception ex) {
-                        customProgressBar.cancel();
-                        ex.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    customProgressBar.cancel();
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("userEmail", userInfo.email);
-                    params.put("facebookid", userInfo.facebookId);
-                    params.put("fbusername", userInfo.fullName);
-                    params.put("usertype", "Social User");
-                    params.put("fullname", userInfo.fullName);
-                    params.put("device_token", FirebaseInstanceId.getInstance().getToken());
-                    params.put("deviceType", "2");
-                    params.put("gender", userInfo.userGender);
-                    params.put("ProfileImage", userInfo.userImage);
-                    params.put("latitude", String.valueOf(latitude));
-                    params.put("longitude", String.valueOf(longiude));
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(this.getBaseContext()).addToRequestQueue(request);
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-        } else {
-            utility.snackBar(etEmail, getString(R.string.internetConnectivityError), 0);
-            customProgressBar.cancel();
-        }
-    }*/
 
     // Old Code
     private void urlToBitmap() {
@@ -889,9 +824,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (loginstatus.equals("gmail")) {
 
             if (requestCode == RC_SIGN_IN) {
+                showProgDialog(false);
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 handleSignInResult(result);
             }
+        }
+
+        if (requestCode == GpsUtils.GPS_REQUEST) {
+            checkGPS = true; // flag maintain before get location
         }
     }
     /* on activity result end*/
@@ -916,13 +856,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
 
         //signOut();
         if (result.isSuccess()) {
-            UserInfo userInfo = new UserInfo();
+            final UserInfo userInfo = new UserInfo();
 
             // Signe in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -943,6 +882,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
            /* String firstName = fullName[0];
             String lastName = fullName[1];*/
 
+
             userInfo.userFacebookId = acct.getId();
             userInfo.userImage = "";
             if (acct.getPhotoUrl() != null)
@@ -951,15 +891,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             userInfo.userAccessToken = FirebaseInstanceId.getInstance().getToken();
             userInfo.gender = "";
 
-            if (userInfo.userImage != "" && userInfo.userImage != null) {
-                getBitmapFromURL(userInfo.userImage);
-            }
-
-            checkSocialDetail(userInfo, loginstatus);
-            getAddressFromLatLong(latitude, longiude);
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            if (userInfo.userImage != "" && userInfo.userImage != null) {
+                                getBitmapFromURL(userInfo.userImage,userInfo);
+                            }
+                            else {
+                                checkSocialDetail(userInfo, loginstatus);
+                                getAddressFromLatLong(latitude, longiude);
+                            }
+                        }
+                    });
 
         } else {
-            //signOut();
+            signOut();
         }
     }
 
@@ -967,9 +914,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void doRegistration(final UserInfo userInfo) {
 
         if (utility.checkInternetConnection()) {
-
-            customProgressBar = new CustomProgressBar(context);
-            showProgDialog(false);
 
             VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.REGISTRATION, new Response.Listener<NetworkResponse>() {
                 @Override
@@ -1045,19 +989,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             AWSImage awsImage = new AWSImage(LoginActivity.this);
 
                             try {
+                                if(profileImageBitmap == null){
+                                    profileImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.image_default_profile);
+                                }
                                 if (profileImageBitmap != null) {
-                                    awsImage.initItem(profileImageBitmap);
-                                    dismissProgDialog();
+                                    // awsImage.initItem(profileImageBitmap);
+                                    uploadNewBase64(userInfo.userFacebookId,profileImageBitmap);
+                                    //dismissProgDialog();
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 dismissProgDialog();
                             }
-                            dismissProgDialog();
-
-                            Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
 
 
                         } else if (message.equalsIgnoreCase("Logged in successfully")) {
@@ -1228,37 +1171,224 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void getBitmapFromURL(String image) {
+    public void getBitmapFromURL(String image, final UserInfo userInfo) {
         if (image != null && !image.equals("")) {
             Picasso.with(LoginActivity.this).load(image).into(new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    dismissProgDialog();
                     try {
-                        if (bitmap != null)
+                        if (bitmap != null) {
                             profileImageBitmap = bitmap;
+                        }
+                        checkSocialDetail(userInfo, loginstatus);
+                        getAddressFromLatLong(latitude, longiude);
+                        System.out.println("onBitmapLoaded");
                     } catch (Exception e) {
                         // some action
+                        dismissProgDialog();
                         e.printStackTrace();
+                        System.out.println("onBitmapLoaded_Exception");
                     }
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    dismissProgDialog();
+                    checkSocialDetail(userInfo, loginstatus);
+                    getAddressFromLatLong(latitude, longiude);
+                    System.out.println("onBitmapLoaded_onBitmapFailed");
                 }
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    dismissProgDialog();
+                    System.out.println("onBitmapLoaded_onPrepareLoad");
                 }
             });
         }
-        dismissProgDialog();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    //-----------------new code to upload image 16-05-19---------
+    public void uploadNewBase64(final String userId, Bitmap bitmap){
+        if (utility.checkInternetConnection()) {
+            //showProgDialog(false);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+            //sending image to server
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.IMAGEUPLOAD_BUCKET, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        if (jo.has("success")) {
+                            if(jo.getInt("success") == 1){
+                                String userImage = jo.getString("userImage");
+                                setImage(userImage);
+                            }
+                            else {
+                                Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                                dismissProgDialog();
+                            }
+                        }
+                        // setImage();
+                    } catch (Exception e) {
+                        dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    dismissProgDialog();
+                    Toast.makeText(LoginActivity.this, "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
+                    ;
+                }
+            }) {
+                //adding parameters to send
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parameters = new HashMap<String, String>();
+                    parameters.put("profileImage", imageString);
+                    parameters.put("user_id", userId);
+                    return parameters;
+                }
+            };
+
+            RequestQueue rQueue = Volley.newRequestQueue(LoginActivity.this);
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
+            rQueue.add(request);
+        }
+
+    }
+    //---------set default image----------------
+    public void setImage(String s) {
+        if (!s.contains(Constant.DEV_TAG)) {
+            s = Constant.DEV_TAG + s;
+        }
+
+        if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
+            Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            dismissProgDialog();
+            startActivity(intent);
+        } else {
+            setDefaultImageOnServer(WebServices.USER_IMAGE + s, s);
+            //setDefoultProfileImage(s,"Default Profile Image","Are you sure you want to make this your defoult Profile Photo?");
+        }
+    }
+    public void showDefaultDialog(String title, String msg) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.custom_popup_title_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //      deleteDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+
+        TextView tvPopupOk, tvTitle, tvMessages;
+
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvMessages = dialog.findViewById(R.id.tvMessages);
+
+        tvPopupOk = dialog.findViewById(R.id.tvPopupOk);
+        tvPopupOk.setText(R.string.ok);
+
+        tvTitle.setText(title);
+        tvMessages.setText(msg);
+
+        tvPopupOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show location settings when the user acknowledges the alert dialog
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
+
+    private void setDefaultImageOnServer(final String key, String s) {
+
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("method", "PUT");
+            jsonBody.put("action", "updateImage");
+            jsonBody.put("userid", SceneKey.sessionManager.getUserInfo().userFacebookId);
+            jsonBody.put("userImage", s);
+
+            final String mRequestBody = jsonBody.toString();
+            Utility.e("RequestBody", mRequestBody);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, WebServices.DEFAULT_IMAGE, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Utility.e("server image set", response);
+                    //img_profile_pic2.setVisibility(View.VISIBLE);
+                    UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+                    userInfo.userImage = key;
+                    // Constant.DEF_PROFILE=key;
+                    HomeActivity.userInfo=userInfo;
+                    SceneKey.sessionManager.createSession(userInfo);
+
+                    Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    dismissProgDialog();
+                    startActivity(intent);
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utility.e("LOG_VOLLEY E", error.toString());
+                    dismissProgDialog();
+                    Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes();
+                    } catch (Exception uee) {
+                        //VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+
+                        responseString = new String(response.data);
+                        //Util.printLog("RESPONSE", responseString.toString());
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+            stringRequest.setShouldCache(false);
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000, 1, 0));
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            dismissProgDialog();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

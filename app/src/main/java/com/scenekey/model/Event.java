@@ -1,11 +1,9 @@
 package com.scenekey.model;
 
 import com.scenekey.helper.WebServices;
-import com.scenekey.util.Utility;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by mindiii on 24/4/17.
@@ -29,10 +27,11 @@ public class Event implements Serializable {
     public String returnDay;
     public String isEventLike;
     public String likeCount;
+    public int isFeed;
 
 
     public ArrayList<ImageSlidModal> imageslideList = new ArrayList<>();
-    public ArrayList<keyInUserModal> keyInUserModalList = new ArrayList<>();
+    public ArrayList<KeyInUserModal> keyInUserModalList = new ArrayList<>();
 
 
     public String getImage() {

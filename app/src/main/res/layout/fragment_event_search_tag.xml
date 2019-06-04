@@ -2,89 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/new_white_bg"
     android:layout_marginBottom="@dimen/_30sdp"
-    android:id="@+id/event_search_fragment"
+    android:background="@color/new_white_bg"
+    android:orientation="vertical"
 
     tools:context="com.scenekey.fragment.Event_Search_Tag_Fragment">
 
-<!--<View
-    android:id="@+id/top_status"
-    android:layout_width="match_parent"
-    android:layout_height="24dp"
-    android:visibility="gone"
-    android:background="@color/black"/>-->
-
-
-<RelativeLayout
-    android:id="@+id/title_view"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/top_bar"
-    android:background="@drawable/bg_top_bar"
-    android:gravity="center_vertical">
-
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/img_f1_back"
-        android:layout_width="@dimen/top_bar_profile"
-        android:layout_height="@dimen/top_bar_profile"
-        android:padding="@dimen/_12sdp"
-        android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_back_icon" />
-
-    <TextView
-        android:id="@+id/txt_f1_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textColor="@color/black2"
-        android:fontFamily="@font/montserrat_medium"
-        android:textSize="@dimen/_18ssp"
-        android:text="@string/search" />
-
-    <include layout="@layout/points_key"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_8sdp"
+    <!--<View
+        android:id="@+id/top_status"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/_8sdp"
-        />
-
-</RelativeLayout>
-
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/recycler_view1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:alpha="0.5"
-    android:paddingLeft="5dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="8dp"/>
-
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/recycler_view2"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    />
+        android:background="@color/black"/>-->
 
 
-<!--<TextView
-    android:id="@+id/txt_search"
-    android:layout_marginLeft="@dimen/_50sdp"
-    android:layout_marginRight="@dimen/_50sdp"
-    android:layout_marginBottom="@dimen/_50sdp"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/_35sdp"
-    android:background="@drawable/background_f1_try_demo"
-    android:gravity="center"
-    android:text="@string/search"
-    android:textColor="@color/white"
-    android:textSize="@dimen/_18sdp" />-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar"
+        android:background="@drawable/bg_top_bar"
+        android:gravity="center_vertical">
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/img_f1_back"
+            android:layout_width="@dimen/top_bar_profile"
+            android:layout_height="@dimen/top_bar_profile"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_12sdp"
+            app:srcCompat="@drawable/ic_back_icon" />
+
+        <TextView
+            android:id="@+id/txt_f1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="center"
+            android:text="@string/search"
+            android:textColor="@color/black2"
+            android:textSize="@dimen/_18ssp" />
+
+        <include
+            layout="@layout/points_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
+        android:alpha="0.5"
+        android:paddingLeft="5dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

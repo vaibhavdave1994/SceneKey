@@ -42,6 +42,7 @@ import com.scenekey.helper.WebServices;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Feeds;
 import com.scenekey.model.ImagesUpload;
+import com.scenekey.model.KeyInUserModal;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.CircularViewPagerHandler;
 import com.scenekey.util.SceneKey;
@@ -90,6 +91,9 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
     private TextView tv_update_btn;
     private EditText tv_bio_own;
 
+    private  ArrayList<KeyInUserModal>keyInUserModalArrayList;
+    private  KeyInUserModal keyInUserModal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +134,7 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
         tv_update_btn.setOnClickListener(this);
 
         imageList = new ArrayList<>();
+        keyInUserModalArrayList = new ArrayList<>();
 
         layout_message = findViewById(R.id.layout_message);
         tv_demoMassage = findViewById(R.id.tv_demoMassage);
@@ -183,6 +188,18 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
                         showUI(pos);
                     }
                     break;
+
+                case "fromTrendingHomeActivity":
+                    if (getIntent().getSerializableExtra("keyInUserModalArrayList") != null) {
+                        keyInUserModalArrayList = (ArrayList<KeyInUserModal>) getIntent().getSerializableExtra("keyInUserModalArrayList");
+                        int pos = getIntent().getIntExtra("fromTrendingHomePostion", 0);
+                        //eventId = getIntent().getStringExtra("eventId");
+                        //String feedsid = getIntent().getStringExtra("feedsid");
+
+                        showKeyInUI(pos);
+                    }
+                    break;
+
 
                 case "fromProfileAdapter":
                     if (getIntent().getSerializableExtra("fromLiveRoomList") != null) {
@@ -276,11 +293,11 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
         downloadFileFromS3(eventAttendy, (credentialsProvider == null ? credentialsProvider = getCredentials() : credentialsProvider));
 
         horizontalViewPagerAdapter = new HorizontalViewPagerAdapter(getSupportFragmentManager());
+        horizontalViewPagerAdapter = new HorizontalViewPagerAdapter(getSupportFragmentManager());
         horizontalViewPagerAdapter.setUserList(eventAttendyArrayList);
         viewPager.setAdapter(horizontalViewPagerAdapter);
         viewPager.setCurrentItem(pos);
         viewPager.addOnPageChangeListener(new CircularViewPagerHandler(viewPager));
-
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -360,10 +377,165 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
 
             }
         });
-
-
-
     }
+
+
+    private void showKeyInUI(int pos) {
+        keyInUserModal = keyInUserModalArrayList.get(pos);
+
+        tv_demoMassage.setVisibility(View.GONE);
+        iv_open_msg_box.setVisibility(View.VISIBLE);
+        iv_for_status.setVisibility(View.VISIBLE);
+        //img_profile_pic2.setVisibility(View.VISIBLE);
+
+        if (keyInUserModal.userName.equals(userInfo.fullname)) {
+            bottom_sheet.setVisibility(View.GONE);
+            bottom_sheet_self_user.setVisibility(View.VISIBLE);
+            iv_report.setVisibility(View.GONE);
+            tv_bio_own.setText(keyInUserModal.bio);
+
+            switch ("1") {
+                case "1":
+                    img_green.setImageResource(R.drawable.ic_active_grn_circle);
+                    break;
+                case "2":
+                    img_yellow.setImageResource(R.drawable.ic_active_ylw_circle);
+                    break;
+                case "3":
+                    img_red.setImageResource(R.drawable.ic_active_red_circle);
+                    break;
+                default:
+                    img_red.setImageResource(R.drawable.ic_active_red_circle);
+
+                    break;
+            }
+        } else {
+            bottom_sheet.setVisibility(View.VISIBLE);
+            bottom_sheet_self_user.setVisibility(View.GONE);
+            iv_report.setVisibility(View.VISIBLE);
+            et_prvt_message.setText("");
+            name = keyInUserModal.userName;
+            if(!tv_bio.equals("")){
+                tv_bio.setText(keyInUserModal.bio);
+            }else{
+                tv_bio.setText("Demo bio");
+            }
+
+            switch ("1") {
+                case "1":
+                    iv_for_status.setImageResource(R.drawable.ic_active_grn_circle);
+                    break;
+                case "2":
+                    iv_for_status.setImageResource(R.drawable.ic_active_ylw_circle);
+                    break;
+                case "3":
+                    iv_for_status.setImageResource(R.drawable.ic_active_red_circle);
+                    break;
+                default:
+                    iv_for_status.setImageResource(R.drawable.ic_active_red_circle);
+
+                    break;
+            }
+        }
+
+        tvHomeTitle.setText(keyInUserModal.userName);
+        tv_user_name.setText(keyInUserModal.userName);
+        tv_own_user_name.setText(keyInUserModal.userName);
+
+
+        name = keyInUserModal.userName;
+
+        facebookId = keyInUserModal.userFacebookId;
+        userid = keyInUserModal.userid;
+
+        downloadFileFromS3(eventAttendy, (credentialsProvider == null ? credentialsProvider = getCredentials() : credentialsProvider));
+
+        horizontalViewPagerAdapter = new HorizontalViewPagerAdapter(getSupportFragmentManager());
+        horizontalViewPagerAdapter.setUserList(eventAttendyArrayList);
+        viewPager.setAdapter(horizontalViewPagerAdapter);
+        viewPager.setCurrentItem(pos);
+        viewPager.addOnPageChangeListener(new CircularViewPagerHandler(viewPager));
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                keyInUserModal = keyInUserModalArrayList.get(position);
+
+                facebookId = keyInUserModal.userFacebookId;
+                userid = keyInUserModal.userid;
+
+                if (keyInUserModal.userName.equals(userInfo.fullname)) {
+                    bottom_sheet.setVisibility(View.GONE);
+                    bottom_sheet_self_user.setVisibility(View.VISIBLE);
+                    iv_report.setVisibility(View.GONE);
+                    tv_bio_own.setText(keyInUserModal.bio);
+
+                    switch ("1") {
+                        case "1":
+                            img_green.setImageResource(R.drawable.ic_active_grn_circle);
+                            break;
+                        case "2":
+                            img_yellow.setImageResource(R.drawable.ic_active_ylw_circle);
+                            break;
+                        case "3":
+                            img_red.setImageResource(R.drawable.ic_active_red_circle);
+                            break;
+                        default:
+                            img_red.setImageResource(R.drawable.ic_active_red_circle);
+
+                            break;
+                    }
+
+                } else {
+
+                    if (layout_message.getVisibility() == View.VISIBLE) {
+                        layout_message.setVisibility(View.GONE);
+                        tv_send_btn.setVisibility(View.GONE);
+                        iv_open_msg_box.setVisibility(View.VISIBLE);
+                    }
+
+                    bottom_sheet.setVisibility(View.VISIBLE);
+                    bottom_sheet_self_user.setVisibility(View.GONE);
+                    iv_report.setVisibility(View.VISIBLE);
+                    et_prvt_message.setText("");
+
+                    switch ("1") {
+                        case "1":
+                            iv_for_status.setImageResource(R.drawable.ic_active_grn_circle);
+                            break;
+                        case "2":
+                            iv_for_status.setImageResource(R.drawable.ic_active_ylw_circle);
+                            break;
+                        case "3":
+                            iv_for_status.setImageResource(R.drawable.ic_active_red_circle);
+                            break;
+                        default:
+                            iv_for_status.setImageResource(R.drawable.ic_active_red_circle);
+
+                            break;
+                    }
+                }
+
+                tvHomeTitle.setText(keyInUserModal.userName);
+                tv_user_name.setText(keyInUserModal.userName);
+                tv_own_user_name.setText(keyInUserModal.userName);
+                tv_bio.setText(keyInUserModal.bio);
+                name = keyInUserModal.userName;
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -372,7 +544,6 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
             case R.id.img_back:
                 onBackPressed();
                 break;
-
 
             case R.id.tv_update_btn:
                 if (!tv_bio_own.getText().toString().trim().isEmpty() || !tv_bio_own.getText().toString().equals("")) {

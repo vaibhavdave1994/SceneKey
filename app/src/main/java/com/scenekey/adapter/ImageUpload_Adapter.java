@@ -75,7 +75,7 @@ public class ImageUpload_Adapter extends RecyclerView.Adapter<ImageUpload_Adapte
         if (position == list.size()) {
 
             holder.img_cross.setVisibility(View.GONE);
-            holder.img_pic.setImageBitmap(null);
+            //holder.img_pic.setImageBitmap(null);
             holder.img_pic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,7 +92,6 @@ public class ImageUpload_Adapter extends RecyclerView.Adapter<ImageUpload_Adapte
             if (list.get(position).getBitmap() != null)
                 holder.img_pic.setImageBitmap(list.get(position).getBitmap());
             else {
-
                 Picasso.with(activity).load(list.get(position).getPath()).into(holder.img_pic);
             }
 

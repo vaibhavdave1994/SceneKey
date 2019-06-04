@@ -247,7 +247,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
         } catch (Exception e) {
             e.printStackTrace();
         }
-        listViewFragProfile = view.findViewById(R.id.listViewFragProfile);
+        listViewFragProfile = view.findViewById(R.id.feedLIstRecyclerView);
 
         feedsList = new ArrayList<>();
         tempList = new ArrayList<>();
@@ -362,7 +362,6 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
         timerHttp = null;
         super.onPause();
     }
-
 
     private void setOnClick(View... views) {
         for (View v : views) {
@@ -521,7 +520,6 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
             activity.dismissProgDialog();
         }
     }
-
 
     private void captureImage() {
 

@@ -123,7 +123,7 @@ public class SearchEvent_Adapter extends RecyclerView.Adapter<SearchEvent_Adapte
                 try {
                     if (!clicked) {
                         activity.showProgDialog(false, TAG);
-                        listener.getCheckEventStatusListener(event.event_name,event.event_id,venue.getVenue_name(),object,currentLatLng,new String[]{venue.getLatitude(),venue.getLongitude()});
+                        listener.getCheckEventStatusListener(event.event_name,event.event_id,venue,object,currentLatLng,new String[]{venue.getLatitude(),venue.getLongitude()});
 
                         /*activity.showProgDialog(false,TAG);
                         Event_Fragment frg = new Event_Fragment();

@@ -172,7 +172,6 @@
                     android:textSize="@dimen/_14sdp"
                     android:visibility="gone" />
                 <View
-                    android:id="@+id/v_line"
                     android:layout_width="@dimen/_280sdp"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_gravity="center_horizontal"

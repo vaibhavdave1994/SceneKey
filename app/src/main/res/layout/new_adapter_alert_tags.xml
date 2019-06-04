@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    app:cardCornerRadius="@dimen/_5sdp"
+    android:layout_margin="@dimen/_5sdp"
+    app:cardElevation="1dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/rv_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/placeholder_img"
+            />
+
+        <TextView
+            android:id="@+id/offerUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SBH"
+            android:textStyle="normal"
+            android:layout_toRightOf="@+id/civ"
+            android:layout_toEndOf="@+id/civ"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/deselect_tabtext"
+            android:fontFamily="@font/montserrat_semibold"
+            />
+
+        <TextView
+            android:id="@+id/txt_exp_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1 day"
+            android:layout_above="@+id/iv"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:fontFamily="@font/montserrat_light"/>
+
+
+        <TextView
+            android:id="@+id/tv_reward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reward"
+            android:textStyle="bold"
+            android:layout_below="@+id/civ"
+            android:textSize="@dimen/_13sdp"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:textColor="@color/color_rewardtxt"/>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_reward"
+            android:gravity="left"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@color/reward_description"
+            android:layout_toRightOf="@+id/iv_gift"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            android:text=""/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

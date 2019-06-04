@@ -61,9 +61,8 @@ public class ProfileImagePagerAdapter extends PagerAdapter {
         String imgUrl = imageUrl.get(position).getPath();
 
         try {
-
             Glide.with(context).load(imgUrl).thumbnail(0.5f).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
-            //Picasso.with(context).load(imageUrl.get(position).getPath()).placeholder(R.drawable.image_default_profile).into(imageView);
+//            Picasso.with(context).load(imgUrl).placeholder(R.drawable.image_default_profile).into(imageView);
         }catch (Exception e){
             e.printStackTrace();
         }

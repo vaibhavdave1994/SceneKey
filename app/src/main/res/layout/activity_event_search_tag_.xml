@@ -6,11 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/new_white_bg"
-    android:layout_marginBottom="@dimen/_30sdp"
-    android:id="@+id/event_search_fragment">
+    android:layout_marginBottom="@dimen/_30sdp">
 
     <RelativeLayout
-        android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar"
         android:background="@drawable/bg_top_bar"

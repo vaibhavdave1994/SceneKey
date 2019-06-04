@@ -22,7 +22,7 @@ public class FilterAdapter  extends RecyclerView.Adapter<FilterAdapter.ViewHolde
     private ArrayList<FilterModal> emoziesList;
     private FilterListener filterListener;
 
-    public FilterAdapter(Context context, ArrayList<FilterModal> emoziesList,FilterListener filterListener) {
+    public FilterAdapter( Context context, ArrayList<FilterModal> emoziesList,FilterListener filterListener) {
         this.context = context;
         this.emoziesList = emoziesList;
         this.filterListener = filterListener;

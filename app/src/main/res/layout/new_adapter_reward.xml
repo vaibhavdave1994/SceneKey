@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    app:cardCornerRadius="@dimen/_5sdp"
+    android:layout_margin="@dimen/_5sdp"
+    app:cardElevation="@dimen/_5sdp">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_82sdp"
+            android:layout_margin="@dimen/_8sdp">
+
+            <TextView
+                android:id="@+id/tv_reward_wallets_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20% off today"
+                android:textSize="@dimen/_16sdp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_regular"/>
+
+        <TextView
+            android:id="@+id/expire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_reward_wallets_language"
+            android:text="Expires In "
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/montserrat_light"/>
+
+        <TextView
+            android:id="@+id/txt_wallets_exp_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_below="@+id/tv_reward_wallets_language"
+            android:text="2 days"
+            android:textSize="@dimen/_14sdp"
+            android:layout_toRightOf="@+id/expire"
+            android:textColor="@color/colorPrimary_new"
+            android:fontFamily="@font/montserrat_light"/>
+
+        <TextView
+                android:id="@+id/btn_redeem_wallets"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_below="@id/txt_wallets_exp_days"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/new_bg_button"
+                android:gravity="center"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:text="Redeem"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/white" />
+        
+    </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5px"
+            android:background="@color/m_f_gender_color"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/venue_wallets_image"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/placeholder_img"
+                />
+
+            <TextView
+                android:id="@+id/wallets_offerUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SBH"
+                android:layout_toRightOf="@+id/venue_wallets_image"
+                android:layout_toEndOf="@+id/venue_wallets_image"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12sdp"
+                android:fontFamily="@font/montserrat_bold"
+                />
+            
+            <TextView
+                android:id="@+id/venue_wallets_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/venue_wallets_image"
+                android:layout_below="@+id/wallets_offerUserName"
+                android:textSize="@dimen/_9sdp"
+                android:drawableLeft="@drawable/location_icon"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

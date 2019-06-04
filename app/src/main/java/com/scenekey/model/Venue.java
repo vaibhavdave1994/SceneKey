@@ -21,9 +21,26 @@ public class Venue implements Serializable {
     private String state;
     private String latitude;
     private String longitude;
+    private String is_tag_follow;
+    private String biz_tag_id;
     private int     rating;
     private boolean validate;
 
+    public String getBiz_tag_id() {
+        return biz_tag_id;
+    }
+
+    public void setBiz_tag_id(String biz_tag_id) {
+        this.biz_tag_id = biz_tag_id;
+    }
+
+    public String getIs_tag_follow() {
+        return is_tag_follow;
+    }
+
+    public void setIs_tag_follow(String is_tag_follow) {
+        this.is_tag_follow = is_tag_follow;
+    }
 
     public String getVenue_id() {
         return venue_id;

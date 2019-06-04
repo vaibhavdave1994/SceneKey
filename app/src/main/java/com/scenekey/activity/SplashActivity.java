@@ -27,6 +27,9 @@ import com.scenekey.util.Utility;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -36,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
 
       //  getFacebookKeyHash();
     }
@@ -64,10 +68,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (SceneKey.sessionManager.isLoggedIn()) {
-                        /*Intent objIntent = new Intent(context, HomeActivity.class);
-                        startActivity(objIntent);
-                        finish();*/
-
                     switch (ImageSessionManager.getInstance().getScreenFlag()) {
                         case 0:
                             Intent objIntent = new Intent(context, HomeActivity.class);

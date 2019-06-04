@@ -16,7 +16,6 @@
     <string name="login_with_gmail">Login with Gmail</string>
     <string name="or">Or</string>
     <string name="already_have_an_account">Already have an account ?</string>
-    <string name="fullname">Fullname</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
 
@@ -28,8 +27,6 @@
 
 
     <!-- utility -->
-    <string name="underDevelopment">Under Development</string>
-    <string name="cameraPermissionDeny">Camera permission deny</string>
     <string name="locationPermissionDeny">Location permission deny</string>
     <string name="cancel">Cancel</string>
     <string name="somethingwentwrong">Something went wrong</string>
@@ -42,12 +39,12 @@
 
     <string name="fullNameLengthError">fullname is too short (minimum 3 characters)</string>
     <string name="emailInvalidError">Please enter a valid email address</string>
-    <string name="passLengthError">Password is too short (minimum 6 characters)</string>
+    <string name="passLengthError">Password must be atleast 6 characters long.</string>
+
+    <string name="no_interest_msg">You don\'t currently have any listed interests.</string>
 
 
     <!-- Custom popup message -->
-    <string name="eLocationPermission_new"> \"SceneKey\" requires \n Location Service to work. \n Please provide location permission. </string>
-    <string name="eYourLocation"> There was an error getting your Location ! \n please check GPS , internet  &amp; try again after a moment. ("High accuracy mode is required") </string>
     <string name="high_accuracy">  please check GPS and set Location Service to high accuracy mode. </string>
     <string name="gps_new"> \"SceneKey\" requires \n Location Service to work. </string>
     <string name="try_again"> Try Again.</string>
@@ -56,17 +53,9 @@
     <string name="couldntGetLocation"> Couldn\'t get location. Please try again. </string>
 
     <!--Image Cropper-->
-    <string name="pick_image_intent_text">Choose an image</string>
     <string name="crop_image_activity_title">Crop Image</string>
-    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
-    <string name="crop_image_menu_rotate_right">Rotate</string>
     <string name="crop_image_menu_crop">Crop</string>
     <string name="pick_image_intent_chooser_title">Select source</string>
-    <string name="result_image_desc">crop result</string>
-
-    <string name="menu1"> Camera </string>
-    <string name="menu2"> Gallery </string>
-    <string name="drop_arrow"> \u0020 &#9698; \u0020\u0020</string>
 
     <!-- copy paste -->
 
@@ -77,38 +66,21 @@
 
     <!--Titles-->
     <string name="enter"> Enter</string>
-    <string name="scene"> The Scene</string>
-    <string name="addVenue"> Add Venue</string>
-    <string name="addEvent"> Add Event</string>
-    <string name="editEvent"> Edit Event</string>
-    <string name="venue"> Venue</string>
-    <string name="venue_details"> Venue Details</string>
-    <string name="upload_pictures"> Upload Pictures </string>
-    <string name="upload_pictures_a"> upload your profile pics </string>
+    <string name="my_interest"> My Interests</string>
     <string name="uploads"> Uploads</string>
-    <string name="selectTag"> Select Tag </string>
-    <string name="selectType"> Select Type </string>
-    <string name="comment"> Comment </string>
     <string name="start"> Start </string>
     <string name="next"> Next </string>
     <string name="skip"> Got It </string>
-    <string name="publish"> Publish </string>
 
 
     <string name="Search"> Search</string>
-    <string name="add"> Add</string>
     <string name="Sorry"> Sorry!</string>
-    <string name="Sorry2"> You are not currently at a \n Scenekey event</string>
     <!-- <string name="Sorry2_new"> You are not currently at a \n Scenekey event .When you arrive at an event . the icon will appear on this screen . Select the icon to enter the room. </string> -->
     <string name="Sorry2_new"> You are not currently at a \n Scenekey event. When you \n arrive at an event, the icon will \n appear on this screen. Select \n the icon to enter the room. </string>
     <string name="sorry3"> Unfortunately, you cannot access this feature right now.Check back for further updates</string>
     <string name="tryDemo"> Try a Demo</string>
     <string name="sample_event"> Michael Jackson live</string>
-    <string name="sample_Address"> Staples Center Los Angeles </string>
-    <string name="description">Description </string>
-    <string name="TheRoom">The Room</string>
-    <string name="PTBS"> Like this event, and \n share a pic or comment \n to the big screen!</string>  <!--Post to the big screen!-->
-    <string name="myprofile"> My Profile</string>
+    <!--Post to the big screen!-->
     <string name="Go"> Go</string>
     <string name="stop"> Stop</string>
     <string name="caution"> Caution</string>
@@ -116,64 +88,21 @@
     <string name="No"> No</string>
     <string name="Alert"> Alert</string>
     <string name="Nudge"> Nudge</string>
-    <string name="Reply"> Reply</string>
-    <string name="message"> Message</string>
-    <string name="DetailMy"> My Details</string>
-    <string name="View"> View Profile</string>
-    <string name="notification1"> Welcome to Scenester! </string>
-    <string name="notification2"> join the room at any event </string>
-    <string name="notification3"> send someone in the room a little nudge </string>
-    <string name="notification4"> have a real time look into events everywhere! </string>
-    <string name="notification5"> share a rating, a comment , or a pic. </string>
 
     <string name="get_direction"> Get Directions </string>
 
-    <string name="i_have_best"> I have the best view </string>
-    <string name="omg..smooth"> OMG.. Smooth Criminal! </string>
-    <string name="ilovemike"> I Love mike. Sick dance moves! </string>
-
-    <string name="whatsHap"> What\'s on your mind? (Emojis highly encouraged \n 😬 🤗)! </string>
-
     <!--Alerts / Message-->
-    <string name="AlertMsg1"> Please turn on your GPS </string>
     <string name="closeformap"> This will close Scenekey and open google map. \n continue?  </string>
-    <string name="confirmUpdate"> Confirm update?  </string>
-    <string name="confirmDelete"> Confirm delete?  </string>
     <string name="mapNoevent"> Hi ,unfortunately, there are no events occurring in your area at this time.Please check back for updates. </string>
 
-    <string name="nudgeBack"> Nudge back </string>
     <string name="goodNudge"> Good nudge </string>
     <string name="send"> Send </string>
 
-    <string name="startTime"> Start Time </string>
-    <string name="EndTime"> End Time </string>
-
-    <string name="name"> Name </string>
-    <string name="type"> Type </string>
-    <string name="address"> Address </string>
-    <string name="uploadeimg"> Uploade Image </string>
-    <string name="contact"> Contact Number </string>
-
-    <string name="date"> Date </string>
-    <string name="time"> Time </string>
-    <string name="duration"> Duration </string>
-    <string name="addtag"> Add Tag </string>
-    <string name="noresult"> No result found </string>
-
-    <string name="monday">Monday</string>
-    <string name="tuesday">Tuesday</string>
-    <string name="wednseday">Wednesday</string>
-    <string name="thursady">Thursday</string>
-    <string name="friday">Friday</string>
-    <string name="saturday">Saturday</string>
-    <string name="sunday">Sunday</string>
-
-    <string name="setting"> Setting </string>
+    <string name="view_all"> <u> View All </u> </string>
+    <string name="do_not_have_bio">You do not currently have a bio</string>
     <string name="settings"> Settings </string>
-    <string name="aboutme"> About Me </string>
     <string name="lastname"> Last Name </string>
     <string name="information"> Information </string>
-    <string name="info"> Info </string>
     <string name="termsandcc"> Terms &amp; Conditions </string>
     <string name="privacy"> Privacy Policy </string>
     <string name="feedback"> Feedback </string>
@@ -184,64 +113,30 @@
 
     <string name="update"> Update </string>
     <string name="delete"> Delete </string>
-    <string name="create"> Create </string>
-    <string name="uplode"> Uploade new imge </string>
+    <string name="follow"> Follow </string>
 
-    <string name="searchvenue"> Search venue </string>
-    <string name="searchtag"> Search tag </string>
     <string name="search"> Search </string>
     <string name="sorryEvent"> Sorry!! you have to be at this event to interact </string>
     <string name="noNotification"> You have no notification at this time </string>
-    <string name="charectersremain"> characters remaining. </string>
-    <string name="post"> Post </string>
-
-    <string name="no_one"> There is no one currently in the room. </string>
-    <string name="not_start"> This event has not started yet. </string>
-    <string name="dontBore"> Don\'t be boring Key in and be the first! </string>
-
-    <string name="shoot"> Shoot! This feature is unavailable.\n Be on the lookout! </string>
-    <string name="no_tag"> Unfortunately, you cannot access this feature right now. Check back for further updates </string>
 
     <!--error-->
-    <string name="eyourlocatoion"> There was an error getting your Location ! \n please check GPS , internet  &amp; try again after a moment. ("High accuracy mode is required") </string>
-    <string name="elocatoion"> There was an error getting your Location . </string>
 
     <string name="enoactivity"> No app found to open the pdf . </string>
-    <string name="elocationPermission"> Please provide location permission to Scenekey. </string>
-    <string name="einternet"> Please connect to internet . </string>
     <string name="enotStarted">You are at the event but it hasn\'t started yet.</string>
+    <string name="photo_limit">Unfortunately, you are limited to only 5 profile photos</string>
     <string name="enotat"> You have not yet arrived at this scene. </string>
 
     <string name="w_photo_limit"> Unfortunately, you are limited to only 5 profile photos </string>
-    <string name="t_photo_limit"> Photo Limit Reached </string>
 
     <string name="kp_like"> You liked this event.</string>
-    <string name="kp_msg_sent"> Message Sent! +1 Key Points </string>
-    <string name="kp_nudge"> Good Nudge! +1 Key Points </string>
-    <string name="kp_comment">_</string>
     <string name="kp_keyin">_</string>
     <string name="kp_img_post">_</string>
     <string name="kp_unlike"> You unliked this event.</string>
-
-    <string name="unfortunatly"> Hi, unfortunately, there are no events occurring in your area at this time.  Please check back for updates. </string>
-    <string name="photo_error"> Opps.  There was a problem saving your photo.  Please try again or contact help@scenekey.com. </string>
-    <string name="photo_success"> Photo has been posted successfully. </string>
-    <string name="comnt_error"> Opps.There was a problem posting your comment.  Please try again or contact help@scenekey.com </string>
-    <string name="comnt_sucess"> Comment has been posted! </string>
-    <string name="gps_new_msg"> Go to Settings to allow \"Nudge\"  to determine your location. </string>
-    <string name="elocationPermission_new"> \"Nudge\" requires \n Location Service to work. \n Please provide location permission. </string>
-    <string name="elocatoion_new"> \"Nudge\" requires \n Location Service to work. please try again </string>
 
     <style name="settingText">
         <item name="android:textColorHint">#A3A3A3</item>
         <item name="android:textColor">#A3A3A3</item>
         <item name="android:textSize">@dimen/_13sdp</item>
-    </style>
-
-    <style name="searchText">
-        <item name="android:textColorHint">#808080</item>
-        <item name="android:textColor">#808080</item>
-        <item name="android:textSize">@dimen/_12sdp</item>
     </style>
 
     <string-array name="emojiArray">
@@ -1190,21 +1085,20 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="na">NA</string>
     <string name="first_name">First Name</string>
 
     <!-- image upload popups -->
     <string name="yes"> Yes </string>
     <string name="success_uploaded">Photo has successfully\n uploaded.</string>
-    <string name="success_deleted">Photo has successfully\n deleted.</string>
     <string name="ques_deleted">Are you sure you want to \n Delete Photo ? </string>
+    <string name="ques_tag_follow">Are you sure you want to \n Follow this tag ? </string>
+    <string name="ques_tag_unfollow">Are you sure you want to \n Unollow this tag ? </string>
     <string name="default_deleted_title"> Cannot Delete Default Picture </string>
     <string name="default_deleted_msg"> Sorry, you are unable to delete the \n default profile picture </string>
 
     <string name="default_profile_title"> Default Profile Image </string>
     <string name="default_profile_msg"> This picture is already your default \n profile image please select other </string>
-    <string name="me">Me</string>
 
     <!--New String Declarations-->
     <!--Registration-->
@@ -1230,7 +1124,7 @@
     <string name="alertOutOfMemory">This device doesn\'t have enough space , free up storage space</string>
 
     <!--Home Activity-->
-    <string name="reward">Rewards</string>
+    <string name="reward">Reward</string>
 
     <!--Change Password-->
     <string name="changePassword">Change Password</string>
@@ -1242,11 +1136,6 @@
     <string name="NEW_PASSWORD_VALID">Password must be atleast 6 characters long.</string>
 
     <string name="SAME_PASSWORD">New and Old password should not be same</string>
-    <string name="OLD_PASSWORD">Please enter your old password</string>
-    <string name="PASSWORD_NOTMATCHED">Old password not matched</string>
-    <string name="NEW_PASSWORD">Please enter your new password</string>
-    <string name="CONFIRM_PASSWORD">Please enter your confirm password</string>
-    <string name="CONNOT_SMAE">Old and new password can\'t be same</string>
     <string name="CANNOT_SAME_PASSWORD">New password &amp; confirm password does not matched</string>
 
     <string name="update_bio">Update Bio</string>
@@ -1261,22 +1150,13 @@
 
     <string name="report_amy">if a user posted objectionable \n content or otherwise behaves \n inappropriately you may report it here. \n Clearly text in the text box above the \n nature of behaviour.User that \n violate ScenceKey policies will be \n removed.</string>
 
-    <string name="musicisamezing"> The music here is amazing! </string>
-    <string name="twoforonemozi"> 2 for 1 Mojitos..😍</string>
-    <string name="lineheriswaylong">Line here is way too long.</string>
-
     <string name="searching">Unfortunately, you cannot \n access this feature right now. \n Check back for further updates</string>
     <string name="sorrytrending"> Unfortunately, there are no \n events occurring in your area at \n this time. Please check back for \n updates.</string>
 
     <string name="the_room">The Room</string>
-    <string name="event_like">You liked the event.</string>
-    <string name="event_dislike">You unliked the event.</string>
-    <string name="write_something">Please Write something !!!</string>
-    <string name="enter_message">Please enter message</string>
     <string name="success_check_wallet">Success! Check your wallet</string>
     <string name="enter_report">Please enter report</string>
     <string name="report_submitted_successfully">Report submitted successfully</string>
-    <string name="no_notification_at_this_time">You have no notification at this time</string>
     <string name="reward_redeem_successfully">Reward redeemed successfully</string>
 
 

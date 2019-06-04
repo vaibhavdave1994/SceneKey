@@ -92,7 +92,6 @@
                         android:background="@drawable/placeholder"/>-->
 
                     <ImageView
-                        android:id="@+id/imgProfilePic"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_alignBottom="@+id/imgUserImage"
@@ -386,7 +385,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lyBottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -394,7 +392,6 @@
                 android:layout_marginTop="@dimen/_20sdp">
 
                 <LinearLayout
-                    android:id="@+id/rlTermConditions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -429,7 +426,6 @@
                        android:orientation="vertical">
 
                        <TextView
-                           android:id="@+id/tvTermsCondition"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
                            android:fontFamily="@font/raleway_regular"
@@ -446,7 +442,6 @@
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rlBottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"

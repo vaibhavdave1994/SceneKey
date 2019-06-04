@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -40,12 +41,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -77,6 +82,7 @@ import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.Validation;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;
+import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
@@ -150,6 +156,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initView() {
+        customProgressBar = new CustomProgressBar(context);
         etRegiFirstName = findViewById(R.id.etRegiFirstName);
         etRegiLastName = findViewById(R.id.etRegiLastName);
         etRegiEmail = findViewById(R.id.etRegiEmail);
@@ -244,7 +251,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
 
-
             case R.id.btnRegiSignUp:
                 Validation validation = new Validation(context);
                 if (utility.checkInternetConnection()) {
@@ -253,6 +259,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         String lastName = etRegiLastName.getText().toString().trim();
                         String email = etRegiEmail.getText().toString().trim();
                         String pwd = etRegiPwd.getText().toString().trim();
+
                         // New Code
                         if (latitude != 0.0d && longitude != 0.0d) {
                             getAddressFromLatLong(latitude, longitude);
@@ -260,7 +267,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (cb_terms.isChecked()) {
                                 doRegistration(firstName, lastName, email, pwd, maleFemale, "");
                             } else {
-                                Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
+                                utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
                             }
 
                         } else if (!checkGPS) {
@@ -331,6 +339,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     /* facebook api start here */
     private void facebookLoginApi() {
+        showProgDialog(false);
         loginstatus = "facebook";
         objFbCallbackManager = CallbackManager.Factory.create();
 
@@ -354,7 +363,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     userInfo.userImage = "https://graph.facebook.com/" + userInfo.userFacebookId + "/picture?type=large";
                                     userInfo.userGender = "";//object.getString("gender");
                                     userInfo.gender = "";//object.getString("gender");
-                                    userInfo.password = "123456";
+
                                     // New Code
                                     if (object.has("email")) {
                                         userInfo.userEmail = object.getString("email");
@@ -363,9 +372,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     }
 
                                     fbUserImage = userInfo.userImage;
-                                    getBitmapFromURL(userInfo.userImage);
-                                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
-                                    getAddressFromLatLong(latitude, longitude);
+                                    if (fbUserImage != null && !fbUserImage.equalsIgnoreCase("")) {
+                                        getBitmapFromURL(userInfo.userImage, userInfo);
+                                    } else {
+                                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                                        getAddressFromLatLong(latitude, longitude);
+                                    }
+
+
                                     //registerSocialDetails(userInfo);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -373,34 +387,36 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                             }
                         });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
                 request.executeAsync();
             }
 
             @Override
             public void onCancel() {
                 //Utility.showToast(context, getString(R.string.cancel), 1);
+                dismissProgDialog();
             }
 
             @Override
             public void onError(FacebookException error) {
+                dismissProgDialog();
                 Utility.showToast(context, error.getMessage(), 1);
             }
         });
     }
     /* facebook api end here */
 
-
     public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        //updateUI(false);
-                        //Toast.makeText(context, "Gmail Logout", Toast.LENGTH_SHORT).show();
+
                     }
                 });
     }
-
 
     private void gmialLoginApi() {
         loginstatus = "gmail";
@@ -657,15 +673,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     Utility.e("Registration send data", params.toString());
                     return params;
                 }
-
-               /* @Override
-                protected Map<String, DataPart> getByteData() {
-                    Map<String, DataPart> params = new HashMap<String, DataPart>();
-                    if (profileImageBitmap != null) {
-                        params.put("profileImage", new VolleyMultipartRequest.DataPart("profilePic.jpg", AppHelper.getFileDataFromDrawable(profileImageBitmap), "image/jpeg"));
-                    }
-                    return params;
-                }*/
             };
 
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -680,9 +687,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void doRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {
 
         if (utility.checkInternetConnection()) {
-
-            customProgressBar = new CustomProgressBar(context);
-            showProgDialog(false);
 
             VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.REGISTRATION, new Response.Listener<NetworkResponse>() {
                 @Override
@@ -816,20 +820,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 sessionManager.createSession(userInfo);
                                 sessionManager.setPassword(pwd);
 
-                                AWSImage awsImage = new AWSImage(RegistrationActivity.this);
+                                //AWSImage awsImage = new AWSImage(RegistrationActivity.this);
                                 try {
+                                    if (profileImageBitmap == null) {
+                                        profileImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_default_profile);
+                                    }
+
                                     if (profileImageBitmap != null) {
-                                        awsImage.initItem(profileImageBitmap);
-                                        dismissProgDialog();
+                                        // awsImage.initItem(profileImageBitmap);
+                                        uploadNewBase64(SceneKey.sessionManager.getUserInfo().userFacebookId, profileImageBitmap);
+                                        //dismissProgDialog();
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     dismissProgDialog();
                                 }
-                                dismissProgDialog();
-                                Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                // dismissProgDialog();
                             }
 
                         } else {
@@ -871,11 +877,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     params.put("userFacebookId", userFbAndGmail);
                     params.put("socialType", loginstatus);
 
-                    /*params.put("fbusername", "");
-                    params.put("firstname", firstName);
-                    params.put("stagename", "");*/
-
-
                     Utility.e("Registration send data", params.toString());
                     return params;
                 }
@@ -906,16 +907,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onCameraClick(Pop_Up_Option dialog, Object object) {
-                /*if (Build.VERSION.SDK_INT >= 23) {
-                    if (getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        callIntent(Constant.REQUEST_CAMERA);
-                    } else {
-                        callIntent(Constant.INTENT_CAMERA);
-                    }
-                } else {
-                    callIntent(Constant.INTENT_CAMERA);
-                }*/
-
                 // New Code
                 dispatchTakePictureIntent();
                 dialog.dismiss();
@@ -954,10 +945,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             Constant.MY_PERMISSIONS_REQUEST_EXTERNAL);
                 }
                 break;
-
-            /*case Constants.INTENTREQUESTWRITE:
-                break;*/
-
         }
     }
 
@@ -1050,11 +1037,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             switch (requestCode) {
                 case Constant.RESULT_LOAD:
                     Uri uri = data.getData();
-                     /*   profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                        // int size=resizeBitmap(bitmap);
-                        //  profileImageBitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, false);
-                        imgUserImage.setImageBitmap(profileImageBitmap);*/
-
                     // New Code
                     if (uri != null) {
                         // Calling Image Cropper
@@ -1066,9 +1048,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     break;
 
                 case Constant.REQUEST_CAMERA:
-                    /*profileImageBitmap = (Bitmap) data.getExtras().get("data");
-                    imgUserImage.setImageBitmap(profileImageBitmap);*/
-
                     // New Code
                     Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
                     if (uri1 != null) {
@@ -1091,9 +1070,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             ImageSessionManager.getInstance().createImageSession(uri_path, false);
 
                             Log.e("UPLOAD PATH", uri_path);
-
                             Picasso.with(RegistrationActivity.this).load(profileImageUrl).into(imgUserImage);
-                            // imgUserImage.setImageBitmap(profileImageBitmap);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1107,23 +1084,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     super.onActivityResult(requestCode, resultCode, data);
                     break;
             }
-        } /*else if (loginstatus.equals("facebook")) {
-
-            objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
-        } else if (loginstatus.equals("gmail")) {
-
-            if (requestCode == RC_SIGN_IN) {
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                handleSignInResult(result);
-            }
-        }*/
+        }
     }
-
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
-            UserInfo userInfo = new UserInfo();
+            final UserInfo userInfo = new UserInfo();
 
             // Signe in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -1141,9 +1108,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
 
             userInfo.fullname = userInfo.userName + " " + userInfo.lastName;
-           /* String firstName = fullName[0];
-            String lastName = fullName[1];*/
-
             userInfo.userFacebookId = acct.getId();
             userInfo.userImage = "";
             if (acct.getPhotoUrl() != null)
@@ -1152,19 +1116,26 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             userInfo.userAccessToken = FirebaseInstanceId.getInstance().getToken();
             userInfo.gender = "";
 
-            if (userInfo.userImage != "" && userInfo.userImage != null) {
-                getBitmapFromURL(userInfo.userImage);
-            }
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            if (userInfo.userImage != "" && userInfo.userImage != null) {
+                                getBitmapFromURL(userInfo.userImage, userInfo);
+                            } else {
+                                checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                                getAddressFromLatLong(latitude, longitude);
+                            }
+                        }
+                    });
 
-            checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
-            getAddressFromLatLong(latitude, longitude);
+        }
+        else {
+            signOut();
         }
     }
 
     private void checkSocialDetail(final UserInfo userInfo, final String loginstatus, final String userloginid) {
-        customProgressBar = new CustomProgressBar(context);
-        showProgDialog(false);
-
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.CHECK_FB_LOGIN, new Response.Listener<String>() {
                 @Override
@@ -1187,6 +1158,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             //doNewRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
                         } else {
                             fbUserInfo = userInfo;
+                            dismissProgDialog();
                             openSelectGenderDialog(userInfo);
                         }
 
@@ -1256,6 +1228,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onClick(View view) {
                 if (!maleFemale.equalsIgnoreCase("")) {
                     fbUserInfo.userGender = maleFemale;
+                    showProgDialog(false);
                     doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
                 } else {
                     Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
@@ -1269,15 +1242,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void getBitmapFromURL(String image) {
+    public void getBitmapFromURL(String image, final UserInfo userInfo) {
         if (image != null && !image.equals("")) {
             Picasso.with(RegistrationActivity.this).load(image).into(new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                     dismissProgDialog();
                     try {
-                        if (bitmap != null)
+                        if (bitmap != null) {
                             profileImageBitmap = bitmap;
+                        }
+                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                        getAddressFromLatLong(latitude, longitude);
                     } catch (Exception e) {
                         // some action
                         e.printStackTrace();
@@ -1286,16 +1262,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    dismissProgDialog();
+                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                    getAddressFromLatLong(latitude, longitude);
                 }
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    dismissProgDialog();
                 }
             });
         }
-        dismissProgDialog();
     }
 
     @Override
@@ -1385,5 +1360,187 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    //-----------------new code to upload image 16-05-19---------
+    public void uploadNewBase64(final String userId, Bitmap bitmap) {
+        if (utility.checkInternetConnection()) {
+            //showProgDialog(false);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+            //sending image to server
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.IMAGEUPLOAD_BUCKET, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        if (jo.has("success")) {
+                            if (jo.getInt("success") == 1) {
+                                String userImage = jo.getString("userImage");
+                                setImage(userImage);
+                            } else {
+                                dismissProgDialog();
+                                Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        // setImage();
+                    } catch (Exception e) {
+                        dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    dismissProgDialog();
+                    Toast.makeText(RegistrationActivity.this, "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
+                    ;
+                }
+            }) {
+                //adding parameters to send
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parameters = new HashMap<String, String>();
+                    parameters.put("profileImage", imageString);
+                    parameters.put("user_id", userId);
+                    return parameters;
+                }
+            };
+
+            RequestQueue rQueue = Volley.newRequestQueue(RegistrationActivity.this);
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
+            rQueue.add(request);
+        }
+
+    }
+
+    //---------set default image----------------
+    public void setImage(String s) {
+        if (!s.contains(Constant.DEV_TAG)) {
+            s = Constant.DEV_TAG + s;
+        }
+
+        if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
+            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            dismissProgDialog();
+            startActivity(intent);
+            // showDefaultDialog(getString(R.string.default_profile_title), getString(R.string.default_profile_msg));
+        } else {
+            setDefaultImageOnServer(WebServices.USER_IMAGE + s, s);
+            //setDefoultProfileImage(s,"Default Profile Image","Are you sure you want to make this your defoult Profile Photo?");
+        }
+    }
+
+    public void showDefaultDialog(String title, String msg) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.custom_popup_title_btn);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //      deleteDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+
+        TextView tvPopupOk, tvTitle, tvMessages;
+
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvMessages = dialog.findViewById(R.id.tvMessages);
+
+        tvPopupOk = dialog.findViewById(R.id.tvPopupOk);
+        tvPopupOk.setText(R.string.ok);
+
+        tvTitle.setText(title);
+        tvMessages.setText(msg);
+
+        tvPopupOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show location settings when the user acknowledges the alert dialog
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
+
+    private void setDefaultImageOnServer(final String key, String s) {
+
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("method", "PUT");
+            jsonBody.put("action", "updateImage");
+            jsonBody.put("userid", SceneKey.sessionManager.getUserInfo().userFacebookId);
+            jsonBody.put("userImage", s);
+
+            final String mRequestBody = jsonBody.toString();
+            Utility.e("RequestBody", mRequestBody);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT, WebServices.DEFAULT_IMAGE, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Utility.e("server image set", response);
+                    //img_profile_pic2.setVisibility(View.VISIBLE);
+                    UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+                    userInfo.userImage = key;
+                    // Constant.DEF_PROFILE=key;
+                    HomeActivity.userInfo = userInfo;
+                    SceneKey.sessionManager.createSession(userInfo);
+
+                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    dismissProgDialog();
+                    startActivity(intent);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Utility.e("LOG_VOLLEY E", error.toString());
+                    dismissProgDialog();
+                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes();
+                    } catch (Exception uee) {
+                        //VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    String responseString = "";
+                    if (response != null) {
+
+                        responseString = new String(response.data);
+                        //Util.printLog("RESPONSE", responseString.toString());
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
+            stringRequest.setShouldCache(false);
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(30000, 1, 0));
+            requestQueue.add(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            dismissProgDialog();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

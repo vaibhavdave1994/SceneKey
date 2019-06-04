@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/iv_img_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/_250sdp"
         android:scaleType="fitXY"
         android:src="@drawable/image_default_profile" />
 

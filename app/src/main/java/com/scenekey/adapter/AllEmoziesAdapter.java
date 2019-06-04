@@ -1,7 +1,6 @@
 package com.scenekey.adapter;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -9,15 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scenekey.R;
+import com.scenekey.helper.Constant;
 import com.scenekey.listener.LikeFeedListener;
 import com.scenekey.model.EmoziesModal;
-import com.scenekey.model.FeedSmily;
 import com.scenekey.model.Feeds;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AllEmoziesAdapter extends RecyclerView.Adapter<AllEmoziesAdapter.ViewHolder> {
@@ -27,7 +24,6 @@ public class AllEmoziesAdapter extends RecyclerView.Adapter<AllEmoziesAdapter.Vi
     private List<EmoziesModal> emoziesList;
     private LikeFeedListener likeFeedListener;
     private String feedId;
-
 
     AllEmoziesAdapter(Feeds feeds, String feedId, List<EmoziesModal> emoziesList,
                       LikeFeedListener likeFeedListener, Dialog emoziesDilog) {
@@ -58,7 +54,6 @@ public class AllEmoziesAdapter extends RecyclerView.Adapter<AllEmoziesAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView iv_smiley;
-
 
         ViewHolder(View view) {
             super(view);
@@ -91,20 +86,29 @@ public class AllEmoziesAdapter extends RecyclerView.Adapter<AllEmoziesAdapter.Vi
                                     }
                                 } else if (j == size - 1) {
                                     likeFeedListener.likeFeedByReaction(feeds.feedId, "", emoziesModal.getCharacter());
-                                    List<String> mGroups = emoziesModal.getGroups();
-                                    boolean mFlag = false;
-                                    if (mGroups != null) {
-                                        for (String group : mGroups) {
-                                            if (group.equals("recent")) {
-                                                mFlag = true;
-                                                break;
-                                            }
-                                        }
-
-                                        if (!mFlag) {
-                                            mGroups.add("recent");
+                                    if(Constant.recentEmoziesList.size() > 0){
+                                        if(!Constant.recentEmoziesList.contains(emoziesModal)){
+                                            Constant.recentEmoziesList.add(emoziesModal);
                                         }
                                     }
+                                    else {
+                                        Constant.recentEmoziesList.add(emoziesModal);
+                                    }
+                                    System.out.println(Constant.recentEmoziesList.size());
+//                                    List<String> mGroups = emoziesModal.getGroups();
+//                                    boolean mFlag = false;
+//                                    if (mGroups != null) {
+//                                        for (String group : mGroups) {
+//                                            if (group.equals("recent")) {
+//                                                mFlag = true;
+//                                                break;
+//                                            }
+//                                        }
+//
+//                                        if (!mFlag) {
+//                                            mGroups.add("recent");
+//                                        }
+//                                    }
 
                                     break;
                                 }

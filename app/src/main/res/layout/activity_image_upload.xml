@@ -43,7 +43,7 @@
             android:gravity="center"
             android:text="@string/uploads"
             android:textColor="@color/black2"
-            android:textSize="@dimen/_18ssp" />
+            android:textSize="@dimen/_14sdp" />
 
     </RelativeLayout>
 

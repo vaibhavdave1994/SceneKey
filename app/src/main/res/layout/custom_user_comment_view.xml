@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.mikhaellopez.circularimageview.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.mikhaellopez.circularimageview.CircularImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/demo_profile_user"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/_8sdp"
         android:src="@drawable/image_default_profile"
         app:civ_border_color="@color/old_primary"
-        app:civ_border_width="@dimen/_1sdp"
+        app:civ_border_width="1dp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_3sdp" />
 
@@ -29,6 +29,7 @@
         android:fontFamily="@font/montserrat_light"
         android:paddingLeft="@dimen/_4sdp"
         android:text="Shubham"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp"
         android:layout_toEndOf="@+id/demo_profile_user"
@@ -42,6 +43,7 @@
         android:layout_below="@+id/demo_user_name"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_toEndOf="@+id/demo_profile_user"
         android:layout_toRightOf="@+id/demo_profile_user">
 
@@ -49,13 +51,15 @@
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/img_demo_event"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/bg_event_card"
+            android:layout_height="@dimen/_200sdp"
             android:scaleType="fitXY"
-            app:riv_corner_radius="5dp"
-            app:riv_border_width="0.5dp"
+            android:src="@drawable/bg_event_card"
+            android:visibility="gone"
             app:riv_border_color="@color/gray2"
-            android:visibility="gone"/>
+            app:riv_border_width="0.5dp"
+            app:riv_corner_radius="5dp"
+
+            />
 
         <TextView
             android:id="@+id/txt_demo_comment"
@@ -77,31 +81,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/demo_image_view"
         android:layout_toRightOf="@+id/demo_profile_user"
-        android:fontFamily="@font/montserrat_light"
+        android:fontFamily="@font/raleway_light"
         android:paddingBottom="3dp"
         android:paddingLeft="@dimen/_4sdp"
         android:text="12:00 PM"
         android:textColor="@color/gray2"
         android:textSize="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_toEndOf="@+id/demo_profile_user"
         android:paddingStart="@dimen/_4sdp"
         tools:ignore="RtlSymmetry,SpUsage" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/emaojisRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_marginTop="3dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_below="@+id/demo_image_view"
         android:layout_toRightOf="@+id/demo_date_tv"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_15sdp"
-        android:nestedScrollingEnabled="false"
+        android:nestedScrollingEnabled="true"
         android:layout_toEndOf="@+id/demo_date_tv"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_15sdp">
-
-    </android.support.v7.widget.RecyclerView>
+        android:layout_marginEnd="@dimen/_15sdp"/>
 
 </RelativeLayout>

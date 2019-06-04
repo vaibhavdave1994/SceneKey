@@ -31,9 +31,4 @@ public class EventAttendy implements Serializable {
         this.userimage = userimage;
     }
 
-
-    public class ImageLoadModal{
-        List<String> loadImage = new ArrayList<String>();
-
-    }
 }

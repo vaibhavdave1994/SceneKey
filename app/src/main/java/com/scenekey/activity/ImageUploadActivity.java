@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -59,30 +60,39 @@ import com.facebook.AccessToken;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
 import com.scenekey.adapter.ImageUpload_Adapter;
+import com.scenekey.adapter.NewImageUpload_Adapter;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
+import com.scenekey.fragment.ProfileNew_fragment;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.Pop_Up_Option;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.ProfileImageListener;
+import com.scenekey.model.BucketDataModel;
 import com.scenekey.model.ImagesUpload;
+import com.scenekey.model.KeyInUserModal;
+import com.scenekey.model.OwnerModel;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.ImageUtil;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.StatusBarUtil;
 import com.scenekey.util.Utility;
+import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +104,8 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
     private final String TAG = ImageUploadActivity.class.toString();
     public boolean isChanged = false;
     private Context context = this;
-    private ImageUpload_Adapter adapter;
+//  private ImageUpload_Adapter adapter;
+    private NewImageUpload_Adapter adapter;
     private ImageView img_profile, img_f1_back,img_profile_pic2;
     private CognitoCredentialsProvider credentialsProvider;
     private int value = 0;
@@ -102,11 +113,12 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
     private CustomProgressBar prog;
     private Bitmap bitmap;
     private Utility utility;
-
+    ArrayList<BucketDataModel> alOfBucketData;
     // New Code
     private String registerFileUrl, mCurrentPhotoPath;
     private boolean doubleBackPress = false;
     private boolean isSummaryZero = false, isUploadDialog = false;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,10 +132,16 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             from = getIntent().getStringExtra("from");
         }
 
-        RecyclerView recyclerView = findViewById(R.id.recyvlerview);
+        if (getIntent().getSerializableExtra("alOfBucketData") != null) {
+            alOfBucketData = (ArrayList<BucketDataModel>) getIntent().getSerializableExtra("alOfBucketData");
+        }
+
+        recyclerView = findViewById(R.id.recyvlerview);
         img_profile = findViewById(R.id.img_profile);
         img_f1_back = findViewById(R.id.img_f1_back);
         img_profile_pic2 = findViewById(R.id.img_profile_pic2);
+
+        Picasso.with(ImageUploadActivity.this).load(SceneKey.sessionManager.getUserInfo().getUserImage()).fit().into(img_profile);
 
         TextView tv_done = findViewById(R.id.tv_done);
         tv_done.setOnClickListener(this);
@@ -135,12 +153,20 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         }
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
-        adapter = new ImageUpload_Adapter(this);
+//      adapter = new ImageUpload_Adapter(this);
+
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+
+        if(alOfBucketData != null && alOfBucketData.size()>0) {
+            adapter = new NewImageUpload_Adapter(this, alOfBucketData);
+            recyclerView.setAdapter(adapter);
+        }
+        else {
+            getBucketDetatils();
+        }
 
         prog = new CustomProgressBar(this);
-        showProgDialog(false);
+      //  showProgDialog(false);
 
         credentialsProvider = this.getCredentials();
 
@@ -153,9 +179,9 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         CardView.LayoutParams params = (CardView.LayoutParams) img_profile.getLayoutParams();
         params.height = (ActivityWidth) - 10;
 
-        downloadFileFromS3((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider));
+       // downloadFileFromS3((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider));
         img_profile.setLayoutParams(params);
-//        img_profile.setImageResource(R.drawable.image_default_profile);
+//      img_profile.setImageResource(R.drawable.image_default_profile);
     }
 
     private void uploadRegistrationImage() {
@@ -279,7 +305,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             public void onStateChanged(int id, TransferState state) {
 
                 if (state.equals(TransferState.COMPLETED)) {
-                    adapter.addImage(key, bitmap);
+                    //adapter.addImage(key, bitmap);
                     adapter.notifyDataSetChanged();
                     isChanged = true;
                     // Constant.DEF_PROFILE= WebServices.USER_IMAGE+key;
@@ -407,7 +433,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                             isFirst = false;
                         }
                     }
-                    adapter.addImage(obj.getKey());
+                   // adapter.addImage(obj.getKey());
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -479,7 +505,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             public void onStateChanged(int id, TransferState state) {
 
                 if (state.equals(TransferState.COMPLETED)) {
-                    adapter.addImage(key, bitmap);
+                    //adapter.addImage(key, bitmap);
                     adapter.notifyDataSetChanged();
                     //dismissProgDialog();
                     isChanged = true;
@@ -651,62 +677,117 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void removeImage(final int position) {
-        showProgDialog(false);
-        final ImagesUpload obj = adapter.getList().get(position);
-        if (obj.getPath() != null || !obj.getPath().isEmpty()) {
+//        showProgDialog(false);
+//        final ImagesUpload obj = adapter.getList().get(position);
+//        if (obj.getPath() != null || !obj.getPath().isEmpty()) {
+//
+//            new AsyncTask<Integer, Void, Boolean>() {
+//                @Override
+//                protected Boolean doInBackground(Integer... params) {
+//                    AmazonS3Client s3Client = new AmazonS3Client(getCredentials());
+//                    try {
+//                        s3Client.deleteObject(new DeleteObjectRequest(Constant.BUCKET, obj.getKey()));
+//
+//                    } catch (AmazonServiceException ase) {
+//                        System.out.print("Caught an AmazonServiceException.");
+//                        System.out.print("Error Message:    " + ase.getMessage());
+//                        Utility.showToast(context, "Error Message:    " + ase.getMessage(), 0);
+//                        System.out.print("HTTP Status Code: " + ase.getStatusCode());
+//                        System.out.print("AWS Error Code:   " + ase.getErrorCode());
+//                        System.out.print("Error Type:       " + ase.getErrorType());
+//                        System.out.print("Request ID:       " + ase.getRequestId());
+//                        prog.dismiss();
+//                        return false;
+//
+//
+//                    } catch (AmazonClientException ace) {
+//                        System.out.print("Caught an AmazonClientException.");
+//                        Utility.showToast(context, "Error Message: " + ace.getMessage(), 0);
+//                        prog.dismiss();
+//                        return false;
+//
+//
+//                    }
+//                    return true;
+//                }
+//
+//                @Override
+//                protected void onPostExecute(Boolean aBoolean) {
+//                    super.onPostExecute(aBoolean);
+//                    if (aBoolean) {
+//                        adapter.getList().remove(position);
+//                        adapter.notifyDataSetChanged();
+//                        dismissProgDialog();
+//                        isChanged = true;
+//                        utility.showCustomPopup(context.getString(R.string.success_deleted), String.valueOf(R.font.montserrat_medium));
+//                    } else Utility.showToast(context, "Something went wrong", 0);
+//                }
+//            }.execute(position);
+//        } else {
+//            adapter.getList().remove(position);
+//            adapter.notifyDataSetChanged();
+//            dismissProgDialog();
+//        }
+    }
 
-            new AsyncTask<Integer, Void, Boolean>() {
+    //-----new Remove method --
+    public void removeImageFromServer(final int position){
+        if (utility.checkInternetConnection()) {
+            showProgDialog(false);
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.DELETE_BUCKET_IMAGE, new Response.Listener<String>() {
                 @Override
-                protected Boolean doInBackground(Integer... params) {
-                    AmazonS3Client s3Client = new AmazonS3Client(getCredentials());
+                public void onResponse(String response) {
+                    // activity.dismissProgDialog();
+                    // get response
                     try {
-                        s3Client.deleteObject(new DeleteObjectRequest(Constant.BUCKET, obj.getKey()));
-
-                    } catch (AmazonServiceException ase) {
-                        System.out.print("Caught an AmazonServiceException.");
-                        System.out.print("Error Message:    " + ase.getMessage());
-                        Utility.showToast(context, "Error Message:    " + ase.getMessage(), 0);
-                        System.out.print("HTTP Status Code: " + ase.getStatusCode());
-                        System.out.print("AWS Error Code:   " + ase.getErrorCode());
-                        System.out.print("Error Type:       " + ase.getErrorType());
-                        System.out.print("Request ID:       " + ase.getRequestId());
-                        prog.dismiss();
-                        return false;
-
-
-                    } catch (AmazonClientException ace) {
-                        System.out.print("Caught an AmazonClientException.");
-                        Utility.showToast(context, "Error Message: " + ace.getMessage(), 0);
-                        prog.dismiss();
-                        return false;
-
-
-                    }
-                    return true;
-                }
-
-                @Override
-                protected void onPostExecute(Boolean aBoolean) {
-                    super.onPostExecute(aBoolean);
-                    if (aBoolean) {
-                        adapter.getList().remove(position);
-                        adapter.notifyDataSetChanged();
                         dismissProgDialog();
-                        isChanged = true;
-                        utility.showCustomPopup(context.getString(R.string.success_deleted), String.valueOf(R.font.montserrat_medium));
-                    } else Utility.showToast(context, "Something went wrong", 0);
+                        JSONObject jo = new JSONObject(response);
+                        if (jo.has("success")) {
+                            int success = jo.getInt("success");
+                            if (success == 1) {
+                                try {
+                                    alOfBucketData.remove(position);
+                                    adapter = new NewImageUpload_Adapter(ImageUploadActivity.this,alOfBucketData);
+                                    recyclerView.setAdapter(adapter);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        //activity.dismissProgDialog();
+                        dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
                 }
-            }.execute(position);
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    dismissProgDialog();
+                    utility.volleyErrorListner(e);
+                    //  activity.dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("key",alOfBucketData.get(position).getKey());
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
         } else {
-            adapter.getList().remove(position);
-            adapter.notifyDataSetChanged();
-            dismissProgDialog();
+            //activity.dismissProgDialog();
         }
     }
     /* adapter public method end here */
 
     @Override
     public void onBackPressed() {
+        ProfileNew_fragment.shouldRefresh = true;
+
         Constant.DONE_BUTTON_CHECK = 0;
         if (from.equalsIgnoreCase("profile")) {
             //call detail activity
@@ -808,10 +889,11 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             try {
                 if (result != null) {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
-                    String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, bitmap));
-                    ImageSessionManager.getInstance().createImageSession(uri_path, false);
-
-                    upload((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider), ImageUtil.saveToInternalfile(bitmap, this));
+                    uploadNewBase64(SceneKey.sessionManager.getUserInfo().userFacebookId,bitmap);
+//                    String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, bitmap));
+//                    ImageSessionManager.getInstance().createImageSession(uri_path, false);
+//
+//                    upload((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider), ImageUtil.saveToInternalfile(bitmap, this));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -864,7 +946,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("method", "PUT");
             jsonBody.put("action", "updateImage");
-            jsonBody.put("userid", SceneKey.sessionManager.getUserInfo().userid);
+            jsonBody.put("userid", SceneKey.sessionManager.getUserInfo().userFacebookId);
             jsonBody.put("userImage", s);
 
             final String mRequestBody = jsonBody.toString();
@@ -928,7 +1010,6 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    // New Code
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -967,5 +1048,127 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         mCurrentPhotoPath = image.getAbsolutePath();
         ImageSessionManager.getInstance().createImageSession(mCurrentPhotoPath, false);
         return image;
+    }
+
+    //-----------------new code to upload image 16-05-19---------
+    public void uploadNewBase64(final String userId, Bitmap bitmap){
+        if (utility.checkInternetConnection()) {
+            showProgDialog(false);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] imageBytes = baos.toByteArray();
+            final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
+            //sending image to server
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.IMAGEUPLOAD_BUCKET, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        getBucketDetatils();
+                    } catch (Exception e) {
+                        dismissProgDialog();
+                        //activity.dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    dismissProgDialog();
+                    Toast.makeText(ImageUploadActivity.this, "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
+                    ;
+                }
+            }) {
+                //adding parameters to send
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parameters = new HashMap<String, String>();
+                    parameters.put("profileImage", imageString);
+                    parameters.put("user_id", userId);
+                    return parameters;
+                }
+            };
+
+            RequestQueue rQueue = Volley.newRequestQueue(ImageUploadActivity.this);
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
+            rQueue.add(request);
+        }
+
+    }
+
+    public void getBucketDetatils() {
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.GET_BUCKET_DATA, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // activity.dismissProgDialog();
+                    // get response
+                    dismissProgDialog();
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        alOfBucketData = new ArrayList<>();
+                        if (jo.has("success")) {
+                            int success = jo.getInt("success");
+                            if (success == 1) {
+                                try {
+
+                                    JSONArray jsonArray = new JSONArray();
+                                    if(jo.has("bucketInfo")){
+                                        jsonArray = jo.getJSONArray("bucketInfo");
+                                        for(int i =0; i<jsonArray.length(); i++){
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                                             if(jsonObject.has("Key"))
+                                            String Key = jsonObject.getString("Key");
+                                            String LastModified = jsonObject.getString("LastModified");
+                                            String ETag = jsonObject.getString("ETag");
+                                            String Size = jsonObject.getString("Size");
+                                            String StorageClass = jsonObject.getString("StorageClass");
+                                            JSONObject Owner  = jsonObject.getJSONObject("Owner");
+
+                                            String DisplayName = Owner.getString("DisplayName");
+                                            String ID = Owner.getString("ID");
+                                            OwnerModel ownerModel = new OwnerModel(DisplayName,ID);
+                                            alOfBucketData.add(new BucketDataModel(Key,LastModified,ETag,Size,
+                                                    StorageClass,ownerModel));
+                                        }
+                                        if(alOfBucketData.size() == 1)
+                                        Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE+alOfBucketData.get(0).getKey()).fit().into(img_profile);
+
+                                        adapter = new NewImageUpload_Adapter(ImageUploadActivity.this,alOfBucketData);
+                                        recyclerView.setAdapter(adapter);
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        //activity.dismissProgDialog();
+                        dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    dismissProgDialog();
+                    utility.volleyErrorListner(e);
+                    //  activity.dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userFacebookId);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
+        } else {
+            //activity.dismissProgDialog();
+        }
     }
 }

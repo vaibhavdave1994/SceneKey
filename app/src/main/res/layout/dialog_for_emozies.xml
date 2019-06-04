@@ -28,7 +28,7 @@
             <EditText
                 android:id="@+id/et_search"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_toLeftOf="@+id/tv_cancle"
                 android:layout_toRightOf="@+id/img_search"
@@ -38,6 +38,8 @@
                 android:singleLine="true"
                 android:textColor="@color/black2"
                 android:textColorHint="@color/gray2"
+                android:backgroundTint="@color/transparent"
+                android:drawableTint="@color/transparent"
                 android:textSize="@dimen/_12ssp" />
 
 
@@ -87,7 +89,6 @@
 
 
         <LinearLayout
-            android:id="@+id/lnr_people"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"

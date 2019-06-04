@@ -22,7 +22,6 @@ public class EventDetailsForActivity {
     private String nudges_count;
     private ArrayList<NotificationData>nudgeModalArrayList;
 
-
     private ArrayList<Tags> tagList;
 
     public ArrayList<Tags> getTagList() {
@@ -41,7 +40,6 @@ public class EventDetailsForActivity {
 
         fragment.addChips(this.tagList);
     }*/
-
 
     public void setTagList(JSONArray tagList, com.scenekey.activity.EventDetailsActivity eventDetailsActivity) throws JSONException {
         this.tagList = new ArrayList<>();
@@ -166,22 +164,29 @@ public class EventDetailsForActivity {
             if (feedsJson.has("date")) feeds.date=(feedsJson.getString("date"));
             if (feedsJson.has("feed")) feeds.feed=(feedsJson.getString("feed"));
 
-
             //eventDetailsActivity.feedlikeList.clear();
-              JSONArray jsonArray   = feedsJson.getJSONArray("feedReaction");
-              for(int r = 0;r<jsonArray.length();r++){
-                  JSONObject jsonObject = jsonArray.getJSONObject(r);
-                  FeedSmily feedSmily = new FeedSmily();
-                  if (jsonObject.has("id")) feedSmily.id=(jsonObject.getString("id"));
-                  if (jsonObject.has("event_id")) feedSmily.event_id=(jsonObject.getString("event_id"));
-                  if (jsonObject.has("feed_id")) feedSmily.feed_id=(jsonObject.getString("feed_id"));
-                  if (jsonObject.has("reaction_id")) feedSmily.reaction_id=(jsonObject.getString("reaction_id"));
-                  if (jsonObject.has("reaction_count")) feedSmily.reaction_count=(jsonObject.getString("reaction_count"));
-                  if (jsonObject.has("reaction")) feedSmily.reaction=(jsonObject.getString("reaction"));
-                  if (jsonObject.has("isReaction")) feedSmily.isReaction=(jsonObject.getString("isReaction"));
-                  feeds.feedSmilies.add(feedSmily);
+            if(feedsJson.has("feedReaction")) {
+                JSONArray jsonArray = feedsJson.getJSONArray("feedReaction");
+                for (int r = 0; r < jsonArray.length(); r++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(r);
+                    FeedSmily feedSmily = new FeedSmily();
+                    if (jsonObject.has("id")) feedSmily.id = (jsonObject.getString("id"));
+                    if (jsonObject.has("event_id"))
+                        feedSmily.event_id = (jsonObject.getString("event_id"));
+                    if (jsonObject.has("feed_id"))
+                        feedSmily.feed_id = (jsonObject.getString("feed_id"));
+                    if (jsonObject.has("reaction_id"))
+                        feedSmily.reaction_id = (jsonObject.getString("reaction_id"));
+                    if (jsonObject.has("reaction_count"))
+                        feedSmily.reaction_count = (jsonObject.getString("reaction_count"));
+                    if (jsonObject.has("reaction"))
+                        feedSmily.reaction = (jsonObject.getString("reaction"));
+                    if (jsonObject.has("isReaction"))
+                        feedSmily.isReaction = (jsonObject.getString("isReaction"));
+                    feeds.feedSmilies.add(feedSmily);
 //                  eventDetailsActivity.feedlikeList.add(feedSmily);
-              }
+                }
+            }
               Collections.reverse(feeds.feedSmilies);
               ///cREATE lIST AND INSERT vALUE
 
@@ -191,8 +196,6 @@ public class EventDetailsForActivity {
                 card.userImage = feeds.userimage;
                 card.date = feeds.date;
                 eventDetailsActivity.cardsList.add(card);
-
-
             } else {
                 Card card = new Card();
                 card.imageUrl = null;
@@ -249,7 +252,6 @@ public class EventDetailsForActivity {
                 //fragment.fabMenu1_like.setImageDrawable(fragment.getActivity().getResources().getDrawable(R.drawable.active_like));
             }
         }
-
     }
 
     public ArrayList<Feeds> getFeedList() {

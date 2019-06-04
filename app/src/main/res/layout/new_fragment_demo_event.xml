@@ -83,7 +83,6 @@
 
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/addButtonForKeyIn"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_alignParentRight="true"
@@ -94,7 +93,6 @@
         app:srcCompat="@drawable/add_ico" />
 
     <View
-        android:id="@+id/bottomView"
         android:layout_width="match_parent"
         android:layout_height="0.1dp"
         android:layout_above="@+id/bottomBar"

@@ -10,7 +10,6 @@
         android:id="@+id/rcViewTrending"
         android:layout_width="match_parent"
         android:overScrollMode="always"
-        android:paddingBottom="@dimen/_42sdp"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
@@ -47,7 +46,6 @@
                 android:layout_marginLeft="@dimen/_18sdp"
                 android:layout_marginRight="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:id="@+id/txt_sorry3"
                 android:gravity="center"
                 android:textColor="@color/gray"
                 android:layout_width="match_parent"

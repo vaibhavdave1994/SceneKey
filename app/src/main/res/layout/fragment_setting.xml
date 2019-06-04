@@ -187,7 +187,6 @@
                         app:srcCompat="@drawable/ic_bio" />
 
                     <TextView
-                        android:id="@+id/txt_bio"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -225,7 +224,6 @@
                         app:srcCompat="@drawable/privecy_policy_icon" />
 
                     <TextView
-                        android:id="@+id/txt_ChangePassword"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -272,7 +270,6 @@
                     android:src="@drawable/term_conditions_icon" />
 
                 <TextView
-                    android:id="@+id/edt_terms"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -311,7 +308,6 @@
                     android:src="@drawable/privecy_policy_icon" />
 
                 <TextView
-                    android:id="@+id/edt_privacy"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

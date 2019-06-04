@@ -2,6 +2,7 @@ package com.scenekey.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.scenekey.adapter.SearchEvent_Adapter;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
 import com.scenekey.model.Events;
+import com.scenekey.model.Venue;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
 
@@ -80,8 +82,8 @@ public class NearEvent_Fragment extends Fragment {
         if (rcViewNearEvent.getAdapter() == null) {
             SearchEvent_Adapter nearEventAdapter = new SearchEvent_Adapter(activity, eventsList, currentLatLng, new CheckEventStatusListener() {
                 @Override
-                public void getCheckEventStatusListener(String eventName, String event_id, String venue_name, Events object, String[] currentLatLng, String[] strings) {
-                    callAddEventApi(eventName,event_id, venue_name, object, currentLatLng, strings);
+                public void getCheckEventStatusListener(String eventName, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings) {
+                    callAddEventApi(eventName,event_id, venue_name.getVenue_name(), object, currentLatLng, strings);
                 }
             });
 
@@ -96,7 +98,9 @@ public class NearEvent_Fragment extends Fragment {
     }
 
     public void eventApiRefresh() {
-        activity.checkEventAvailablity(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            activity.checkEventAvailablity(true);
+        }
     }
 
     public void callAddEventApi(final  String eventNAme, final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {

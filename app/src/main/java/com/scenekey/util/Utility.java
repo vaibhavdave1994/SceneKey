@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,8 +16,11 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.util.Log;
@@ -29,6 +33,17 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.scenekey.R;
 
 import org.json.JSONException;
@@ -122,8 +137,16 @@ public class Utility {
                 public void onClick(View view) {
                     // Show location settings when the user acknowledges the alert dialog
                     dialog.cancel();
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    context.startActivity(intent);
+//                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                    context.startActivity(intent);
+                    new GpsUtils(context).turnGPSOn(new GpsUtils.onGpsListener() {
+                        @Override
+                        public void gpsStatus(boolean isGPSEnable) {
+                            // turn on GPS
+                            Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
             });
 
@@ -164,6 +187,36 @@ public class Utility {
 
         dialog.show();
     }
+
+    public void showCustomPopup(String message,String title, String fontType) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.custom_popup_new);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        //      deleteDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
+
+        TextView tvPopupOk, tvMessages, custom_popup_title;
+
+        tvMessages = dialog.findViewById(R.id.custom_popup_tvMessage);
+        custom_popup_title = dialog.findViewById(R.id.custom_popup_title);
+        Typeface typeface = Typeface.create(fontType, Typeface.BOLD);
+        tvMessages.setTypeface(typeface);
+        tvPopupOk = dialog.findViewById(R.id.custom_popup_ok);
+        tvPopupOk.setText(R.string.ok);
+        tvMessages.setText(message);
+        custom_popup_title.setText(title);
+
+        tvPopupOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Show location settings when the user acknowledges the alert dialog
+                dialog.cancel();
+            }
+        });
+
+        dialog.show();
+    }
+
 
     public boolean checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -231,18 +284,6 @@ public class Utility {
                 } else if (!(errorMessage.equals("Invalid Auth Token"))) {
                     Utility.showToast(context, errorMessage, 0);
                 }
-                /*  if (networkResponse.statusCode == 300) {
-                    errorMessage = message + "Please login again";
-                }
-               else if (networkResponse.statusCode == 404) {
-                    errorMessage = "Resource not found";
-                } else if (networkResponse.statusCode == 401) {
-                    errorMessage = message + " Please login again";
-                } else if (networkResponse.statusCode == 400) {
-                    errorMessage = message + " Check your inputs";
-                } else if (networkResponse.statusCode == 500) {
-                    errorMessage = message + "Ooops! Something went wrong,";
-                }  */
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -250,7 +291,6 @@ public class Utility {
         }
     }
       /*volleyErrorListner end*/
-
 
     // New Code
     public static Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -261,11 +301,6 @@ public class Utility {
     }
 
     public static String getRealPathFromURI(Activity inContext, Uri contentUri) {
-       /* String[] proj = {MediaStore.Audio.Media.DATA};
-        Cursor cursor = inContext.managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);*/
 
         String[] proj = {MediaStore.Audio.Media.DATA};
         Cursor cursor = inContext.getContentResolver().query(contentUri, proj, null, null, null);

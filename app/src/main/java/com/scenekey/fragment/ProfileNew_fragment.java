@@ -3,13 +3,16 @@ package com.scenekey.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -26,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -40,19 +44,27 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.ImageUploadActivity;
+import com.scenekey.activity.SearchSubCategoryActivity;
+import com.scenekey.activity.TagsActivity;
+import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.adapter.ProfileImagePagerAdapter;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.VerticalViewPager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.ProfileImageListener;
+import com.scenekey.model.BucketDataModel;
 import com.scenekey.model.EventAttendy;
+import com.scenekey.model.Events;
 import com.scenekey.model.Feeds;
 import com.scenekey.model.ImagesUpload;
+import com.scenekey.model.OwnerModel;
+import com.scenekey.model.TagModal;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.CircleTransform;
 import com.scenekey.util.SceneKey;
@@ -70,10 +82,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileNew_fragment extends Fragment implements  View.OnClickListener{
 
-
+    View v;
     private final String TAG = ProfileNew_fragment.class.toString();
     private Context context;
     private HomeActivity activity;
@@ -98,41 +112,105 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     private EditText tv_bio;
 
     private ImageView btn1, btn2, btn3, btn4, btn5;
-    private RelativeLayout ly_match_profile;
-    private BottomSheetBehavior<View> mBottomSheetBehavior;
-    private View bottom_sheet;
+    //private RelativeLayout ly_match_profile;
+   // private BottomSheetBehavior<View> mBottomSheetBehavior;
+   // private View bottom_sheet;
     private int profilePos;
-    private RelativeLayout customizeView;
+    //private RelativeLayout customizeView;
     private ProfileImagePagerAdapter pagerAdapter;
     String userImage ="";
     private LinearLayout demo_View_dot;
+    ArrayList<BucketDataModel> alOfBucketData;
 
+    //---new code------
+    CircleImageView outerBouder,outerBouder1,outerBouder2,outerBouder3,outerBouder4;
+    ImageView iv_tag__special_circulerImage,iv_tag__special_circulerImage1,iv_tag__special_circulerImage2,iv_tag__special_circulerImage3,
+            iv_tag__special_circulerImage4;
+    TextView tag__special_name,tag__special_name1,tag__special_name2,tag__special_name3,tag__special_name4;
+    RelativeLayout rl,rl1,rl2,rl3,rl4,rl_error;
+    TextView tv_viewall_interest,follow_tokens;
+    LinearLayout ll_donothavebio;
+    public static boolean shouldRefresh = false;
+    TagModal tagModal,tagModal1,tagModal2,tagModal3,tagModal4;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_profile_new_fragment, container, false);
-        ly_match_profile = v.findViewById(R.id.ly_match_profile);
+//        View v =  inflater.inflate(R.layout.fragment_profile_new_fragment, container, false);
+        v =  inflater.inflate(R.layout.new_fragment_profile_new_fragment, container, false);
+//        v =  inflater.inflate(R.layout.user_detail_activity_layout, container, false);
+       // ly_match_profile = v.findViewById(R.id.ly_match_profile);
 
-        listViewFragProfile = v.findViewById(R.id.listViewFragProfile);
-        bottom_sheet = v.findViewById(R.id.bottom_sheet);
-        mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
+        outerBouder = v.findViewById(R.id.outerBouder);
+        outerBouder1 = v.findViewById(R.id.outerBouder1);
+        outerBouder2 = v.findViewById(R.id.outerBouder2);
+        outerBouder3 = v.findViewById(R.id.outerBouder3);
+        outerBouder4 = v.findViewById(R.id.outerBouder4);
+        iv_tag__special_circulerImage = v.findViewById(R.id.iv_tag__special_circulerImage);
+        iv_tag__special_circulerImage1 = v.findViewById(R.id.iv_tag__special_circulerImage1);
+        iv_tag__special_circulerImage2 = v.findViewById(R.id.iv_tag__special_circulerImage2);
+        iv_tag__special_circulerImage3 = v.findViewById(R.id.iv_tag__special_circulerImage3);
+        iv_tag__special_circulerImage4 = v.findViewById(R.id.iv_tag__special_circulerImage4);
+        tag__special_name = v.findViewById(R.id.tag__special_name);
+        tag__special_name1 = v.findViewById(R.id.tag__special_name1);
+        tag__special_name2 = v.findViewById(R.id.tag__special_name2);
+        tag__special_name3 = v.findViewById(R.id.tag__special_name3);
+        tag__special_name4 = v.findViewById(R.id.tag__special_name4);
+
+        rl = v.findViewById(R.id.rl);
+        rl1 = v.findViewById(R.id.rl1);
+        rl2 = v.findViewById(R.id.rl2);
+        rl3 = v.findViewById(R.id.rl3);
+        rl4 = v.findViewById(R.id.rl4);
+        rl.setOnClickListener(this);
+        rl1.setOnClickListener(this);
+        rl2.setOnClickListener(this);
+        rl3.setOnClickListener(this);
+        rl4.setOnClickListener(this);
+
+        rl_error = v.findViewById(R.id.rl_error);
+        ll_donothavebio = v.findViewById(R.id.ll_donothavebio);
+
+        tv_viewall_interest = v.findViewById(R.id.tv_viewall_interest);
+        tv_viewall_interest.setOnClickListener(this);
+        follow_tokens = v.findViewById(R.id.follow_tokens);
+        follow_tokens.setOnClickListener(this);
+
+        btn1 = v.findViewById(R.id.d_btn1);
+        btn2 = v.findViewById(R.id.d_btn2);
+        btn3 = v.findViewById(R.id.d_btn3);
+        btn4 = v.findViewById(R.id.d_btn4);
+        btn5 = v.findViewById(R.id.d_btn5);
+
+        //listViewFragProfile = v.findViewById(R.id.listViewFragProfile);
+        //bottom_sheet = v.findViewById(R.id.bottom_sheet);
+       // mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         imageList = new ArrayList<>();
 
-        customizeView = v.findViewById(R.id.customizeView);
+        //customizeView = v.findViewById(R.id.customizeView);
         demo_View_dot = v.findViewById(R.id.demo_View_dot);
 
         Display display = activity.getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
 
+        getBucketDetatils();
+        getMyFollowTag();
+        ImageView iv_image_upload = v.findViewById(R.id.iv_image_upload);
+        iv_image_upload.setOnClickListener(this);
+        tv_user_name = v.findViewById(R.id.tv_user_name);
+        tv_bio = v.findViewById(R.id.tv_bio);
+        TextView tv_update_bio = v.findViewById(R.id.tv_update_bio);
+        tv_update_bio.setOnClickListener(this);
+        setProfileData();
+
         int dpHeight = outMetrics.heightPixels;
         int dpWidth = outMetrics.widthPixels;
 
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) customizeView.getLayoutParams();
-        params.height = (dpWidth - 20);
-        customizeView.setLayoutParams(params);
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) customizeView.getLayoutParams();
+//        params.height = (dpWidth - 20);
+//        customizeView.setLayoutParams(params);
         return v;
     }
 
@@ -140,32 +218,30 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Handler handler = new Handler();
-        demo_View_dot.setVisibility(View.VISIBLE);
-        downloadFileFromS3((credentialsProvider == null ? credentialsProvider = getCredentials() : credentialsProvider));
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                activity.showProgDialog(false, TAG);
-                getProfileDataApi();
-            }
-        }, 200);
 
-        feedsList = new ArrayList<>();
 
-        // New Code
-        ImageView iv_image_upload = view.findViewById(R.id.iv_image_upload);
-        tv_user_name = view.findViewById(R.id.tv_user_name);
-        tv_bio = view.findViewById(R.id.tv_bio);
-        TextView tv_update_bio = view.findViewById(R.id.tv_update_bio);
+//        Handler handler = new Handler();
+//        demo_View_dot.setVisibility(View.VISIBLE);
+//        downloadFileFromS3((credentialsProvider == null ? credentialsProvider = getCredentials() : credentialsProvider));
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                activity.showProgDialog(false, TAG);
+//                getProfileDataApi();
+//            }
+//        }, 200);
+//
+//        feedsList = new ArrayList<>();
+//
+//        // New Code
 
-        img_green = view.findViewById(R.id.img_green);
-        img_yellow = view.findViewById(R.id.img_yellow);
-        img_red = view.findViewById(R.id.img_red);
+//        img_green = view.findViewById(R.id.img_green);
+//        img_yellow = view.findViewById(R.id.img_yellow);
+//        img_red = view.findViewById(R.id.img_red);
 
-        setProfileData();
 
-        setClick(iv_image_upload, img_green, img_yellow, img_red, tv_bio, tv_update_bio);
+
+        //setClick(iv_image_upload, img_green, img_yellow, img_red, tv_bio, tv_update_bio);
     }
 
     private void setProfileData() {
@@ -178,38 +254,40 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             tv_user_name.setText(userInfo.fullname);
 
         if (activity.userInfo().bio.equals("")) {
-            tv_bio.setText("N/A");
+            //tv_bio.setText("N/A");
+           // ll_donothavebio.setVisibility(View.VISIBLE);
         } else {
             tv_bio.setText(activity.userInfo().bio);
+            ll_donothavebio.setVisibility(View.GONE);
         }
 
-        if (userInfo.user_status != null) {
-            switch (userInfo.user_status) {
-                case "1":
-                    img_green.setImageResource(R.drawable.ic_active_grn_circle);
-                    img_red.setImageResource(R.drawable.bg_red_ring);
-                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-                    break;
-
-                case "2":
-                    img_green.setImageResource(R.drawable.bg_green_ring);
-                    img_red.setImageResource(R.drawable.bg_red_ring);
-                    img_yellow.setImageResource(R.drawable.ic_active_ylw_circle);
-                    break;
-
-                case "3":
-                    img_green.setImageResource(R.drawable.bg_green_ring);
-                    img_red.setImageResource(R.drawable.ic_active_red_circle);
-                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-                    break;
-
-                default:
-                    img_green.setImageResource(R.drawable.bg_green_ring);
-                    img_red.setImageResource(R.drawable.ic_active_red_circle);
-                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-
-            }
-        }
+//        if (userInfo.user_status != null) {
+//            switch (userInfo.user_status) {
+//                case "1":
+//                    img_green.setImageResource(R.drawable.ic_active_grn_circle);
+//                    img_red.setImageResource(R.drawable.bg_red_ring);
+//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
+//                    break;
+//
+//                case "2":
+//                    img_green.setImageResource(R.drawable.bg_green_ring);
+//                    img_red.setImageResource(R.drawable.bg_red_ring);
+//                    img_yellow.setImageResource(R.drawable.ic_active_ylw_circle);
+//                    break;
+//
+//                case "3":
+//                    img_green.setImageResource(R.drawable.bg_green_ring);
+//                    img_red.setImageResource(R.drawable.ic_active_red_circle);
+//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
+//                    break;
+//
+//                default:
+//                    img_green.setImageResource(R.drawable.bg_green_ring);
+//                    img_red.setImageResource(R.drawable.ic_active_red_circle);
+//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
+//
+//            }
+//        }
     }
 
     private void setClick(View... views) {
@@ -235,6 +313,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 if (myProfile) {
                     Intent i = new Intent(context, ImageUploadActivity.class);
                     i.putExtra("from", "profile");
+                    i.putExtra("alOfBucketData", alOfBucketData);
                     startActivityForResult(i, Constant.IMAGE_UPLOAD_CALLBACK);
                     Constant.DONE_BUTTON_CHECK = 1;
                 }
@@ -259,7 +338,10 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 break;
 
             case R.id.tv_update_bio:
+                if(!tv_bio.getText().toString().trim().equalsIgnoreCase(""))
                 updateBio(tv_bio.getText().toString().trim());
+                else
+                    utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
                 break;
 
             case R.id.img_cross:
@@ -274,6 +356,41 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 break;
             case R.id.txt_dimmer:
                 crossImgClicked();
+                break;
+
+            case R.id.tv_viewall_interest:
+                Intent intent = new Intent(context, TagsActivity.class);
+                intent.putExtra("fromProfile", true);
+                startActivity(intent);
+                break;
+
+             case R.id.follow_tokens:
+                 Intent intent1 = new Intent(context, HomeActivity.class);
+                 intent1.putExtra("fromSearch", true);
+                 intent1.putExtra("name", "");
+                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                 startActivity(intent1);
+                 getActivity().finish();
+                break;
+
+            case R.id.rl:
+                goToTagSearchInEvent(tagModal);
+                break;
+
+            case R.id.rl1:
+                goToTagSearchInEvent(tagModal1);
+                break;
+
+            case R.id.rl2:
+                goToTagSearchInEvent(tagModal2);
+                break;
+
+            case R.id.rl3:
+                goToTagSearchInEvent(tagModal3);
+                break;
+
+            case R.id.rl4:
+                goToTagSearchInEvent(tagModal4);
                 break;
         }
     }
@@ -290,10 +407,20 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
     @Override
     public void onResume() {
-        setProfileData();
+     //   setProfileData();
         super.onResume();
+        if(shouldRefresh){ ;
+            // Reload current fragment
+//            Fragment frg = null;
+//            frg = activity.getSupportFragmentManager().findFragmentByTag(getFragmentManager().getFragments().getClass().getName());
+//            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+//            ft.detach(frg);
+//            ft.attach(frg);
+//            ft.commit();
+//            getBucketDetatils();
+//            getMyFollowTag();
+        }
     }
-
 
     private void profileImgClick() {
         listViewFragProfile.smoothScrollToPosition(0);
@@ -410,7 +537,8 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             //utility.snackBar(mainLayout, getString(R.string.internetConnectivityError), 0);
-            utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
+            //utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
+            Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();
         }
     }
@@ -492,7 +620,6 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
         //rclv_f3_trending.setHasFixedSize(true);
     }
 
-
     /* get image from server start here*/
 
     private void downloadFileFromS3(CognitoCredentialsProvider credentialsProvider) {//, CognitoCachingCredentialsProvider credentialsProvider){
@@ -540,7 +667,6 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             Log.e("step09", "fail");
         }
     }
-
 
     private void updateImages(final List<S3ObjectSummary> summaries) {
         activity.runOnUiThread(new Runnable() {
@@ -631,11 +757,6 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     // New Code
     private void setUpView(View view) {
         VerticalViewPager viewPager = view.findViewById(R.id.viewpager);
-        btn1 = view.findViewById(R.id.btn1);
-        btn2 = view.findViewById(R.id.btn2);
-        btn3 = view.findViewById(R.id.btn3);
-        btn4 = view.findViewById(R.id.btn4);
-        btn5 = view.findViewById(R.id.btn5);
 
         pagerAdapter = new ProfileImagePagerAdapter(context, imageList, new ProfileImageListener() {
             @Override
@@ -684,6 +805,9 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     }
 
     private void initButton(int position) {
+        if(imageList.size() == 0){
+
+        }
         switch (position) {
             case 0:
                 btn1.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.active_profile_img_bullet));
@@ -890,16 +1014,259 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
         }
     }
 
-    @Override
-    public void onStop() {
-        Log.e("Test", " Profile-OnStop");
-        super.onStop();
+    public void getBucketDetatils() {
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.GET_BUCKET_DATA, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                   // activity.dismissProgDialog();
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        alOfBucketData = new ArrayList<>();
+                        if (jo.has("success")) {
+                            int success = jo.getInt("success");
+                            if (success == 1) {
+                                try {
+
+                                    JSONArray jsonArray = new JSONArray();
+                                    if(jo.has("bucketInfo")){
+                                        imageList = new ArrayList<>();
+                                        jsonArray = jo.getJSONArray("bucketInfo");
+                                        for(int i =0; i<jsonArray.length(); i++){
+                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                                             if(jsonObject.has("Key"))
+                                            String Key = jsonObject.getString("Key");
+                                            String LastModified = jsonObject.getString("LastModified");
+                                            String ETag = jsonObject.getString("ETag");
+                                            String Size = jsonObject.getString("Size");
+                                            String StorageClass = jsonObject.getString("StorageClass");
+                                            JSONObject Owner  = jsonObject.getJSONObject("Owner");
+
+                                            String DisplayName = Owner.getString("DisplayName");
+                                            String ID = Owner.getString("ID");
+                                            OwnerModel ownerModel = new OwnerModel(DisplayName,ID);
+                                            alOfBucketData.add(new BucketDataModel(Key,LastModified,ETag,Size,
+                                                    StorageClass,ownerModel));
+
+                                            imageList.add(new ImagesUpload(Key));
+                                        }
+                                        setUpView(v);
+                                    }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                      }
+                    } catch (Exception e) {
+                        //activity.dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                  //  activity.dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userFacebookId);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
+        } else {
+            //activity.dismissProgDialog();
+        }
     }
 
-    @Override
-    public void onPause() {
-        Log.e("Test", " Profile-OnPause");
-        super.onPause();
+    public void getMyFollowTag() {
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.GET_MY_FOLLOW_TAGS, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // activity.dismissProgDialog();
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        if (jo.has("status")) {
+                            if (jo.getString("status").equalsIgnoreCase("success")) {
+                                try {
+
+                                    JSONArray jsonArray = new JSONArray();
+                                    if(jo.has("followTag")){
+                                        jsonArray = jo.getJSONArray("followTag");
+                                        if(jsonArray.length()>0){
+                                            rl_error.setVisibility(View.GONE);
+                                        }
+                                        for(int i =0; i<jsonArray.length(); i++){
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            String biz_tag_id = jsonObject.getString("biz_tag_id");
+                                            String tag_name = jsonObject.getString("tag_name");
+                                            String color_code = jsonObject.getString("color_code");
+                                            String tag_image = jsonObject.getString("tag_image");
+                                            String isVenue = jsonObject.getString("isVenue");
+
+                                            switch (i){
+                                                case 0:
+                                                    outerBouder.setBorderColor(Color.parseColor(color_code));
+                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                        Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
+                                                                .error(R.drawable.app_icon).into(outerBouder);
+                                                    }
+                                                    else {
+                                                        Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
+                                                                .into(iv_tag__special_circulerImage);
+                                                    }
+
+                                                    tag__special_name.setText(tag_name);
+                                                    rl.setVisibility(View.VISIBLE);
+                                                    tagModal = new TagModal();
+                                                    tagModal.biz_tag_id = biz_tag_id;
+                                                    tagModal.tag_name = tag_name;
+                                                    tagModal.tag_image = tag_image;
+                                                    tagModal.color_code = color_code;
+                                                    break;
+                                                case 1:
+                                                    outerBouder1.setBorderColor(Color.parseColor(color_code));
+                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                        Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
+                                                                .error(R.drawable.app_icon).into(outerBouder1);
+                                                    }
+                                                    else {
+                                                        Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
+                                                                .into(iv_tag__special_circulerImage1);
+                                                    }
+
+
+                                                    tag__special_name1.setText(tag_name);
+                                                    rl1.setVisibility(View.VISIBLE);
+                                                    tagModal1 = new TagModal();
+                                                    tagModal1.biz_tag_id = biz_tag_id;
+                                                    tagModal1.tag_name = tag_name;
+                                                    tagModal1.tag_image = tag_image;
+                                                    tagModal1.color_code = color_code;
+                                                    break;
+                                                case 2:
+                                                    outerBouder2.setBorderColor(Color.parseColor(color_code));
+
+                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                        Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
+                                                                .error(R.drawable.app_icon).into(outerBouder2);
+                                                    }
+                                                    else {
+                                                        Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
+                                                                .into(iv_tag__special_circulerImage2);
+                                                    }
+
+                                                    tag__special_name2.setText(tag_name);
+                                                    rl2.setVisibility(View.VISIBLE);
+                                                    tagModal2 = new TagModal();
+                                                    tagModal2.biz_tag_id = biz_tag_id;
+                                                    tagModal2.tag_name = tag_name;
+                                                    tagModal2.tag_image = tag_image;
+                                                    tagModal2.color_code = color_code;
+                                                    break;
+                                                case 3:
+                                                    outerBouder3.setBorderColor(Color.parseColor(color_code));
+
+                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                        Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
+                                                                .error(R.drawable.app_icon).into(outerBouder3);
+                                                    }
+                                                    else {
+                                                        Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
+                                                                .into(iv_tag__special_circulerImage3);
+                                                    }
+
+                                                    tag__special_name3.setText(tag_name);
+                                                    rl3.setVisibility(View.VISIBLE);
+                                                    tagModal3 = new TagModal();
+                                                    tagModal3.biz_tag_id = biz_tag_id;
+                                                    tagModal3.tag_name = tag_name;
+                                                    tagModal3.tag_image = tag_image;
+                                                    tagModal3.color_code = color_code;
+
+                                                    break;
+                                                case 4:
+                                                    outerBouder4.setBorderColor(Color.parseColor(color_code));
+
+                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                        Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
+                                                                .error(R.drawable.app_icon).into(outerBouder4);
+                                                    }
+                                                    else {
+                                                        Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
+                                                                .into(iv_tag__special_circulerImage4);
+                                                    }
+
+                                                    tag__special_name4.setText(tag_name);
+                                                    rl4.setVisibility(View.VISIBLE);
+                                                    tagModal4 = new TagModal();
+                                                    tagModal4.biz_tag_id = biz_tag_id;
+                                                    tagModal4.tag_name = tag_name;
+                                                    tagModal4.tag_image = tag_image;
+                                                    tagModal4.color_code = color_code;
+
+                                                    break;
+
+                                                    default:
+                                                        break;
+                                            }
+                                        }
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        //activity.dismissProgDialog();
+                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    //  activity.dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("userId", SceneKey.sessionManager.getUserInfo().userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
+        } else {
+            //activity.dismissProgDialog();
+        }
     }
+
+    public void goToTagSearchInEvent(TagModal tagModal){
+        Intent intent;
+//        if(category_name.equalsIgnoreCase("Specials")){
+//            intent = new Intent(context, SearchSubCategoryActivity.class);
+//            intent.putExtra("tagModal", tagModal);
+//            intent.putExtra("catId", catId);
+//        }
+//        else {
+            intent = new Intent(context, TrendinSearchActivity.class);
+            intent.putExtra("tag_name", tagModal.tag_name);
+            intent.putExtra("tag_image", tagModal.tag_image);
+            intent.putExtra("tagmodel", tagModal);
+       // }
+        context.startActivity(intent);
+    }
+
 }
 

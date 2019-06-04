@@ -21,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.scenekey.R;
+import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.LoginActivity;
 import com.scenekey.fragment.Event_Fragment;
@@ -106,7 +107,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 message=post,
                 notificationType={"eventId":"1063741","bag":null,"notificationType":20}}]*/
 
-
         if (remoteMessage.getData().containsKey("message")) {
             String notificationMsg = remoteMessage.getData().get("message").toString();
             String titleMsg = remoteMessage.getData().get("title").toString();
@@ -163,6 +163,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = null;
         SessionManager sessionManager = new SessionManager(this);
+
 
         switch (notificationType1) {
             case "1":
@@ -224,12 +225,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             case "20":
                 if (sessionManager.isLoggedIn()) {
-                    intent = new Intent("BroadcastNotification");
-                    notificationModal.notificationCurrentScreen = "EventScreen";
-                    notificationModal.isBroadCast = "isBroadCast";
-                    intent.putExtra("notificationModalEvent", notificationModal);
-                    sendBroadcast(intent);
+                    if (isAppOnForeground(this)) {
+                        Activity activity = SceneKey.getInstance().getActiveActivity();
+                        if (activity instanceof EventDetailsActivity) {
+                            intent = new Intent("BroadcastNotification");
+                            notificationModal.notificationCurrentScreen = "EventScreen";
+                            notificationModal.isBroadCast = "isBroadCast";
+                            intent.putExtra("notificationModalEvent", notificationModal);
+                            sendBroadcast(intent);
+                        }
+                    }
+//                    else {
+//                            intent = new Intent(this, EventDetailsActivity.class);
+//                            notificationModal.notificationCurrentScreen = "EventScreen";
+//                            notificationModal.isBroadCast = "noBroadCast";
+//                            intent.putExtra("notificationModalHome", notificationModal);
+//
+//                        sendNotification(remoteMessage.getTtl(), title, intent, message, false, notificationModal);
+//                    }
+
                 }
+//                else {
+//                    new Intent(this, LoginActivity.class);
+//                }
                 Log.e(TAG, "notificationType20: " + notificationType1);
                 break;
 
@@ -338,6 +356,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setContentTitle(notificationModal.titleMsg)
                     .setContentText(notificationModal.message)
                     .setPriority(Notification.PRIORITY_HIGH)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationModal.message))
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent);
 
@@ -369,7 +388,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(mChannel);
         }
         assert notificationManager != null;
-        notificationManager.notify(1, notificationBuilder.build());
+        notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());
     }
 
     private boolean isAppOnForeground(Context context) {

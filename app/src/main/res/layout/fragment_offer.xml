@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/new_white_bg"
+    android:layout_marginTop="@dimen/_3sdp"
     tools:context=".fragment.OfferSFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/offerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/_42sdp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <ScrollView
@@ -45,7 +45,6 @@
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:id="@+id/txt_sorry3"
                 android:gravity="center"
                 android:textColor="@color/top_bar_text"
                 android:layout_width="match_parent"

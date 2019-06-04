@@ -15,7 +15,6 @@
 
 
     <include
-        android:id="@+id/img_bullets"
         layout="@layout/view_profile_image_bullets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

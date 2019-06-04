@@ -107,6 +107,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                                 UserInfo userInfo = new UserInfo();
                                 userInfo.userID = userDetail.getString("userid");
 */
+                            Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -140,7 +141,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                 }
             };
 
-            multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            multipartRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(ForgotPasswordActivity.this).addToRequestQueue(multipartRequest);
         } else {
             Toast.makeText(ForgotPasswordActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();

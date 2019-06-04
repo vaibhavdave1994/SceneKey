@@ -64,7 +64,7 @@ public class WalletsFragment extends Fragment {
             public void MyReddemSelcteListenr(Wallets wallets) {
 
                 addRedeemToWallet(wallets);
-                getWalletList();
+
             }
         });
         walletRecyclerView.setAdapter(walletsAdapter);
@@ -103,6 +103,7 @@ public class WalletsFragment extends Fragment {
                         } else {
                             utility.showCustomPopup(message, String.valueOf(R.font.montserrat_medium));
                         }
+                        getWalletList();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

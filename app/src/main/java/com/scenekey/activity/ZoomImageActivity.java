@@ -21,7 +21,6 @@ public class ZoomImageActivity extends AppCompatActivity {
         PhotoView photoView = findViewById(R.id.photo_view);
         ImageView img_f1_back = findViewById(R.id.img_f1_back);
 
-
         img_f1_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

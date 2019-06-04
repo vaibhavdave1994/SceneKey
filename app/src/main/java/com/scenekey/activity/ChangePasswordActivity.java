@@ -47,7 +47,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     private CustomProgressBar customProgressBar;
     private ImageView iv_conPass,iv_newPass;
     private boolean isChecked = true;
-    private boolean isnewPass = true;
+    private boolean isnewPass = false;
     private ImageView img_f1_back;
     private Animation shake;
     public static UserInfo userInfo;

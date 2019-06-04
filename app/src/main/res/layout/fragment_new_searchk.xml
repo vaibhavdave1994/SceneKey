@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/searchContianer"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/uper_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <AutoCompleteTextView
+                android:id="@+id/et_serch_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_toLeftOf="@+id/search_iv"
+                android:background="@null"
+                android:ems="10"
+                android:fontFamily="@font/montserrat_bold"
+                android:hint="Search here..."
+                android:paddingLeft="@dimen/_15sdp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:textColor="@color/gray2"
+                android:textCursorDrawable="@null"
+                android:textColorHint="@color/gray_bottom"
+                android:textSize="@dimen/_14sdp"
+                android:layout_toStartOf="@+id/search_iv" />
+
+            <ImageView
+                android:id="@+id/search_iv"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                android:tint="@color/gray2"
+                app:srcCompat="@drawable/ic_search"
+                tools:ignore="Suspicious0dp"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/linear"
+            android:background="@color/black20p"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/uper_view"
+        android:overScrollMode="never" />
+
+    <RelativeLayout
+        android:id="@+id/no_data_found"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/uper_view"
+        android:visibility="gone"
+
+        >
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:tint="@color/gray2"
+            app:srcCompat="@drawable/ic_search" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/montserrat_light"
+            android:text="No result for this search"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/_16sdp" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

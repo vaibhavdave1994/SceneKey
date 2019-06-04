@@ -1,5 +1,6 @@
 package com.scenekey.adapter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,10 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,7 +33,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
+import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
+import com.scenekey.fragment.Map_FragmentEventDetail;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.DoubleClickListener;
 import com.scenekey.helper.WebServices;
@@ -39,6 +46,7 @@ import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.EmoziesModal;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.EventDetailsForActivity;
+import com.scenekey.model.Events;
 import com.scenekey.model.Feeds;
 import com.scenekey.util.Utility;
 import com.squareup.picasso.Picasso;
@@ -62,6 +70,7 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
     public String userExistOrNot = "";
     private boolean doubleClick = false;
     private Context context;
+    Activity activity;
     private ArrayList<Feeds> feedList;
     private List<EmoziesModal> emoziesModalArrayList;
     private ArrayList<EventAttendy> userList;
@@ -73,13 +82,16 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
     private Handler handler = new Handler();
     private Utility utility;
     private GetZoomImageListener getZoomImageListener;
+    Events events;
 
-    public Profile_Adapter(Context context, String userId,
+    public Profile_Adapter( Events events,Context context, String userId,
                            ArrayList<Feeds> feedsList,
                            ArrayList<EventAttendy> userList, String eventid,
                            List<EmoziesModal> emoziesModalArrayList, ForDeleteFeed deleteFeed,
-                           LikeFeedListener likeFeedListener, GetZoomImageListener getZoomImageListener) {
+                           LikeFeedListener likeFeedListener, GetZoomImageListener getZoomImageListener
+                          ) {
         this.context = context;
+        this.activity = (Activity) context;
         this.feedList = feedsList;
         this.userList = userList;
         this.eventid = eventid;
@@ -90,6 +102,7 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
         this.getZoomImageListener = getZoomImageListener;
 
         utility = new Utility(context);
+        this.events = events;
     }
 
     @Override
@@ -103,7 +116,6 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Feeds feeds = feedList.get(position);
 
-
         ViewGroup.LayoutParams layoutParams = holder.img_demo_event.getLayoutParams();
         layoutParams.height = (int) ((HomeActivity.ActivityWidth - context.getResources().getDimension(R.dimen._50sdp)) * 0.75);
         Log.e("HEIGHT", layoutParams.height + "=====" + HomeActivity.ActivityWidth);
@@ -115,11 +127,12 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
             StringTokenizer tk = new StringTokenizer(startTime);
             String date = tk.nextToken();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+//            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());
             SimpleDateFormat dateinPmAm = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
             Date dt = null;
             try {
-                dt = sdf.parse(date);
+                dt = sdf.parse(feeds.date);
                 sap_time = dateinPmAm.format(dt);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -189,24 +202,22 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
         }
     }
 
-
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView img_demo_event;
         private TextView demo_user_name, txt_demo_comment, demo_date_tv;
         private CircularImageView demo_profile_user;
         private RecyclerView emaojisRecyclerView;
 
-
         ViewHolder(View view) {
             super(view);
 
             img_demo_event = view.findViewById(R.id.img_demo_event);
             demo_profile_user = view.findViewById(R.id.demo_profile_user);
+            demo_profile_user.setOnClickListener(this);
             demo_user_name = view.findViewById(R.id.demo_user_name);
             txt_demo_comment = view.findViewById(R.id.txt_demo_comment);
             demo_date_tv = view.findViewById(R.id.demo_date_tv);
             emaojisRecyclerView = view.findViewById(R.id.emaojisRecyclerView);
-
 
             txt_demo_comment.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -359,23 +370,29 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
 
                 case R.id.demo_profile_user:
 
-                    if (!userExistOrNot.equals("")) {
-                        cantJoinNotExixtUserDialog(userExistOrNot);
-                    } else {
+                    if(events.getVenue().getVenue_name().equalsIgnoreCase(feeds.username)){
+                        EventDetailsActivity.detail_frame_fragments.setVisibility(View.VISIBLE);
+                        addFragment(new Map_FragmentEventDetail(events),0);
+                    }
+                   else {
+                        if (!userExistOrNot.equals("")) {
+                            cantJoinNotExixtUserDialog(userExistOrNot);
+                        } else {
 
-                        if (feedList.size() != 0) {
+                            if (feedList.size() != 0) {
 
-                            if (feeds.userid != null) {
+                                if (feeds.userid != null) {
 
-                                for (int i = 0; i < userList.size(); i++) {
+                                    for (int i = 0; i < userList.size(); i++) {
 
-                                    if (feeds.userid.equals(userList.get(i).userid)) {
-                                        Intent intent = new Intent(context, LiveProfileActivity.class);
-                                        intent.putExtra("from", "fromProfileAdapter");
-                                        intent.putExtra("fromLiveRoomList", userList);
-                                        intent.putExtra("eventId", eventid);
-                                        intent.putExtra("feedsid", feeds.userid);
-                                        context.startActivity(intent);
+                                        if (feeds.userid.equals(userList.get(i).userid)) {
+                                            Intent intent = new Intent(context, LiveProfileActivity.class);
+                                            intent.putExtra("from", "fromProfileAdapter");
+                                            intent.putExtra("fromLiveRoomList", userList);
+                                            intent.putExtra("eventId", eventid);
+                                            intent.putExtra("feedsid", feeds.userid);
+                                            context.startActivity(intent);
+                                        }
                                     }
                                 }
                             }
@@ -383,6 +400,32 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
                     }
                     break;
             }
+        }
+    }
+
+    public Fragment addFragment(Fragment fragmentHolder, int animationValue) {
+        try {
+            FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
+            String fragmentName = fragmentHolder.getClass().getName();
+
+
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if (animationValue == 0) {
+
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_out_down, R.anim.slide_in_down);
+            }
+            if (animationValue == 1)
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                activity.getWindow().setEnterTransition(null);
+            }
+            fragmentTransaction.add(R.id.detail_frame_fragments, fragmentHolder, fragmentName).addToBackStack(fragmentName);
+            fragmentTransaction.commit();
+
+            //hideKeyBoard();
+            return fragmentHolder;
+        } catch (Exception e) {
+            return null;
         }
     }
 }

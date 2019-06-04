@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -23,6 +22,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -32,6 +32,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -49,14 +50,19 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.scenekey.R;
 import com.scenekey.aws_service.Aws_Web_Service;
-import com.scenekey.fragment.Alert_fragment;
 import com.scenekey.fragment.Event_Fragment;
 import com.scenekey.fragment.Home_No_Event_Fragment;
 import com.scenekey.fragment.Map_Fragment;
 import com.scenekey.fragment.NearEvent_Fragment;
+import com.scenekey.fragment.NewSearchkFragment;
 import com.scenekey.fragment.OfferSFragment;
 import com.scenekey.fragment.ProfileNew_fragment;
 import com.scenekey.fragment.Profile_Fragment;
@@ -95,7 +101,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener,LocationListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
     public static int ActivityWidth;
     public static int ActivityHeight;
@@ -105,8 +111,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public RelativeLayout rtlv_profile;
     public FrameLayout frm_bottmbar;
     public boolean isApiM, isKitKat, statusKey;
+    int lastClick = 0;
+    boolean isFirstTimeTrending = false;
     //Shubham
-    TabLayout tabLayout, tablayout_home,tablayout_alert;
+    TabLayout tabLayout, tablayout_home, tablayout_alert;
     private FrameLayout frame_fragments;
     private TextView tvHomeTitle, tv_key_points;
     private RelativeLayout rl_title_view;
@@ -129,12 +137,36 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private String currentScreen = "";
     private String isBroadCast;
     private boolean isBgNoti = false;
-    private TextView txt_five;
-    private ImageView img_setting;
+    //private TextView txt_five;
+    private TextView tv_title;
     private boolean myProfile;
+    public static boolean fromSearch = false;
+    public static String name = "";
+    private DatabaseReference mDatabase;
+     public TextView tv_alert_badge_count;
+/*
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;*/
 
-    private RelativeLayout rl_title_view_home, rl_title_main_view,rl_toolbar_alert,rl_profileView;
+/*
+    https://stackoverflow.com/questions/47351172/i-want-to-show-tab-bar-icon-left-side-of-text?rq=1
+*/
 
+    private int[] tabIcons = {R.drawable.ic_flame, R.drawable.ic_location, R.drawable.ic_search};
+
+    private int[] navLabels = {
+            R.string.trending,
+            R.string.map,
+            R.string.search
+    };
+
+    private int[] tabIconsActive = {
+            R.drawable.ic_flame_active, R.drawable.ic_location_active, R.drawable.ic_search_active
+    };
+
+
+    private RelativeLayout rl_title_view_home, rl_title_main_view, rl_toolbar_alert, rl_profileView;
 
     /* when notification receive fragment end here */
     private String notificationMessage = "";
@@ -145,12 +177,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //StatusBarUtil.setTranslucent(this);
+        overridePendingTransition(R.anim.slide_left, R.anim.fab_slide_out_to_left);
         setContentView(R.layout.activity_home);
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        getDataFromFB();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed: " + refreshedToken);
         //automatically hide status bar
@@ -160,16 +195,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSystemUiVisibilityChange(int visibility) {
                         // Note that system bars will only be "visible" if none of the
-                        // LOW_PROFILE, HIDE_NAVIGATION, or FULLSCREEN flags are set.
                         if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                             // TODO: The system bars are visible. Make any desired
                             Utility.e(TAG, "Status bar visible");
-
-                          /*  Fragment fragment = getCurrentFragment();
-                            if (fragment instanceof Event_Fragment | fragment instanceof Demo_Event_Fragment) {
-                                hideStatusBar();
-                            }*/
-
 
                         } else {
                             // TODO: The system bars are NOT visible. Make any desired
@@ -179,7 +207,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
-
+        fromSearch = getIntent().getBooleanExtra("fromSearch",false);
+        name = getIntent().getStringExtra("name");
+        if(name == null){
+            name = "";
+        }
         //Reward Screen Toolbar...............................................
         tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Offers"));
@@ -210,10 +242,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
 //        .....................................................................
 
 
         //Alert Screen Toolbar...............................................
+
         tablayout_alert = findViewById(R.id.tablayout_alert);
         tablayout_alert.addTab(tablayout_alert.newTab().setText("Alert"));
         tablayout_alert.addTab(tablayout_alert.newTab().setText("Chat"));
@@ -243,16 +277,52 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-//        .....................................................................
-
 
 //        tablayout_home
         tablayout_home = findViewById(R.id.tablayout_home);
-        tablayout_home.addTab(tablayout_home.newTab().setIcon(R.drawable.ic_flame));
-        tablayout_home.addTab(tablayout_home.newTab().setIcon(R.drawable.ic_location));
-        tablayout_home.addTab(tablayout_home.newTab().setIcon(R.drawable.ic_search));
 
-        Objects.requireNonNull(Objects.requireNonNull(tablayout_home.getTabAt(0)).getIcon()).setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+        TabLayout.Tab fTab = tablayout_home.newTab();
+//        fTab.setText("Trending");
+//        fTab.setIcon(R.drawable.ic_flame);
+        tablayout_home.addTab(fTab);
+
+        TabLayout.Tab secTab = tablayout_home.newTab();
+//        secTab.setText("Map");
+//        secTab.setIcon(R.drawable.ic_location);
+        tablayout_home.addTab(secTab);
+
+        TabLayout.Tab thTab = tablayout_home.newTab();
+//        thTab.setText("Search");
+//        thTab.setIcon(R.drawable.ic_search);
+        tablayout_home.addTab(thTab);
+
+        //----------new code-----------------
+        for (int i = 0; i <3; i++) {
+            // inflate the Parent LinearLayout Container for the tab
+            // from the layout nav_tab.xml file that we created 'R.layout.nav_tab
+            LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.new_home_tab_items, null);
+
+            // get child TextView and ImageView from this layout for the icon and label
+            TextView tab_label = (TextView) tab.findViewById(R.id.nav_label);
+            ImageView tab_icon = (ImageView) tab.findViewById(R.id.nav_icon);
+
+            // set the label text by getting the actual string value by its id
+            // by getting the actual resource value `getResources().getString(string_id)`
+            tab_label.setText(getResources().getString(navLabels[i]));
+
+            // set the home to be active at first
+            if(i == 0) {
+                tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                tab_icon.setImageResource(tabIconsActive[i]);
+            } else {
+                tab_icon.setImageResource(tabIcons[i]);
+            }
+
+            // finally publish this custom view to navigation tab
+            tablayout_home.getTabAt(i).setCustomView(tab);
+        }
+
+        //Objects.requireNonNull(Objects.requireNonNull(tablayout_home.getTabAt(0)).getIcon()).setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
 
         tablayout_home.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -261,7 +331,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     case 0:
                         if (isPermissionAvail) {
                             assert tab.getIcon() != null;
-                            tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                            //tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                            View tabView = tab.getCustomView();
+                            // get inflated children Views the icon and the label by their id
+                            TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                            ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                            tab_icon.setImageResource(tabIconsActive[0]);
                             replaceFragment(new Trending_Fragment());
                             //setBottomBar((RelativeLayout) v, lastclicked);
                         } else {
@@ -273,8 +349,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     case 1:
                         if (isPermissionAvail) {
                             assert tab.getIcon() != null;
-                            tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                           // tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                             //setBottomBar((RelativeLayout) v, lastclicked);
+                            View tabView = tab.getCustomView();
+                            // get inflated children Views the icon and the label by their id
+                            TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                            ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                            tab_icon.setImageResource(tabIconsActive[1]);
                             if (map_fragment == null) map_fragment = new Map_Fragment();
                             replaceFragment(map_fragment);
                         } else {
@@ -285,8 +367,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     case 2:
                         assert tab.getIcon() != null;
-                        tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
-                        replaceFragment(new Search_Fragment());
+                       // fromSearch = false;
+                      //  tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                        //replaceFragment(new Search_Fragment());
+                        View tabView = tab.getCustomView();
+                        // get inflated children Views the icon and the label by their id
+                        TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                        ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                        tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                        tab_icon.setImageResource(tabIconsActive[2]);
+                        replaceFragment(new NewSearchkFragment());
                         break;
 
                     default:
@@ -303,7 +393,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                tab.getIcon().setColorFilter(Color.parseColor("#4B4B4B"), PorterDuff.Mode.SRC_IN);
+//                tab.getIcon().setColorFilter(Color.parseColor("#4B4B4B"), PorterDuff.Mode.SRC_IN);
+                View tabView = tab.getCustomView();
+                // get inflated children Views the icon and the label by their id
+                TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                tab_label.setTextColor(getResources().getColor(R.color.deselect_tabtext));
+                tab_icon.setImageResource(tabIcons[tab.getPosition()]);
             }
 
             @Override
@@ -313,6 +409,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+       /* toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setupTabIcons();*/
     }
 
     private void handleNotification(Intent intent) {
@@ -371,9 +478,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         isBgNoti = true;
                     }
 
-                } else if (notificationType1.equals("2") || notificationType1.equals("20") && currentScreen.equals("EventScreen")) {
+                } else if (notificationType1.equals("2") || currentScreen.equals("EventScreen")) {
                     Fragment fragment = getCurrentFragment();
-                    if (fragment != null && fragment instanceof Event_Fragment) {
+                    if (fragment instanceof Event_Fragment) {
                         Event_Fragment event_fragment = (Event_Fragment) fragment;
                         event_fragment.getAllData();
                     }
@@ -391,7 +498,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else if (currentScreen.equals("EventScreen")) {
                     Fragment fragment = getCurrentFragment();
-                    if (fragment != null && fragment instanceof Event_Fragment) {
+                    if (fragment instanceof Event_Fragment) {
                         Event_Fragment event_fragment = (Event_Fragment) fragment;
                         event_fragment.getAllData();
                     }
@@ -400,30 +507,37 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 //            notificationType":3 = Reward
             case "3":
-                if (currentScreen.equals("HomeScreen")) {
-                    if (isBroadCast.equals("isBroadCast")) {
-                        rewardNotification(notificationMessage);
-                    } else {
-                        isBgNoti = true;
-                    }
-                } else if (currentScreen.equals("RewardScreen")) {
-                    if (isBroadCast.equals("isBroadCast")) {
-                        Fragment fragment = getCurrentFragment();
-                        if (fragment != null && fragment instanceof OfferSFragment) {
-                            OfferSFragment reward_fragment = (OfferSFragment) fragment;
-                            reward_fragment.getOffersList();
-                        }
-                    }
-                }
+//                if (currentScreen.equals("HomeScreen")) {
+//                    if (isBroadCast.equals("isBroadCast")) {
+//                        rewardNotification(notificationMessage);
+//                    } else {
+//                        isBgNoti = true;
+//                    }
+//                } else if (currentScreen.equals("RewardScreen")) {
+//                    if (isBroadCast.equals("isBroadCast")) {
+//                Fragment fragment = getCurrentFragment();
+//                if (fragment instanceof OfferSFragment) {
+//                    OfferSFragment reward_fragment = (OfferSFragment) fragment;
+//                    reward_fragment.getOffersList();
+//                }
+//            }
+                //}
+
+
+                lastClick = 0;
+                isPermissionAvail = true;
+                rtlv_alert.callOnClick();
+
                 break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void forMakeAdmin(String s) {
         final Dialog dialog = new Dialog(context);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_push);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -489,6 +603,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         rtlv_home.callOnClick();
+
+        if(fromSearch){
+            if(tablayout_home != null){
+                tablayout_home.getTabAt(2).select();
+            }
+        }
     }
 
     private void initView() {
@@ -497,8 +617,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         rl_title_view = findViewById(R.id.rl_title_view);
         tvHomeTitle = findViewById(R.id.tvHomeTitle);
         tv_key_points = findViewById(R.id.tv_key_points);
-        txt_five = findViewById(R.id.txt_five);
-        img_setting = findViewById(R.id.img_setting);
+        //txt_five = findViewById(R.id.txt_five);
+        tv_title = findViewById(R.id.tv_title);
+        tv_alert_badge_count = findViewById(R.id.tv_alert_badge_count);
+        ImageView img_setting = findViewById(R.id.img_setting);
 
         rtlv_alert = findViewById(R.id.rtlv_alert);
         rtlv_home = findViewById(R.id.rtlv_home);
@@ -517,7 +639,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         bottom_margin_view = findViewById(R.id.bottom_margin_view);
         //txt_notification = findViewById(R.id.txt_notification);
 
-        setOnClick(rtlv_alert, rtlv_home, rtlv_profile, rtlv_reward,img_setting);
+        setOnClick(rtlv_alert, rtlv_home, rtlv_profile, rtlv_reward, img_setting);
 
         tv_key_points.setText(userInfo.key_points);
 
@@ -587,7 +709,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         getImgV(rtlv_alert).setAnimation(animat2);
         getImgV(rtlv_reward).setAnimation(animat3);
         getImgV(rtlv_profile).setAnimation(animat4);
-
     }
 
     public UserInfo userInfo() {
@@ -595,15 +716,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (!SceneKey.sessionManager.isLoggedIn()) {
             SceneKey.sessionManager.logout(HomeActivity.this);
         }
-       /* if (userInfo == null) {
-            if (!SceneKey.sessionManager.isLoggedIn()) {
-                SceneKey.sessionManager.logout(HomeActivity.this);
-            }
-            userInfo = SceneKey.sessionManager.getUserInfo();
-        }*/
         return SceneKey.sessionManager.getUserInfo();
     }
-
 
     //Shubham.................................
 
@@ -611,99 +725,149 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
 
-
             case R.id.rtlv_home:
 
-                rl_title_view_home.setVisibility(View.VISIBLE);
-                rl_title_main_view.setVisibility(View.GONE);
-                rl_toolbar_alert.setVisibility(View.GONE);
-                rl_profileView.setVisibility(View.GONE);
+                if (lastClick != R.id.rtlv_home) {
+                    lastClick = R.id.rtlv_home;
+                    rl_title_view_home.setVisibility(View.VISIBLE);
+                    rl_title_main_view.setVisibility(View.GONE);
+                    rl_toolbar_alert.setVisibility(View.GONE);
+                    rl_profileView.setVisibility(View.GONE);
 
-                if (isPermissionAvail) {
-                    replaceFragment(new Trending_Fragment());
-                    tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                    if (isPermissionAvail) {
+                        if(!isFirstTimeTrending){
+                            isFirstTimeTrending = true;
+                            replaceFragment(new Trending_Fragment());
 
-                    setBottomBar((RelativeLayout) v, lastclicked);
+                            View tabView = tablayout_home.getTabAt(0).getCustomView();
+                            // get inflated children Views the icon and the label by their id
+                            TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                            ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                            tab_icon.setImageResource(tabIconsActive[0]);
 
-                } else {
-                    utility.snackBar(rtlv_home, "Location permission not available", 0);
+                            //tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                        }
+                      else {
+                            replaceFragment(new Trending_Fragment());
+
+                            View tabView = tablayout_home.getTabAt(0).getCustomView();
+                            // get inflated children Views the icon and the label by their id
+                            TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                            ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                            tab_icon.setImageResource(tabIconsActive[0]);
+
+                           // tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                            tablayout_home.getTabAt(0).select();
+                        }
+                        setBottomBar((RelativeLayout) v, lastclicked);
+
+                    } else {
+                        utility.snackBar(rtlv_home, "Location permission not available", 0);
+                    }
                 }
-
 
                 break;
 
             case R.id.rtlv_alert:
-                rl_toolbar_alert.setVisibility(View.VISIBLE);
-                rl_title_view_home.setVisibility(View.GONE);
-                rl_title_main_view.setVisibility(View.GONE);
-                rl_profileView.setVisibility(View.GONE);
+
+                if (lastClick != R.id.rtlv_alert) {
+                    lastClick = R.id.rtlv_alert;
+                    rl_toolbar_alert.setVisibility(View.VISIBLE);
+                    rl_title_view_home.setVisibility(View.GONE);
+                    rl_title_main_view.setVisibility(View.GONE);
+                    rl_profileView.setVisibility(View.GONE);
+                    tv_title.setText("My Scene");
 
                     if (isPermissionAvail) {
-                        replaceFragment(new Alert_fragment());
+                       // replaceFragment(new Alert_fragment());
+                        replaceFragment(new OfferSFragment());
                         setBottomBar((RelativeLayout) v, lastclicked);
                     } else {
                         utility.snackBar(rtlv_home, "Location permission not available", 0);
                     }
+                }
 
                 break;
 
-
-
             case R.id.img_setting:
-                Intent seetingIntet = new Intent(this,SettingActivtiy.class);
-                startActivity(seetingIntet);
+
+               // if (lastClick != R.id.img_setting) {
+                    lastClick = R.id.img_setting;
+                    Intent seetingIntet = new Intent(this, SettingActivtiy.class);
+                    startActivity(seetingIntet);
+               // }
 
                 break;
 
             case R.id.rtlv_profile:
 
-                rl_profileView.setVisibility(View.VISIBLE);
-                rl_toolbar_alert.setVisibility(View.GONE);
-                rl_title_view_home.setVisibility(View.GONE);
-                rl_title_main_view.setVisibility(View.GONE);
+                if (lastClick != R.id.rtlv_profile) {
+                    lastClick = R.id.rtlv_profile;
+                    rl_profileView.setVisibility(View.VISIBLE);
+                    rl_toolbar_alert.setVisibility(View.GONE);
+                    rl_title_view_home.setVisibility(View.GONE);
+                    rl_title_main_view.setVisibility(View.GONE);
 
-                if (isPermissionAvail) {
+                    if (isPermissionAvail) {
 
-                    EventAttendy attendy = new EventAttendy();
-                    attendy.userid = (userInfo.userid);
-                    attendy.userFacebookId = (userInfo.userFacebookId);
-                    attendy.setUserimage(userInfo.getUserImage());
-                    attendy.username = (userInfo.userName);
-                    VolleySingleton.getInstance(this.getBaseContext()).cancelPendingRequests("HomeApi");
-                    replaceFragment(new ProfileNew_fragment().setData(attendy, true, null, 0));
-                    //replaceFragment(new Profile_Fragment());
-                    setBottomBar((RelativeLayout) v, lastclicked);
-                } else {
-                    utility.snackBar(rtlv_home, "Location permission not available", 0);
+                        EventAttendy attendy = new EventAttendy();
+                        attendy.userid = (userInfo.userid);
+                        attendy.userFacebookId = (userInfo.userFacebookId);
+                        attendy.setUserimage(userInfo.getUserImage());
+                        attendy.username = (userInfo.userName);
+                        VolleySingleton.getInstance(this.getBaseContext()).cancelPendingRequests("HomeApi");
+                        replaceFragment(new ProfileNew_fragment().setData(attendy, true, null, 0));
+                        //replaceFragment(new Profile_Fragment());
+                        setBottomBar((RelativeLayout) v, lastclicked);
+                    } else {
+                        utility.snackBar(rtlv_home, "Location permission not available", 0);
+                    }
                 }
-
                 break;
 
             case R.id.rtlv_reward:
-                rl_toolbar_alert.setVisibility(View.GONE);
-                rl_title_view_home.setVisibility(View.GONE);
-                rl_title_main_view.setVisibility(View.VISIBLE);
-                rl_profileView.setVisibility(View.GONE);
-                //checkFregment();
+
+                if (lastClick != R.id.rtlv_reward) {
+                    lastClick = R.id.rtlv_reward;
+                    //                    rl_toolbar_alert.setVisibility(View.GONE);
+//                    rl_title_view_home.setVisibility(View.GONE);
+//                    rl_title_main_view.setVisibility(View.VISIBLE);
+//                    rl_profileView.setVisibility(View.GONE);
+                    //checkFregment();
+
+                    rl_toolbar_alert.setVisibility(View.VISIBLE);
+                    rl_title_view_home.setVisibility(View.GONE);
+                    rl_title_main_view.setVisibility(View.GONE);
+                    rl_profileView.setVisibility(View.GONE);
+                    tv_title.setText("Reward");
                     hideKeyBoard();
-                    replaceFragment(new OfferSFragment());
+                    //replaceFragment(new OfferSFragment());
+                    replaceFragment(new WalletsFragment());
                     setBottomBar((RelativeLayout) v, lastclicked);
-                    txt_five.setTextColor(getResources().getColor(R.color.selected_bb_text));
+                   // txt_five.setTextColor(getResources().getColor(R.color.selected_bb_text));
+                }
 
                 break;
 
             case R.id.img_profile:
-                try {
-                    EventAttendy attendy = new EventAttendy();
-                    attendy.userid = (userInfo.userid);
-                    attendy.userFacebookId = (userInfo.userFacebookId);
-                    attendy.setUserimage(userInfo.getUserImage());
-                    attendy.username = (userInfo.userName);
-                    VolleySingleton.getInstance(this.getBaseContext()).cancelPendingRequests("HomeApi");
-                    addFragment(new Profile_Fragment().setData(attendy, true, null, 0), 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                if (lastClick != R.id.img_profile) {
+                    lastClick = R.id.img_profile;
+                    try {
+                        EventAttendy attendy = new EventAttendy();
+                        attendy.userid = (userInfo.userid);
+                        attendy.userFacebookId = (userInfo.userFacebookId);
+                        attendy.setUserimage(userInfo.getUserImage());
+                        attendy.username = (userInfo.userName);
+                        VolleySingleton.getInstance(this.getBaseContext()).cancelPendingRequests("HomeApi");
+                        addFragment(new Profile_Fragment().setData(attendy, true, null, 0), 1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+
                 break;
 
         }
@@ -713,18 +877,31 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         registerReceiver(myReceiver, new IntentFilter("BroadcastNotification"));
 
         Fragment fragment = getCurrentFragment();
-        if (fragment != null && fragment instanceof Event_Fragment) {
+        if (fragment instanceof Event_Fragment) {
             Event_Fragment event_fragment = (Event_Fragment) fragment;
             event_fragment.getAllData();
             event_fragment.onResume();
-        }else if(fragment instanceof ProfileNew_fragment){
+        } else if (fragment instanceof ProfileNew_fragment) {
+//            ProfileNew_fragment profileNew_fragment = (ProfileNew_fragment) fragment;
+//            tvHomeTitle.setText(userInfo().fullname);
+//            profileNew_fragment.onResume();
+            lastClick = 0;
+            rtlv_profile.performClick();
+        }
+        else if (fragment instanceof Trending_Fragment) {
+            replaceFragment(new Trending_Fragment());
 
-            ProfileNew_fragment profileNew_fragment = (ProfileNew_fragment) fragment;
-            tvHomeTitle.setText(userInfo().fullname);
-            profileNew_fragment.onResume();
+            View tabView = tablayout_home.getTabAt(0).getCustomView();
+            // get inflated children Views the icon and the label by their id
+            TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+            ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+            tab_icon.setImageResource(tabIconsActive[0]);
+
+            // tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+            tablayout_home.getTabAt(0).select();
         }
         super.onResume();
-
     }
 
     @Override
@@ -734,29 +911,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setBottomBar(RelativeLayout v, final RelativeLayout lastClicked) {
-        setRtlvText(v, true);
+        //setRtlvText(v, true);
+
         if (lastClicked != null) {
 
-            setRtlvText(lastClicked, false);
+           // setRtlvText(lastClicked, false);
 
             switch (lastClicked.getId()) {
 
                 case R.id.rtlv_home:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_home);
+                        getImgV(lastClicked).setImageResource(R.drawable.home);
                     break;
 
 
                 case R.id.rtlv_alert:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_inactivenotification);
+                    getImgV(lastClicked).setImageResource(R.drawable.alert);
                     break;
 
                 case R.id.rtlv_reward:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_gift);
+                    getImgV(lastClicked).setImageResource(R.drawable.reward);
                     break;
 
 
                 case R.id.rtlv_profile:
-                    getImgV(lastClicked).setImageResource(R.drawable.ic_user);
+                    getImgV(lastClicked).setImageResource(R.drawable.profile);
                     break;
 
             }
@@ -765,27 +943,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.rtlv_home:
-                //chaeckReward(false);
-                getImgV(v).setImageResource(R.drawable.active_home);
+                getImgV(v).setImageResource(R.drawable.home_active);
                 break;
 
             case R.id.rtlv_alert:
-                //chaeckReward(false);
-                getImgV(v).setImageResource(R.drawable.ic_active_notification);
-                break;
+                 getImgV(v).setImageResource(R.drawable.alert_active);
 
+                break;
 
             case R.id.rtlv_reward:
-                //chaeckReward(true);
-                getImgV(v).setImageResource(R.drawable.active_gift);
+                getImgV(v).setImageResource(R.drawable.reward_active);
                 break;
-
 
             case R.id.rtlv_profile:
-                //chaeckReward(false);
-                getImgV(v).setImageResource(R.drawable.active_profile);
+                getImgV(v).setImageResource(R.drawable.profile_active);
                 break;
-
         }
 
         this.lastclicked = v;
@@ -806,7 +978,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (isClicked) {
             ((TextView) rtlv.getChildAt(1)).setTextColor(getResources().getColor(R.color.selected_bb_text));
         } else {
-            ((TextView) rtlv.getChildAt(1)).setTextColor(getResources().getColor(R.color.black));
+            ((TextView) rtlv.getChildAt(1)).setTextColor(getResources().getColor(R.color.gray2));
         }
     }
 
@@ -814,7 +986,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return ((ImageView) rtlv.getChildAt(0));
     }
 
-    private void replaceFragment(Fragment fragmentHolder) {
+    public void replaceFragment(Fragment fragmentHolder) {
         try {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -901,6 +1073,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void showSoftKeyboard(View view) {
+        if (view.requestFocus()) {
+            try {
+                InputMethodManager imm = (InputMethodManager)
+                       getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void checkEventAvailablity(final boolean showProgress) {
         if (latitudeAdmin != 0.0d && longitudeAdmin != 0.0d) {
             showProgDialog(false, TAG);
@@ -908,7 +1095,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (!checkGPS) {
             utility.checkGpsStatus();
         } else {
-            showErrorPopup("checkEventAvailablity");
+            showErrorPopup();
         }
     }
 
@@ -1158,11 +1345,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void showErrorPopup(final String tag) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void showErrorPopup() {
         final Dialog dialog = new Dialog(context);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         //      deleteDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
 
         TextView tvCancel, tvTryAgain, tvTitle, tvMessages;
@@ -1187,7 +1375,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         dismissProgDialog();
-                        switch (tag) {
+                        switch ("checkEventAvailablity") {
                             case "checkEventAvailablity":
                                 checkEventAvailablity(true);
                                 break;
@@ -1247,14 +1435,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     eventsNearbyList.add(events);
                 }
 
-
             } catch (Exception e) {
                 e.printStackTrace();
                 //Toast.makeText(this, getResources().getString(R.string.somethingwentwrong), Toast.LENGTH_LONG).show();
             }
-
         }
-
     }
 
     private float getDistancBetweenTwoPoints(double lat1, double lon1, double lat2, double lon2) {
@@ -1264,7 +1449,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Log.e("STEP 0", lat1 + "===" + lon1 + "===" + lat2 + "===" + lon2);
         Location.distanceBetween(lat1, lon1,
                 lat2, lon2, distance);
-
         return distance[0];
     }
 
@@ -1278,7 +1462,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         endLocation.setLatitude(Double.parseDouble(events.getVenue().getLatitude()));
         endLocation.setLongitude(Double.parseDouble(events.getVenue().getLongitude()));
-
         */
         // double distance = endLocation.distanceTo(startLocation);
 
@@ -1449,9 +1632,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public Fragment getCurrentFragment() {
         try {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
-            return fragmentManager.findFragmentByTag(fragmentTag);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return null;
+            }
+            else {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
+                return fragmentManager.findFragmentByTag(fragmentTag);
+            }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
             return null;
@@ -1488,7 +1676,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
-
 
     public void setBBVisibility(final int ViewDot, final int delay, String TAG) {
         Utility.e(TAG, " B B visiballity " + ViewDot + " TAG " + TAG);
@@ -1568,24 +1755,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             isApiM = true;
         } else {
             StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-            setStatusBarVisible();
         }
     }
 
     public void setTopStatus() {
 
         if (isKitKat) {
-            setStatusBarVisible();
             //  top_status.setBackgroundResource(R.color.black);
         }
         if (isApiM) {
-            setStatusBarVisible();
             //  top_status.setBackgroundResource(R.color.white);
         }
-    }
-
-    private void setStatusBarVisible() {
-
     }
 
     public void onPopUpBackstage() {
@@ -1620,7 +1800,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             event_fragment.onResume();
         }
     }
-
 
     //TODO message on increment or decrement
     public void incrementKeyPoints(String msg) {
@@ -1674,7 +1853,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         dialog.show();
     }
-
 
   /*  Runnable notiRunnable = new Runnable() {
         @Override
@@ -1788,7 +1966,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             break;
                         }
                     }
-
                     Intent intent = new Intent(context, EventDetailsActivity.class);
                     intent.putExtra("event_id", eventId);
                     intent.putExtra("homeTab", "homeTab");
@@ -1816,7 +1993,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }, 3000);
         dialog.show();
     }
-
 
     private void rewardNotification(String s) {
         final Dialog dialog = new Dialog(context);
@@ -1855,7 +2031,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         dialog.show();
     }
-
 
     public void decrementKeyPoints(final String msg) {
         final int points = Integer.parseInt(userInfo.key_points);
@@ -2025,5 +2200,29 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void getDataFromFB(){
+        //String userId = mDatabase.push().getKey();
+        showProgDialog(true,"");
+        mDatabase.child("dev").child("reward").child(SceneKey.sessionManager.getUserInfo().userid).
+                child("count").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String val = String.valueOf(dataSnapshot.getValue());
+                if(!val.equalsIgnoreCase("") && val != null && !val.equalsIgnoreCase("null")) {
+                    if (Integer.parseInt(val) > 0) {
+                        tv_alert_badge_count.setText(val);
+                        tv_alert_badge_count.setVisibility(View.VISIBLE);
+                    }
+                }
+                dismissProgDialog();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                //Log.w(TAG, "Failed to read value.", error.toException());
+               dismissProgDialog();
+            }
+        });
+    }
 }

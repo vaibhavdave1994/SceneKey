@@ -130,8 +130,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
     private AWSImage awsImage;
     private CognitoCredentialsProvider credentialsProvider;
 
-
-
     //New Code Shubham
     private RecyclerView listViewFragProfile;
     private Profile_Adapter adapter;
@@ -187,31 +185,25 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         activity.setBBVisibility(View.GONE, TAG);
 
         txt_discipI_f2.setText(event.getVenue().getAddress());
-
-
         //New Code Shubham
-
         try {
             attendy = new EventAttendy();
             attendy.userid = (userInfo.userid);
             attendy.userFacebookId = (userInfo.userFacebookId);
             attendy.setUserimage(userInfo.getUserImage());
             attendy.username = (userInfo.userName);
-
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
-        listViewFragProfile = view.findViewById(R.id.listViewFragProfile);
+        listViewFragProfile = view.findViewById(R.id.feedLIstRecyclerView);
 
         feedsList = new ArrayList<>();
-        adapter = new Profile_Adapter(context, userInfo.userid,feedsList,userLIst,eventId,null,null,null,null);
+        adapter = new Profile_Adapter(event,context, userInfo.userid,feedsList,userLIst,eventId,null,null,null,null);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         listViewFragProfile.setLayoutManager(layoutManager);
         listViewFragProfile.setAdapter(adapter);
-
-
         /*..................................................................*/
-
         //keypoint decrement if event distance is more than 100m
         int distance = activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
         if (distance > Constant.MAXIMUM_DISTANCE) {
@@ -329,7 +321,6 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                 break;
         }
     }
-
 
     private void captureImage() {
 

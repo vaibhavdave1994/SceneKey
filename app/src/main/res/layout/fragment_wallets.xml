@@ -11,7 +11,6 @@
         android:id="@+id/walletRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/_42sdp"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <ScrollView
@@ -46,7 +45,6 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:id="@+id/txt_sorry3"
                 android:gravity="center"
                 android:textColor="@color/top_bar_text"
                 android:layout_width="match_parent"

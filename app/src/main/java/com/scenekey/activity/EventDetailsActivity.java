@@ -1,9 +1,11 @@
 package com.scenekey.activity;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +20,9 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -49,6 +55,7 @@ import com.scenekey.BuildConfig;
 import com.scenekey.R;
 import com.scenekey.adapter.Profile_Adapter;
 import com.scenekey.adapter.SmilyUserAdapter;
+import com.scenekey.adapter.Trending_Adapter;
 import com.scenekey.aws_service.Aws_Web_Service;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
@@ -61,14 +68,18 @@ import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.ForDeleteFeed;
 import com.scenekey.listener.GetZoomImageListener;
 import com.scenekey.listener.LikeFeedListener;
+import com.scenekey.listener.StatusBarHide;
 import com.scenekey.model.EmoziesModal;
 import com.scenekey.model.EventAttendy;
+import com.scenekey.model.EventDetails;
 import com.scenekey.model.EventDetailsForActivity;
 import com.scenekey.model.Events;
 import com.scenekey.model.FeedSmily;
 import com.scenekey.model.Feeds;
+import com.scenekey.model.KeyInUserModal;
 import com.scenekey.model.ReactionUserModal;
 import com.scenekey.model.UserInfo;
+import com.scenekey.model.Venue;
 import com.scenekey.util.ImageUtil;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
@@ -107,7 +118,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     public ArrayList<Card> cardsList;
     public List<EmoziesModal> all_emaozieList;
 
-
     //Adaaptersss Declartions..............
     public Profile_Adapter adapter;
     // others..............
@@ -116,14 +126,14 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private String cutrrentDate;
     private String time;
-    private String venueName;
+    private String venueName,venueId;
     private String from_tab;
     private boolean isKeyInAble = false;
     private boolean canCallWebservice;
-    private ImageView addButtonForKeyIn;
-    private RecyclerView feedLIstRecyclerView;
+    private ImageView addButtonForKeyInuser;
+    public static RecyclerView feedLIstRecyclerView;
     private EditText et_comment_feed;
-    private ImageView img_no_member;
+    private ImageView img_no_member, img_ListIcon;
 
 
     //LIst Declaration...............
@@ -148,8 +158,154 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     private String userExistOrNotonActivty = "";
     private Runnable mRunnable;
     private Handler mHandler = new Handler();
+    public static FrameLayout detail_frame_fragments;
+    boolean fromTrending = false;
+//  ............................................................................
 
-//    ............................................................................
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getAllData();
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_left, R.anim.fab_slide_out_to_left);
+        registerReceiver(myReceiver, new IntentFilter("BroadcastNotification"));
+        setContentView(R.layout.activity_event_details);
+        inItView();
+
+    }
+
+    private void inItView() {
+
+        userInfo = SceneKey.sessionManager.getUserInfo();
+        customProgressBar = new CustomProgressBar(this);
+        utility = new Utility(this);
+
+        blurView = findViewById(R.id.blurView);
+
+        //View Declartions...................
+        ImageView img_eventDetail_back = findViewById(R.id.img_eventDetail_back);
+        TextView txt_event_name = findViewById(R.id.txt_event_name);
+        addButtonForKeyInuser = findViewById(R.id.addButtonForKeyInuser);
+        feedLIstRecyclerView = findViewById(R.id.feedLIstRecyclerView);
+        detail_frame_fragments = findViewById(R.id.detail_frame_fragments);
+
+        TextView txt_post_comment = findViewById(R.id.txt_post_comment);
+        et_comment_feed = findViewById(R.id.et_comment_feed);
+        ImageView img_postImage = findViewById(R.id.img_postImage);
+        img_no_member = findViewById(R.id.img_no_member);
+        img_ListIcon = findViewById(R.id.img_ListIcon);
+        txt_show_emojies = findViewById(R.id.txt_show_emojies);
+
+        //ArraryLIst
+        feedList = new ArrayList<>();
+        userList = new ArrayList<>();
+        cardsList = new ArrayList<>();
+        reactionUserLIst = new ArrayList<>();
+
+        setOnClick(img_no_member, blurView, img_eventDetail_back, addButtonForKeyInuser, txt_post_comment, et_comment_feed, img_postImage, img_ListIcon);
+
+        fromTrending = getIntent().getBooleanExtra("fromTrending",false);
+        if (getIntent().getStringExtra("event_id") != null) {
+            eventId = getIntent().getStringExtra("event_id");
+            from_tab = getIntent().getStringExtra("fromTab");
+            eventName = getIntent().getStringExtra("event_name");
+            venueName = getIntent().getStringExtra("venueName");
+            venueId = getIntent().getStringExtra("venueId");
+            currentLatLng = getIntent().getStringArrayExtra("currentLatLng");
+            event = (Events) getIntent().getSerializableExtra("object");
+        }
+
+        if(event != null) {
+         if(event.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
+            tagFollowUnfollow(1, event.getVenue().getBiz_tag_id());
+        }
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                showProgDialog(false, TAG);
+                getAllData();
+            }
+        });
+
+        if (timerHttp == null) setDataTimer();
+
+        String date = new SimpleDateFormat("dd-MMM-yyyy hh:mm", Locale.getDefault()).format(new Date());
+        cutrrentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        Log.i("date", date);
+
+        //callAddEventApi() Api for trending tanb and map tab
+        CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
+            @Override
+            public void onTextChange(UserInfo user) {
+                if (from_tab.equals("trending") && !isKeyInAble) {
+                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
+                } else if (from_tab.equals("map_tab") && !isKeyInAble) {
+                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
+                }
+            }
+        });
+
+        txt_event_name.setText(eventName);
+
+        //......................................................
+
+        all_emaozieList = loadCountries(this);
+        assert all_emaozieList != null;
+
+        adapter = new Profile_Adapter(event,this, userInfo.userid, feedList, userList, eventId, all_emaozieList, new ForDeleteFeed() {
+            @Override
+            public void getFeedIdForDelete(String feedid, String feedSmilyid, String reaction) {
+
+                if (!feedid.isEmpty()) {
+                    deleteFeed(feedid);
+                }
+
+                if (!feedSmilyid.isEmpty()) {
+                    showFeedSmilyList(feedSmilyid, reaction);
+                }
+
+            }
+        }, new LikeFeedListener() {
+            @Override
+            public void likeFeedByReaction(String addFeedReaction, String deleteFeedRaction, String getReactionFromList) {
+
+                if (!deleteFeedRaction.isEmpty()) {
+                    deletFeedRaction(deleteFeedRaction);
+                }
+
+                if (!getReactionFromList.isEmpty() && !addFeedReaction.isEmpty()) {
+                    addFeedFormListreaction(getReactionFromList, addFeedReaction);
+
+                } else {
+                    addFeedreaction(addFeedReaction);
+                }
+            }
+        }, new GetZoomImageListener() {
+            @Override
+            public void getImageUrl(String imageUrl) {
+                Intent intent = new Intent(EventDetailsActivity.this, ZoomImageActivity.class);
+                intent.putExtra("imageUrl", imageUrl);
+//                if(fromTrending){
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//                else {
+                    startActivity(intent);
+                //}
+            }
+        });
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        feedLIstRecyclerView.setLayoutManager(layoutManager);
+        feedLIstRecyclerView.setAdapter(adapter);
+        blurView.setVisibility(View.GONE);
+    }
 
     public static List<EmoziesModal> loadCountries(EventDetailsActivity eventDetailsActivity) {
         try {
@@ -209,130 +365,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         return json;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_details);
-        inItView();
-    }
-
-    private void inItView() {
-
-        userInfo = SceneKey.sessionManager.getUserInfo();
-        customProgressBar = new CustomProgressBar(this);
-        utility = new Utility(this);
-
-        blurView = findViewById(R.id.blurView);
-
-
-        //View Declartions...................
-        ImageView img_eventDetail_back = findViewById(R.id.img_eventDetail_back);
-        TextView txt_event_name = findViewById(R.id.txt_event_name);
-        addButtonForKeyIn = findViewById(R.id.addButtonForKeyIn);
-        feedLIstRecyclerView = findViewById(R.id.feedLIstRecyclerView);
-
-
-        TextView txt_post_comment = findViewById(R.id.txt_post_comment);
-        et_comment_feed = findViewById(R.id.et_comment_feed);
-        ImageView img_postImage = findViewById(R.id.img_postImage);
-        img_no_member = findViewById(R.id.img_no_member);
-        txt_show_emojies = findViewById(R.id.txt_show_emojies);
-
-        //ArraryLIst
-        feedList = new ArrayList<>();
-        userList = new ArrayList<>();
-        cardsList = new ArrayList<>();
-        reactionUserLIst = new ArrayList<>();
-
-        setOnClick(img_no_member, blurView, img_eventDetail_back, addButtonForKeyIn, txt_post_comment, et_comment_feed, img_postImage);
-
-        if (getIntent().getStringExtra("event_id") != null) {
-            eventId = getIntent().getStringExtra("event_id");
-            from_tab = getIntent().getStringExtra("fromTab");
-            eventName = getIntent().getStringExtra("event_name");
-            venueName = getIntent().getStringExtra("venueName");
-            currentLatLng = getIntent().getStringArrayExtra("currentLatLng");
-            event = (Events) getIntent().getSerializableExtra("object");
-        }
-
-
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                showProgDialog(false, TAG);
-                getAllData();
-            }
-        });
-
-        if (timerHttp == null) setDataTimer();
-
-        String date = new SimpleDateFormat("dd-MMM-yyyy hh:mm", Locale.getDefault()).format(new Date());
-        cutrrentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-        Log.i("date", date);
-
-        //callAddEventApi() Api for trending tanb and map tab
-        CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
-            @Override
-            public void onTextChange(UserInfo user) {
-                if (from_tab.equals("trending") && !isKeyInAble) {
-                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
-                } else if (from_tab.equals("map_tab") && !isKeyInAble) {
-                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
-                }
-            }
-        });
-
-        txt_event_name.setText(eventName);
-
-        //......................................................
-
-        all_emaozieList = loadCountries(this);
-        assert all_emaozieList != null;
-
-        adapter = new Profile_Adapter(this, userInfo.userid, feedList, userList, eventId, all_emaozieList, new ForDeleteFeed() {
-            @Override
-            public void getFeedIdForDelete(String feedid, String feedSmilyid, String reaction) {
-
-                if (!feedid.isEmpty()) {
-                    deleteFeed(feedid);
-                }
-
-                if (!feedSmilyid.isEmpty()) {
-                    showFeedSmilyList(feedSmilyid, reaction);
-                }
-
-            }
-        }, new LikeFeedListener() {
-            @Override
-            public void likeFeedByReaction(String addFeedReaction, String deleteFeedRaction, String getReactionFromList) {
-
-                if (!deleteFeedRaction.isEmpty()) {
-                    deletFeedRaction(deleteFeedRaction);
-                }
-
-                if (!getReactionFromList.isEmpty() && !addFeedReaction.isEmpty()) {
-                    addFeedFormListreaction(getReactionFromList, addFeedReaction);
-
-                } else {
-                    addFeedreaction(addFeedReaction);
-                }
-            }
-        }, new GetZoomImageListener() {
-            @Override
-            public void getImageUrl(String imageUrl) {
-                Intent intent = new Intent(EventDetailsActivity.this, ZoomImageActivity.class);
-                intent.putExtra("imageUrl", imageUrl);
-                startActivity(intent);
-            }
-        });
-
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        feedLIstRecyclerView.setLayoutManager(layoutManager);
-        feedLIstRecyclerView.setAdapter(adapter);
-        blurView.setVisibility(View.GONE);
-    }
-
     private void setOnClick(View... views) {
         for (View v : views) {
             v.setOnClickListener(this);
@@ -353,18 +385,43 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.img_no_member:
 
-                if (!userExistOrNotonActivty.equals("")) {
-                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
+//                if (!userExistOrNotonActivty.equals("")) {
+//                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
+//
+//                } else {
+                    Intent intent1 = new Intent(this, TheRoomActivity.class);
+                    intent1.putExtra("noMemberYet", "No");
+                if(fromTrending){
+                    intent1.putExtra("fromTrending", true);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent1);
+                    finish();
+                }
+                else {
+                    startActivity(intent1);
+                }
+                //}
+                break;
 
-                } else {
-                    Intent intent = new Intent(this, TheRoomActivity.class);
-                    intent.putExtra("noMemberYet", "No");
+            case R.id.img_ListIcon:
+                Intent intent = new Intent(EventDetailsActivity.this, OnBoardActivity.class);
+                intent.putExtra("eventid", event.getEvent());
+                intent.putExtra("venuid", event.getVenue());
+                intent.putExtra("object", event);
+                intent.putExtra("currentLatLng", currentLatLng);
+                if(fromTrending){
+                    intent.putExtra("fromTrending", true);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
                     startActivity(intent);
                 }
                 break;
 
 
-            case R.id.addButtonForKeyIn:
+            case R.id.addButtonForKeyInuser:
                 //For key in
                 if (eventDetails != null && eventDetails.getProfile_rating() != null) {
                     if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
@@ -376,14 +433,27 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                                 addUserIntoEvent(-1);
                             } else {
 
-                                cantJoinDialog();
+                                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
+                                    blurView.setVisibility(View.VISIBLE);
+                                    adapter.userExistOrNot = "notStart";
+                                    userExistOrNotonActivty = "notStart";
+
+                                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                                    blurView.setVisibility(View.VISIBLE);
+                                    adapter.userExistOrNot = "notStart";
+                                    userExistOrNotonActivty = "notStart";
+                                } else {
+                                    blurView.setVisibility(View.VISIBLE);
+                                    adapter.userExistOrNot = "notArrived";
+                                    userExistOrNotonActivty = "notArrived";
+                                }
+                                //cantJoinDialog();
                             }
                         } catch (ParseException d) {
                             d.getMessage();
                         }
                     }
                 }
-
                 break;
 
             case R.id.img_postImage:
@@ -416,7 +486,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
                 if (eventDetails != null && eventDetails.getProfile_rating() != null) {
                     if (!eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
-
                         if (!et_comment_feed.getText().toString().isEmpty()) {
                             try {
                                 if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
@@ -436,7 +505,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                             }
 
                         } else {
-
                             utility.showCustomPopup("Please enter comment", String.valueOf(R.font.montserrat_medium));
                         }
                     } else {
@@ -492,7 +560,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         super.onPause();
     }
 
-
     //GetAllDataApi...........................................................
 
     @Override
@@ -500,7 +567,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         if (timerHttp != null) timerHttp.cancel();
         timerHttp = null;
         mHandler.removeCallbacks(mRunnable);
-        dialog = null;
+        //dialog = null;
         super.onDestroy();
     }
     //endGetAllDataApi........................................................
@@ -805,7 +872,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
 
-        addButtonForKeyIn.callOnClick();
+        addButtonForKeyInuser.callOnClick();
 
         if (cardsList.size() <= 0) {
             Card card = new Card();
@@ -872,6 +939,42 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    //----------------follow / unfollow
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id) {
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    // get response
+                    try {
+
+
+                    } catch (Exception e) {
+                        Utility.showToast(EventDetailsActivity.this, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("biz_tag_id",biz_tag_id);
+                    params.put("follow_status", String.valueOf(followUnfollow));
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(EventDetailsActivity.this).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
+        }
+    }
+
     /***
      * For setting the Grid Layout of room Persons showing at bottom of the Room
      *
@@ -881,17 +984,30 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         userList.clear();
         userList.addAll(list);
         adapter.notifyDataSetChanged();
-
+        CircularImageView comeInUserProfile = null;
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup parent = findViewById(R.id.comeInUser_lnr);
         parent.removeAllViews();
-        for (int i = 0; i < list.size(); i++) {
 
+        int loopCount  = list.size();
+        if(loopCount >5){
+            loopCount = 5;
+        }
+        if (list.size() != 0) {
+            parent.setVisibility(View.VISIBLE);
+            img_no_member.setVisibility(View.GONE);
+        } else {
+            parent.setVisibility(View.GONE);
+            img_no_member.setVisibility(View.VISIBLE);
+        }
+
+        for (int i = 0; i < list.size(); i++) {
             assert inflater != null;
-            View v = inflater.inflate(R.layout.userin_view, null);
-            CircularImageView comeInUserProfile = v.findViewById(R.id.comeInProfile);
-            TextView no_count = v.findViewById(R.id.no_count);
-            RelativeLayout marginlayout = v.findViewById(R.id.mainProfileView);
+            View v = inflater.inflate(R.layout.trend_user_view, null);
+            comeInUserProfile = v.findViewById(R.id.comeInProfile_t);
+            TextView no_count = v.findViewById(R.id.no_count_t);
+            RelativeLayout marginlayout = v.findViewById(R.id.mainProfileView_t);
+
             if (i == 0) {
 
                 parent.addView(v, i);
@@ -900,6 +1016,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 if (!list.get(i).getUserimage().contains("dev-")) {
                     image = "dev-" + list.get(i).getUserimage();
                 } else {
+                    //image = keyInUserModalList.get(i).userImage;
                     image = list.get(i).getUserimage();
                 }
 
@@ -910,14 +1027,14 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                         .error(R.drawable.placeholder_img)
                         .into(comeInUserProfile);
 
-            } else {
 
-                if (i < 4) {
+            } else {
+                if (i == 1) {
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(10 * i, 0, 0, 0);
+                    params.setMargins(15 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     parent.addView(v, i);
                     String image = "";
@@ -935,33 +1052,68 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                             .error(R.drawable.placeholder_img)
                             .into(comeInUserProfile);
                 }
-            }
-            if (i == 5) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-                params.setMargins(30 * i, 0, 0, 0);
-                marginlayout.setLayoutParams(params);
-                parent.addView(v, i);
-                no_count.setText("" + (list.size() - 1) + "+");
-                no_count.setVisibility(View.VISIBLE);
-            }
-        }
+                else
+                    if (i == 2) {
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                        );
+                        params.setMargins(15 * i, 0, 0, 0);
+                        marginlayout.setLayoutParams(params);
+                        parent.addView(v, i);
+                        String image = "";
 
+                        if (!list.get(i).getUserimage().contains("dev-")) {
+                            image = "dev-" + list.get(i).getUserimage();
+                        } else {
+                            image = list.get(i).getUserimage();
+                        }
+
+                        Glide.with(this).load(image)
+                                .thumbnail(0.5f)
+                                .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .placeholder(R.drawable.placeholder_img)
+                                .error(R.drawable.placeholder_img)
+                                .into(comeInUserProfile);
+                    }
+                if (i == 3) {
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(15 * i, 0, 0, 0);
+                    marginlayout.setLayoutParams(params);
+                    parent.addView(v, i);
+                    no_count.setText(" +" + (list.size() - i));
+                    no_count.setVisibility(View.VISIBLE);
+                }
+            }
+
+        }
 
         parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!userExistOrNotonActivty.equals("")) {
-                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
-
-                } else {
+//                if (!userExistOrNotonActivty.equals("")) {
+//                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
+//
+//                } else {
                     Intent intent = new Intent(EventDetailsActivity.this, TheRoomActivity.class);
                     intent.putExtra("commentPesionList", list);
-                    intent.putExtra("eventId", eventId);
+                    intent.putExtra("eventid", event.getEvent());
+                    intent.putExtra("venuid", event.getVenue());
+                    intent.putExtra("object", event);
+                    intent.putExtra("currentLatLng", currentLatLng);
+                if(fromTrending){
+                    intent.putExtra("fromTrending", true);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
                     startActivity(intent);
                 }
+              //  }
             }
         });
     }
@@ -1197,8 +1349,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
-
-
     }
 
     private void addFeedFormListreaction(final String getReactionFromList, final String addFeedReaction) {
@@ -1532,6 +1682,8 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             }
         }.updateKeyPoint(points + 1, userInfo.userid);
     }
+
+/*
     Dialog dialog = null;
     private void showKeyPoints(String s) {
         dialog = new Dialog(this);
@@ -1544,12 +1696,8 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.gravity = Gravity.TOP;
 
-
-
         dialog.getWindow().setAttributes(lp);
-
         TextView tvKeyPoint;
-
         tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
         tvKeyPoint.setText(s);
         mRunnable = new Runnable() {
@@ -1565,6 +1713,51 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         if (dialog != null) {
             dialog.show();
+        }
+    }*/
+
+
+    private void showKeyPoints(String s) {
+        final Dialog dialog = new Dialog(this);
+
+        try {
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setContentView(R.layout.custom_keypoint_layout);
+            assert dialog.getWindow() != null;
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
+
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(dialog.getWindow().getAttributes());
+            lp.gravity = Gravity.TOP;
+            dialog.getWindow().setAttributes(lp);
+
+            TextView tvKeyPoint;
+
+            tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
+            tvKeyPoint.setText(s);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+                        dialog.dismiss();
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+                        dialog.dismiss();
+                    }
+
+
+                }
+            }, 1500);
+
+            dialog.show();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            dialog.dismiss();
         }
     }
 
