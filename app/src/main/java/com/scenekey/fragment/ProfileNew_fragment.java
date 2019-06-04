@@ -409,7 +409,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     public void onResume() {
      //   setProfileData();
         super.onResume();
-        if(shouldRefresh){ ;
+        if(shouldRefresh){
             // Reload current fragment
 //            Fragment frg = null;
 //            frg = activity.getSupportFragmentManager().findFragmentByTag(getFragmentManager().getFragments().getClass().getName());
