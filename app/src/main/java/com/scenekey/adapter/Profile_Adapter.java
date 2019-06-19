@@ -180,8 +180,8 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
 
         holder.emaojisRecyclerView.setLayoutManager(gridLayoutManager);
-        holder.emaojisRecyclerView.getLayoutManager().setAutoMeasureEnabled(true);
-        holder.emaojisRecyclerView.setNestedScrollingEnabled(false);
+//        holder.emaojisRecyclerView.getLayoutManager().setAutoMeasureEnabled(true);
+//        holder.emaojisRecyclerView.setNestedScrollingEnabled(false);
         holder.emaojisRecyclerView.setAdapter(adapter);
 
     }
@@ -378,21 +378,29 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
                         if (!userExistOrNot.equals("")) {
                             cantJoinNotExixtUserDialog(userExistOrNot);
                         } else {
-
+                                boolean isUserKeyIn = false;
                             if (feedList.size() != 0) {
 
                                 if (feeds.userid != null) {
-
                                     for (int i = 0; i < userList.size(); i++) {
 
                                         if (feeds.userid.equals(userList.get(i).userid)) {
-                                            Intent intent = new Intent(context, LiveProfileActivity.class);
-                                            intent.putExtra("from", "fromProfileAdapter");
-                                            intent.putExtra("fromLiveRoomList", userList);
-                                            intent.putExtra("eventId", eventid);
-                                            intent.putExtra("feedsid", feeds.userid);
-                                            context.startActivity(intent);
+                                            isUserKeyIn = true;
+                                            break;
                                         }
+//
+                                    }
+
+                                    if(isUserKeyIn){
+                                        Intent intent = new Intent(context, LiveProfileActivity.class);
+                                        intent.putExtra("from", "fromProfileAdapter");
+                                        intent.putExtra("fromLiveRoomList", userList);
+                                        intent.putExtra("eventId", eventid);
+                                        intent.putExtra("feedsid", feeds.userid);
+                                        context.startActivity(intent);
+                                    }
+                                    else {
+                                        utility.showCustomPopup("This user is no longer in the room.",String.valueOf(R.font.montserrat_medium));
                                     }
                                 }
                             }

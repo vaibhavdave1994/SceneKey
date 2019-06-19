@@ -72,6 +72,19 @@
             android:layout_marginTop="@dimen/_3sdp"
             android:textColor="@color/color_rewardtxt"/>
 
+        <TextView
+            android:id="@+id/tv_exp_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/civ"
+            android:layout_toRightOf="@+id/tv_reward"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:fontFamily="@font/montserrat_light"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text=""
+            android:textColor="@color/color_rewardtxt"/>
+
         <!--<LinearLayout-->
             <!--android:id="@+id/ll_txt_reward"-->
             <!--android:layout_width="wrap_content"-->
@@ -144,7 +157,7 @@
             android:gravity="center_vertical|left"
             android:layout_toRightOf="@+id/tv_req"
             android:layout_marginTop="@dimen/_10sdp"
-            android:text="15 points"
+            android:text=""
             android:fontFamily="@font/montserrat_medium"
             android:textColor="@color/color_rewardtxt"
             android:textSize="@dimen/_10sdp"

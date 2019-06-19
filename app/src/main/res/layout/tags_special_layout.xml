@@ -78,12 +78,21 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/blurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:background="@color/white"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/tv_follow"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_70sdp"
             android:layout_height="wrap_content"
             android:text="Follow"
             android:layout_alignParentRight="true"
+            android:gravity="center"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_centerVertical="true"
             android:background="@drawable/follow_border"
@@ -92,11 +101,12 @@
             android:paddingBottom="@dimen/_2sdp"
             android:paddingRight="@dimen/_15sdp"
             android:paddingLeft="@dimen/_15sdp"
+            android:textSize="@dimen/_11sdp"
             />
 
         <TextView
             android:id="@+id/tv_unfollow"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_70sdp"
             android:layout_height="wrap_content"
             android:text="Unollow"
             android:textColor="@color/red_ring"
@@ -105,19 +115,13 @@
             android:paddingRight="@dimen/_15sdp"
             android:paddingLeft="@dimen/_15sdp"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_centerVertical="true"
+            android:gravity="center"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
             android:background="@drawable/unfollow_border"
             />
-
-        <View
-            android:id="@+id/blurView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.7"
-            android:background="@color/white"
-            android:visibility="gone" />
 
     </RelativeLayout>
 

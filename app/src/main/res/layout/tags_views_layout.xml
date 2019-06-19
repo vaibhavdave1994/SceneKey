@@ -46,14 +46,14 @@
         <TextView
             android:id="@+id/tag_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_16sdp"
+            android:layout_height="@dimen/_18sdp"
             android:fontFamily="@font/montserrat_medium"
-            android:maxLines="1"
             android:gravity="center"
             android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
             android:layout_below="@+id/iv_imageView"
             android:minHeight="@dimen/_16sdp"
-            android:text="Shh"
+            android:text="shh"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp" />
 
@@ -80,7 +80,6 @@
             android:layout_marginLeft="@dimen/_38sdp"
             android:layout_marginTop="@dimen/_14sdp"
             android:visibility="gone"
-
             />
 
     </RelativeLayout>

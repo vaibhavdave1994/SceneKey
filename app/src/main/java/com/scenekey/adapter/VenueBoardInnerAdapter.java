@@ -99,7 +99,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
                 @Override
                 public void onClick(View v) {
 
-                    showSearchConfirmDialog(socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name());
+                    showSearchConfirmDialog(socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+" ?");
 
                 }
             });
@@ -125,22 +125,22 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
             Glide.with(context).load(socialMediaBean.getTag_image()).centerCrop().placeholder(R.drawable.app_icon)
                     .into(holder.iv_tag__special_circulerImage);
 
-            if(socialMediaBean.getIs_tag_follow().equalsIgnoreCase("0")){
-                holder.view_followed.setVisibility(View.GONE);
-                holder.tv_unfollow.setVisibility(View.GONE);
-                holder.tv_follow.setVisibility(View.VISIBLE);
-            }else {
-                holder.view_followed.setVisibility(View.GONE);
-                holder.tv_unfollow.setVisibility(View.VISIBLE);
-                holder.tv_follow.setVisibility(View.GONE);
-            }
+//            if(socialMediaBean.getIs_tag_follow().equalsIgnoreCase("0")){
+//                holder.view_followed.setVisibility(View.GONE);
+//                holder.tv_unfollow.setVisibility(View.GONE);
+//                holder.tv_follow.setVisibility(View.VISIBLE);
+//            }else {
+//                holder.view_followed.setVisibility(View.GONE);
+//                holder.tv_unfollow.setVisibility(View.VISIBLE);
+//                holder.tv_follow.setVisibility(View.GONE);
+//            }
 
             holder.mainRoomView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("SceneKey");
-                    builder.setMessage("Want to search for "+socialMediaBean.getTag_name());
+                    builder.setMessage("Want to search for "+socialMediaBean.getTag_name()+" ?");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent = new Intent(context, TrendinSearchActivity.class);
@@ -160,19 +160,19 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
                 }
             });
 
-            holder.tv_follow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tagFollowUnfollow(1,socialMediaBean,position);
-                }
-            });
-
-            holder.tv_unfollow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tagFollowUnfollow(0,socialMediaBean,position);
-                }
-            });
+//            holder.tv_follow.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    tagFollowUnfollow(1,socialMediaBean,position);
+//                }
+//            });
+//
+//            holder.tv_unfollow.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    tagFollowUnfollow(0,socialMediaBean,position);
+//                }
+//            });
         }
     }
 

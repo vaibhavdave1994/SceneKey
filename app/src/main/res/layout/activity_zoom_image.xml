@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    tools:context=".activity.ZoomImageActivity">
+    tools:context=".activity.ZoomImageActivity"
+    android:id="@+id/mainView">
 
     <RelativeLayout
         android:id="@+id/uperView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
-        android:background="@drawable/bg_top_bar">
+       >
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/img_f1_back"
@@ -22,6 +23,13 @@
             app:srcCompat="@drawable/ic_back_icon" />
 
     </RelativeLayout>
+
+    <!--<uk.co.senab.photoview.PhotoView-->
+        <!--android:id="@+id/photo_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@+id/uperView"/>-->
+
 
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/photo_view"

@@ -92,6 +92,7 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
     public boolean canCallWebservice;
     private static Timer timerHttp;
 
+    String targetdatevalue = "";
     // New Code
     String returnDay = "";
 
@@ -641,7 +642,8 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
         String miles = String.valueOf(activity.getDistanceMile(new Double[]{Double.valueOf(events.getVenue().getLatitude()), Double.valueOf(events.getVenue().getLongitude()), Double.valueOf(lat), Double.valueOf(lng)}));
 
         txt_eventMile.setText(miles + " M");
-        txt_eventDate.setText(events.timeFormat);
+       // txt_eventDate.setText(events.timeFormat);
+        txt_eventDate.setText(targetdatevalue);
 
         myContentsView.findViewById(R.id.all).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -750,11 +752,28 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
             getDayDifference(startTime, curTime, rating, events);
 
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
+            SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy K:mm a");
+
+            targetdatevalue = parseDate(formattedDate, dateFormat, targetFormat);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
+    }
+
+    public static String parseDate(String inputDateString, SimpleDateFormat inputDateFormat, SimpleDateFormat outputDateFormat) {
+        Date date = null;
+        String outputDateString = null;
+        try {
+            date = inputDateFormat.parse(inputDateString);
+            outputDateString = outputDateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return outputDateString;
     }
 
     //********** day diffrence  ****************//

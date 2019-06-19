@@ -124,11 +124,40 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
                             tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                             tagModal.tag_name = jsonObject.getString("tag_name");
                             tagModal.color_code = jsonObject.getString("color_code");
-                            tagModal.tag_text = jsonObject.getString("tag_text");
+                            tagModal.tag_text = jsonObject.getString("tag_text").trim();
                             tagModal.tag_image = jsonObject.getString("tag_image");
 
-                            if(tagModal.tag_text.equalsIgnoreCase(intentTagModal.tag_text))
-                            tag_list.add(tagModal);
+//                            if(!tagModal.tag_name.equalsIgnoreCase("Happy Hour")){
+//                               tagModal.tag_text = tagModal.tag_name;
+////                            }
+                            if (intentTagModal.tag_text.equalsIgnoreCase("Happy Hour")){
+                                String text_array[]= tagModal.tag_text.split("_");
+                                for(int j =0; j<text_array.length; j++){
+                                    TagModal tagModalNew = new TagModal();
+                                    tagModalNew.tag_text = text_array[j];
+                                    tagModalNew.biz_tag_id = jsonObject.getString("biz_tag_id");
+                                    tagModalNew.tag_name = jsonObject.getString("tag_name");
+                                    tagModalNew.color_code = jsonObject.getString("color_code");
+                                    tagModalNew.tag_image = jsonObject.getString("tag_image");
+                                    tag_list.add(tagModalNew);
+                                }
+                            }
+                            else {
+                                System.out.println("tagtext : "+intentTagModal.tag_text);
+                                if (tagModal.biz_tag_id.equalsIgnoreCase(intentTagModal.biz_tag_id)){
+                                    String text_array[]= tagModal.tag_text.split("_");
+                                    for(int j =0; j<text_array.length; j++){
+                                        TagModal tagModalNew = new TagModal();
+                                        tagModalNew.tag_text = text_array[j];
+                                        tagModalNew.biz_tag_id = jsonObject.getString("biz_tag_id");
+                                        tagModalNew.tag_name = jsonObject.getString("tag_name");
+                                        tagModalNew.color_code = jsonObject.getString("color_code");
+                                        tagModalNew.tag_image = jsonObject.getString("tag_image");
+                                       // tagModal.tag_text = text_array[j];
+                                        tag_list.add(tagModalNew);
+                                    }
+                                }
+                            }
                         }
 
                        /* if (!category_name.equals("Specials")) {

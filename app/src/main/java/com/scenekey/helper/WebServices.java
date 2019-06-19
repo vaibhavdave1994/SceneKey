@@ -72,6 +72,7 @@ public class WebServices {
     public final static String LIKE_EVENT = BASE_URL + "webservices/addEventLike";
     public final static String SEARCH_TAG = BASE_URL + "categoryList";
     public final static String TAG_SEARCH = BASE_URL + "tag_search";
+    public final static String TAG_SEARCH_CATEGORY = BASE_URL + "tagSearchCategory";
     public final static String TAGLIST = BASE_URL + "tagList";
 
     public final static String EVENT_DETAIL = BASE_URL + "webservices/get_event_detail/?event_id=";

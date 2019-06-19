@@ -95,13 +95,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/emaojisRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_45sdp"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_below="@+id/demo_image_view"
         android:layout_toRightOf="@+id/demo_date_tv"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_15sdp"
-        android:nestedScrollingEnabled="true"
         android:layout_toEndOf="@+id/demo_date_tv"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_15sdp"/>

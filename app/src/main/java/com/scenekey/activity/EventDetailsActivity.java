@@ -209,6 +209,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
         setOnClick(img_no_member, blurView, img_eventDetail_back, addButtonForKeyInuser, txt_post_comment, et_comment_feed, img_postImage, img_ListIcon);
 
+        isKeyInAble = getIntent().getBooleanExtra("isKeyInAble",false);
         fromTrending = getIntent().getBooleanExtra("fromTrending",false);
         if (getIntent().getStringExtra("event_id") != null) {
             eventId = getIntent().getStringExtra("event_id");
@@ -301,7 +302,13 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(EventDetailsActivity.this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         feedLIstRecyclerView.setLayoutManager(layoutManager);
         feedLIstRecyclerView.setAdapter(adapter);
         blurView.setVisibility(View.GONE);
@@ -452,6 +459,9 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                         } catch (ParseException d) {
                             d.getMessage();
                         }
+                    }
+                    else {
+                        isKeyInAble = true;
                     }
                 }
                 break;
@@ -1785,6 +1795,11 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                         JSONObject jo = new JSONObject(response);
                         if (jo.getInt("success") == 0) {
                             incrementKeyPoints(getString(R.string.kp_keyin));
+                        }
+                        else {
+                            isKeyInAble = true;
+                            feedList.clear();
+                            adapter.notifyDataSetChanged();
                         }
 
                         getAllData();

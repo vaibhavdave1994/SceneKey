@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_margin="@dimen/_2sdp"
-        android:background="@color/gray2" />
+        android:background="@color/m_f_gender_color" />
 
     <LinearLayout
         android:layout_width="match_parent"

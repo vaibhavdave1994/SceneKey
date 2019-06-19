@@ -1,0 +1,54 @@
+package com.scenekey.cus_view;
+
+import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+
+public class OverScrollBounceBehavior extends CoordinatorLayout.Behavior<View> {
+
+    private int mOverScrollY;
+
+    public OverScrollBounceBehavior() {
+    }
+
+    public OverScrollBounceBehavior(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View child, View directTargetChild, View target, int nestedScrollAxes) {
+        mOverScrollY = 0;
+        return true;
+    }
+
+    @Override
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
+        if (dyUnconsumed == 0) {
+            return;
+        }
+
+        mOverScrollY -= dyUnconsumed;
+        final ViewGroup group = (ViewGroup) target;
+        final int count = group.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View view = group.getChildAt(i);
+            view.setTranslationY(mOverScrollY);
+            System.out.println("onNestedScroll count: "+i);
+        }
+    }
+
+    @Override
+    public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target) {
+        final ViewGroup group = (ViewGroup) target;
+        final int count = group.getChildCount();
+        for (int i = 0; i < count; i++) {
+            final View view = group.getChildAt(i);
+            ViewCompat.animate(view).translationY(0).start();
+            System.out.println("onNestedScroll onStopNestedScroll" +
+                    ": "+i);
+        }
+    }
+}

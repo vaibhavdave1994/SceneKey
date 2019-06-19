@@ -9,6 +9,12 @@
     android:orientation="vertical"
     tools:context=".fragment.ProfileNew_fragment">
 
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_title_view"
+        android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/customizeView"
         android:layout_width="match_parent"
@@ -73,22 +79,28 @@
 
     </RelativeLayout>
 
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:background="@color/white"-->
-    <!--&gt;-->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/_160sdp"
-        android:layout_marginBottom="@dimen/_5sdp">
+    <android.support.v4.widget.NestedScrollView
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:behavior_hideable="false"
+            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <com.xw.repo.widget.BounceScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -98,7 +110,7 @@
                 android:layout_marginRight="@dimen/_10sdp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/_10sdp"
-                card_view:cardElevation="0.5dp"
+                android:elevation=".5dp"
                 card_view:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -194,7 +206,7 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/_5sdp"
-                card_view:cardElevation="1dp"
+                android:elevation=".5dp"
                 card_view:cardUseCompatPadding="true">
 
                 <RelativeLayout
@@ -614,5 +626,10 @@
             android:scaleType="fitCenter"
             android:src="@drawable/camera_ico_new" />
     </RelativeLayout>
-    <!--</ScrollView>-->
+
+        </com.xw.repo.widget.BounceScrollView>
+    </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
 </RelativeLayout>

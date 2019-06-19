@@ -43,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.DefaultRetryPolicy;
@@ -78,6 +79,7 @@ import com.scenekey.listener.StatusBarHide;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Events;
 import com.scenekey.model.NotificationModal;
+import com.scenekey.model.Offers;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.StatusBarUtil;
@@ -778,7 +780,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     rl_title_view_home.setVisibility(View.GONE);
                     rl_title_main_view.setVisibility(View.GONE);
                     rl_profileView.setVisibility(View.GONE);
-                    tv_title.setText("My Scene");
+//                    tv_title.setText("My Scene");
+                    tv_title.setText("Alerts");
 
                     if (isPermissionAvail) {
                        // replaceFragment(new Alert_fragment());
@@ -2225,4 +2228,56 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
+//    public void getOffersList() {
+//        if (utility.checkInternetConnection()) {
+//            StringRequest request = new StringRequest(Request.Method.POST, WebServices.REWARD_OFFER, new Response.Listener<String>() {
+//                @Override
+//                public void onResponse(String response) {
+//                    Log.v("response", response);
+//                    // get response
+//                    try {
+//                        JSONObject jsonObject = new JSONObject(response);
+//                        String status = jsonObject.getString("status");
+//
+//                        if (status.equals("success")) {
+//                            JSONArray data = jsonObject.getJSONArray("allReward");
+//                            if(data.length()>0){
+//                                tv_alert_badge_count.setText(data.length());
+//                                tv_alert_badge_count.setVisibility(View.VISIBLE);
+//                            }
+//                            else {
+//                                tv_alert_badge_count.setVisibility(View.GONE);
+//                            }
+//
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError e) {
+//                    utility.volleyErrorListner(e);
+//                }
+//            }) {
+//                @Override
+//                public Map<String, String> getParams() {
+//                    Map<String, String> params = new HashMap<>();
+//                    params.put("lat", SceneKey.sessionManager.getUserInfo().lat);
+//                    params.put("long", SceneKey.sessionManager.getUserInfo().longi);
+//                    params.put("userId", SceneKey.sessionManager.getUserInfo().userid + "");
+////                    params.put("userId", "1384");
+//
+//                    Utility.e(TAG, " params " + params.toString());
+//                    return params;
+//                }
+//            };
+//            VolleySingleton.getInstance(context).addToRequestQueue(request);
+//            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+//        } else {
+//            //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
+//            Toast.makeText(context, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }

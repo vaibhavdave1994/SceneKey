@@ -73,7 +73,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.slide_left, R.anim.fab_slide_out_to_left);
+        //overridePendingTransition(R.anim.exit_to_left, R.anim.enter_from_left);
         setContentView(R.layout.activity_the_room);
         inItView();
     }

@@ -114,13 +114,13 @@
         <TextView
             android:id="@+id/tag__vanue_name"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_18sdp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
             android:layout_centerInParent="true"
-            android:text=""
+            android:text="geetay"
             android:layout_toRightOf="@+id/iv_tag__special_image"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_14sdp" />
 
     </RelativeLayout>
 

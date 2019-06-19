@@ -2,6 +2,7 @@ package com.scenekey.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -49,13 +50,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 
 public class TagsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String category_name = "";
+    private String category_name = "",category_image = "";
     private ArrayList<TagModal> tag_list;
     private ArrayList<TagModal> tag_listDeactive;
     private Tags_Adapter tags_adapter;
@@ -72,6 +74,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<TagModal> specialTag_list;
     RelativeLayout linear;
     boolean fromProfile = false;
+    boolean from_category = false;
     RelativeLayout toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +105,10 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
         TextView txt_f1_title = findViewById(R.id.txt_f1_title);
         EditText et_serch_post = findViewById(R.id.et_serch_post);
 
-
         textWatcher(et_serch_post);
 
         fromProfile = getIntent().getBooleanExtra("fromProfile",false);
+        from_category = getIntent().getBooleanExtra("from_category",false);
 
         if(fromProfile){
             txt_f1_title.setText("My Interests");
@@ -115,7 +118,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
             if (getIntent().getStringExtra("cat_id") != null) {
                 cat_id = getIntent().getStringExtra("cat_id");
                 category_name = getIntent().getStringExtra("category_name");
-                String category_image = getIntent().getStringExtra("category_image");
+                category_image = getIntent().getStringExtra("category_image");
 
 //                if(category_name.equalsIgnoreCase("Specials")){
 //                    linear.setVisibility(View.GONE);
@@ -132,9 +135,36 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                 } else txt_f1_title.setText("Category");
 
                 if (!cat_id.isEmpty()) {
-                    getSearchTagList(cat_id);
+//                    if(category_name.equalsIgnoreCase("Happy Hour")){
+//                        tag_list.clear();
+//                        TagModal tagModal = new TagModal();
+//                        tagModal.biz_tag_id = "0";
+//                        tagModal.tag_name = category_name;
+//                        tagModal.color_code  = getIntent().getStringExtra("color_code");
+//                        tagModal.tag_text = category_name;
+//                        tagModal.tag_image = category_image;
+//                        tagModal.is_tag_follow = "0";
+//                        tagModal.isVenue = "0";
+//                        tag_list.add(tagModal);
+//
+//                        tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+//                        tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+//                            @Override
+//                            public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+//                                tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+//                            }
+//                        });
+//                        tag_recycler_view.setAdapter(tags_adapter);
+//                    }
+//                    else {
+                        getSearchTagList(cat_id);
+                   // }
+
                 }
             }
+        }
+        if(from_category){
+            et_serch_post.setHint("search "+category_name+" here");
         }
 
         setOnClick(img_tags_back);
@@ -155,12 +185,28 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void afterTextChanged(Editable editable) {
-                tag_list.clear();
+
                 searchText = editable.toString();
 
                 if (!searchText.isEmpty()) {
-                    toolbar.setVisibility(View.GONE);
-                    getTag_searchList(searchText);
+
+                    if(from_category){
+                        tag_list.clear();
+                        getSearchListByCategory(searchText);
+                        //beginSearch(searchText);
+                    }
+                    else {
+                        if(fromProfile){
+                            beginSearch(searchText);
+                        }
+                        else {
+                            toolbar.setVisibility(View.GONE);
+                            tag_list.clear();
+                            getTag_searchList(searchText);
+                        }
+
+                    }
+
                 } else {
 
                     if(fromProfile){
@@ -168,7 +214,30 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     else {
                         if (!cat_id.isEmpty()) {
-                            getSearchTagList(cat_id);
+//                            if(category_name.equalsIgnoreCase("Happy Hour")){
+//                                tag_list.clear();
+//                                TagModal tagModal = new TagModal();
+//                                tagModal.biz_tag_id = "0";
+//                                tagModal.tag_name = category_name;
+//                                tagModal.color_code  = getIntent().getStringExtra("color_code");
+//                                tagModal.tag_text = category_name;
+//                                tagModal.tag_image = category_image;
+//                                tagModal.is_tag_follow = "0";
+//                                tagModal.isVenue = "0";
+//                                tag_list.add(tagModal);
+//
+//                                tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+//                                tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+//                                    @Override
+//                                    public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+//                                        tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+//                                    }
+//                                });
+//                                tag_recycler_view.setAdapter(tags_adapter);
+//                            }
+//                            else {
+                                getSearchTagList(cat_id);
+                            //}
                         }
                     }
                     toolbar.setVisibility(View.VISIBLE);
@@ -238,10 +307,10 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
                                 tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
-                                tagModal.tag_name = jsonObjectSTL.getString("tag_name");
+                                tagModal.tag_text = jsonObjectSTL.getString("tag_name");
                                 tagModal.category_name = jsonObjectSTL.getString("category_name");
                                 tagModal.color_code = jsonObjectSTL.getString("color_code");
-                                tagModal.tag_text = jsonObjectSTL.getString("tag_text");
+                                tagModal.tag_name = jsonObjectSTL.getString("tag_text");
                                 tagModal.tag_image = jsonObjectSTL.getString("tag_image");
                                 tagModal.status = jsonObjectSTL.getString("status");
                                 tagModal.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
@@ -253,6 +322,21 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                 }
 
                                 Log.v("tag_list2", "" + specialTag_list.size());
+                            }
+
+                            if(specialTag_list.size() >0){
+                                TagModal tagModalNew = new TagModal();
+                                JSONObject jsonObjectSTL = specialTagList.getJSONObject(0);
+                                tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
+                                tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
+                                tagModalNew.category_name = jsonObjectSTL.getString("category_name");
+                                tagModalNew.color_code = jsonObjectSTL.getString("color_code");
+                                tagModalNew.tag_name = jsonObjectSTL.getString("tag_name");
+                                tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
+                                tagModalNew.status = jsonObjectSTL.getString("status");
+                                tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                tagModalNew.makeOwnItem =true;
+                                specialTag_list.add(0,tagModalNew);
                             }
 
                             tag_list.addAll(specialTag_list);
@@ -288,6 +372,148 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                     params.put("tag", searchText);
                     params.put("lat", userInfo.lat);
                     params.put("long", userInfo.longi);
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            utility.snackBar(mainView, getString(R.string.internetConnectivityError), 0);
+        }
+    }
+
+    private void getSearchListByCategory(final String searchText) {
+
+        if (utility.checkInternetConnection()) {
+
+            if (!searchText.isEmpty()) {
+                checkTextOrNot = "1";
+            } else {
+                checkTextOrNot = "0";
+            }
+
+            if (checkTextOrNot.equals("0")) {
+                showProgDialog(true, "");
+            }
+
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_SEARCH_CATEGORY, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    if (checkTextOrNot.equals("0")) {
+                        dismissProgDialog();
+                    }
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+
+                        String status = jo.getString("status");
+                        if (status.equals("success")) {
+                            tag_list.clear();
+                            dismissProgDialog();
+                            JSONArray tagList = jo.getJSONArray("tagList");
+
+                            for (int i = 0; i < tagList.length(); i++) {
+
+                                TagModal tagModal = new TagModal();
+                                JSONObject jsonObject = tagList.getJSONObject(i);
+                                tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
+                                tagModal.tag_text = jsonObject.getString("tag_name");
+                                tagModal.category_name = jsonObject.getString("category_name");
+                                tagModal.color_code = jsonObject.getString("color_code");
+                                tagModal.tag_name = jsonObject.getString("tag_text");
+                                tagModal.tag_image = jsonObject.getString("tag_image");
+                                tagModal.status = jsonObject.getString("status");
+                                tagModal.is_tag_follow = jsonObject.getString("is_tag_follow");
+
+                                if(jsonObject.getString("status").equalsIgnoreCase("active")){
+                                    tag_list.add(tagModal);
+                                }
+                                else {
+                                    tag_listDeactive.add(tagModal);
+                                }
+
+                                Log.v("tag_list", "" + tag_list.size());
+                            }
+
+                            if(jo.has("specialTagList")) {
+                                JSONArray specialTagList = jo.getJSONArray("specialTagList");
+
+                                for (int i = 0; i < specialTagList.length(); i++) {
+
+                                    TagModal tagModal = new TagModal();
+                                    JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
+                                    tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
+                                    tagModal.tag_text = jsonObjectSTL.getString("tag_name");
+                                    tagModal.category_name = jsonObjectSTL.getString("category_name");
+                                    tagModal.color_code = jsonObjectSTL.getString("color_code");
+                                    tagModal.tag_name = jsonObjectSTL.getString("tag_text");
+                                    tagModal.tag_image = jsonObjectSTL.getString("tag_image");
+                                    tagModal.status = jsonObjectSTL.getString("status");
+                                    tagModal.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                    if (jsonObjectSTL.getString("status").equalsIgnoreCase("active")) {
+                                        specialTag_list.add(tagModal);
+                                    } else {
+                                        tag_listDeactive.add(tagModal);
+                                    }
+
+                                    Log.v("tag_list2", "" + specialTag_list.size());
+                                }
+
+                            }
+
+                            if(category_name.equalsIgnoreCase("Specials") ||
+                                    category_name.equalsIgnoreCase("Happy Hour")){
+
+                                TagModal tagModalNew = new TagModal();
+                                JSONObject jsonObjectSTL = tagList.getJSONObject(0);
+                                tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
+                                tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
+                                tagModalNew.category_name = jsonObjectSTL.getString("category_name");
+                                tagModalNew.color_code = jsonObjectSTL.getString("color_code");
+                                tagModalNew.tag_name = jsonObjectSTL.getString("tag_name");
+                                tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
+                                tagModalNew.status = jsonObjectSTL.getString("status");
+                                tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                tagModalNew.makeOwnItem =true;
+                                tag_list.add(0,tagModalNew);
+
+                            }
+                            tag_list.addAll(specialTag_list);
+                            tag_list.addAll(tag_listDeactive);
+                            tag_listDeactive.clear();
+                            Log.v("tag_list3", "" + tag_list.size());
+
+                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            tag_recycler_view.setLayoutManager(mLayoutManager);
+                            tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list, new FollowUnfollowLIstner() {
+                                @Override
+                                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+                                    tagFollowUnfollow(followUnfollow,biz_tag_id,0);
+                                }
+                            });
+                            tag_recycler_view.setAdapter(tags_specialAdapter);
+                            tags_specialAdapter.notifyDataSetChanged();
+                        }
+
+                    } catch (Exception e) {
+                        dismissProgDialog();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("tag", searchText);
+                    params.put("lat", userInfo.lat);
+                    params.put("long", userInfo.longi);
+                    params.put("category_id", cat_id);
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     return params;
                 }
@@ -356,9 +582,10 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                             tagModal.tag_name = jsonObject.getString("tag_name");
                             tagModal.color_code = jsonObject.getString("color_code");
-                            tagModal.tag_text = jsonObject.getString("tag_text");
+                            tagModal.tag_text = jsonObject.getString("tag_text").trim();
                             tagModal.tag_image = jsonObject.getString("tag_image");
                             tagModal.is_tag_follow = jsonObject.getString("is_tag_follow");
+                            tagModal.category_name = jsonObject.getString("category_name");
                             tagModal.isVenue = "0";
                             tag_list.add(tagModal);
                         }
@@ -446,7 +673,30 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
         }
         else {
             if (!cat_id.isEmpty()) {
-                getSearchTagList(cat_id);
+//                if(category_name.equalsIgnoreCase("Happy Hour")){
+//                    tag_list.clear();
+//                    TagModal tagModal = new TagModal();
+//                    tagModal.biz_tag_id = "0";
+//                    tagModal.tag_name = category_name;
+//                    tagModal.color_code = getIntent().getStringExtra("color_code");
+//                    tagModal.tag_text = category_name;
+//                    tagModal.tag_image = category_image;
+//                    tagModal.is_tag_follow = "0";
+//                    tagModal.isVenue = "0";
+//                    tag_list.add(tagModal);
+//
+//                    tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+//                    tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+//                        @Override
+//                        public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+//                            tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+//                        }
+//                    });
+//                    tag_recycler_view.setAdapter(tags_adapter);
+//                }
+//                else {
+                    getSearchTagList(cat_id);
+                //}
             }
         }
     }
@@ -475,6 +725,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                             tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                                             tagModal.tag_name = jsonObject.getString("tag_name");
                                             tagModal.color_code = jsonObject.getString("color_code");
+                                            tagModal.category_name = "";
                                             tagModal.tag_text = "";
                                             tagModal.tag_image = jsonObject.getString("tag_image");
                                             tagModal.is_tag_follow = "1";
@@ -556,14 +807,42 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             if(jo.getString("status").equalsIgnoreCase("success")){
 
                                 if(callFrom == 0) {
-                                    getTag_searchList(searchText);
+                                    if(from_category){
+                                        getSearchListByCategory(searchText);
+                                    }
+                                    else {
+                                        getTag_searchList(searchText);
+                                    }
                                 }
                                 else if(callFrom == 1){
                                     if(fromProfile){
                                         getMyFollowTag();
                                     }
                                     else {
-                                        getSearchTagList(cat_id);
+                                        if(category_name.equalsIgnoreCase("Happy Hour")){
+                                            tag_list.clear();
+                                            TagModal tagModal = new TagModal();
+                                            tagModal.biz_tag_id = "0";
+                                            tagModal.tag_name = category_name;
+                                            tagModal.color_code = getIntent().getStringExtra("color_code");
+                                            tagModal.tag_text = category_name;
+                                            tagModal.tag_image = category_image;
+                                            tagModal.is_tag_follow = "0";
+                                            tagModal.isVenue = "0";
+                                            tag_list.add(tagModal);
+
+                                            tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+                                            tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+                                                @Override
+                                                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+                                                    tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+                                                }
+                                            });
+                                            tag_recycler_view.setAdapter(tags_adapter);
+                                        }
+                                        else {
+                                            getSearchTagList(cat_id);
+                                        }
                                     }
 
                                 }
@@ -600,5 +879,42 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
             // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
+    }
+
+    public void beginSearch(String newText){
+        final ArrayList<TagModal> filteredList = new ArrayList<>();
+        for (int i = 0; i < tag_list.size(); i++) {
+            final String text = tag_list.get(i).tag_name.toLowerCase();
+            if (text.contains(newText)) {
+                filteredList.add(tag_list.get(i));
+            }
+        }
+
+        if(filteredList.size()>0) {
+//            switch (searchFrom){
+//                case 0:
+//                    break;
+//                case 1:
+//                    tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+//                    tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+//                        @Override
+//                        public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+//                            tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+//                        }
+//                    });
+//                    tag_recycler_view.setAdapter(tags_adapter);
+//                    break;
+//            }
+
+            tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+            tags_adapter = new Tags_Adapter(fromProfile, TagsActivity.this, filteredList,cat_id,category_name, new FollowUnfollowLIstner() {
+                @Override
+                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+                    tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+                }
+            });
+            tag_recycler_view.setAdapter(tags_adapter);
+        }
+
     }
 }

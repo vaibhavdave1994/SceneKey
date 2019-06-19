@@ -108,11 +108,11 @@ public class Map_FragmentEventDetail extends Fragment implements OnMapReadyCallb
         String[] strDateOnly = sourcedatevalue.split("TO");
         sourcedatevalue = strDateOnly[0].replace("T"," ");
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:SS");
         SimpleDateFormat targetFormat = new SimpleDateFormat("dd-MMM-yyyy K:mm a");
 
         String targetdatevalue = parseDate(sourcedatevalue, dateFormat, targetFormat);
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("HH:MM:SS");
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("HH:mm:SS");
         SimpleDateFormat targetFormat1 = new SimpleDateFormat("K:mm a");
         targetdatevalue = targetdatevalue + " TO "+parseDate(strDateOnly[1], dateFormat1, targetFormat1);
 

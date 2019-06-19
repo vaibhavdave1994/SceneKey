@@ -282,10 +282,10 @@ public class NewSearchkFragment extends Fragment {
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
                                 tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
-                                tagModal.tag_name = jsonObjectSTL.getString("tag_name");
+                                tagModal.tag_text = jsonObjectSTL.getString("tag_name");
                                 tagModal.category_name = jsonObjectSTL.getString("category_name");
                                 tagModal.color_code = jsonObjectSTL.getString("color_code");
-                                tagModal.tag_text = jsonObjectSTL.getString("tag_text");
+                                tagModal.tag_name = jsonObjectSTL.getString("tag_text");
                                 tagModal.tag_image = jsonObjectSTL.getString("tag_image");
                                 tagModal.status = jsonObjectSTL.getString("status");
                                 tagModal.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
@@ -302,6 +302,20 @@ public class NewSearchkFragment extends Fragment {
                                 Log.v("tag_list2", "" + specialTag_list.size());
                             }
 
+                            if(specialTag_list.size() >0){
+                                TagModal tagModalNew = new TagModal();
+                                JSONObject jsonObjectSTL = specialTagList.getJSONObject(0);
+                                tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
+                                tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
+                                tagModalNew.category_name = jsonObjectSTL.getString("category_name");
+                                tagModalNew.color_code = jsonObjectSTL.getString("color_code");
+                                tagModalNew.tag_name = jsonObjectSTL.getString("tag_name");
+                                tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
+                                tagModalNew.status = jsonObjectSTL.getString("status");
+                                tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                tagModalNew.makeOwnItem =true;
+                                specialTag_list.add(0,tagModalNew);
+                            }
                             tag_list.addAll(specialTag_list);
                             tag_list.addAll(tag_listDeactive);
 
@@ -319,6 +333,7 @@ public class NewSearchkFragment extends Fragment {
                                 @Override
                                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
                                     tagFollowUnfollow(followUnfollow,biz_tag_id,postion);
+
                                 }
                             });
                                 search_recycler_view.setAdapter(tags_specialAdapter);
@@ -411,16 +426,16 @@ public class NewSearchkFragment extends Fragment {
                         activity.dismissProgDialog();
                         if(jo.has("status")){
                             if(jo.getString("status").equalsIgnoreCase("success")){
-                            TagModal tagModal = tag_list.get(pos);
-                            if(followUnfollow == 0){
-                                tagModal.is_tag_follow = "0";
-                            }
-                            else {
-                                tagModal.is_tag_follow = "1";
-                            }
-                            tag_list.set(pos,tagModal);
-                            tags_specialAdapter.notifyItemChanged(pos);
-                                //getTag_searchList(searchText);
+//                            TagModal tagModal = tag_list.get(pos);
+//                            if(followUnfollow == 0){
+//                                tagModal.is_tag_follow = "0";
+//                            }
+//                            else {
+//                                tagModal.is_tag_follow = "1";
+//                            }
+//                            tag_list.set(pos,tagModal);
+//                            tags_specialAdapter.notifyItemChanged(pos);
+                                getTag_searchList(searchText);
                             }
                         }
 

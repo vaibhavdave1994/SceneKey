@@ -75,7 +75,6 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             tagModal.isVenue = "0";
         }
         if(tagModal.isVenue.equalsIgnoreCase("1")){
-
             Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
                     .error(R.drawable.app_icon).into(holder.iv_tag_circulerImage);
         }
@@ -83,7 +82,6 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
                     .error(R.drawable.app_icon).into(holder.iv_imageView);
         }
-
 
         if(!fromProfile){
             if(tagModal.is_tag_follow.equalsIgnoreCase("0")){
@@ -99,19 +97,26 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
 
             @Override
             public boolean onLongClick(View v) {
-                //confirmPopUp(tagModal);
-                if(tagModal.is_tag_follow.equalsIgnoreCase("0")){
-                    followUnfollowDialog(tagModal,1);
-//                    pop_up_option_follow_unfollow.setObject(tagModal,1);
-//                    pop_up_option_follow_unfollow.show();
-                }
-                else {
-                    followUnfollowDialog(tagModal,0);
-//                    pop_up_option_follow_unfollow.setObject(tagModal,0);
-//                    pop_up_option_follow_unfollow.show();
-                }
 
+                if(tagModal != null) {
+                    if(tagModal.category_name != null){
+                    if (!tagModal.category_name.equalsIgnoreCase("Specials") &&
+                            !tagModal.category_name.equalsIgnoreCase("Happy Hour")) {
+                        if (tagModal.is_tag_follow.equalsIgnoreCase("0")) {
+                            followUnfollowDialog(tagModal, 1);
+
+                        } else {
+                            followUnfollowDialog(tagModal, 0);
+                        }
+
+                    }
+                    }
+                    else {
+
+                    }
+                }
                 return false;
+
             }
         });
     }
@@ -149,7 +154,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
                     switch (view.getId()) {
                         case R.id.mainRoomView:
                             Intent intent;
-                            if(category_name.equalsIgnoreCase("Specials")){
+                            if(category_name.equalsIgnoreCase("Specials") || category_name.equalsIgnoreCase("Happy Hour")){
                                 intent = new Intent(context, SearchSubCategoryActivity.class);
                                 intent.putExtra("tagModal", tagModal);
                                 intent.putExtra("catId", catId);

@@ -93,10 +93,16 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
         final Event event = object.getEvent();
 
         if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
-            holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
+            //holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
+            holder.tv_follow.setText("Follow");
+//            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
+//            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
         }
         else {
-            holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
+           // holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
+            holder.tv_follow.setText("Following");
+//            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.following_border));
+//            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.gray2));
         }
         Collections.sort(eventsArrayList, new SortByPoint());
         try {
@@ -212,7 +218,7 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
             }
         });
 
-        holder.iv_add.setOnClickListener(new View.OnClickListener() {
+        holder.tv_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -221,7 +227,7 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
 //                    tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),position);
                 }
                 else {
-                    followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
+                    //followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
 //                    tagFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
                 }
             }
@@ -525,6 +531,7 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
         private ImageView green_dot;
         private ImageView iv_note_book;
         AppCompatImageView iv_comment,iv_add;
+        TextView tv_follow;
         ViewHolder(View view) {
             super(view);
 
@@ -549,6 +556,7 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
             iv_note_book = view.findViewById(R.id.iv_note_book);
             iv_comment = view.findViewById(R.id.iv_comment);
             iv_add = view.findViewById(R.id.iv_add);
+            tv_follow = view.findViewById(R.id.tv_follow);
         }
     }
 

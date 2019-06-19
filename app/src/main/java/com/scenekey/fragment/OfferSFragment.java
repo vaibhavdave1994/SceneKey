@@ -189,6 +189,7 @@ public class OfferSFragment extends Fragment {
                                     offers.reward_language = jsonObject2.getString("reward_language");
                                     offers.goes_to = jsonObject2.getString("goes_to");
                                     offers.exp = jsonObject2.getString("exp");
+                                    offers.crd = jsonObject2.getString("crd");
                                     offers.venue_name = jsonObject2.getString("venue_name");
                                     offers.venue_address = jsonObject2.getString("venue_address");
                                     offers.venue_image = jsonObject2.getString("venue_image");

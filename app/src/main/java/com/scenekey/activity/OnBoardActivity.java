@@ -63,6 +63,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     private RelativeLayout container;
     private ArrayList<VenueBoard.EventTagBean.TagListBean> venuBoardList;
     private ArrayList<VenueBoard.EventTagBean.TagListBean> venuBoardListSpecial;
+    private ArrayList<VenueBoard.EventTagBean.TagListBean> venuBoardListHappyHour;
     private ArrayList<VenueBoard.EventTagBean> venuBoardEventTagBeanList;
     private VenueBoardAdapter venueBoardAdapter;
     private RecyclerView venuRecyclerView;
@@ -181,6 +182,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                             JSONArray eventTag = jo.getJSONArray("eventTag");
                             VenueBoard.EventTagBean eventTagBean;
                             VenueBoard.EventTagBean eventTagBeanSpecial = null;
+                            VenueBoard.EventTagBean eventTagBeanHappyHour = null;
                             for (int i = 0; i < eventTag.length(); i++) {
 
                                 JSONObject jsonObject1 = eventTag.getJSONObject(i);
@@ -212,6 +214,32 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                         }
                                         eventTagBeanSpecial.setTagList(venuBoardListSpecial);
                                     }
+                                    else
+                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Happy Hour")){
+                                        eventTagBeanHappyHour = new VenueBoard.EventTagBean();
+                                        eventTagBeanHappyHour.setCat_id(jsonObject1.getString("cat_id"));
+                                        eventTagBeanHappyHour.setCategory_name(jsonObject1.getString("category_name"));
+                                        eventTagBeanHappyHour.setColor_code(jsonObject1.getString("color_code"));
+                                        eventTagBeanHappyHour.setCategory_image(jsonObject1.getString("category_image"));
+                                        eventTagBeanHappyHour.setColor_code(jsonObject1.getString("color_code"));
+
+                                        venuBoardListHappyHour = new ArrayList<>();
+                                        for (int j = 0; j < tagList.length(); j++) {
+
+                                            JSONObject jsonObject = tagList.getJSONObject(j);
+
+                                            VenueBoard.EventTagBean.TagListBean tagListBean = new VenueBoard.EventTagBean.TagListBean();
+                                            tagListBean.setBiz_tag_id(jsonObject.getString("biz_tag_id"));
+                                            tagListBean.setTag_name(jsonObject.getString("tag_name"));
+                                            tagListBean.setColor_code(jsonObject.getString("color_code"));
+                                            tagListBean.setTag_text(jsonObject.getString("tag_text"));
+                                            tagListBean.setTag_image(jsonObject.getString("tag_image"));
+                                            tagListBean.setIs_tag_follow(jsonObject.getString("is_tag_follow"));
+
+                                            venuBoardListHappyHour.add(tagListBean);
+                                        }
+                                        eventTagBeanHappyHour.setTagList(venuBoardListHappyHour);
+                                    }
                                     else {
                                         eventTagBean = new VenueBoard.EventTagBean();
                                         eventTagBean.setCat_id(jsonObject1.getString("cat_id"));
@@ -240,6 +268,11 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                     }
                                 }
                             }
+
+                            if(eventTagBeanHappyHour != null){
+                                venuBoardEventTagBeanList.add(eventTagBeanHappyHour);
+                            }
+
                             if(eventTagBeanSpecial != null){
                                 venuBoardEventTagBeanList.add(eventTagBeanSpecial);
                             }

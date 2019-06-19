@@ -64,12 +64,13 @@ public class OfferAdapter  extends RecyclerView.Adapter {
         if(offers.alert_type.equalsIgnoreCase("reward")){
             ((ViewHolderReward) holder).offerUserName.setText(offers.business_name);
             ((ViewHolderReward) holder).tv_reward_language.setText(offers.reward_language);
-            ((ViewHolderReward) holder).tv_point.setText(offers.point+" points");
+            ((ViewHolderReward) holder).tv_point.setText(offers.point+" Keypoints");
+            ((ViewHolderReward) holder).txt_exp_days.setText(offers.crd);
             if(!offers.exp.equals("1")){
-                ((ViewHolderReward) holder).txt_exp_days.setText(offers.exp+""+" days");
+                ((ViewHolderReward) holder).tv_exp_new.setText("(Expires in "+offers.exp+""+" days)");
             }else {
 //            holder.txt_exp_days.setText("today");
-                ((ViewHolderReward) holder).txt_exp_days.setText(offers.exp+""+" day");
+                ((ViewHolderReward) holder).tv_exp_new.setText("(Expires in "+offers.exp+""+" day)");
             }
 
             if(!offers.reward_image.equals("")){
@@ -145,9 +146,11 @@ public class OfferAdapter  extends RecyclerView.Adapter {
         private ImageView venue_image;
         CircleImageView civ;
         RelativeLayout rv_main;
+        TextView tv_exp_new;
 
         ViewHolderReward(View itemView) {
             super(itemView);
+            tv_exp_new = itemView.findViewById(R.id.tv_exp_new);
             offerUserName = itemView.findViewById(R.id.offerUserName);
             civ = itemView.findViewById(R.id.civ);
             //venue_address = itemView.findViewById(R.id.venue_address);

@@ -1143,6 +1143,7 @@
     <!--️ U+FE0F-->
     <string name="PTBS2">  ❤️ this event or share to this scene page.You will help other Scenesters see what\'s happening here in real time!</string>  <!--Post to the big screen!-->
     <string name="sorry4"> Unfortunately, there a no \n rewards being offered in your \n area at this time. Please check \n back for updates.</string>
+    <string name="sorry4_new">You have no alerts at this time.</string>
     <string name="sorry5"> You have no rewards in your \n wallet at this moment. You can \n add rewards from the offer \n page.</string>
 
     <!--Events Fragment-->

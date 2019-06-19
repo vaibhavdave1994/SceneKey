@@ -458,6 +458,7 @@ public class Trending_Fragment extends Fragment {
                             intent.putExtra("object", object);
                             intent.putExtra("venueId", venue_name.getVenue_id());
                             intent.putExtra("fromTrending", true);
+                            intent.putExtra("isKeyInAble", isKeyInAble);
                             startActivity(intent);
 
                          /*   Event_Fragment fragment = Event_Fragment.newInstance("trending");

@@ -59,7 +59,7 @@ public class VenueBoardAdapter extends RecyclerView.Adapter<VenueBoardAdapter.Vi
         //------------------venueboard special tags ---------------------
         List<VenueBoard.EventTagBean.TagListBean> venue_boardList_inner = new ArrayList<>();
         List<VenueBoard.EventTagBean.TagListBean> venue_boardList_inner_vertical = new ArrayList<>();
-        if(venue_boardList.get(position).getCategory_name().equalsIgnoreCase("Specials")){
+        if(venue_boardList.get(position).getCategory_name().equalsIgnoreCase("Specials") || venue_boardList.get(position).getCategory_name().equalsIgnoreCase("Happy Hour")){
             holder.tag__vanue_name.setText(venue_boardList.get(position).getCategory_name());
             Glide.with(context).load(venue_boardList.get(position).getCategory_image()).centerCrop().placeholder(R.drawable.app_icon)
                     .into(holder.iv_tag__special_image);

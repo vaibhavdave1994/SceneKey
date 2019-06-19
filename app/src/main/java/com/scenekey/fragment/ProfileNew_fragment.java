@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -27,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.OverScroller;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,7 +86,6 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class ProfileNew_fragment extends Fragment implements  View.OnClickListener{
 
     View v;
@@ -132,6 +133,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     LinearLayout ll_donothavebio;
     public static boolean shouldRefresh = false;
     TagModal tagModal,tagModal1,tagModal2,tagModal3,tagModal4;
+    NestedScrollView bottom_sheet;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -142,6 +144,9 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 //        v =  inflater.inflate(R.layout.user_detail_activity_layout, container, false);
        // ly_match_profile = v.findViewById(R.id.ly_match_profile);
 
+        bottom_sheet = v.findViewById(R.id.bottom_sheet);
+
+        bottom_sheet.smoothScrollTo(0,90);
         outerBouder = v.findViewById(R.id.outerBouder);
         outerBouder1 = v.findViewById(R.id.outerBouder1);
         outerBouder2 = v.findViewById(R.id.outerBouder2);
@@ -1264,6 +1269,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             intent.putExtra("tag_name", tagModal.tag_name);
             intent.putExtra("tag_image", tagModal.tag_image);
             intent.putExtra("tagmodel", tagModal);
+            intent.putExtra("from_tagadapter", true);
        // }
         context.startActivity(intent);
     }

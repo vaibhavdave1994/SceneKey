@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/raleway_regular"
-                android:text="@string/sorry4"
+                android:text="@string/sorry4_new"
                 android:textSize="@dimen/_16ssp" />
 
         </LinearLayout>

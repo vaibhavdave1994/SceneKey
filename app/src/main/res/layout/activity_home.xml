@@ -81,7 +81,7 @@
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="My Scene"
+                    android:text="Alerts"
                     android:gravity="center"
                     android:fontFamily="@font/montserrat_medium"
                     android:layout_centerInParent="true"
@@ -295,7 +295,8 @@
         <FrameLayout
             android:id="@+id/frame_fragments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+           />
 
     </LinearLayout>
 

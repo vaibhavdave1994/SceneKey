@@ -47,6 +47,7 @@ public class Search_tag_Adapter  extends RecyclerView.Adapter<Search_tag_Adapter
 //            holder.view.setVisibility(View.GONE);
 //        }
 
+
         holder.txt_catgoryName.setText(searchTagModal.category_name);
         Picasso.with(context).load(searchTagModal.back_image)
                 .error(R.drawable.sk_logo_black)
@@ -83,6 +84,8 @@ public class Search_tag_Adapter  extends RecyclerView.Adapter<Search_tag_Adapter
                     intent.putExtra("cat_id", searchTagModal.cat_id);
                     intent.putExtra("category_name", searchTagModal.category_name);
                     intent.putExtra("category_image", searchTagModal.category_image);
+                    intent.putExtra("color_code", searchTagModal.color_code);
+                    intent.putExtra("from_category", true);
                     context.startActivity(intent);
 
                     break;
