@@ -93,6 +93,7 @@
                     android:layout_height=".5px"
                     android:background="@color/m_f_gender_color"
                     android:layout_alignParentBottom="true"/>
+
             </RelativeLayout>
 
 
@@ -117,7 +118,7 @@
                     android:gravity="center"
                     android:text="@string/enter"
                     android:textColor="@color/title_color"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_16sdp" />
 
                 <include
                     android:id="@+id/key"

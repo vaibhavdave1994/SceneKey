@@ -74,14 +74,14 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
         if(tagModal.isVenue == null){
             tagModal.isVenue = "0";
         }
-        if(tagModal.isVenue.equalsIgnoreCase("1")){
-            Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
-                    .error(R.drawable.app_icon).into(holder.iv_tag_circulerImage);
-        }
-        else {
+//        if(tagModal.isVenue.equalsIgnoreCase("1")){
+//            Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+//                    .error(R.drawable.app_icon).into(holder.iv_tag_circulerImage);
+//        }
+//        else {
             Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
                     .error(R.drawable.app_icon).into(holder.iv_imageView);
-        }
+       // }
 
         if(!fromProfile){
             if(tagModal.is_tag_follow.equalsIgnoreCase("0")){
