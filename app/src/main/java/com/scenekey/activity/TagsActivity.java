@@ -419,10 +419,10 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObject = tagList.getJSONObject(i);
                                 tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
-                                tagModal.tag_text = jsonObject.getString("tag_name");
+                                tagModal.tag_name = jsonObject.getString("tag_name");
                                 tagModal.category_name = jsonObject.getString("category_name");
                                 tagModal.color_code = jsonObject.getString("color_code");
-                                tagModal.tag_name = jsonObject.getString("tag_text");
+                                tagModal.tag_text = jsonObject.getString("tag_text");
                                 tagModal.tag_image = jsonObject.getString("tag_image");
                                 tagModal.status = jsonObject.getString("status");
                                 tagModal.is_tag_follow = jsonObject.getString("is_tag_follow");
@@ -460,7 +460,6 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                                     Log.v("tag_list2", "" + specialTag_list.size());
                                 }
-
                             }
 
                             if(category_name.equalsIgnoreCase("Specials") ||

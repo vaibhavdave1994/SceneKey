@@ -25,6 +25,7 @@ public class TagModal  implements Serializable {
   public  String is_tag_follow;
   public  String isVenue;
   public  boolean makeOwnItem = false;
+  public  String cat_id;
 
 
 

@@ -30,13 +30,12 @@ import com.scenekey.util.StatusBarUtil;
 
 import java.util.Objects;
 
-public class BaseActivity    extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity {
 
     private Activity activity = this;
     private Dialog mProgressBar;
     public boolean isApiM;
-   CustomProgressBar customProgressBar ;
-
+    CustomProgressBar customProgressBar ;
 
     public static SessionManager getSessionData() {
         return SceneKey.sessionManager;
@@ -83,7 +82,6 @@ public class BaseActivity    extends AppCompatActivity {
         }
     }
 
-
     public void showStatusBar() {
         getWindow().clearFlags((WindowManager.LayoutParams.FLAG_FULLSCREEN));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -94,7 +92,6 @@ public class BaseActivity    extends AppCompatActivity {
             StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
         }
     }
-
 
     protected void setLoading(Boolean isLoading) {
 
@@ -140,8 +137,6 @@ public class BaseActivity    extends AppCompatActivity {
     }
 
 */
-
-
 
     protected void hideKeyboard() {
         if (getCurrentFocus() == null) return;

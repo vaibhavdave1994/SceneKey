@@ -44,6 +44,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/Search"
             android:layout_marginLeft="@dimen/_3sdp"
@@ -67,7 +69,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/linear"
         android:overScrollMode="never" />
-
 
     <ScrollView
         android:id="@+id/no_data_trending"

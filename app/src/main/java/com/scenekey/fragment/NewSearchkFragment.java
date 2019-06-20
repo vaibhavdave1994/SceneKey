@@ -282,10 +282,10 @@ public class NewSearchkFragment extends Fragment {
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
                                 tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
-                                tagModal.tag_text = jsonObjectSTL.getString("tag_name");
+                                tagModal.tag_name = jsonObjectSTL.getString("tag_name");
                                 tagModal.category_name = jsonObjectSTL.getString("category_name");
                                 tagModal.color_code = jsonObjectSTL.getString("color_code");
-                                tagModal.tag_name = jsonObjectSTL.getString("tag_text");
+                                tagModal.tag_text = jsonObjectSTL.getString("tag_text");
                                 tagModal.tag_image = jsonObjectSTL.getString("tag_image");
                                 tagModal.status = jsonObjectSTL.getString("status");
                                 tagModal.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
@@ -313,6 +313,7 @@ public class NewSearchkFragment extends Fragment {
                                 tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
                                 tagModalNew.status = jsonObjectSTL.getString("status");
                                 tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                tagModalNew.cat_id = jsonObjectSTL.getString("cat_id");
                                 tagModalNew.makeOwnItem =true;
                                 specialTag_list.add(0,tagModalNew);
                             }
@@ -333,7 +334,6 @@ public class NewSearchkFragment extends Fragment {
                                 @Override
                                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
                                     tagFollowUnfollow(followUnfollow,biz_tag_id,postion);
-
                                 }
                             });
                                 search_recycler_view.setAdapter(tags_specialAdapter);

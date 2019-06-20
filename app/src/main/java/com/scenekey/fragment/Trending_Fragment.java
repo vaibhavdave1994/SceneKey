@@ -623,6 +623,9 @@ public class Trending_Fragment extends Fragment {
                     params.put("biz_tag_id",biz_tag_id);
                     params.put("follow_status", String.valueOf(followUnfollow));
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    params.put("venue_id", "");
+                    params.put("lat", lat);
+                    params.put("long", lng);
                     return params;
                 }
             };

@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
+import com.scenekey.activity.SearchSubCategoryActivity;
 import com.scenekey.activity.TagsActivity;
 import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.fragment.NewSearchkFragment;
@@ -75,14 +76,27 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
 
         TagModal tagModal = tagList.get(position);
 
-        if(tagModal.category_name.equalsIgnoreCase("Specials")){
-            holder.tag__special_name.setText(tagModal.tag_name);
-            holder.tag__special_text.setText(tagModal.tag_text);
+        if(tagModal.category_name.equalsIgnoreCase("Specials")) {
+            if (!tagModal.makeOwnItem) {
+                holder.tag__special_name.setText(tagModal.tag_text);
+                holder.tag__special_text.setText(tagModal.tag_name);
+            }
+            else {
+                holder.tag__special_name.setText(tagModal.tag_name);
+                holder.tag__special_text.setText(tagModal.tag_text);
+            }
         }
         else
             if(tagModal.category_name.equalsIgnoreCase("Happy Hour")){
-                holder.tag__special_name.setText(tagModal.tag_name);
-                holder.tag__special_text.setText(tagModal.tag_text);
+
+                if (!tagModal.makeOwnItem) {
+                    holder.tag__special_name.setText(tagModal.tag_text);
+                    holder.tag__special_text.setText(tagModal.tag_name);
+                }
+                else {
+                    holder.tag__special_name.setText(tagModal.tag_name);
+                    holder.tag__special_text.setText(tagModal.tag_text);
+                }
             }
             else {
                 if (tagModal.tag_text == null || tagModal.tag_text.equals("")) {
@@ -93,13 +107,9 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
                     holder.tag__special_text.setText(tagModal.tag_name);
                 }
 
-
                 holder.tag__special_text.setText(tagModal.category_name);
                 holder.tag__special_text.setVisibility(View.VISIBLE);
             }
-
-
-
 
         holder.outerBouder.setBorderColor(Color.parseColor(tagModal.color_code));
         Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
@@ -126,12 +136,10 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
         if(tagModal.category_name.equalsIgnoreCase("Specials") ||
                 tagModal.category_name.equalsIgnoreCase("Happy Hour")){
 
-
             if(!tagModal.makeOwnItem){
                 holder.tv_follow.setVisibility(View.GONE);
                 holder.tv_unfollow.setVisibility(View.GONE);
             }
-
         }
 
         holder.mainRoomView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -180,14 +188,28 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
             TagModal tagModal = tagList.get(getAdapterPosition());
             switch (view.getId()) {
                 case R.id.mainRoomView:
-                    //if(tagModal.status.equalsIgnoreCase("active")){
-                        Intent intent = new Intent(context, TrendinSearchActivity.class);
-                        intent.putExtra("tag_name", tagModal.tag_text);
-                        intent.putExtra("tag_image", tagModal.tag_image);
-                        intent.putExtra("tagmodel", tagModal);
-                        intent.putExtra("from_tagadapter", true);
+                    if(tagModal.makeOwnItem){
+                        Intent  intent = new Intent(context, SearchSubCategoryActivity.class);
+                        intent.putExtra("tagModal", tagModal);
+                        intent.putExtra("catId", tagModal.cat_id);
+                        intent.putExtra("fromSpecial", true);
                         context.startActivity(intent);
-                    //}
+                    }
+                    else {
+                        Intent intent = new Intent(context, TrendinSearchActivity.class);
+                        if (tagModal.category_name.equalsIgnoreCase("Specials")) {
+                            intent.putExtra("tag_name", tagModal.tag_text);
+                            intent.putExtra("tag_image", tagModal.tag_image);
+                            intent.putExtra("tagmodel", tagModal);
+                            intent.putExtra("from_tagadapter", true);
+                        } else {
+                            intent.putExtra("tag_name", tagModal.tag_name);
+                            intent.putExtra("tag_image", tagModal.tag_image);
+                            intent.putExtra("tagmodel", tagModal);
+                            intent.putExtra("from_tagadapter", true);
+                        }
+                        context.startActivity(intent);
+                    }
                     break;
 
                 case R.id.tv_follow:
