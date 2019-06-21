@@ -188,12 +188,11 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                 searchText = editable.toString();
 
-                if (!searchText.isEmpty()) {
+                if (!searchText.equalsIgnoreCase("")) {
 
                     if(from_category){
                         tag_list.clear();
                         getSearchListByCategory(searchText);
-                        //beginSearch(searchText);
                     }
                     else {
                         if(fromProfile){
@@ -213,7 +212,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                         getMyFollowTag();
                     }
                     else {
-                        if (!cat_id.isEmpty()) {
+                        if (!cat_id.equalsIgnoreCase("")) {
 //                            if(category_name.equalsIgnoreCase("Happy Hour")){
 //                                tag_list.clear();
 //                                TagModal tagModal = new TagModal();

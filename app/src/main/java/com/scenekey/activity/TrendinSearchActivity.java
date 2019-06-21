@@ -65,6 +65,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
     private ImageView ivTag;
     boolean from_tagadapter = false;
     boolean fromSpecial = false;
+    boolean fromSearchSpecial = false;
     TagModal tagModal;
     int isTagFollowed = 2;
 
@@ -93,6 +94,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
         continer = findViewById(R.id.continer);
 
         fromSpecial =  getIntent().getBooleanExtra("fromSpecial",false);
+        fromSearchSpecial =  getIntent().getBooleanExtra("fromSearchSpecial",false);
         from_tagadapter = getIntent().getBooleanExtra("from_tagadapter",false);
 
         tagModal = (TagModal) getIntent().getSerializableExtra("tagmodel");
@@ -106,7 +108,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
         if (getIntent().getStringExtra("tag_name") != null)
             tag_name = getIntent().getStringExtra("tag_name");
 
-            if(fromSpecial){
+            if(fromSpecial || fromSearchSpecial){
                 if (getIntent().getStringExtra("tag_text") != null) {
                     tag_text = getIntent().getStringExtra("tag_text");
                     txt_f1_title.setText("" + tag_text);
@@ -114,7 +116,6 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             }
             else {
                     txt_f1_title.setText("" + tag_name);
-
             }
 
         if (getIntent().getStringExtra("tag_image") != null) {
@@ -454,7 +455,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                     params.put("long", userInfo.longi);
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     params.put("tag", tag_name);
-                    if(fromSpecial){
+                    if(fromSpecial || fromSearchSpecial){
                         params.put("type", tag_text);
                     }else {
                         params.put("type", "");

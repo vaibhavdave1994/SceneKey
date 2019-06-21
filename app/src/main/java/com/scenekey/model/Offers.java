@@ -8,6 +8,7 @@ public class Offers {
     public String goes_to;
     public String exp;
     public String crd;
+    public String venue_id;
     public String venue_name;
     public String venue_address;
     public String venue_image;

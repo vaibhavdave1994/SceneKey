@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
+import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.ZoomImageActivity;
 import com.scenekey.listener.MySelecteOfferListener;
 import com.scenekey.model.Offers;
@@ -90,7 +91,6 @@ public class OfferAdapter  extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     if( ((ViewHolderReward) holder).venue_image.getVisibility() == View.GONE){
-                        //utility.showCustomPopup(context.getString(R.string.plz_add_reward), String.valueOf(R.font.montserrat_medium));
                         diloagForAddtowallet(context,offers);
                     }
                     else {
@@ -113,6 +113,17 @@ public class OfferAdapter  extends RecyclerView.Adapter {
                     .placeholder(R.drawable.placeholder_img)
                     .error(R.drawable.placeholder_img)
                     .into( ((ViewHolderTag) holder).civ);
+
+            ((ViewHolderTag) holder).rv_main.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, OnBoardActivity.class);
+                    intent.putExtra("frequency", offers.frequency);
+                    intent.putExtra("venuid", offers.venue_id);
+                    intent.putExtra("fromAlert", true);
+                    context.startActivity(intent);
+                }
+            });
 //            if(!offers.exp.equals("1")){
 //                ((ViewHolderReward) holder).txt_exp_days.setText(offers.exp+""+" days");
 //            }else {

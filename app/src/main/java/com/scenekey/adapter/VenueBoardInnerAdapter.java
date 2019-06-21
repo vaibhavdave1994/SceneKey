@@ -138,25 +138,27 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
             holder.mainRoomView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("SceneKey");
-                    builder.setMessage("Want to search for "+socialMediaBean.getTag_name()+" ?");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(context, TrendinSearchActivity.class);
-                            intent.putExtra("tag_name", socialMediaBean.getTag_name());
-                            intent.putExtra("tag_image", socialMediaBean.getTag_image());
-                            context.startActivity(intent);
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                    builder.setTitle("SceneKey");
+//                    builder.setMessage("Want to search for "+socialMediaBean.getTag_name()+" ?");
+//                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            Intent intent = new Intent(context, TrendinSearchActivity.class);
+//                            intent.putExtra("tag_name", socialMediaBean.getTag_name());
+//                            intent.putExtra("tag_image", socialMediaBean.getTag_image());
+//                            context.startActivity(intent);
+//
+//                        }
+//                    });
+//                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                        }
+//                    });
+//                    final Dialog alertDialog = builder.create();
+//                    alertDialog.setCancelable(false);
+//                    alertDialog.show();
 
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                        }
-                    });
-                    final Dialog alertDialog = builder.create();
-                    alertDialog.setCancelable(false);
-                    alertDialog.show();
+                    showSearchConfirmDialog(socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+" ?");
                 }
             });
 

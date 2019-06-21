@@ -76,6 +76,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     private TextView tag__vanue_name;
     RelativeLayout venuName;
     boolean fromTrending = false;
+    boolean fromAlert = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,13 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 //        }
 
         img_eventDetail_back.setOnClickListener(this);
+
+        fromAlert = getIntent().getBooleanExtra("fromAlert",false);
+        if(fromAlert){
+            String venuid =  getIntent().getStringExtra("venuid");
+            String frequency =  getIntent().getStringExtra("frequency");
+            getDataViaAlert(frequency,venuid);
+        }
 
         if (getIntent().getSerializableExtra("eventid") != null) {
             Event event = (Event) getIntent().getSerializableExtra("eventid");
@@ -162,6 +170,152 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    //-------from alert---------
+    private void getDataViaAlert(final String frequency, final String venue_id) {
+
+        if (utility.checkInternetConnection()) {
+            setLoading(true);
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.VENUEBOARD, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    setLoading(false);
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        String status = jo.getString("status");
+                        if (status.equals("success")) {
+
+                            JSONArray eventTag = jo.getJSONArray("eventTag");
+                            VenueBoard.EventTagBean eventTagBean;
+                            VenueBoard.EventTagBean eventTagBeanSpecial = null;
+                            VenueBoard.EventTagBean eventTagBeanHappyHour = null;
+                            for (int i = 0; i < eventTag.length(); i++) {
+
+                                JSONObject jsonObject1 = eventTag.getJSONObject(i);
+                                JSONArray tagList = jsonObject1.getJSONArray("tagList");
+                                if(tagList.length()>0){
+
+                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Specials")){
+                                        eventTagBeanSpecial = new VenueBoard.EventTagBean();
+                                        eventTagBeanSpecial.setCat_id(jsonObject1.getString("cat_id"));
+                                        eventTagBeanSpecial.setCategory_name(jsonObject1.getString("category_name"));
+                                        eventTagBeanSpecial.setColor_code(jsonObject1.getString("color_code"));
+                                        eventTagBeanSpecial.setCategory_image(jsonObject1.getString("category_image"));
+                                        eventTagBeanSpecial.setColor_code(jsonObject1.getString("color_code"));
+
+                                        venuBoardListSpecial = new ArrayList<>();
+                                        for (int j = 0; j < tagList.length(); j++) {
+
+                                            JSONObject jsonObject = tagList.getJSONObject(j);
+
+                                            VenueBoard.EventTagBean.TagListBean tagListBean = new VenueBoard.EventTagBean.TagListBean();
+                                            tagListBean.setBiz_tag_id(jsonObject.getString("biz_tag_id"));
+                                            tagListBean.setTag_name(jsonObject.getString("tag_name"));
+                                            tagListBean.setColor_code(jsonObject.getString("color_code"));
+                                            tagListBean.setTag_text(jsonObject.getString("tag_text"));
+                                            tagListBean.setTag_image(jsonObject.getString("tag_image"));
+                                            tagListBean.setIs_tag_follow(jsonObject.getString("is_tag_follow"));
+
+                                            venuBoardListSpecial.add(tagListBean);
+                                        }
+                                        eventTagBeanSpecial.setTagList(venuBoardListSpecial);
+                                    }
+                                    else
+                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Happy Hour")){
+                                        eventTagBeanHappyHour = new VenueBoard.EventTagBean();
+                                        eventTagBeanHappyHour.setCat_id(jsonObject1.getString("cat_id"));
+                                        eventTagBeanHappyHour.setCategory_name(jsonObject1.getString("category_name"));
+                                        eventTagBeanHappyHour.setColor_code(jsonObject1.getString("color_code"));
+                                        eventTagBeanHappyHour.setCategory_image(jsonObject1.getString("category_image"));
+                                        eventTagBeanHappyHour.setColor_code(jsonObject1.getString("color_code"));
+
+                                        venuBoardListHappyHour = new ArrayList<>();
+                                        for (int j = 0; j < tagList.length(); j++) {
+
+                                            JSONObject jsonObject = tagList.getJSONObject(j);
+
+                                            VenueBoard.EventTagBean.TagListBean tagListBean = new VenueBoard.EventTagBean.TagListBean();
+                                            tagListBean.setBiz_tag_id(jsonObject.getString("biz_tag_id"));
+                                            tagListBean.setTag_name(jsonObject.getString("tag_name"));
+                                            tagListBean.setColor_code(jsonObject.getString("color_code"));
+                                            tagListBean.setTag_text(jsonObject.getString("tag_text"));
+                                            tagListBean.setTag_image(jsonObject.getString("tag_image"));
+                                            tagListBean.setIs_tag_follow(jsonObject.getString("is_tag_follow"));
+
+                                            venuBoardListHappyHour.add(tagListBean);
+                                        }
+                                        eventTagBeanHappyHour.setTagList(venuBoardListHappyHour);
+                                    }
+                                    else {
+                                        eventTagBean = new VenueBoard.EventTagBean();
+                                        eventTagBean.setCat_id(jsonObject1.getString("cat_id"));
+                                        eventTagBean.setCategory_name(jsonObject1.getString("category_name"));
+                                        eventTagBean.setColor_code(jsonObject1.getString("color_code"));
+                                        eventTagBean.setCategory_image(jsonObject1.getString("category_image"));
+                                        eventTagBean.setColor_code(jsonObject1.getString("color_code"));
+
+                                        venuBoardList = new ArrayList<>();
+                                        for (int j = 0; j < tagList.length(); j++) {
+
+                                            JSONObject jsonObject = tagList.getJSONObject(j);
+
+                                            VenueBoard.EventTagBean.TagListBean tagListBean = new VenueBoard.EventTagBean.TagListBean();
+                                            tagListBean.setBiz_tag_id(jsonObject.getString("biz_tag_id"));
+                                            tagListBean.setTag_name(jsonObject.getString("tag_name"));
+                                            tagListBean.setColor_code(jsonObject.getString("color_code"));
+                                            tagListBean.setTag_text(jsonObject.getString("tag_text"));
+                                            tagListBean.setTag_image(jsonObject.getString("tag_image"));
+                                            tagListBean.setIs_tag_follow(jsonObject.getString("is_tag_follow"));
+
+                                            venuBoardList.add(tagListBean);
+                                        }
+                                        eventTagBean.setTagList(venuBoardList);
+                                        venuBoardEventTagBeanList.add(eventTagBean);
+                                    }
+                                }
+                            }
+
+                            if(eventTagBeanHappyHour != null){
+                                venuBoardEventTagBeanList.add(eventTagBeanHappyHour);
+                            }
+
+                            if(eventTagBeanSpecial != null){
+                                venuBoardEventTagBeanList.add(eventTagBeanSpecial);
+                            }
+                            //venueBoardAdapter.notifyDataSetChanged();
+                            venueBoardAdapter = new VenueBoardAdapter(OnBoardActivity.this, venuBoardEventTagBeanList,fromTrending);
+                            venuRecyclerView.setAdapter(venueBoardAdapter);
+                        }
+
+                    } catch (Exception e) {
+                        setLoading(false);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    setLoading(false);
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("frequency", frequency);
+                    params.put("venue_id", venue_id);
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    params.put("lat",userInfo().lat);
+                    params.put("long", userInfo().longi);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
+        }
     }
 
     private void getSearchTagList(final String event_id, final String venue_id) {

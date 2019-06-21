@@ -19,7 +19,7 @@
             android:layout_width="@dimen/_55sdp"
             android:layout_height="@dimen/_55sdp"
             android:scaleType="centerCrop"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
             android:src="@color/white"
             app:civ_border_color="#FF0E0E"
             app:civ_border_width="@dimen/_1sdp" />
@@ -30,14 +30,14 @@
             android:layout_height="@dimen/_55sdp"
             android:visibility="gone"
             android:background="@drawable/bg_circle_follow"
-            android:layout_centerInParent="true"/>
+            />
 
         <ImageView
             android:id="@+id/iv_imageView"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_55sdp"
             android:padding="@dimen/_12sdp"
-            android:layout_centerInParent="true"/>
+            android:layout_centerHorizontal="true"/>
 
 
 
@@ -45,11 +45,11 @@
         <TextView
             android:id="@+id/tag_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_18sdp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_medium"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_below="@+id/iv_imageView"
             android:minHeight="@dimen/_16sdp"
             android:text="shh"

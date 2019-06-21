@@ -199,11 +199,14 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
                         Intent intent = new Intent(context, TrendinSearchActivity.class);
                         if (tagModal.category_name.equalsIgnoreCase("Specials")
                         || tagModal.category_name.equalsIgnoreCase("Happy Hour")) {
-                            intent.putExtra("tag_name", tagModal.tag_text);
+                            intent.putExtra("tag_name", tagModal.tag_name);
+                            intent.putExtra("tag_text", tagModal.tag_text);
                             intent.putExtra("tag_image", tagModal.tag_image);
                             intent.putExtra("tagmodel", tagModal);
                             intent.putExtra("from_tagadapter", true);
+                            intent.putExtra("fromSearchSpecial", true);
                         } else {
+                            //-------when tag is not special nor happy hour--------
                             intent.putExtra("tag_name", tagModal.tag_name);
                             intent.putExtra("tag_image", tagModal.tag_image);
                             intent.putExtra("tagmodel", tagModal);

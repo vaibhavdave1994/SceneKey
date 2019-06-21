@@ -64,6 +64,7 @@ public class WebServices {
     public final static String CATEGORY_TAG = BASE_URL + "allCategory";
 
     public final static String VENUEBOARD_EVENT_TAG = BASE_URL + "eventTags";
+    public final static String VENUEBOARD = BASE_URL + "venueBoard";
 
     /**
      * Event Like , Comment and post picture
