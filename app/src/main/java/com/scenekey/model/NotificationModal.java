@@ -12,4 +12,6 @@ public class NotificationModal  implements Serializable {
     public String notificationType1 = "";
     public String notificationCurrentScreen = "";
     public String isBroadCast = "";
+    public String frequency = "";
+    public String venue_id = "";
 }

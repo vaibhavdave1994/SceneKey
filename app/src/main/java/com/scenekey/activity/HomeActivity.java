@@ -135,6 +135,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Utility utility;
     private int position = 0;
     private String notificationType1 = "";
+    public String frequency = "";
+    public String venue_id = "";
     private String eventId = "";
     private String currentScreen = "";
     private String isBroadCast;
@@ -458,6 +460,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             String fullAddress = notificationModal.fullAddress;
             String bag_admin = notificationModal.bag_admin;
             notificationType1 = notificationModal.notificationType1;
+            frequency = notificationModal.frequency;
+            venue_id = notificationModal.venue_id;
             notificationMessage = notificationModal.message;
             currentScreen = notificationModal.notificationCurrentScreen;
             isBroadCast = notificationModal.isBroadCast;
@@ -529,6 +533,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 lastClick = 0;
                 isPermissionAvail = true;
                 rtlv_alert.callOnClick();
+
+                break;
+
+            case "tag":
+
+                Intent intentVenueBoard = new Intent(context, OnBoardActivity.class);
+                intentVenueBoard.putExtra("frequency", frequency);
+                intentVenueBoard.putExtra("venuid", venue_id);
+                intentVenueBoard.putExtra("fromAlert", true);
+                startActivity(intentVenueBoard);
 
                 break;
         }

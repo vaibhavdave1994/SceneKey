@@ -60,6 +60,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private String eventId = "";
     private String fullAddress = "";
     private String notificationType1 = "";
+    private String frequency = "";
+    private String venue_id = "";
     private String bag_admin = "";
     private String notificationMsg = "";
     private NotificationModal notificationModal;
@@ -127,6 +129,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     notificationType1 = obj.getString("notificationType");
                 }
 
+                if (obj.has("frequency")) {
+                    frequency = obj.getString("frequency");
+                }
+
+                if (obj.has("venue_id")) {
+                    venue_id = obj.getString("venue_id");
+                }
+
+
+
                 Object bag = obj.getString("bag");
 
                 if (bag != null && bag instanceof String) {
@@ -155,6 +167,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationModal.message = notificationMsg;
                 notificationModal.titleMsg = titleMsg;
                 notificationModal.notificationType1 = notificationType1;
+                notificationModal.frequency = frequency;
+                notificationModal.venue_id = venue_id;
             } catch (Exception e) {
 
                 e.printStackTrace();
@@ -163,7 +177,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = null;
         SessionManager sessionManager = new SessionManager(this);
-
 
         switch (notificationType1) {
             case "1":
@@ -258,7 +271,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         HomeActivity homeActivity = (HomeActivity) activity;
                         Fragment fragment = homeActivity.getCurrentFragment();
 
-                        if (fragment instanceof Reward_Fragment || fragment instanceof WalletsFragment || fragment instanceof OfferSFragment) {
+//                        if (fragment instanceof Reward_Fragment || fragment instanceof WalletsFragment || fragment instanceof OfferSFragment) {
+                        if (fragment instanceof Reward_Fragment || fragment instanceof WalletsFragment) {
                             if (sessionManager.isLoggedIn()) {
                                 intent = new Intent("BroadcastNotification");
                                 notificationModal.notificationCurrentScreen = "RewardScreen";
@@ -292,6 +306,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                     sendNotification(remoteMessage.getTtl(), title, intent, message, false, notificationModal);
                 }
+                break;
+
+            case "tag":
+                if (sessionManager.isLoggedIn()) {
+                    intent = new Intent(this, HomeActivity.class);
+                    notificationModal.notificationCurrentScreen = "HomeScreen";
+                    notificationModal.isBroadCast = "noBroadCast";
+                    intent.putExtra("notificationModalReward", notificationModal);
+                } else {
+                    new Intent(this, LoginActivity.class);
+                }
+                sendNotification(remoteMessage.getTtl(), title, intent, message, false, notificationModal);
                 break;
 
             case "22":

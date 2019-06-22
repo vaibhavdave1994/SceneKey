@@ -141,8 +141,6 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
         }
         String mTime = hhmmss[0] + ":" + hhmmss[1] + a;
 
-
-
         // Old Code
         if (object.getEvent().strStatus == 0) {
             holder.txt_time.setVisibility(View.GONE);

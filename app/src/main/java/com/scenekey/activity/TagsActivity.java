@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -76,6 +77,8 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
     boolean fromProfile = false;
     boolean from_category = false;
     RelativeLayout toolbar;
+    EditText et_serch_post;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +106,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
         ImageView img_tags_back = findViewById(R.id.img_tags_back);
         ImageView tag_image = findViewById(R.id.tag_image);
         TextView txt_f1_title = findViewById(R.id.txt_f1_title);
-        EditText et_serch_post = findViewById(R.id.et_serch_post);
+        et_serch_post = findViewById(R.id.et_serch_post);
 
         textWatcher(et_serch_post);
 
@@ -206,40 +209,21 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
 
-                } else {
-
+                }
+                else {
+                    System.out.println("searchtext: empty");
                     if(fromProfile){
                         getMyFollowTag();
                     }
                     else {
                         if (!cat_id.equalsIgnoreCase("")) {
-//                            if(category_name.equalsIgnoreCase("Happy Hour")){
-//                                tag_list.clear();
-//                                TagModal tagModal = new TagModal();
-//                                tagModal.biz_tag_id = "0";
-//                                tagModal.tag_name = category_name;
-//                                tagModal.color_code  = getIntent().getStringExtra("color_code");
-//                                tagModal.tag_text = category_name;
-//                                tagModal.tag_image = category_image;
-//                                tagModal.is_tag_follow = "0";
-//                                tagModal.isVenue = "0";
-//                                tag_list.add(tagModal);
-//
-//                                tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
-//                                tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
-//                                    @Override
-//                                    public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
-//                                        tagFollowUnfollow(followUnfollow,biz_tag_id,2);
-//                                    }
-//                                });
-//                                tag_recycler_view.setAdapter(tags_adapter);
-//                            }
-//                            else {
-                                getSearchTagList(cat_id);
-                            //}
+                            tag_list.clear();
+                            getSearchTagList(cat_id);
+
                         }
                     }
                     toolbar.setVisibility(View.VISIBLE);
+
                 }
             }
         });
@@ -384,6 +368,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
     private void getSearchListByCategory(final String searchText) {
 
+        System.out.println("searchtext: "+ searchText);
         if (utility.checkInternetConnection()) {
 
             if (!searchText.isEmpty()) {
@@ -588,20 +573,6 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             tag_list.add(tagModal);
                         }
 
-                       /* if (!category_name.equals("Specials")) {
-
-                            tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
-                            tags_adapter = new Tags_Adapter(TagsActivity.this, tag_list);
-                            tag_recycler_view.setAdapter(tags_adapter);
-
-                        } else {
-
-                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                            tag_recycler_view.setLayoutManager(mLayoutManager);
-                            tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list);
-                            tag_recycler_view.setAdapter(tags_specialAdapter);
-                        }*/
-
                         tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
                         tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
                             @Override
@@ -609,7 +580,13 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                 tagFollowUnfollow(followUnfollow,biz_tag_id,2);
                             }
                         });
-                        tag_recycler_view.setAdapter(tags_adapter);
+                        new Handler().postDelayed(new Runnable() {
+                            // Using handler with postDelayed called runnable run method
+                            @Override
+                            public void run() {
+                                tag_recycler_view.setAdapter(tags_adapter);
+                            }
+                        }, 100);
 
                     }
 
@@ -666,11 +643,20 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(fromProfile){
-            getMyFollowTag();
+        if(from_category){
+            if(et_serch_post != null) {
+                if (!et_serch_post.getText().toString().equalsIgnoreCase("")) {
+                    tag_list.clear();
+                    getSearchListByCategory(searchText);
+                }
+            }
+
         }
         else {
-            if (!cat_id.isEmpty()) {
+            if (fromProfile) {
+                getMyFollowTag();
+            } else {
+                if (!cat_id.isEmpty()) {
 //                if(category_name.equalsIgnoreCase("Happy Hour")){
 //                    tag_list.clear();
 //                    TagModal tagModal = new TagModal();
@@ -694,7 +680,8 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 //                }
 //                else {
                     getSearchTagList(cat_id);
-                //}
+                    //}
+                }
             }
         }
     }

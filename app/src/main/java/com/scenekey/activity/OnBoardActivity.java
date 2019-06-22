@@ -2,6 +2,7 @@ package com.scenekey.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -22,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
@@ -50,8 +52,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class OnBoardActivity extends BaseActivity implements View.OnClickListener {
@@ -71,12 +78,16 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     Event event;
     Venue venue;
     private String[] currentLatLng;
-    Events object;
+    public Events object;
     private ImageView iv_tag__special_image,img_no_member,iv_group;
     private TextView tag__vanue_name;
     RelativeLayout venuName;
     boolean fromTrending = false;
     boolean fromAlert = false;
+    RelativeLayout lnrLeft,comeInUser_lnr;
+    private ArrayList<Events> eventsArrayList;
+    String venuid ="";
+    String frequency ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +113,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         iv_group.setOnClickListener(this);
         iv_tag__special_image = findViewById(R.id.iv_tag__special_image);
         tag__vanue_name = findViewById(R.id.tag__vanue_name);
+        lnrLeft = findViewById(R.id.lnrLeft);
+        comeInUser_lnr = findViewById(R.id.comeInUser_lnr);
 
 //        if (getIntent().getSerializableExtra("event") != null) {
 //           Event event = (Event) getIntent().getSerializableExtra("event");
@@ -112,8 +125,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
         fromAlert = getIntent().getBooleanExtra("fromAlert",false);
         if(fromAlert){
-            String venuid =  getIntent().getStringExtra("venuid");
-            String frequency =  getIntent().getStringExtra("frequency");
+            venuid =  getIntent().getStringExtra("venuid");
+            frequency =  getIntent().getStringExtra("frequency");
             getDataViaAlert(frequency,venuid);
         }
 
@@ -124,6 +137,9 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             venue = venuid;
             object = (Events) getIntent().getSerializableExtra("object");
             currentLatLng = (String[]) getIntent().getSerializableExtra("currentLatLng");
+            if(currentLatLng == null){
+                currentLatLng = new String[]{userInfo().lat, userInfo().longi};
+            }
             onBoard_txt_event_name.setText("" + event.event_name);
             getSearchTagList(event.event_id, venuid.getVenue_id());
         }
@@ -288,6 +304,58 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                             //venueBoardAdapter.notifyDataSetChanged();
                             venueBoardAdapter = new VenueBoardAdapter(OnBoardActivity.this, venuBoardEventTagBeanList,fromTrending);
                             venuRecyclerView.setAdapter(venueBoardAdapter);
+
+                            //-------------eventdata-----------------
+                            JSONObject jsonEventData = jo.getJSONObject("eventData");
+                            if (jsonEventData.has("events")) {
+                                if (eventsArrayList == null) eventsArrayList = new ArrayList<>();
+                                else eventsArrayList.clear();
+                                JSONArray eventAr = jsonEventData.getJSONArray("events");
+                                for (int i = 0; i < eventAr.length(); i++) {
+                                    JSONObject jobject = eventAr.getJSONObject(i);
+                                    Events events = new Events();
+                                    if (jobject.has("venue"))
+                                        events.setVenueJSON(jobject.getJSONObject("venue"));
+                                    if (jobject.has("artists"))
+                                        events.setArtistsArray(jobject.getJSONArray("artists"));
+                                    if (jobject.has("events"))
+                                        events.setEventJson(jobject.getJSONObject("events"));
+                                    try {
+                                        events.setOngoing(events.checkWithTime(events.getEvent().event_date, events.getEvent().interval));
+
+                                        // New Code
+                                        checkWithDate(events.getEvent().event_date, events.getEvent().rating, events);
+                                    } catch (Exception e) {
+                                        Utility.e("Date exception", e.toString());
+                                    }
+
+                                    try {
+                                        int time_format = 0;
+                                        try {
+                                            time_format = Settings.System.getInt(getContentResolver(), Settings.System.TIME_12_24);
+                                        } catch (Settings.SettingNotFoundException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        events.settimeFormat(time_format);
+                                    } catch (Exception e) {
+                                        Utility.e("Exception time", e.toString());
+                                    }
+                                    try {
+                                        events.setRemainingTime();
+                                    } catch (Exception e) {
+                                        Utility.e("Exception Remaining", e.toString());
+                                    }
+                                    eventsArrayList.add(events);
+                                    if (i == 0) {
+                                        event = events.getEvent();
+                                        venue = events.getVenue();
+                                        object = events;
+                                    }
+                                }
+
+                            }
+                            getAllData();
                         }
 
                     } catch (Exception e) {
@@ -315,6 +383,86 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
+        }
+    }
+
+    public void checkWithDate(final String startDate, final String rating, Events events) {  //2018-11-12 18:00:00TO08:00:00
+        String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
+        try {
+            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).parse(dateSplit[0] + " " + dateSplit[1]);
+
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String formattedDate = df.format(c.getTime());
+
+            Date curTime = df.parse(formattedDate);
+
+            getDayDifference(startTime, curTime, rating, events);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //********** day diffrence  ****************//
+    public void getDayDifference(Date startDate, Date endDate, String rating, Events events) {
+        //milliseconds
+        long different = startDate.getTime() - endDate.getTime();
+
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+
+        long elapsedSeconds = different / secondsInMilli;
+
+        if (different > 0) {
+            if (elapsedHours > 0) {
+                events.getEvent().returnDay = elapsedHours + "hr";
+                events.getEvent().strStatus = 2;
+            } else if (elapsedMinutes > 0) {
+                events.getEvent().returnDay = elapsedMinutes + "mins";
+                events.getEvent().strStatus = 2;
+            } else if (elapsedSeconds > 0) {
+                events.getEvent().returnDay = elapsedSeconds + "secs";
+                //strStatus = 2;
+                events.getEvent().strStatus = 2;
+            } else {
+                if (rating.equals("0")) {
+                    events.getEvent().returnDay = "--";
+                    //strStatus = 0;
+                    events.getEvent().strStatus = 0;
+                } else {
+                    //strStatus = 1;
+                    events.getEvent().strStatus = 1;
+                    // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
+                    events.getEvent().returnDay = rating;
+                }
+            }
+        } else {
+            /*returnDay = "--";
+            strStatus = 0;*/
+
+            if (rating.equals("0")) {
+                events.getEvent().returnDay = "--";
+                //strStatus = 0;
+                events.getEvent().strStatus = 0;
+            } else {
+                events.getEvent().strStatus = 1;
+                //strStatus = 1;
+                // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
+                events.getEvent().returnDay = rating;
+            }
         }
     }
 
@@ -599,8 +747,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 Object objectType = obj1.get("eventattendy");
 
                 if (objectType instanceof String) {
-                    iv_group.setVisibility(View.VISIBLE);
-
+                        iv_group.setVisibility(View.VISIBLE);
                 } else if (objectType instanceof JSONArray) {
                     setAttendyJson(obj1.getJSONArray("eventattendy"));
                     iv_group.setVisibility(View.GONE);
@@ -608,8 +755,13 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 }
             }
 
+            if(fromAlert)
+                manageFrequency(frequency);
+
         } catch (JSONException e) {
             e.printStackTrace();
+            if(fromAlert)
+            manageFrequency(frequency);
         }
 
     }
@@ -824,5 +976,64 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
+    }
+
+    public void manageFrequency(String frequency){
+//        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+//        Date d = new Date();
+//        String dayOfTheWeek = sdf.format(d);
+//        Toast.makeText(this, dayOfTheWeek, Toast.LENGTH_SHORT).show();
+
+        switch (frequency){
+            case "daily":
+                iv_group.setVisibility(View.VISIBLE);
+                img_no_member.setVisibility(View.VISIBLE);
+                comeInUser_lnr.setVisibility(View.VISIBLE);
+                break;
+
+            case "0":
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_WEEK);
+                day = day -1;
+
+                if(day == Integer.parseInt(frequency)){
+                    iv_group.setVisibility(View.VISIBLE);
+                    img_no_member.setVisibility(View.VISIBLE);
+                    comeInUser_lnr.setVisibility(View.VISIBLE);
+                }
+                else {
+                    iv_group.setVisibility(View.GONE);
+                    img_no_member.setVisibility(View.GONE);
+                    comeInUser_lnr.setVisibility(View.GONE);
+                }
+                break;
+
+                default:
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = new Date();
+        String curDate = sdf.format(d);
+
+        if(frequency.equalsIgnoreCase(curDate)){
+            iv_group.setVisibility(View.VISIBLE);
+            img_no_member.setVisibility(View.VISIBLE);
+            comeInUser_lnr.setVisibility(View.VISIBLE);
+        }
+        else {
+            iv_group.setVisibility(View.GONE);
+            img_no_member.setVisibility(View.GONE);
+            comeInUser_lnr.setVisibility(View.GONE);
+        }
+       break;
+
+        }
+
     }
 }

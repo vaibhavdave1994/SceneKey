@@ -70,8 +70,8 @@ public class OfferAdapter  extends RecyclerView.Adapter {
             if(!offers.exp.equals("1")){
                 ((ViewHolderReward) holder).tv_exp_new.setText("(Expires in "+offers.exp+""+" days)");
             }else {
-//            holder.txt_exp_days.setText("today");
-                ((ViewHolderReward) holder).tv_exp_new.setText("(Expires in "+offers.exp+""+" day)");
+                ((ViewHolderReward) holder).tv_exp_new.setText("(Expire today)");
+                //((ViewHolderReward) holder).tv_exp_new.setText("(Expires in "+offers.exp+""+" day)");
             }
 
             if(!offers.reward_image.equals("")){

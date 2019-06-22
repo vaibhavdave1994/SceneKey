@@ -374,7 +374,6 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
                         activity.dismissProgDialog();
                         Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
                     }
-
                 }
             }, new Response.ErrorListener() {
                 @Override
