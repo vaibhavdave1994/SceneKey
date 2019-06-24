@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar"
+        android:background="@drawable/bg_top_bar"
+        android:gravity="center_vertical">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/top_bar_profile"
+            android:layout_height="@dimen/top_bar_profile"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_12sdp"
+            app:srcCompat="@drawable/ic_back_icon" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/iv_report"
+            android:layout_width="180sdp"
+            android:layout_height="@dimen/top_bar_profile"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/_8sdp"
+            app:srcCompat="@drawable/sk_logo_image" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

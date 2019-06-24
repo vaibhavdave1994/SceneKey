@@ -1838,7 +1838,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
     /**
      * @param bitmap the bitmap return by the activity result
      */
@@ -1890,7 +1889,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             dismissProgDialog();
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
