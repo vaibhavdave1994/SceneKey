@@ -1160,5 +1160,8 @@
     <string name="report_submitted_successfully">Report submitted successfully</string>
     <string name="reward_redeem_successfully">Reward redeemed successfully</string>
 
+    //------------new registration---------
+    <string name="login_or_signup">Login or signup for free</string>
+    <string name="continue_with_email">Continue with email</string>
 
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp"
+  >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Find your scene"
+        android:textColor="@color/colorPrimaryDark_new"
+        android:textSize="@dimen/_16sdp"
+        android:fontFamily="@font/roboto_medium"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Easily find unique, specific things you are looking for, all in real time. "
+        android:textColor="@color/reward_day_color"
+        android:textSize="@dimen/_16sdp"
+        android:fontFamily="@font/roboto_regular"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_margin="@dimen/_30sdp"
+        android:background="@drawable/vp_slide1"/>
+
+</LinearLayout>

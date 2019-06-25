@@ -7,5 +7,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
-        android:background="@drawable/welcome_slide4"/>
+        android:background="@drawable/vp_slide4"/>
 </LinearLayout>

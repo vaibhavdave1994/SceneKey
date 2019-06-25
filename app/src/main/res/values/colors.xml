@@ -199,6 +199,18 @@
         <item>@color/dot_light_screen8</item>
     </array>
 
+    //----------new array dots----
+    <array name="array_dot_active_new">
+        <item>@color/dot_light_screen1_new</item>
+        <item>@color/dot_light_screen2_new</item>
+        <item>@color/dot_light_screen3_new</item>
+        <item>@color/dot_light_screen4_new</item>
+        <item>@color/dot_light_screen5_new</item>
+        <item>@color/dot_light_screen6_new</item>
+        <item>@color/dot_light_screen7_new</item>
+        <item>@color/dot_light_screen8_new</item>
+    </array>
+
     <array name="array_dot_inactive">
         <item>@color/dot_dark_screen1</item>
         <item>@color/dot_dark_screen2</item>
@@ -230,4 +242,19 @@
     <color name="dot_light_screen6">#25ea8e</color>
     <color name="dot_light_screen7">#25ea8e</color>
     <color name="dot_light_screen8">#25ea8e</color>
+
+    //-----------------dots new color------
+    <color name="dot_light_screen1_new">#1f9796</color>
+    <color name="dot_light_screen2_new">#1f9796</color>
+    <color name="dot_light_screen3_new">#1f9796</color>
+    <color name="dot_light_screen4_new">#1f9796</color>
+    <color name="dot_light_screen5_new">#1f9796</color>
+    <color name="dot_light_screen6_new">#1f9796</color>
+    <color name="dot_light_screen7_new">#1f9796</color>
+    <color name="dot_light_screen8_new">#1f9796</color>
+
+    //----------------------new registration ---------
+    <color name="new_reg_login_signup">#969696</color>
+    <color name="fb_color">#3a5a97</color>
+    <color name="google_color">#f34a38</color>
 </resources>

@@ -2,35 +2,24 @@ package com.scenekey.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scenekey.R;
-import com.scenekey.helper.SessionManager;
-import com.scenekey.listener.StatusBarHide;
-import com.scenekey.util.SceneKey;
-import com.scenekey.util.StatusBarUtil;
 
-public class IntroActivity extends AppCompatActivity {
+public class NewIntroActivity extends AppCompatActivity {
 
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
     private LinearLayout dotsLayout;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -41,18 +30,16 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //  StatusBarUtil.setTranslucent(this);
 
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.activity_intro_new);
         viewPager = findViewById(R.id.a6_viewpager);
         dotsLayout = findViewById(R.id.layoutDots);
-        btnSkip = findViewById(R.id.btn_skip);
-        btnNext = findViewById(R.id.btn_next);
+
 
         layouts = new int[]{
-                R.layout.welcome_slide1,
+                R.layout.welcome_slide1_new,
                 R.layout.welcome_slide2,
                 R.layout.welcome_slide3,
-                R.layout.welcome_slide4,
-                R.layout.welcome_slide5
+                R.layout.welcome_slide4
         };
 
         // adding bottom dots
@@ -65,41 +52,12 @@ public class IntroActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IntroActivity.this, ImageUploadActivity.class);
-                intent.putExtra("from", "intro");
-                // Closing all the Activities
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                // Add new Flag to start new Activity
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
-                int current = getItem(+1);
-                if (current < layouts.length) {
-                    // move to next screen
-                    viewPager.setCurrentItem(current);
-                } else {
-                    // launchHomeScreen();
-                }
-            }
-        });
-
     }
 
     private void addBottomDots(int currentPage) {
         dots = new TextView[layouts.length];
 
-        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active);
+        int[] colorsActive = getResources().getIntArray(R.array.array_dot_active_new);
         int[] colorsInactive = getResources().getIntArray(R.array.array_dot_inactive);
 
         dotsLayout.removeAllViews();
@@ -131,17 +89,17 @@ public class IntroActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
-            IntroActivity.this.position = position;
+            NewIntroActivity.this.position = position;
 
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
-                btnNext.setText(getString(R.string.start));
-                btnSkip.setVisibility(View.VISIBLE);
+//                btnNext.setText(getString(R.string.start));
+//                btnSkip.setVisibility(View.VISIBLE);
             } else {
                 // still pages are left
-                btnNext.setText(getString(R.string.next));
-                btnSkip.setVisibility(View.GONE);
+//                btnNext.setText(getString(R.string.next));
+//                btnSkip.setVisibility(View.GONE);
             }
         }
 
