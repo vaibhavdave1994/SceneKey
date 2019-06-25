@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +12,6 @@
         android:id="@+id/rl_title_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar"
-        android:background="@drawable/bg_top_bar"
         android:gravity="center_vertical">
 
         <android.support.v7.widget.AppCompatImageView
@@ -25,13 +24,78 @@
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/iv_report"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_180sdp"
             android:layout_height="@dimen/top_bar_profile"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:padding="@dimen/_8sdp"
-            app:srcCompat="@drawable/sk_logo_image" />
+            android:layout_centerInParent="true"
+            android:padding="@dimen/_10sdp"
+            app:srcCompat="@drawable/sk_logo_black" />
 
     </RelativeLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:padding="@dimen/_12sdp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/whats_your_email"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_20sdp"
+            android:fontFamily="@font/raleway_medium"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/we_need_it"
+            android:textColor="@color/dark_gray_new_reg"
+            android:textSize="@dimen/_14sdp"
+            android:fontFamily="@font/raleway_light"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/img_email"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/email_ico" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_email"
+                android:hint="Email Address"
+                android:textColorHint="@color/email_hint_new_reg"
+                android:textSize="@dimen/_11sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:drawableTint="@color/transparent"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border_line_new_reg"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_background_new_reg"
+        android:layout_margin="@dimen/_12sdp"
+        android:textColor="@color/button_text_new_reg"
+        android:text="Next"/>
+
+</LinearLayout>

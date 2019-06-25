@@ -1163,5 +1163,6 @@
     //------------new registration---------
     <string name="login_or_signup">Login or signup for free</string>
     <string name="continue_with_email">Continue with email</string>
-
+    <string name="whats_your_email"> What&apos;s your email? </string>
+    <string name="we_need_it"> We need it to look up your account or create a new one. </string>
 </resources>

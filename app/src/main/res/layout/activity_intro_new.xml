@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:layout_weight="1"
-    android:paddingLeft="@dimen/_20sdp"
-    android:paddingRight="@dimen/_20sdp"
+    android:paddingLeft="@dimen/_15sdp"
+    android:paddingRight="@dimen/_15sdp"
     android:paddingTop="@dimen/_2sdp"
     android:paddingBottom="@dimen/_2sdp"
     android:orientation="vertical">
@@ -13,15 +13,14 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".1"
+        android:layout_weight=".06"
         android:src="@drawable/sk_logo_black"
-        android:paddingBottom="@dimen/_5sdp"
         />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".6">
+        android:layout_weight=".67">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/a6_viewpager"
@@ -29,12 +28,11 @@
         android:layout_height="match_parent"
        />
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/layoutDots"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dots_height"
+            android:layout_height="@dimen/dots_height_new"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/dots_margin_bottom"
             android:gravity="center"
             android:orientation="horizontal" />
 
@@ -42,10 +40,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".3"
+        android:layout_weight=".27"
         android:layout_gravity="center"
         android:gravity="center"
-
        >
 
     <TextView
@@ -79,7 +76,7 @@
             android:weightSum="1"
             android:gravity="center"
             android:layout_below="@+id/btn_continue"
-            android:layout_marginTop="@dimen/_15sdp">
+            android:layout_marginTop="@dimen/_5sdp">
 
             <View
                 android:layout_width="0dp"
@@ -110,24 +107,34 @@
             android:weightSum="1"
             android:gravity="center"
             android:layout_below="@+id/ll_or"
-            android:layout_marginTop="@dimen/_15sdp">
+            android:layout_marginTop="@dimen/_5sdp">
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="0dp"
                 android:layout_weight=".5"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:textColor="@color/fb_color"
+                android:drawablePadding="10dp"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/_15sdp"
+                android:drawableLeft="@drawable/ic_facebook_logo_new"
                 android:background="@drawable/facebook_btn_border"
+                android:capitalize="words"
                 android:text="Facebook"/>
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="0dp"
                 android:layout_weight=".5"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:textColor="@color/google_color"
+                android:drawablePadding="10dp"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/_30sdp"
+                android:drawableLeft="@drawable/ic_gmail_new"
                 android:background="@drawable/gmail_btn_border"
+                android:capitalize="words"
                 android:text="Gmail"/>
 
         </LinearLayout>

@@ -19,6 +19,7 @@
 
     <!--________ inro screen ___________________-->
     <dimen name="dots_height">20dp</dimen>
+    <dimen name="dots_height_new">25dp</dimen>
     <dimen name="dots_margin_bottom">1dp</dimen>
 
 

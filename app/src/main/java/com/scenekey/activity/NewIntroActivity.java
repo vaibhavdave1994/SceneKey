@@ -37,9 +37,9 @@ public class NewIntroActivity extends AppCompatActivity {
 
         layouts = new int[]{
                 R.layout.welcome_slide1_new,
-                R.layout.welcome_slide2,
-                R.layout.welcome_slide3,
-                R.layout.welcome_slide4
+                R.layout.welcome_slide2_new,
+                R.layout.welcome_slide3_new,
+                R.layout.welcome_slide4_new
         };
 
         // adding bottom dots
@@ -52,6 +52,12 @@ public class NewIntroActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
+        findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void addBottomDots(int currentPage) {
@@ -64,7 +70,7 @@ public class NewIntroActivity extends AppCompatActivity {
         for (int i = 0; i < dots.length; i++) {
             dots[i] = new TextView(this);
             dots[i].setText(Html.fromHtml("&#8226;"));
-            dots[i].setTextSize(22);
+            dots[i].setTextSize(26);
             dots[i].setTextColor(colorsInactive[currentPage]);
             dotsLayout.addView(dots[i]);
         }

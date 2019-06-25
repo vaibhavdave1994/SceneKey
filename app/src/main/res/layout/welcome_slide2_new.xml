@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Find your scene"
+        android:text="Your interests come to you"
         android:textColor="@color/colorPrimaryDark_new"
         android:textSize="@dimen/_20sdp"
         android:fontFamily="@font/roboto_medium"/>
@@ -22,18 +22,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Easily find unique, specific things you are looking for, all in real time. "
+        android:text="Follow your interests and get alerts when they happen in your area (hard press the token)."
         android:textColor="@color/reward_day_color"
         android:textSize="@dimen/_12sdp"
         android:fontFamily="@font/roboto_regular"/>
 
     <android.support.v7.widget.AppCompatImageView
-        android:layout_width="@dimen/_180sdp"
+        android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_30sdp"
-        android:layout_marginRight="@dimen/_30sdp"
+        android:padding="@dimen/_5sdp"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:src="@drawable/vp_slide1"/>
+        android:src="@drawable/vp_slide2"/>
 
 </LinearLayout>

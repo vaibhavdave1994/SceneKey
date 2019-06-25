@@ -58,7 +58,7 @@
             android:theme="@style/MyCustomTheme" />
         <activity android:name=".activity.ZoomImageActivity" />
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".activity.NewIntroActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Splash">
             <intent-filter>
