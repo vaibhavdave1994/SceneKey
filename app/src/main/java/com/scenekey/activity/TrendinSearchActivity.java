@@ -124,7 +124,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                     .error(R.drawable.app_icon).into(ivTag);
         }
 
-        setRecyclerView();
+       // setRecyclerView();
         getTrendingData();
     }
 
@@ -580,7 +580,13 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
         if(!from_tagadapter) {
             Intent intent = new Intent(TrendinSearchActivity.this, HomeActivity.class);
             intent.putExtra("fromSearch", true);
-            intent.putExtra("name", tag_name);
+            if(fromSearchSpecial){
+                intent.putExtra("name", tag_text);
+            }
+            else {
+                intent.putExtra("name", tag_name);
+            }
+
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

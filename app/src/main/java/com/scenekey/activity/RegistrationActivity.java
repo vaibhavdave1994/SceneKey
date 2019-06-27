@@ -338,7 +338,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     /* facebook api start here */
-    private void facebookLoginApi() {
+    protected void facebookLoginApi() {
+        if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
+            if (latitude != 0.0d && longitude != 0.0d) {
+
         showProgDialog(false);
         loginstatus = "facebook";
         objFbCallbackManager = CallbackManager.Factory.create();
@@ -405,6 +408,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 Utility.showToast(context, error.getMessage(), 1);
             }
         });
+
+            } else if (!checkGPS) {
+                utility.checkGpsStatus();
+            } else {
+                showErrorPopup("facebook");
+            }
+
+        } else {
+            Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+        }
     }
     /* facebook api end here */
 
@@ -418,13 +431,26 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 });
     }
 
-    private void gmialLoginApi() {
+    protected void gmialLoginApi() {
+        if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
+            if (latitude != 0.0d && longitude != 0.0d) {
+                gmialLoginApi();
+            } else if (!checkGPS) {
+                utility.checkGpsStatus();
+            } else {
+                showErrorPopup("gmail");
+            }
+
         loginstatus = "gmail";
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
 
-    private void showErrorPopup(final String type) {
+        } else {
+            Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+        }
+        }
+
+    protected void showErrorPopup(final String type) {
         final Dialog dialog = new Dialog(context);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);

@@ -748,7 +748,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                                 feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                             } else {
                                 feeds.feed = "Hi " + userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                                incrementKeyPoints("");
+                                //incrementKeyPoints("");
                                 getAllData();
                                 feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                             }
@@ -798,7 +798,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                                     } else {
                                         feeds.feed = "Hi " + userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                                        incrementKeyPoints("");
+                                        //incrementKeyPoints("");
                                         getAllData();
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                                     }
@@ -1794,7 +1794,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     try {
                         JSONObject jo = new JSONObject(response);
                         if (jo.getInt("success") == 0) {
-                            incrementKeyPoints(getString(R.string.kp_keyin));
+                            //incrementKeyPoints(getString(R.string.kp_keyin));
                         }
                         else {
                             isKeyInAble = true;

@@ -30,7 +30,9 @@
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_gravity="center"
         android:src="@drawable/vp_slide3"/>
 

@@ -147,7 +147,7 @@ public class NewSearchkFragment extends Fragment {
 
             activity.showProgDialog(true, "TAG");
 
-            StringRequest request = new StringRequest(Request.Method.GET, WebServices.SEARCH_TAG, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.SEARCH_TAG, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
 
@@ -209,7 +209,8 @@ public class NewSearchkFragment extends Fragment {
                 @Override
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    //params.put("tag", searchText);
+                    params.put("lat", userInfo.lat);
+                    params.put("long", userInfo.longi);
                     return params;
                 }
             };
@@ -438,7 +439,6 @@ public class NewSearchkFragment extends Fragment {
                                 getTag_searchList(searchText);
                             }
                         }
-
 
                     } catch (Exception e) {
                         activity.dismissProgDialog();

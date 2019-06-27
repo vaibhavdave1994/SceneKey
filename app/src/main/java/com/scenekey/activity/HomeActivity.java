@@ -2124,9 +2124,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDismiss(DialogInterface dialog) {
                 if (call == 1) {
-                    incrementKeyPoints(getString(R.string.kp_like));
+                    //incrementKeyPoints(getString(R.string.kp_like));
                 } else {
-                    decrementKeyPoints(getString(R.string.kp_unlike));
+                    //decrementKeyPoints(getString(R.string.kp_unlike));
                 }
             }
         });

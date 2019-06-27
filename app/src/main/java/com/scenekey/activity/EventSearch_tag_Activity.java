@@ -165,7 +165,7 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
                         if (list_events.size() <= 0) {
                             Utility.showToast(getApplicationContext(), "No Event found near your location", 0);
                         } else {
-                            activity.keyPointsUpdate();
+                          //  activity.keyPointsUpdate();
                         }
                         setRecyclerViewEvent();
                         activity.dismissProgDialog();

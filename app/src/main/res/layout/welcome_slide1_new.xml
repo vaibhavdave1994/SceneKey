@@ -33,7 +33,7 @@
         android:layout_marginLeft="@dimen/_30sdp"
         android:layout_marginRight="@dimen/_30sdp"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:src="@drawable/vp_slide1"/>
 
 </LinearLayout>

@@ -99,7 +99,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
                 @Override
                 public void onClick(View v) {
 
-                    showSearchConfirmDialog(socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+" ?");
+                    showSearchConfirmDialog(isGridview,socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+" ?");
 
                 }
             });
@@ -158,7 +158,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
 //                    alertDialog.setCancelable(false);
 //                    alertDialog.show();
 
-                    showSearchConfirmDialog(socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+" ?");
+                    showSearchConfirmDialog(isGridview,socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_text()+" ?");
                 }
             });
 
@@ -325,7 +325,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
         }
     }
 
-    public void showSearchConfirmDialog(final VenueBoard.EventTagBean.TagListBean  socialMediaBean, String title, String msg) {
+    public void showSearchConfirmDialog(final boolean isGridview, final VenueBoard.EventTagBean.TagListBean  socialMediaBean, String title, String msg) {
         final Dialog dialog = new Dialog(context);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
@@ -363,6 +363,12 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
                 Intent intent = new Intent(context, TrendinSearchActivity.class);
                 intent.putExtra("tag_name", socialMediaBean.getTag_name());
                 intent.putExtra("tag_image", socialMediaBean.getTag_image());
+
+                if (!isGridview) {
+                    intent.putExtra("tag_text", socialMediaBean.getTag_text());
+                    intent.putExtra("fromSearchSpecial", true);
+                }
+
                 context.startActivity(intent);
                 dialog.dismiss();
             }

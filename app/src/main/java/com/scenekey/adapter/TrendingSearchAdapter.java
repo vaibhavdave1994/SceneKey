@@ -179,7 +179,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             }
         });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.iv_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 v.setClickable(false);
@@ -205,6 +205,18 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        holder.iv_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, TheRoomActivity.class);
+                intent.putExtra("fromTrendingHome", event.keyInUserModalList);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                intent.putExtra("fromTrending", true);
+                activity.startActivity(intent);
             }
         });
 
@@ -343,11 +355,16 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
 
     private void setRecyclerView(ViewHolder holder, final ArrayList<KeyInUserModal> keyInUserModalList,final Events object) {
 
+
         CircularImageView comeInUserProfile = null;
 
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         holder.parent.removeAllViews();
-        for (int i = 0; i < keyInUserModalList.size(); i++) {
+        int loopCount  = keyInUserModalList.size();
+        if(loopCount >5){
+            loopCount = 5;
+        }
+        for (int i = 0; i < loopCount ; i++) {
 
             assert inflater != null;
             View v = inflater.inflate(R.layout.trend_user_view, null);
@@ -356,7 +373,6 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             RelativeLayout marginlayout = v.findViewById(R.id.mainProfileView_t);
 
             if (i == 0) {
-
                 holder.parent.addView(v, i);
                 String image = "";
 
@@ -376,12 +392,36 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
 
 
             } else {
-                if (i < 2) {
+                if (i ==1) {
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(20 * i, 0, 0, 0);
+                    params.setMargins(15 * i, 0, 0, 0);
+                    marginlayout.setLayoutParams(params);
+                    holder.parent.addView(v, i);
+                    String image = "";
+
+                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                        image = "dev-" + keyInUserModalList.get(i).getUserimage();
+                    } else {
+                        image = keyInUserModalList.get(i).getUserimage();
+                    }
+
+                    Glide.with(activity).load(image)
+                            .thumbnail(0.5f)
+                            .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.placeholder_img)
+                            .error(R.drawable.placeholder_img)
+                            .into(comeInUserProfile);
+                }
+                else
+                if (i == 2) {
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(15 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
                     String image = "";
@@ -405,16 +445,16 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(30 * i, 0, 0, 0);
+                    params.setMargins(15 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
-                    no_count.setText("" + (keyInUserModalList.size() - 1) + "+");
+                    no_count.setText(" +" + (keyInUserModalList.size() - i));
                     no_count.setVisibility(View.VISIBLE);
                 }
             }
         }
 
-        comeInUserProfile.setOnClickListener(new View.OnClickListener() {
+        holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -441,6 +481,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         private ViewPager viewPager;
         private LinearLayout indicator_linear_layout;
         private ImageView iv_group;
+        private ImageView iv_comment;
         private ViewGroup parent;
         private TextView like_count_txt;
         private TextView txt_live;
@@ -471,6 +512,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             green_dot = view.findViewById(R.id.green_dot);
             iv_note_book = view.findViewById(R.id.iv_note_book);
             iv_add = view.findViewById(R.id.iv_add);
+            iv_comment = view.findViewById(R.id.iv_comment);
         }
     }
 }

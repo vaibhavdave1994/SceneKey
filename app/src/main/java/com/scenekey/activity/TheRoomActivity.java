@@ -277,7 +277,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 if (requestCode == 2) {
                     String requiredValue = data.getStringExtra("incresePoint");
                     if (requiredValue.equals("1")) {
-                        incrementKeyPoints("");
+                        //incrementKeyPoints("");
                     }
                 } else if (requestCode == 3) {
                     String requiredValue = data.getStringExtra("demoRoomIncres");

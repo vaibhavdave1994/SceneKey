@@ -260,6 +260,7 @@
 
     <color name="dark_gray_new_reg">#a5a5a5</color>
     <color name="email_hint_new_reg">#929292</color>
+    <color name="email_text_new_reg">#242424</color>
     <color name="border_line_new_reg">#c1c1c1</color>
     <color name="button_text_new_reg">#7d7d7d</color>
     <color name="button_background_new_reg">#1E828282</color>

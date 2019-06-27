@@ -274,7 +274,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
 
         int distance = activity.getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
         if (distance > Constant.MAXIMUM_DISTANCE) {
-            activity.keyPointsUpdate();
+            //activity.keyPointsUpdate();
         }
         mapAsyncer(latitude, longitude);
     }
@@ -598,7 +598,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                     try {
                         JSONObject jo = new JSONObject(response);
                         if (jo.getInt("success") == 0) {
-                            activity.incrementKeyPoints(getString(R.string.kp_keyin));
+                           // activity.incrementKeyPoints(getString(R.string.kp_keyin));
                         }
                         if (type == 0) likeEvent();
                         else if (type == 1) sendPicture(bitmap);
@@ -655,10 +655,10 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                         JSONObject object = new JSONObject(response);
                         if (object.has("success")) if (object.getInt("success") == 1) {
                             if (object.getString("msg").contains(" liked the event.")) {
-                                activity.incrementKeyPoints("");
+                              //  activity.incrementKeyPoints("");
 
                             } else if (object.getString("msg").contains("unliked the event.")) {
-                                activity.decrementKeyPoints(getString(R.string.kp_like));
+                                //activity.decrementKeyPoints(getString(R.string.kp_like));
                             }
                             getAllData();
                         }
@@ -711,10 +711,10 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                         if (respo.getInt("success") == 0) {
                             Utility.showToast(context, respo.getString("msg"), 0);
                             //activity.showCustomPopup("Photo has been posted successfully.", 1);
-                            activity.decrementKeyPoints("");
+                           // activity.decrementKeyPoints("");
                         } else {
 //                            activity.showCustomPopup("Photo has been posted successfully.", 1);
-                            activity.incrementKeyPoints("");
+                            //activity.incrementKeyPoints("");
                         }
                     } catch (Exception e) {
                         //activity.incrementKeyPoints(getString(R.string.kp_img_post));
@@ -837,7 +837,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                                     } else {
                                         feeds.feed = "Hi " + activity.userInfo().fullname + "! Come join the fun here at " + venueName + ". You must be here to connect!";
-                                        activity.incrementKeyPoints("");
+                                       // activity.incrementKeyPoints("");
                                         getAllData();
                                         feeds.feed = "Welcome to " + venueName + "! Join the fun! Share your pics & comments right here!";
                                     }
@@ -1153,7 +1153,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
 
                     String requiredValue = data.getStringExtra("incresePoint");
                     if (requiredValue.equals("1")) {
-                        activity.incrementKeyPoints("");
+                       // activity.incrementKeyPoints("");
                     }
 
                 } else {

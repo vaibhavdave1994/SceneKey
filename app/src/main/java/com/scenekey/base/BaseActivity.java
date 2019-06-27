@@ -116,8 +116,6 @@ public class BaseActivity extends AppCompatActivity {
     }*/
 
 
-
-
    /* public void showProgDialog(boolean b, String TAG) {
         try {
             customProgressBar.setCanceledOnTouchOutside(b);
@@ -151,7 +149,6 @@ public class BaseActivity extends AppCompatActivity {
         assert imm != null;
         imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
     }
-
 
     public boolean checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

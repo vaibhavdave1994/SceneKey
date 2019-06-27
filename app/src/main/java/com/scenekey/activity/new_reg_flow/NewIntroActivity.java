@@ -1,22 +1,22 @@
-package com.scenekey.activity;
+package com.scenekey.activity.new_reg_flow;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.scenekey.R;
+import com.scenekey.activity.RegistrationActivity;
 
-public class NewIntroActivity extends AppCompatActivity {
+public class NewIntroActivity extends RegistrationActivity {
 
     private TextView[] dots;
     private int[] layouts;
@@ -24,6 +24,7 @@ public class NewIntroActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int position;
+    AppCompatButton btn_continue,btn_google,btn_fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,17 @@ public class NewIntroActivity extends AppCompatActivity {
         //  StatusBarUtil.setTranslucent(this);
 
         setContentView(R.layout.activity_intro_new);
+
+        initView();
+
+    }
+
+    public void initView(){
+        btn_fb = findViewById(R.id.btn_fb);
+        btn_google = findViewById(R.id.btn_google);
+        btn_continue = findViewById(R.id.btn_continue);
         viewPager = findViewById(R.id.a6_viewpager);
         dotsLayout = findViewById(R.id.layoutDots);
-
 
         layouts = new int[]{
                 R.layout.welcome_slide1_new,
@@ -52,10 +61,24 @@ public class NewIntroActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        findViewById(R.id.btn_continue).setOnClickListener(new View.OnClickListener() {
+        btn_fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                facebookLoginApi();
+            }
+        });
 
+        btn_google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gmialLoginApi();
+            }
+        });
+
+        btn_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(NewIntroActivity.this, RegistrationActivityNewEmail.class));
             }
         });
     }
@@ -82,12 +105,6 @@ public class NewIntroActivity extends AppCompatActivity {
     private int getItem(int i) {
         return viewPager.getCurrentItem() + i;
     }
-
-  /*  private void launchHomeScreen() {
-        new SessionManager(this).canTutorial(false);
-        startActivity(new Intent(IntroActivity.this, Image_uploade_Activity.class));
-        finish();
-    }*/
 
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -207,4 +224,5 @@ public class NewIntroActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
 }
