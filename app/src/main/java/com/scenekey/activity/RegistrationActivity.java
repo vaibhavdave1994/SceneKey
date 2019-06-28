@@ -70,6 +70,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
+import com.scenekey.activity.new_reg_flow.RegistrationActivityNewBasicInfo;
 import com.scenekey.aws_service.AWSImage;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
@@ -123,7 +124,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private LocationManager locationManager;
     private boolean checkGPS;
     private Bitmap profileImageBitmap;
-    private Pop_Up_Option pop_up_option;
+    protected Pop_Up_Option pop_up_option;
     private Permission permission;
     private String loginstatus = "";
     private GoogleApiClient mGoogleApiClient;
@@ -503,7 +504,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         dialog.show();
     }
 
-
     // New Code
     private void doNewRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {
 
@@ -707,7 +707,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             Toast.makeText(RegistrationActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     //Old Api
     private void doRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {

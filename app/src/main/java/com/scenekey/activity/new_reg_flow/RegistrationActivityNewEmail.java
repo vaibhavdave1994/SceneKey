@@ -1,120 +1,47 @@
 package com.scenekey.activity.new_reg_flow;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.scenekey.BuildConfig;
 import com.scenekey.R;
-import com.scenekey.activity.HomeActivity;
-import com.scenekey.activity.IntroActivity;
-import com.scenekey.activity.LoginActivity;
-import com.scenekey.aws_service.AWSImage;
-import com.scenekey.cropper.CropImage;
-import com.scenekey.cropper.CropImageView;
+import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.Constant;
-import com.scenekey.helper.CustomProgressBar;
-import com.scenekey.helper.ImageSessionManager;
-import com.scenekey.helper.Permission;
-import com.scenekey.helper.Pop_Up_Option;
-import com.scenekey.helper.SessionManager;
-import com.scenekey.helper.Validation;
 import com.scenekey.helper.WebServices;
-import com.scenekey.model.UserInfo;
-import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import static com.scenekey.helper.Constant.MY_PERMISSIONS_REQUEST_LOCATION;
-
-public class RegistrationActivityNewEmail extends AppCompatActivity{
+public class RegistrationActivityNewEmail extends BaseActivity {
 
      EditText et_email;
+     AppCompatImageView img_back;
      AppCompatButton btn_next;
      boolean isValidEmail = false;
+     Utility utility;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,13 +62,26 @@ public class RegistrationActivityNewEmail extends AppCompatActivity{
     private void initView() {
         et_email = findViewById(R.id.et_email);
         btn_next = findViewById(R.id.btn_next);
+        img_back = findViewById(R.id.img_back);
         textWatcher(et_email);
+        utility = new Utility(this);
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent intent = new Intent(RegistrationActivityNewEmail.this,);
+                if(isValidEmail){
+                    checkEmailRegisteration(et_email.getText().toString());
+                }
+                else {
+                    Toast.makeText(RegistrationActivityNewEmail.this, "Please Enter Valid Email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }
@@ -183,5 +123,73 @@ public class RegistrationActivityNewEmail extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public void checkEmailRegisteration(final String email) {
+
+        if (utility.checkInternetConnection()) {
+
+            showProgDialog(false,"RegistrationActivityNewEmail");
+
+            VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.CHECK_EMAIL_REG, new Response.Listener<NetworkResponse>() {
+                @Override
+                public void onResponse(NetworkResponse response) {
+                    String data = new String(response.data);
+                    Log.v("Response", data);
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(data);
+
+                        String status = jsonObject.getString("status");
+                        String message = jsonObject.getString("message");
+
+                        if (status.equalsIgnoreCase("SUCCESS")) {
+                            dismissProgDialog();
+
+                            if(message.equalsIgnoreCase("exist")){
+                                Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewPassword.class);
+                                intent.putExtra("email",email);
+                                startActivity(intent);
+                            }
+                            else {
+                                Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
+                                intent.putExtra("email",email);
+                                startActivity(intent);
+                            }
+
+                        } else {
+                            Toast.makeText(RegistrationActivityNewEmail.this, message, Toast.LENGTH_SHORT).show();
+                            dismissProgDialog();
+                        }
+
+                    } catch (Throwable t) {
+                        Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
+                        dismissProgDialog();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    NetworkResponse networkResponse = error.networkResponse;
+                    Log.i("Error", networkResponse + "");
+                    Toast.makeText(RegistrationActivityNewEmail.this, networkResponse + "", Toast.LENGTH_SHORT).show();
+
+                    dismissProgDialog();
+                    error.printStackTrace();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("userEmail", email);
+                    return params;
+                }
+            };
+
+            multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(RegistrationActivityNewEmail.this).addToRequestQueue(multipartRequest);
+        } else {
+            Toast.makeText(RegistrationActivityNewEmail.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+        }
     }
 }

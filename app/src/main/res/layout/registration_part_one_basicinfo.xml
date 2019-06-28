@@ -54,6 +54,7 @@
             />
 
         <RelativeLayout
+            android:id="@+id/rl_pic_selection"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
             android:layout_gravity="center"
@@ -98,6 +99,7 @@
                 app:srcCompat="@drawable/user_ico_new_reg" />
 
             <EditText
+                android:id="@+id/et_f_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/img_firstname"
@@ -132,6 +134,7 @@
                 app:srcCompat="@drawable/user_ico_new_reg" />
 
             <EditText
+                android:id="@+id/et_l_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/img_lastname"
@@ -154,6 +157,7 @@
 
 
         <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/new_next_btn_desable"

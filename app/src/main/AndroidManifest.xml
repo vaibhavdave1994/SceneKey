@@ -44,11 +44,14 @@
             android:name=".activity.SearchSubCategoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
+
         <activity
             android:name=".activity.TrendinSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
+
         <activity android:name=".activity.LiveKeyInProfileActivity" />
+
         <activity
             android:name=".activity.TagsActivity"
             android:screenOrientation="portrait"
@@ -57,13 +60,13 @@
         <activity android:name=".activity.OnBoardActivity"
             android:theme="@style/MyCustomTheme" />
         <activity android:name=".activity.ZoomImageActivity" />
-        <activity
-            android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Splash">
         <!--<activity-->
-            <!--android:name=".activity.new_reg_flow.NewIntroActivity"-->
+            <!--android:name=".activity.SplashActivity"-->
             <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/Splash">-->
+        <activity
+            android:name=".activity.new_reg_flow.NewIntroActivity"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -81,6 +84,20 @@
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewEmail"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.new_reg_flow.RegistrationActivityNewPassword"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.new_reg_flow.RegistrationActivityNewBasicInfo"
+            android:screenOrientation="portrait" />
+
+        <!--<activity-->
+            <!--android:name=".activity.new_reg_flow.RegistrationActivityNewGender"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:theme="@style/MyCustomTheme"/>-->
+
         <activity
             android:name=".activity.IntroActivity"
             android:screenOrientation="portrait"

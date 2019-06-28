@@ -18,6 +18,7 @@ public class WebServices {
     //-------------------end-----------------------
 
     public final static String NORMAL_LOGIN = BASE_URL + "webservices/login";
+    public final static String CHECK_EMAIL_REG = BASE_URL + "webservices/checkEmail";
     public final static String REGISTRATION = BASE_URL + "webservices/registration";
     public final static String FORGOTPASSWORD = BASE_URL + "webservices/forgotPassword";
 
