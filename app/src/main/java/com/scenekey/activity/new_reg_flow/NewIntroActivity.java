@@ -143,7 +143,6 @@ public class NewIntroActivity extends RegistrationActivity {
 
     };
 
-
     /**
      * Making notification bar transparent
      */

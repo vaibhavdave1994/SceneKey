@@ -77,6 +77,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
     private String  profileImageUrl = "", mCurrentPhotoPath;
     Context context = this;
     private Bitmap profileImageBitmap;
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +104,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         rl_pic_selection = findViewById(R.id.rl_pic_selection);
         textWatcher(et_f_name);
         textWatcher(et_l_name);
-
+        email = getIntent().getStringExtra("email");
         utility = new Utility(this);
 
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +116,8 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                         intent.putExtra("imageUri", profileImageUrl);
                         intent.putExtra("f_name", et_f_name.getText().toString().trim());
                         intent.putExtra("l_name", et_l_name.getText().toString().trim());
+                        intent.putExtra("email", email);
+                        intent.putExtra("from", "basic_info");
                         startActivity(intent);
                     }
                     else {
@@ -122,7 +125,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                     }
                 }
                 else {
-                    Toast.makeText(RegistrationActivityNewBasicInfo.this, "Please Enter Valid Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistrationActivityNewBasicInfo.this, "Please Enter Name", Toast.LENGTH_SHORT).show();
                 }
             }
         });

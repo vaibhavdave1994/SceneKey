@@ -60,20 +60,26 @@
         <activity android:name=".activity.OnBoardActivity"
             android:theme="@style/MyCustomTheme" />
         <activity android:name=".activity.ZoomImageActivity" />
-        <!--<activity-->
-            <!--android:name=".activity.SplashActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/Splash">-->
         <activity
-            android:name=".activity.new_reg_flow.NewIntroActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
-            >
+            android:theme="@style/Splash">
+        <!--<activity-->
+            <!--android:name=".activity.new_reg_flow.NewIntroActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--&gt;-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.new_reg_flow.NewIntroActivity"
+            android:screenOrientation="portrait"
+            />
+
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait" />
@@ -90,13 +96,17 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".activity.new_reg_flow.RegistrationActivityNewCreatePassword"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewBasicInfo"
             android:screenOrientation="portrait" />
 
-        <!--<activity-->
-            <!--android:name=".activity.new_reg_flow.RegistrationActivityNewGender"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/MyCustomTheme"/>-->
+        <activity
+            android:name=".activity.new_reg_flow.RegistrationActivityNewGender"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme"/>
 
         <activity
             android:name=".activity.IntroActivity"

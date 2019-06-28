@@ -53,7 +53,6 @@ public class RegistrationActivityNewGender extends AppCompatActivity {
      AppCompatImageView img_back;
      AppCompatButton btn_next;
      Utility utility;
-     private String  profileImageUrl = "";
      Context context = this;
      CardView cv_female,cv_male;
      ImageView iv_male_chk,iv_female_chk;
@@ -86,15 +85,38 @@ public class RegistrationActivityNewGender extends AppCompatActivity {
 
         utility = new Utility(this);
 
+        Intent intent = getIntent();
+        final String fName = intent.getStringExtra("f_name");
+        final String l_name = intent.getStringExtra("l_name");
+        final String imageUri = intent.getStringExtra("imageUri");
+        final String email = getIntent().getStringExtra("email");
+        final String from = intent.getStringExtra("from");
+
+
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                        Intent intent = new Intent(context, RegistrationActivity.class);
-//                        intent.putExtra("imageUri", profileImageUrl);
-//                        intent.putExtra("f_name", et_f_name.getText().toString().trim());
-//                        intent.putExtra("l_name", et_l_name.getText().toString().trim());
-//                        startActivity(intent);
-
+                if(from.equalsIgnoreCase("basic_info")) {
+                    Intent intent = new Intent(context, RegistrationActivityNewCreatePassword.class);
+                    intent.putExtra("imageUri", imageUri);
+                    intent.putExtra("f_name", fName);
+                    intent.putExtra("l_name", l_name);
+                    intent.putExtra("email", email);
+                    if(isMaleSelected)
+                    intent.putExtra("gender", "male");
+                    else
+                    intent.putExtra("gender", "female");
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent=new Intent();
+                    if(isMaleSelected)
+                        intent.putExtra("gender", "male");
+                    else
+                        intent.putExtra("gender", "female");
+                    setResult(2,intent);
+                    finish();//finishing activity
+                }
             }
         });
 

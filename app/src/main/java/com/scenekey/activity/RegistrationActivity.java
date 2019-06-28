@@ -71,6 +71,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
 import com.scenekey.activity.new_reg_flow.RegistrationActivityNewBasicInfo;
+import com.scenekey.activity.new_reg_flow.RegistrationActivityNewGender;
 import com.scenekey.aws_service.AWSImage;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
@@ -266,7 +267,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             getAddressFromLatLong(latitude, longitude);
 
                             if (cb_terms.isChecked()) {
-                                doRegistration(firstName, lastName, email, pwd, maleFemale, "");
+                                doRegistration(firstName, lastName, email, pwd, maleFemale, "",profileImageBitmap);
                             } else {
                                 //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
                                 utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
@@ -363,7 +364,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                                     userInfo.userFacebookId = object.get("id").toString();
                                     userInfo.userAccessToken = String.valueOf(token);
-                                    userInfo.fullname = object.get("name").toString();
+                                    userInfo.fullname = object.get("first_name").toString();
+                                    userInfo.lastName = object.get("last_name").toString();
                                     userInfo.userImage = "https://graph.facebook.com/" + userInfo.userFacebookId + "/picture?type=large";
                                     userInfo.userGender = "";//object.getString("gender");
                                     userInfo.gender = "";//object.getString("gender");
@@ -392,7 +394,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender,birthday");
+                parameters.putString("fields", "id,name,first_name,last_name,email,gender,birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -435,16 +437,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     protected void gmialLoginApi() {
         if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
             if (latitude != 0.0d && longitude != 0.0d) {
-                gmialLoginApi();
+                loginstatus = "gmail";
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
             } else if (!checkGPS) {
                 utility.checkGpsStatus();
             } else {
                 showErrorPopup("gmail");
             }
-
-        loginstatus = "gmail";
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
 
         } else {
             Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
@@ -708,8 +708,24 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
     //Old Api
-    private void doRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail) {
+    protected void doRegistration(final String firstName, final String lastName, final String email, final String pwd, final String maleFemale, final String userFbAndGmail
+            ,Bitmap profileImageBitmap1) {
+
+        if (latitude != 0.0d && longitude != 0.0d) {
+            getAddressFromLatLong(latitude, longitude);
+
+
+        } else if (!checkGPS) {
+            utility.checkGpsStatus();
+            return;
+        } else {
+            showErrorPopup("register");
+            return;
+        }
+
+        profileImageBitmap = profileImageBitmap1;
 
         if (utility.checkInternetConnection()) {
 
@@ -1105,6 +1121,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
                     break;
 
+                case 2:
+                    maleFemale=data.getStringExtra("gender");
+
+                    if (!maleFemale.equalsIgnoreCase("")) {
+                        fbUserInfo.userGender = maleFemale;
+                        showProgDialog(false);
+                        doRegistration(fbUserInfo.fullname, fbUserInfo.lastName, fbUserInfo.userEmail, fbUserInfo.password, fbUserInfo.userGender, fbUserInfo.userFacebookId,profileImageBitmap);
+                    } else {
+                        Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
+                    }
+
+                    break;
+
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
                     break;
@@ -1179,12 +1208,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         String status = jsonObject.getString("status");
                         if (status.equals("success")) {
 
-                            doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
+                            doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap);
                             //doNewRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
                         } else {
                             fbUserInfo = userInfo;
                             dismissProgDialog();
-                            openSelectGenderDialog(userInfo);
+
+                            Intent intentForResult = new Intent(RegistrationActivity.this, RegistrationActivityNewGender.class);
+                            intentForResult.putExtra("from","social");
+                            startActivityForResult(intentForResult,2);
+
+                            //openSelectGenderDialog(userInfo);
                         }
 
                     } catch (Exception ex) {
@@ -1254,7 +1288,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (!maleFemale.equalsIgnoreCase("")) {
                     fbUserInfo.userGender = maleFemale;
                     showProgDialog(false);
-                    doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
+                    doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap);
                 } else {
                     Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
                 }
@@ -1450,7 +1484,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
 
         if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
-            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+//            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             dismissProgDialog();
             startActivity(intent);
@@ -1514,7 +1549,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     HomeActivity.userInfo = userInfo;
                     SceneKey.sessionManager.createSession(userInfo);
 
-                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+//                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+                    Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     dismissProgDialog();
                     startActivity(intent);
@@ -1524,7 +1560,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 public void onErrorResponse(VolleyError error) {
                     Utility.e("LOG_VOLLEY E", error.toString());
                     dismissProgDialog();
-                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+//                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
+                    Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }

@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.scenekey.R;
+import com.scenekey.activity.new_reg_flow.NewIntroActivity;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
@@ -96,7 +97,8 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
                 } else {
-                    Intent i = new Intent(context, LoginActivity.class);
+//                    Intent i = new Intent(context, LoginActivity.class);
+                    Intent i = new Intent(context, NewIntroActivity.class);
                     startActivity(i);
                     // close this activity
                     finish();

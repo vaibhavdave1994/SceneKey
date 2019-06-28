@@ -70,6 +70,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.scenekey.R;
+import com.scenekey.activity.new_reg_flow.NewIntroActivity;
 import com.scenekey.aws_service.AWSImage;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
@@ -285,7 +286,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             /*New Code*/
             case R.id.dontHaveAccountLayout:
-                Intent in = new Intent(context, RegistrationActivity.class);
+//                Intent in = new Intent(context, RegistrationActivity.class);
+                Intent in = new Intent(context, NewIntroActivity.class);
                 startActivity(in);
                 break;
 

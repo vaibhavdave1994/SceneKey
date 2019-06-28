@@ -13,6 +13,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.scenekey.activity.LoginActivity;
 import com.scenekey.activity.RegistrationActivity;
+import com.scenekey.activity.new_reg_flow.NewIntroActivity;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
 
@@ -216,7 +217,8 @@ public class SessionManager {
         editor2.clear();
         editor2.commit();
 
-        Intent intent = new Intent(activity, RegistrationActivity.class);
+//        Intent intent = new Intent(activity, RegistrationActivity.class);
+        Intent intent = new Intent(activity, NewIntroActivity.class);
         // LoginActivity.CALLBACK =0;
         LoginManager.getInstance().logOut();
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
