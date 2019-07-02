@@ -65,7 +65,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reward"
-            android:textStyle="bold"
             android:layout_below="@+id/civ"
             android:textSize="@dimen/_13sdp"
             android:fontFamily="@font/montserrat_medium"

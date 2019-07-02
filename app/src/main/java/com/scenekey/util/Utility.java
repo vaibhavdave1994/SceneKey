@@ -144,6 +144,7 @@ public class Utility {
                         public void gpsStatus(boolean isGPSEnable) {
                             // turn on GPS
                             Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+
                         }
                     });
 

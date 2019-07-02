@@ -105,6 +105,8 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                 onBackPressed();
             }
         });
+
+
         if (getIntent().getStringExtra("tag_name") != null)
             tag_name = getIntent().getStringExtra("tag_name");
 
@@ -156,7 +158,11 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                     getTrendingData();
                 }
             }
+            else
+                getTrendingData();
         }
+        else
+            getTrendingData();
 
     }
 

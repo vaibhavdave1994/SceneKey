@@ -206,6 +206,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     try {
                         JSONObject jo = new JSONObject(response);
                         String status = jo.getString("status");
+                        String event_name = jo.getString("event_name");
+                        onBoard_txt_event_name.setText("" + event_name);
                         if (status.equals("success")) {
 
                             JSONArray eventTag = jo.getJSONArray("eventTag");

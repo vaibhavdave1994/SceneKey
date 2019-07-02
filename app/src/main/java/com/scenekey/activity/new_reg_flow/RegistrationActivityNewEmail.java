@@ -51,7 +51,6 @@ public class RegistrationActivityNewEmail extends BaseActivity {
         setContentView(R.layout.registration_part_one_email);
         setStatusBarColor();
         initView();
-
     }
 
     private void setStatusBarColor() {

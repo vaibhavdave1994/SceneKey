@@ -30,13 +30,12 @@
             android:id="@+id/offerUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SBH"
-            android:textStyle="normal"
+            android:text="Sunilmindiii"
             android:layout_toRightOf="@+id/civ"
             android:layout_toEndOf="@+id/civ"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_12sdp"
             android:textColor="@color/deselect_tabtext"
             android:fontFamily="@font/montserrat_semibold"
             />
@@ -51,13 +50,11 @@
             android:layout_alignParentTop="true"
             android:fontFamily="@font/montserrat_light"/>
 
-
         <TextView
             android:id="@+id/tv_reward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reward"
-            android:textStyle="bold"
             android:layout_below="@+id/civ"
             android:textSize="@dimen/_13sdp"
             android:fontFamily="@font/montserrat_medium"

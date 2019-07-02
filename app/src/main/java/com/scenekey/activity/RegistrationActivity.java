@@ -386,8 +386,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
                                         getAddressFromLatLong(latitude, longitude);
                                     }
-
-
                                     //registerSocialDetails(userInfo);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -415,8 +413,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
 
             } else if (!checkGPS) {
-                utility.checkGpsStatus();
+                //initLocation();
+               utility.checkGpsStatus();
             } else {
+                initLocation();
                 showErrorPopup("facebook");
             }
 
@@ -443,8 +443,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             } else if (!checkGPS) {
+
                 utility.checkGpsStatus();
             } else {
+                initLocation();
                 showErrorPopup("gmail");
             }
 
@@ -485,11 +487,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         //btnRegiSignUp.callOnClick();
                         if (type.equals("facebook")) {
-                            btnFBSignUp.callOnClick();
+                           // btnFBSignUp.callOnClick();
+                            facebookLoginApi();
                         } else if (type.equals("gmail")) {
-                            btnRegiSignUp.callOnClick();
+                           // btnRegiSignUp.callOnClick();
+                            gmialLoginApi();
                         } else {
-                            btnRegiSignUp.callOnClick();
+                            //btnRegiSignUp.callOnClick();
                         }
 
                     }
@@ -1322,6 +1326,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         getAddressFromLatLong(latitude, longitude);
                     } catch (Exception e) {
                         // some action
+                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                        getAddressFromLatLong(latitude, longitude);
                         e.printStackTrace();
                     }
                 }
@@ -1334,6 +1340,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                    getAddressFromLatLong(latitude, longitude);
+                   // Toast.makeText(context, "onPrepareLoad", Toast.LENGTH_SHORT).show();
                 }
             });
         }

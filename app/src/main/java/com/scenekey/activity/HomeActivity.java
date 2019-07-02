@@ -632,7 +632,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         frm_bottmbar = findViewById(R.id.frm_bottmbar);
         rl_title_view = findViewById(R.id.rl_title_view);
         tvHomeTitle = findViewById(R.id.tvHomeTitle);
-        tv_key_points = findViewById(R.id.tv_key_points);
+        tv_key_points = findViewById(R.id.tv_key_points_new);
         //txt_five = findViewById(R.id.txt_five);
         tv_title = findViewById(R.id.tv_title);
         tv_alert_badge_count = findViewById(R.id.tv_alert_badge_count);

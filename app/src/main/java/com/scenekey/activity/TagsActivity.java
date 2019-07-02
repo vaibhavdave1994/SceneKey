@@ -78,6 +78,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
     boolean from_category = false;
     RelativeLayout toolbar;
     EditText et_serch_post;
+    ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
         ImageView img_tags_back = findViewById(R.id.img_tags_back);
         ImageView tag_image = findViewById(R.id.tag_image);
         TextView txt_f1_title = findViewById(R.id.txt_f1_title);
+        iv = findViewById(R.id.iv);
         et_serch_post = findViewById(R.id.et_serch_post);
 
         textWatcher(et_serch_post);
@@ -473,6 +475,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                             if(tag_list.size()<=0){
                                 no_data_found.setVisibility(View.VISIBLE);
+                                iv.setVisibility(View.GONE);
                                 return;
                             }
                             else {

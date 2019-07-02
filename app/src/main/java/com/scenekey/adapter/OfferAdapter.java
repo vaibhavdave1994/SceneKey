@@ -105,7 +105,7 @@ public class OfferAdapter  extends RecyclerView.Adapter {
                 ((ViewHolderTag) holder).tv_reward.setText("Special : "+offers.tag_text);
             }
             else {
-                ((ViewHolderTag) holder).tv_reward.setText(offers.category_name);
+                ((ViewHolderTag) holder).tv_reward.setText(offers.category_name +" : "+offers.tag_text);
             }
 
             ((ViewHolderTag) holder).txt_exp_days.setText(offers.crd);
