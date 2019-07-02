@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
@@ -38,8 +40,10 @@ import com.scenekey.cropper.CropImageView;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.Pop_Up_Option;
+import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +52,7 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RegistrationActivityNewGender extends AppCompatActivity {
+public class RegistrationActivityNewGender extends RegistrationActivity {
 
      AppCompatImageView img_back;
      AppCompatButton btn_next;
@@ -57,6 +61,8 @@ public class RegistrationActivityNewGender extends AppCompatActivity {
      CardView cv_female,cv_male;
      ImageView iv_male_chk,iv_female_chk;
      boolean isMaleSelected = true;
+     UserInfo userInfo = null;
+     Bitmap profileImageBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +73,12 @@ public class RegistrationActivityNewGender extends AppCompatActivity {
     }
 
     private void setStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.white));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 
@@ -90,32 +98,36 @@ public class RegistrationActivityNewGender extends AppCompatActivity {
         final String l_name = intent.getStringExtra("l_name");
         final String imageUri = intent.getStringExtra("imageUri");
         final String email = getIntent().getStringExtra("email");
-        final String from = intent.getStringExtra("from");
 
+        userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(from.equalsIgnoreCase("basic_info")) {
+                if (userInfo != null) {
+                    if (isMaleSelected)
+                        userInfo.userGender = "male";
+                    else
+                        userInfo.userGender = "female";
+
+//                    if(profileImageBitmap == null)
+//                    profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), userInfo.userImage);
+
+                    profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
+                    doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,userInfo.loginstatus);
+                }
+                else {
                     Intent intent = new Intent(context, RegistrationActivityNewCreatePassword.class);
                     intent.putExtra("imageUri", imageUri);
                     intent.putExtra("f_name", fName);
                     intent.putExtra("l_name", l_name);
                     intent.putExtra("email", email);
-                    if(isMaleSelected)
-                    intent.putExtra("gender", "male");
-                    else
-                    intent.putExtra("gender", "female");
-                    startActivity(intent);
-                }
-                else {
-                    Intent intent=new Intent();
-                    if(isMaleSelected)
+                    if (isMaleSelected)
                         intent.putExtra("gender", "male");
                     else
                         intent.putExtra("gender", "female");
-                    setResult(2,intent);
-                    finish();//finishing activity
+                    startActivity(intent);
+
                 }
             }
         });
@@ -155,5 +167,4 @@ public class RegistrationActivityNewGender extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }

@@ -1,5 +1,7 @@
 package com.scenekey.model;
 
+import android.graphics.Bitmap;
+
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.WebServices;
 import com.scenekey.util.Utility;
@@ -49,6 +51,9 @@ public class UserInfo implements Serializable {
     public String key_points  = "";
     public String bio  = "";
     public String appBadgeCount  = "";
+    public String loginstatus = "";
+    public boolean socialImageChanged = false;
+    public  byte[] byteArray;
 
     public String environment  = "";
     public String userAccessToken  = "";

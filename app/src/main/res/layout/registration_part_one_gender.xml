@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
@@ -64,6 +65,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_weight="1"
+            android:padding="@dimen/_5sdp"
             >
 
             <android.support.v7.widget.CardView
@@ -74,8 +76,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/white"
                 app:cardCornerRadius="@dimen/_5sdp"
-                android:layout_margin="@dimen/_5sdp"
-                app:cardElevation="1dp">
+                android:layout_margin="@dimen/_15sdp"
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -93,8 +95,8 @@
 
                     <ImageView
                         android:id="@+id/iv_male_chk"
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="@dimen/_10sdp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/active_tick_ico"/>
@@ -105,7 +107,7 @@
                         android:layout_below="@+id/iv_male"
                         android:text="Male"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
                         android:fontFamily="@font/raleway_light"
                         android:textColor="@color/email_text_new_reg"
                         />
@@ -121,8 +123,9 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/white"
                 app:cardCornerRadius="@dimen/_5sdp"
-                android:layout_margin="@dimen/_5sdp"
-                app:cardElevation="1dp">
+                android:layout_margin="@dimen/_15sdp"
+                app:cardElevation="1dp"
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -140,8 +143,8 @@
 
                     <ImageView
                         android:id="@+id/iv_female_chk"
-                        android:layout_width="@dimen/_10sdp"
-                        android:layout_height="@dimen/_10sdp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_12sdp"
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/inactive_dot_img"
@@ -151,9 +154,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/iv_female"
-                        android:text="Male"
+                        android:text="Female"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
                         android:fontFamily="@font/raleway_light"
                         android:textColor="@color/email_text_new_reg"
                         />
@@ -172,6 +175,9 @@
             android:layout_below="@+id/tv_login_signup"
             android:text="@string/next"
             android:textColor="@color/white"
+            style="?android:attr/borderlessButtonStyle"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_14sdp"
             android:fontFamily="@font/roboto_medium"/>
 
     </LinearLayout>

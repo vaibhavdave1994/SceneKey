@@ -428,8 +428,20 @@
                     android:paddingBottom="@dimen/_2sdp"
                     android:scaleType="fitCenter"
                     android:tint="@color/black30p"
-                    app:srcCompat="@drawable/profile" />
+                    android:background="@color/transparent"
+                    app:srcCompat="@drawable/profile_active" />
 
+                <TextView
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerHorizontal="true"
+                    android:text="99"
+                    android:gravity="center"
+                    android:textSize="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingLeft="@dimen/_6sdp"
+
+                    />
 
             </RelativeLayout>
         </LinearLayout>

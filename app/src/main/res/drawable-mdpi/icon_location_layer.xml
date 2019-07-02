@@ -3,7 +3,8 @@
     <item android:top="15dp" android:bottom="15dp" android:left="15dp" android:right="15dp">
         <shape android:shape="oval"  >
             <size android:height="198dp" android:width="198dp"/>
-            <stroke android:color="@color/old_primary" android:width="8dp"/>
+            <stroke android:color="@color/colorPrimaryDark_new" android:width="8dp"/>
+            <solid android:color="@color/colorPrimaryDark_new"/>
         </shape>
     </item>
     <item android:drawable="@drawable/ic_img_51183"/>

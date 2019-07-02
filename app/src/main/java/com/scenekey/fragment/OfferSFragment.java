@@ -171,6 +171,8 @@ public class OfferSFragment extends Fragment {
                                     offers.venue_id = jsonObject2.getString("venue_id");
                                     offers.venue_name = jsonObject2.getString("venue_name");
                                     offers.venue_image = jsonObject2.getString("venue_image");
+                                    offers.event_name = jsonObject2.getString("event_name");
+                                    offers.crd = jsonObject2.getString("crd");
                                     offers.frequency = jsonObject2.getString("frequency");
                                     offers.other_type = jsonObject2.getString("other_type");
                                     offers.distance = jsonObject2.getString("distance");

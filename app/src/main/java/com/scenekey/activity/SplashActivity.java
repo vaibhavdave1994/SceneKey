@@ -77,12 +77,16 @@ public class SplashActivity extends AppCompatActivity {
                             break;
 
                         case 1:
-                            Intent intent = new Intent(context, ImageUploadActivity.class);
-                            intent.putExtra("from", "splash");
-                            // Closing all the Activities
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            // Add new Flag to start new Activity
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            Intent intent = new Intent(context, ImageUploadActivity.class);
+//                            intent.putExtra("from", "splash");
+//                            // Closing all the Activities
+//                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                            // Add new Flag to start new Activity
+//                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            startActivity(intent);
+//                            finish();
+
+                            Intent intent = new Intent(context, HomeActivity.class);
                             startActivity(intent);
                             finish();
                             break;

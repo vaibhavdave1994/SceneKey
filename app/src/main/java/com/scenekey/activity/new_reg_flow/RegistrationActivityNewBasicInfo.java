@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,13 +46,16 @@ import com.scenekey.helper.Constant;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.Pop_Up_Option;
 import com.scenekey.helper.WebServices;
+import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -78,6 +82,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
     Context context = this;
     private Bitmap profileImageBitmap;
     String email;
+    UserInfo userInfo = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,10 +93,12 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
     }
 
     private void setStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.white));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 
@@ -105,13 +112,42 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         textWatcher(et_f_name);
         textWatcher(et_l_name);
         email = getIntent().getStringExtra("email");
+
+        userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
+
+        if(userInfo != null){
+            if(!userInfo.userEmail.equalsIgnoreCase("") || userInfo.userEmail != null)
+                email = userInfo.userEmail;
+
+            if(!userInfo.fullname.equalsIgnoreCase("") || userInfo.fullname != null)
+               et_f_name.setText(userInfo.fullname);
+
+            if(!userInfo.lastName.equalsIgnoreCase("") || userInfo.lastName != null)
+                et_l_name.setText(userInfo.lastName);
+
+            if(!userInfo.userImage.equalsIgnoreCase("") && userInfo.userImage != null)
+            Picasso.with(context).load(userInfo.userImage).placeholder(R.drawable.app_icon)
+                    .error(R.drawable.app_icon).into(civ_pp);
+
+            getBitmapFromURL(userInfo.userImage);
+        }
+
         utility = new Utility(this);
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isButtonClickable){
-                    if(!profileImageUrl.equalsIgnoreCase("")) {
+                if(isButtonClickable) {
+                    if (userInfo != null) {
+                        Intent intent = new Intent(context, RegistrationActivityNewGender.class);
+                        userInfo.fullname = et_f_name.getText().toString().trim();
+                        userInfo.lastName = et_l_name.getText().toString().trim();
+                        intent.putExtra("userInfo", userInfo);
+                        startActivity(intent);
+                    }
+                    else {
+
+                    if (!profileImageUrl.equalsIgnoreCase("")) {
                         Intent intent = new Intent(context, RegistrationActivityNewGender.class);
                         intent.putExtra("imageUri", profileImageUrl);
                         intent.putExtra("f_name", et_f_name.getText().toString().trim());
@@ -119,10 +155,10 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                         intent.putExtra("email", email);
                         intent.putExtra("from", "basic_info");
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Please select Profile image", Toast.LENGTH_SHORT).show();
                     }
+                }
                 }
                 else {
                     Toast.makeText(RegistrationActivityNewBasicInfo.this, "Please Enter Name", Toast.LENGTH_SHORT).show();
@@ -207,7 +243,17 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
             @Override
             public void onCameraClick(Pop_Up_Option dialog, Object object) {
                 // New Code
-                dispatchTakePictureIntent();
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        callIntent(Constant.REQUEST_CAMERA);
+                    } else {
+                        dispatchTakePictureIntent();
+
+                    }
+                } else {
+                    dispatchTakePictureIntent();
+
+                }
                 dialog.dismiss();
             }
         };
@@ -323,6 +369,13 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                     try {
                         if (result != null) {
                             profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
+                            if(userInfo != null){
+                                userInfo.socialImageChanged = true;
+
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                userInfo.byteArray = stream.toByteArray();
+                            }
                             profileImageUrl = Utility.getImageUri(this, profileImageBitmap).toString();
                             String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, profileImageBitmap));
                             ImageSessionManager.getInstance().createImageSession(uri_path, false);
@@ -366,6 +419,38 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                 }
                 break;
 
+        }
+    }
+
+    public void getBitmapFromURL(String image) {
+        if (image != null && !image.equals("")) {
+            Picasso.with(RegistrationActivityNewBasicInfo.this).load(image).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                    try {
+                        if (bitmap != null) {
+                            profileImageBitmap = bitmap;
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                            userInfo.byteArray = stream.toByteArray();
+                        }
+
+                    } catch (Exception e) {
+                        // some action
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
+            });
         }
     }
 }

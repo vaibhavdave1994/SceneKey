@@ -395,6 +395,8 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                         String status = jo.getString("status");
                         if (status.equals("success")) {
                             tag_list.clear();
+                            tag_listDeactive.clear();
+                            specialTag_list.clear();
                             dismissProgDialog();
                             JSONArray tagList = jo.getJSONArray("tagList");
 
@@ -468,6 +470,15 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             tag_listDeactive.clear();
                             Log.v("tag_list3", "" + tag_list.size());
 
+
+                            if(tag_list.size()<=0){
+                                no_data_found.setVisibility(View.VISIBLE);
+                                return;
+                            }
+                            else {
+                                no_data_found.setVisibility(View.GONE);
+                            }
+
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                             tag_recycler_view.setLayoutManager(mLayoutManager);
                             tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list, new FollowUnfollowLIstner() {
@@ -478,6 +489,11 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             });
                             tag_recycler_view.setAdapter(tags_specialAdapter);
                             tags_specialAdapter.notifyDataSetChanged();
+                        }
+                        else {
+                                no_data_found.setVisibility(View.VISIBLE);
+                                return;
+
                         }
 
                     } catch (Exception e) {
@@ -804,30 +820,30 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                         getMyFollowTag();
                                     }
                                     else {
-                                        if(category_name.equalsIgnoreCase("Happy Hour")){
-                                            tag_list.clear();
-                                            TagModal tagModal = new TagModal();
-                                            tagModal.biz_tag_id = "0";
-                                            tagModal.tag_name = category_name;
-                                            tagModal.color_code = getIntent().getStringExtra("color_code");
-                                            tagModal.tag_text = category_name;
-                                            tagModal.tag_image = category_image;
-                                            tagModal.is_tag_follow = "0";
-                                            tagModal.isVenue = "0";
-                                            tag_list.add(tagModal);
-
-                                            tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
-                                            tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
-                                                @Override
-                                                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
-                                                    tagFollowUnfollow(followUnfollow,biz_tag_id,2);
-                                                }
-                                            });
-                                            tag_recycler_view.setAdapter(tags_adapter);
-                                        }
-                                        else {
+//                                        if(category_name.equalsIgnoreCase("Happy Hour")){
+//                                            tag_list.clear();
+//                                            TagModal tagModal = new TagModal();
+//                                            tagModal.biz_tag_id = "0";
+//                                            tagModal.tag_name = category_name;
+//                                            tagModal.color_code = getIntent().getStringExtra("color_code");
+//                                            tagModal.tag_text = category_name;
+//                                            tagModal.tag_image = category_image;
+//                                            tagModal.is_tag_follow = "0";
+//                                            tagModal.isVenue = "0";
+//                                            tag_list.add(tagModal);
+//
+//                                            tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
+//                                            tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+//                                                @Override
+//                                                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+//                                                    tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+//                                                }
+//                                            });
+//                                            tag_recycler_view.setAdapter(tags_adapter);
+//                                        }
+//                                        else {
                                             getSearchTagList(cat_id);
-                                        }
+                                        //}
                                     }
 
                                 }

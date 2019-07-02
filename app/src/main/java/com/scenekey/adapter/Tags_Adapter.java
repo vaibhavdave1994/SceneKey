@@ -100,8 +100,8 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
 
                 if(tagModal != null) {
                     if(tagModal.category_name != null){
-                    if (!tagModal.category_name.equalsIgnoreCase("Specials") &&
-                            !tagModal.category_name.equalsIgnoreCase("Happy Hour")) {
+//                    if (!tagModal.category_name.equalsIgnoreCase("Specials") &&
+//                            !tagModal.category_name.equalsIgnoreCase("Happy Hour")) {
                         if (tagModal.is_tag_follow.equalsIgnoreCase("0")) {
                             followUnfollowDialog(tagModal, 1);
 
@@ -109,7 +109,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
                             followUnfollowDialog(tagModal, 0);
                         }
 
-                    }
+                   // }
                     }
                     else {
 

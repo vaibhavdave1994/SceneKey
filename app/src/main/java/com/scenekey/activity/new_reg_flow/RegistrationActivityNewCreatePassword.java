@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +34,10 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
      AppCompatImageView img_back;
      CheckBox cb_tnc;
      Context context = this;
-    private Bitmap profileImageBitmap;
+     Bitmap profileImageBitmap;
+     LinearLayout ll_cb;
     Utility utility;
-    TextView tv_forgot_pass;
+    TextView tv_forgot_pass,tv_heading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +48,12 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
     }
 
     private void setStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.white));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 
@@ -57,10 +61,14 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
         img_back = findViewById(R.id.img_back);
         et_password = findViewById(R.id.et_password);
         btn_signin = findViewById(R.id.btn_signin);
+        ll_cb = findViewById(R.id.ll_cb);
         cb_tnc = findViewById(R.id.cb_tnc);
         tv_forgot_pass = findViewById(R.id.tv_forgot_pass);
+        tv_heading = findViewById(R.id.tv_heading);
+        tv_heading.setText("Choose a password");
+        btn_signin.setText("Sign Up");
         tv_forgot_pass.setVisibility(View.GONE);
-        cb_tnc.setVisibility(View.VISIBLE);
+        ll_cb.setVisibility(View.VISIBLE);
 
         utility = new Utility(context);
         Intent intent = getIntent();
@@ -70,6 +78,7 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
         final String imageUri = intent.getStringExtra("imageUri");
         final String gender = intent.getStringExtra("gender");
         try {
+            if(imageUri != null)
             profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,7 +91,7 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
                 String password = et_password.getText().toString().trim();
                 if(!password.equalsIgnoreCase("")){
                     if (cb_tnc.isChecked()) {
-                        doRegistration(fName, l_name, email, password, gender, "",profileImageBitmap);
+                        doRegistration(fName, l_name, email, password, gender, "",profileImageBitmap,"");
                     } else {
                         //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
                         utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
@@ -106,6 +115,5 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
     protected void onDestroy() {
         super.onDestroy();
     }
-
 
 }

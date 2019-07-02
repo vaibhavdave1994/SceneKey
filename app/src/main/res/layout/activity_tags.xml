@@ -127,7 +127,7 @@
             android:layout_below="@+id/iv"
             android:layout_centerInParent="true"
             android:fontFamily="@font/montserrat_light"
-            android:text="No News Found"
+            android:text="No result for this search"
             android:textColor="@color/gray2"
             android:textSize="@dimen/_16sdp" />
 

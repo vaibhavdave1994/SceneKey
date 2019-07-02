@@ -951,7 +951,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 case R.id.rtlv_profile:
-                    getImgV(lastClicked).setImageResource(R.drawable.profile);
+                    getImgV(lastClicked).setImageResource(R.drawable.profile_active);
                     break;
 
             }

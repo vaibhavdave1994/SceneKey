@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -56,7 +59,8 @@ import java.util.Map;
  * Created by mindiii on 12/2/18.
  */
 
-public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
+public class
+Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 
     private String TAG = "Trending_Adapter";
     private HomeActivity activity;
@@ -87,6 +91,18 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
 
     @Override
     public void onBindViewHolder(final Trending_Adapter.ViewHolder holder, final int position) {
+
+        try {
+            AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+            blinkanimation.setDuration(1000); // duration - half a second
+            blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+            blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+            blinkanimation.setRepeatMode(Animation.REVERSE);
+            holder.re1.startAnimation(blinkanimation);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         final Events object = eventsArrayList.get(position);
         final Venue venue = object.getVenue();
@@ -507,6 +523,9 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
                 activity.startActivity(intent);
             }
         });
+
+
+
     }
 
     @Override
@@ -529,10 +548,13 @@ public class Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.View
         private ImageView green_dot;
         private ImageView iv_note_book;
         AppCompatImageView iv_comment,iv_add;
+        LinearLayout re1;
+
         TextView tv_follow;
         ViewHolder(View view) {
             super(view);
 
+            re1 = view.findViewById(R.id.rl_anim);
             rl_main = view.findViewById(R.id.rl_main);
             img_event = view.findViewById(R.id.img_event);
             txt_eventName = view.findViewById(R.id.txt_eventName);

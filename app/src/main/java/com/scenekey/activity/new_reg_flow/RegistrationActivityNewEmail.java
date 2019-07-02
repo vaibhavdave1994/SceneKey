@@ -27,6 +27,8 @@ import com.scenekey.R;
 import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.WebServices;
+import com.scenekey.model.Events;
+import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
@@ -41,6 +43,7 @@ public class RegistrationActivityNewEmail extends BaseActivity {
      AppCompatButton btn_next;
      boolean isValidEmail = false;
      Utility utility;
+     UserInfo userInfo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +55,12 @@ public class RegistrationActivityNewEmail extends BaseActivity {
     }
 
     private void setStatusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.white));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(this.getResources().getColor(R.color.white));
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
 
@@ -66,6 +71,12 @@ public class RegistrationActivityNewEmail extends BaseActivity {
         textWatcher(et_email);
         utility = new Utility(this);
 
+        userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
+
+        if(userInfo != null){
+            if(!userInfo.userEmail.equalsIgnoreCase("") || userInfo.userEmail != null)
+            et_email.setText(userInfo.userEmail);
+        }
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,9 +163,18 @@ public class RegistrationActivityNewEmail extends BaseActivity {
                                 startActivity(intent);
                             }
                             else {
-                                Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
-                                intent.putExtra("email",email);
-                                startActivity(intent);
+                                if(userInfo != null){
+                                    Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
+                                    userInfo.userEmail = et_email.getText().toString().trim();
+                                    intent.putExtra("userInfo",userInfo);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
+                                    intent.putExtra("email",email);
+                                    startActivity(intent);
+                                }
+
                             }
 
                         } else {

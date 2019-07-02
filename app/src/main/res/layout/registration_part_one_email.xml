@@ -108,8 +108,11 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_12sdp"
         android:layout_marginRight="@dimen/_12sdp"
+        style="?android:attr/borderlessButtonStyle"
+        android:textAllCaps="false"
         android:fontFamily="@font/roboto_medium"
         android:textColor="@color/button_text_new_reg"
+        android:textSize="@dimen/_14sdp"
         android:text="Next"/>
 
 </LinearLayout>

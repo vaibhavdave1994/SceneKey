@@ -143,6 +143,10 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             onBoard_txt_event_name.setText("" + event.event_name);
             getSearchTagList(event.event_id, venuid.getVenue_id());
         }
+        else {
+            String event_name = getIntent().getStringExtra("event_name");
+            onBoard_txt_event_name.setText("" + event_name);
+        }
 
         fromTrending = getIntent().getBooleanExtra("fromTrending",false);
 

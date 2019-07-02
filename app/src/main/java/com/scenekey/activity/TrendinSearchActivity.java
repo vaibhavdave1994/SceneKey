@@ -125,7 +125,39 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
         }
 
        // setRecyclerView();
-        getTrendingData();
+        if(tagModal != null){
+            if(tagModal.status != null) {
+                if (!tagModal.status.equalsIgnoreCase("active")) {
+                    no_data_trending.setVisibility(View.VISIBLE);
+                    tv_error.setText("Unfortunately '" + tag_name + "' is not active in your area at this time. Follow it for notifications when it comes in your area. To follow, hold down the button below.");
+
+                    if(tagModal.is_tag_follow.equalsIgnoreCase("0")){
+                        if(fromSpecial){
+                            btn_follow.setVisibility(View.GONE);
+                            btn_unfollow.setVisibility(View.GONE);
+                        }
+                        else {
+                            btn_follow.setVisibility(View.VISIBLE);
+                            btn_unfollow.setVisibility(View.GONE);
+                        }
+
+                    }
+                    else {
+                        if (fromSpecial) {
+                            btn_follow.setVisibility(View.GONE);
+                            btn_unfollow.setVisibility(View.GONE);
+                        } else {
+                            btn_follow.setVisibility(View.GONE);
+                            btn_unfollow.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+                else {
+                    getTrendingData();
+                }
+            }
+        }
+
     }
 
     private void setRecyclerView() {

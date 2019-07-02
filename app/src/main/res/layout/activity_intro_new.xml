@@ -22,6 +22,8 @@
         android:layout_height="0dp"
         android:layout_weight=".66"
         android:weightSum="1"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
@@ -38,7 +40,8 @@
             android:layout_weight=".06"
             android:layout_gravity="top"
             android:gravity="top|center_horizontal"
-        android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_minus10sdp"
             android:orientation="horizontal" />
 
     </LinearLayout>
@@ -70,6 +73,9 @@
             android:layout_below="@+id/tv_login_signup"
             android:text="@string/continue_with_email"
             android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp"
+            android:textAllCaps="false"
+            style="?android:attr/borderlessButtonStyle"
             android:fontFamily="@font/roboto_medium"/>
 
 
@@ -121,10 +127,11 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_5sdp"
                 android:textColor="@color/fb_color"
-                android:drawablePadding="10dp"
+                android:drawablePadding="4dp"
                 android:textAllCaps="false"
+                android:textSize="@dimen/_13sdp"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="@dimen/_15sdp"
+                android:paddingLeft="@dimen/_25sdp"
                 android:drawableLeft="@drawable/ic_facebook_logo_new"
                 android:background="@drawable/facebook_btn_border"
                 android:text="Facebook"/>
@@ -136,9 +143,10 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:textColor="@color/google_color"
-                android:drawablePadding="10dp"
+                android:drawablePadding="4dp"
+                android:textSize="@dimen/_13sdp"
                 android:gravity="left|center_vertical"
-                android:paddingLeft="@dimen/_30sdp"
+                android:paddingLeft="@dimen/_35sdp"
                 android:textAllCaps="false"
                 android:drawableLeft="@drawable/ic_gmail_new"
                 android:background="@drawable/gmail_btn_border"

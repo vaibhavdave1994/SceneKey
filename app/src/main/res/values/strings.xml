@@ -1168,4 +1168,5 @@
     <string name="who_are_you"> Who are you? </string>
     <string name="we_need_it"> We need it to look up your account or create a new one. </string>
     <string name="basic_info"> Enter your basic info </string>
+    <string name="tnc"> <u> Term &amp; Conditions </u> </string>
 </resources>

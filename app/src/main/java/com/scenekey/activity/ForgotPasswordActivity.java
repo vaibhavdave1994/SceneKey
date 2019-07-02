@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.scenekey.R;
+import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.Permission;
 import com.scenekey.helper.Validation;
@@ -39,7 +42,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private Utility utility;
     private CustomProgressBar customProgressBar;
     private ImageView ivBackIcon;
-
+    boolean isValidEmail = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private void initView() {
         etEmailForgot = findViewById(R.id.etEmailForgot);
+        textWatcher(etEmailForgot);
         btnSubmit = findViewById(R.id.btnSubmit);
         ivBackIcon = findViewById(R.id.ivBackIcon);
         ivBackIcon.setOnClickListener(this);
@@ -156,5 +160,39 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private void dismissProgDialog() {
         if (customProgressBar != null) customProgressBar.dismiss();
+    }
+
+    //------text watcher-----------
+    private void textWatcher(EditText et_serch_post) {
+
+        et_serch_post.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                String searchText = editable.toString();
+
+                if (searchText.toLowerCase().matches(Constant.emailPattern)){
+                    btnSubmit.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
+                    btnSubmit.setTextColor(getResources().getColor(R.color.white));
+                    isValidEmail = true;
+                    return;
+                }
+                else {
+                    isValidEmail = false;
+                    btnSubmit.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_next_btn_desable));
+                    btnSubmit.setTextColor(getResources().getColor(R.color.button_text_new_reg));
+                }
+            }
+        });
     }
 }

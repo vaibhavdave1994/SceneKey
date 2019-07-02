@@ -18,6 +18,7 @@ public class Offers {
     public String distance;
     public String business_name;
     public String point;
+    public String event_name;
     public String totalWallet;
 
     public String cat_id;

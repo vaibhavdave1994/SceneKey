@@ -15,9 +15,9 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="height" value="512" />
-                            <entry key="outputName" value="ic_gmail_new" />
+                            <entry key="outputName" value="ic_inactive_chck_box" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Mindiii\Downloads\search.svg" />
+                            <entry key="sourceFile" value="C:\Users\Mindiii\Downloads\inactive_chck_box_ico.svg" />
                             <entry key="width" value="512" />
                           </map>
                         </option>

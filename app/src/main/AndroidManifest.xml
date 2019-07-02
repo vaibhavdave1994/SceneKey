@@ -97,7 +97,8 @@
 
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewCreatePassword"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme"/>
 
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewBasicInfo"

@@ -108,6 +108,8 @@ public class OfferAdapter  extends RecyclerView.Adapter {
                 ((ViewHolderTag) holder).tv_reward.setText(offers.category_name);
             }
 
+            ((ViewHolderTag) holder).txt_exp_days.setText(offers.crd);
+
             ((ViewHolderTag) holder).tv_description.setText(offers.message);
             Picasso.with(context).load(offers.venue_image).fit().centerCrop()
                     .placeholder(R.drawable.placeholder_img)
@@ -120,6 +122,7 @@ public class OfferAdapter  extends RecyclerView.Adapter {
                     Intent intent = new Intent(context, OnBoardActivity.class);
                     intent.putExtra("frequency", offers.frequency);
                     intent.putExtra("venuid", offers.venue_id);
+                    intent.putExtra("event_name", offers.event_name);
                     intent.putExtra("fromAlert", true);
                     context.startActivity(intent);
                 }

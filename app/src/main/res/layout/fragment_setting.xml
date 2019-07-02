@@ -41,6 +41,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:overScrollMode="never">
 
         <LinearLayout
@@ -50,16 +52,6 @@
             android:layout_marginRight="@dimen/_12sdp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/_4sdp"
-                android:paddingBottom="4dp"
-                android:gravity="center_vertical"
-                android:text="About Me"
-                android:textStyle="bold"
-                android:textColor="@color/setting_txt_color"
-                android:textSize="@dimen/_10ssp" />
 
             <!--android:text="@string/aboutme"-->
             <LinearLayout
@@ -67,6 +59,23 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/_4sdp"
+                    android:paddingBottom="4dp"
+                    android:gravity="center_vertical"
+                    android:text="About Me"
+                    android:textStyle="bold"
+                    android:textColor="@color/black2"
+                    android:padding="@dimen/_10sdp"
+                    android:textSize="@dimen/_12ssp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#A3A3A3" />
 
                 <LinearLayout
                     android:id="@+id/lnr_deatils"
@@ -104,6 +113,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
                     android:background="#A3A3A3" />
 
                 <LinearLayout
@@ -144,6 +155,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
                     android:background="#A3A3A3" />
 
                 <LinearLayout
@@ -172,6 +185,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
                     android:background="#A3A3A3" />
 
                 <LinearLayout
@@ -209,6 +224,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
                     android:background="#A3A3A3" />
 
                 <LinearLayout
@@ -245,20 +262,31 @@
 
             </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:gravity="center_vertical"
                 android:text="@string/information"
-                android:textColor="#A3A3A3"
-                android:textSize="@dimen/_10ssp" />
+                android:textColor="@color/colorPrimaryDark_new"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_12ssp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#A3A3A3" />
             <!--android:fontFamily="@font/raleway_semibold"-->
 
             <LinearLayout
                 android:id="@+id/linLayTnC"
-                android:layout_marginTop="@dimen/_minus3sdp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:background="@color/white"
@@ -293,6 +321,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_14sdp"
                 android:background="#A3A3A3" />
 
             <LinearLayout
@@ -328,26 +358,129 @@
                     app:srcCompat="@drawable/ic_arrow_point_to_right" />
             </LinearLayout>
 
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical">
+
+
+
+                <!--android:fontFamily="@font/raleway_semibold"-->
+
+                <LinearLayout
+                    android:id="@+id/linLayfeed"
+                    android:layout_marginTop="@dimen/_minus3sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:padding="@dimen/_10sdp"
+                        app:srcCompat="@drawable/ic_feedback_ico" />
+
+                    <TextView
+                        android:id="@+id/txt_feedback"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="@string/feedback"
+                        android:textColor="@color/setting_txt_color"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:padding="@dimen/_14sdp"
+                        android:tint="@color/gray2"
+                        app:srcCompat="@drawable/ic_arrow_point_to_right" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_14sdp"
+                    android:background="#A3A3A3" />
+
+                <LinearLayout
+                    android:id="@+id/linLaylogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:padding="@dimen/_10sdp"
+                        app:srcCompat="@drawable/ic_logout_ico" />
+
+                    <TextView
+                        android:id="@+id/txt_logout"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:clickable="false"
+                        android:gravity="center_vertical"
+                        android:text="@string/logout"
+                        android:textColor="@color/setting_txt_color"
+                        android:textSize="@dimen/_10ssp"
+                        android:textStyle="bold"/>
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:padding="@dimen/_14sdp"
+                        android:tint="@color/gray2"
+                        app:srcCompat="@drawable/ic_arrow_point_to_right" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:id="@+id/lnr_location"
                 android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/txt_admin"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/myriadpro_regular"
                     android:gravity="center_vertical"
                     android:text="@string/admin"
-                    android:textColor="@color/setting_txt_color"
+                    android:textColor="@color/black2"
                     android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    android:padding="@dimen/_10sdp"
                     tools:ignore="SpUsage" />
+
+                <View
+                    android:id="@+id/view_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@+id/txt_admin"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="#A3A3A3" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_below="@+id/view_admin"
                    >
 
                     <fragment
@@ -409,53 +542,54 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:background="#A3A3A3"
+                    android:visibility="gone"
                     android:layout_alignParentBottom="true"/>
 
 
             </RelativeLayout>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginBottom="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:gravity="center"
-                android:paddingLeft="@dimen/_20sdp"
-                android:paddingRight="@dimen/_20sdp"
-                android:paddingTop="5dp"
-                android:paddingBottom="@dimen/_5ssp">
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/_40sdp"-->
+                <!--android:layout_marginBottom="@dimen/_30sdp"-->
+                <!--android:layout_marginTop="@dimen/_30sdp"-->
+                <!--android:gravity="center"-->
+                <!--android:paddingLeft="@dimen/_20sdp"-->
+                <!--android:paddingRight="@dimen/_20sdp"-->
+                <!--android:paddingTop="5dp"-->
+                <!--android:paddingBottom="@dimen/_5ssp">-->
 
-                <TextView
-                    android:id="@+id/txt_feedback"
-                    style="@style/txt_event_welcome"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/_24sdp"
-                    android:textSize="@dimen/_12sdp"
-                    android:background="@drawable/bg_search_tag_active"
-                    android:fontFamily="@font/raleway_medium"
-                    android:gravity="center"
-                    android:text="@string/feedback"
-                    tools:ignore="SpUsage" />
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/txt_feedback"&ndash;&gt;-->
+                    <!--&lt;!&ndash;style="@style/txt_event_welcome"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="@dimen/_24sdp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:textSize="@dimen/_12sdp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:background="@drawable/bg_search_tag_active"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:fontFamily="@font/raleway_medium"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="@string/feedback"&ndash;&gt;-->
+                    <!--&lt;!&ndash;tools:ignore="SpUsage" />&ndash;&gt;-->
 
-                <TextView
-                    android:layout_width="@dimen/_55sdp"
-                    android:layout_height="@dimen/_36sdp" />
+                <!--<TextView-->
+                    <!--android:layout_width="@dimen/_55sdp"-->
+                    <!--android:layout_height="@dimen/_36sdp" />-->
 
-                <TextView
-                    android:id="@+id/txt_logout"
-                    style="@style/txt_event_welcome"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_24sdp"
-                    android:layout_weight="1"
-                    android:textSize="@dimen/_12sdp"
-                    android:background="@drawable/bg_search_tag_active"
-                    android:fontFamily="@font/raleway_regular"
-                    android:gravity="center"
-                    android:text="@string/logout"
-                    tools:ignore="SpUsage" />
-            </LinearLayout>
+                <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/txt_logout"&ndash;&gt;-->
+                    <!--&lt;!&ndash;style="@style/txt_event_welcome"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="0dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="@dimen/_24sdp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:textSize="@dimen/_12sdp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:background="@drawable/bg_search_tag_active"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:fontFamily="@font/raleway_regular"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:gravity="center"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="@string/logout"&ndash;&gt;-->
+                    <!--&lt;!&ndash;tools:ignore="SpUsage" />&ndash;&gt;-->
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
