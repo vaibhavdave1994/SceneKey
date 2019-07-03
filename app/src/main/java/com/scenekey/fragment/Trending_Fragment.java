@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
+import com.scenekey.activity.SettingActivtiy;
 import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.adapter.Trending_Adapter;
 import com.scenekey.helper.WebServices;
@@ -261,6 +262,7 @@ public class Trending_Fragment extends Fragment {
                                 // New Code
                                 if (jo.has("userInfo")) {
                                     UserInfo userInfo = activity.userInfo();
+
                                     JSONObject user = jo.getJSONObject("userInfo");
                                     if (user.has("makeAdmin"))
                                         userInfo.makeAdmin = (user.getString("makeAdmin"));
@@ -290,6 +292,10 @@ public class Trending_Fragment extends Fragment {
                                     }
                                 }
                             } catch (Exception e) {
+                                if(e.getMessage().equals("Value [] at userInfo of type org.json.JSONArray cannot be converted to JSONObject"))
+                                {
+                                    SceneKey.sessionManager.logout(getActivity());
+                                }
                                 e.printStackTrace();
                                 activity.dismissProgDialog();
                             }

@@ -1261,7 +1261,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             utility.snackBar(registerView, getString(R.string.internetConnectivityError), 0);
             customProgressBar.cancel();
         }
-
     }
 
     private void openSelectGenderDialog(final UserInfo userInfo) {

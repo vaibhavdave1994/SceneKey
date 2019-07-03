@@ -80,6 +80,14 @@ public class RegistrationActivityNewEmail extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(isValidEmail){
+                        if(userInfo != null){
+                            Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
+                            userInfo.userEmail = et_email.getText().toString().trim();
+                            intent.putExtra("userInfo",userInfo);
+                            startActivity(intent);
+                    }
+
+                    else
                     checkEmailRegisteration(et_email.getText().toString());
                 }
                 else {

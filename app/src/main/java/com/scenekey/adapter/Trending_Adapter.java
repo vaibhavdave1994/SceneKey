@@ -94,7 +94,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 
         try {
             AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-            blinkanimation.setDuration(1000); // duration - half a second
+            blinkanimation.setDuration(800); // duration - half a second
             blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
             blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
             blinkanimation.setRepeatMode(Animation.REVERSE);
@@ -219,6 +219,20 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                 }
             }
         });
+
+        holder.re1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    activity.showProgDialog(false, "");
+                    listener.getCheckEventStatusListener(event.event_name, event.event_id, venue, object, currentLatLng, new String[]{venue.getLatitude(), venue.getLongitude()});
+                } catch (NullPointerException e) {
+                    activity.dismissProgDialog();
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         holder.iv_group.setOnClickListener(new View.OnClickListener() {
             @Override

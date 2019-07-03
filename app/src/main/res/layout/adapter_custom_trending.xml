@@ -217,25 +217,24 @@
                             android:id="@+id/rl_anim"
                             android:background="@drawable/button_corner_border"
                             android:layout_gravity="center"
-                            android:layout_width="@dimen/_250sdp"
+                            android:layout_width="@dimen/_180sdp"
                             android:orientation="vertical"
-                            android:layout_height="@dimen/_50sdp"
-
+                            android:layout_height="@dimen/_45sdp"
                             />
 
                         <View
                             android:id="@+id/inrect2"
-                            android:layout_width="@dimen/_245sdp"
-                            android:layout_height="@dimen/_45sdp"
+                            android:layout_width="@dimen/_175sdp"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:background="@drawable/button_corner_border_trans" />
 
                         <TextView android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="key in and share!"
+                            android:text="Key in and share!"
                             android:textColor="#ffffff"
-                            android:textSize="@dimen/_16sdp"
+                            android:textSize="@dimen/_17sdp"
                             android:layout_gravity="center"/>
 
                     </FrameLayout>

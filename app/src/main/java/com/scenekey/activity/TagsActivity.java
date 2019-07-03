@@ -60,12 +60,13 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
     private String category_name = "",category_image = "";
     private ArrayList<TagModal> tag_list;
+    private ArrayList<TagModal> tag_list_for_cat;
     private ArrayList<TagModal> tag_listDeactive;
     private Tags_Adapter tags_adapter;
     private Tags_SpecialAdapter tags_specialAdapter;
     private CustomProgressBar customProgressBar;
     private RelativeLayout no_data_found;
-    private RecyclerView tag_recycler_view;
+    private RecyclerView tag_recycler_view,tag_recycler_view_second;
     private UserInfo userInfo;
     private String searchText = "";
     private String cat_id = "";
@@ -79,6 +80,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout toolbar;
     EditText et_serch_post;
     ImageView iv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
         linear = findViewById(R.id.linear);
         tag_recycler_view = findViewById(R.id.tag_recycler_view);
+        tag_recycler_view_second = findViewById(R.id.tag_recycler_view_second);
         no_data_found = findViewById(R.id.no_data_found);
         mainView = findViewById(R.id.mainView);
         ImageView img_tags_back = findViewById(R.id.img_tags_back);
@@ -191,12 +194,29 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void afterTextChanged(Editable editable) {
 
+//                if(request != null)
+//                    VolleySingleton.getInstance(TagsActivity.this).getRequestQueue().cancelAll(request);
                 searchText = editable.toString();
 
-                if (!searchText.equalsIgnoreCase("")) {
+//                if (!searchText.equalsIgnoreCase("")) {
+//                    tag_list.clear();
+//                    tag_recycler_view_second.setVisibility(View.VISIBLE);
+//                    tag_recycler_view.setVisibility(View.GONE);
+//                    getSearchListByCategory(searchText);
+//                }
+//                else {
+//                    tag_recycler_view.setVisibility(View.VISIBLE);
+//                    tag_recycler_view_second.setVisibility(View.GONE);
+//                    tag_list_for_cat.clear();
+//                    getSearchTagList(cat_id);
+//                }
 
+
+                if (!searchText.equalsIgnoreCase("")) {
                     if(from_category){
                         tag_list.clear();
+                        tag_recycler_view_second.setVisibility(View.VISIBLE);
+                        tag_recycler_view.setVisibility(View.GONE);
                         getSearchListByCategory(searchText);
                     }
                     else {
@@ -213,19 +233,19 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
                 else {
+                    tag_recycler_view.setVisibility(View.VISIBLE);
+                    tag_recycler_view_second.setVisibility(View.GONE);
                     System.out.println("searchtext: empty");
                     if(fromProfile){
                         getMyFollowTag();
                     }
                     else {
                         if (!cat_id.equalsIgnoreCase("")) {
-                            tag_list.clear();
+                            tag_list_for_cat.clear();
                             getSearchTagList(cat_id);
-
                         }
                     }
                     toolbar.setVisibility(View.VISIBLE);
-
                 }
             }
         });
@@ -396,6 +416,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                         String status = jo.getString("status");
                         if (status.equals("success")) {
+
                             tag_list.clear();
                             tag_listDeactive.clear();
                             specialTag_list.clear();
@@ -483,14 +504,14 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                            tag_recycler_view.setLayoutManager(mLayoutManager);
+                            tag_recycler_view_second.setLayoutManager(mLayoutManager);
                             tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list, new FollowUnfollowLIstner() {
                                 @Override
                                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
                                     tagFollowUnfollow(followUnfollow,biz_tag_id,0);
                                 }
                             });
-                            tag_recycler_view.setAdapter(tags_specialAdapter);
+                            tag_recycler_view_second.setAdapter(tags_specialAdapter);
                             tags_specialAdapter.notifyDataSetChanged();
                         }
                         else {
@@ -576,7 +597,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                         no_data_found.setVisibility(View.GONE);
                         dismissProgDialog();
                         JSONArray tagList = jo.getJSONArray("tagList");
-                        tag_list = new ArrayList<>();
+                        tag_list_for_cat = new ArrayList<>();
                         for (int i = 0; i < tagList.length(); i++) {
 
                             TagModal tagModal = new TagModal();
@@ -589,23 +610,25 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             tagModal.is_tag_follow = jsonObject.getString("is_tag_follow");
                             tagModal.category_name = jsonObject.getString("category_name");
                             tagModal.isVenue = "0";
-                            tag_list.add(tagModal);
+                            tag_list_for_cat.add(tagModal);
                         }
 
                         tag_recycler_view.setLayoutManager(new GridLayoutManager(TagsActivity.this, 3));
-                        tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
+                        tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list_for_cat,cat_id,category_name, new FollowUnfollowLIstner() {
                             @Override
                             public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
                                 tagFollowUnfollow(followUnfollow,biz_tag_id,2);
                             }
                         });
-                        new Handler().postDelayed(new Runnable() {
-                            // Using handler with postDelayed called runnable run method
-                            @Override
-                            public void run() {
-                                tag_recycler_view.setAdapter(tags_adapter);
-                            }
-                        }, 100);
+                        tag_recycler_view.setAdapter(tags_adapter);
+                        System.out.println("listsizecheck:"+tag_list_for_cat.size());
+//                        new Handler().postDelayed(new Runnable() {
+//                            // Using handler with postDelayed called runnable run method
+//                            @Override
+//                            public void run() {
+//                                tag_recycler_view.setAdapter(tags_adapter);
+//                            }
+//                        }, 500);
 
                     }
 

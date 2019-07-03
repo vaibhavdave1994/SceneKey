@@ -108,6 +108,14 @@
         android:layout_below="@+id/linear"
         android:overScrollMode="never" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tag_recycler_view_second"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linear"
+        android:visibility="gone"
+        android:overScrollMode="never" />
+
     <RelativeLayout
         android:id="@+id/no_data_found"
         android:layout_width="match_parent"
