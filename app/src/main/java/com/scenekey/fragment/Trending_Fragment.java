@@ -55,7 +55,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Trending_Fragment extends Fragment {
 
     private static Timer timerHttp;
@@ -186,8 +185,9 @@ public class Trending_Fragment extends Fragment {
             },
                     new FollowUnfollowLIstner() {
                         @Override
-                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id,int position) {
-                            tagFollowUnfollow(followUnfollow,biz_tag_id,position);
+                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id,Object object,int position) {
+                           Events events = (Events) object;
+                            tagFollowUnfollow(followUnfollow,biz_tag_id,events.getVenue().getVenue_id(),position);
                         }
                     });
 
@@ -524,7 +524,6 @@ public class Trending_Fragment extends Fragment {
         //milliseconds
         long different = startDate.getTime() - endDate.getTime();
 
-
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
         long hoursInMilli = minutesInMilli * 60;
@@ -581,8 +580,8 @@ public class Trending_Fragment extends Fragment {
         }
     }
 
-    //----------------follow / unfollow
-    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int pos) {
+    //----------------follow / unfollow----------------
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id,final String venueId, final int pos) {
         if (utility.checkInternetConnection()) {
             activity.showProgDialog(true, "TAG");
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
@@ -629,7 +628,7 @@ public class Trending_Fragment extends Fragment {
                     params.put("biz_tag_id",biz_tag_id);
                     params.put("follow_status", String.valueOf(followUnfollow));
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
-                    params.put("venue_id", "");
+                    params.put("venue_id", venueId);
                     params.put("lat", lat);
                     params.put("long", lng);
                     return params;

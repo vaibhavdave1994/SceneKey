@@ -137,11 +137,17 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             venue = venuid;
             object = (Events) getIntent().getSerializableExtra("object");
             currentLatLng = (String[]) getIntent().getSerializableExtra("currentLatLng");
-            if(currentLatLng == null){
+            if (currentLatLng == null) {
                 currentLatLng = new String[]{userInfo().lat, userInfo().longi};
             }
             onBoard_txt_event_name.setText("" + event.event_name);
             getSearchTagList(event.event_id, venuid.getVenue_id());
+
+            if (object != null) {
+                callAddEventApi(object);
+                if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
+                 tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),1);
+            }
         }
         else {
             String event_name = getIntent().getStringExtra("event_name");
@@ -1041,5 +1047,58 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
         }
 
+    }
+
+    private void callAddEventApi(final Events object) {
+        final Utility utility = new Utility(this);
+
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADD_EVENT, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String Response) {
+                    // get response
+                    JSONObject jsonObject;
+                    try {
+                        dismissProgDialog();
+                        jsonObject = new JSONObject(Response);
+                        String status = jsonObject.getString("status");
+
+                        if (status.equals("event_Added")) {
+
+                        } else if (status.equals("exist")) {
+
+                        }
+
+                       // if(object.getVenue().getIs_tag_follow().equalsIgnoreCase(""))
+
+                    } catch (Exception ex) {
+                        dismissProgDialog();
+                        ex.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("userid", userInfo().userid);
+                    params.put("eventname", object.getEvent().event_name);
+                    params.put("eventid", object.getEvent().event_id);
+                    params.put("eventdate", object.getEvent().event_time);
+                    return params;
+                }
+            };
+
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
     }
 }

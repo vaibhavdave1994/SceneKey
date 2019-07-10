@@ -100,7 +100,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationType={"bag":["6"],"notificationType":3}}]*/
 
 
-       /* Bundle[{google.delivered_priority=normal,
+       /* Bundle[{trgoogle.delivered_priority=normal,
                 google.sent_time=1546499418854,
                 google.ttl=2419200,
                 google.original_priority=normal,
@@ -137,8 +137,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     venue_id = obj.getString("venue_id");
                 }
 
-
-
                 Object bag = obj.getString("bag");
 
                 if (bag != null && bag instanceof String) {
@@ -170,7 +168,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationModal.frequency = frequency;
                 notificationModal.venue_id = venue_id;
             } catch (Exception e) {
-
                 e.printStackTrace();
             }
         }
@@ -320,6 +317,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 sendNotification(remoteMessage.getTtl(), title, intent, message, false, notificationModal);
                 break;
 
+            case "8":
+                if (sessionManager.isLoggedIn()) {
+                    intent = new Intent(this, HomeActivity.class);
+                    notificationModal.notificationCurrentScreen = "HomeScreen";
+                    notificationModal.isBroadCast = "noBroadCast";
+                    intent.putExtra("notificationModalReward", notificationModal);
+                } else {
+                    new Intent(this, LoginActivity.class);
+                }
+                sendNotification(remoteMessage.getTtl(), title, intent, message, false, notificationModal);
+                break;
+
             case "22":
                 if (isAppOnForeground(this)) {
                     Activity activity = SceneKey.getInstance().getActiveActivity();
@@ -381,6 +390,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(notificationModal.titleMsg)
                     .setContentText(notificationModal.message)
+                    .setDefaults(Notification.DEFAULT_ALL)
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationModal.message))
                     .setAutoCancel(true)
@@ -396,6 +406,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationModal.message))
                     .setAutoCancel(true)
                     .setSound(defaultSoundUri)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent);
         }
 

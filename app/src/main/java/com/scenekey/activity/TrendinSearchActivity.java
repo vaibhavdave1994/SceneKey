@@ -174,10 +174,10 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                     callCheckEventStatusApi(eventNAme, event_id, venue_name.getVenue_name(), object, currentLatLng, strings);
                 }
             }
-                    ,
+             ,
                     new FollowUnfollowLIstner() {
                         @Override
-                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id,int position) {
+                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id,Object object,int position) {
                             tagFollowUnfollow(followUnfollow,biz_tag_id,position);
                         }
                     }

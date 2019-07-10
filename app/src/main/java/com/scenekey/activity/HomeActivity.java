@@ -51,6 +51,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -169,7 +170,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             R.drawable.ic_flame_active, R.drawable.ic_location_active, R.drawable.ic_search_active
     };
 
-
     private RelativeLayout rl_title_view_home, rl_title_main_view, rl_toolbar_alert, rl_profileView;
 
     /* when notification receive fragment end here */
@@ -188,6 +188,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //StatusBarUtil.setTranslucent(this);
         overridePendingTransition(R.anim.slide_left, R.anim.fab_slide_out_to_left);
         setContentView(R.layout.activity_home);
+        FirebaseApp.initializeApp(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         getDataFromFB();
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
@@ -530,9 +531,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 //}
 
 
-                lastClick = 0;
-                isPermissionAvail = true;
-                rtlv_alert.callOnClick();
+                new Handler().postDelayed(new Runnable() {
+                    // Using handler with postDelayed called runnable run method
+                    @Override
+                    public void run() {
+
+                        HomeActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                lastClick = 0;
+                                isPermissionAvail = true;
+                                rtlv_alert.callOnClick();
+                            }
+                        });
+                    }
+                }, 3 * 1000);
 
                 break;
 
@@ -545,6 +557,28 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intentVenueBoard);
 
                 break;
+
+                case "8":
+
+                    new Handler().postDelayed(new Runnable() {
+                        // Using handler with postDelayed called runnable run method
+                        @Override
+                        public void run() {
+
+                            HomeActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    lastClick = 0;
+                                    isPermissionAvail = true;
+                                    rtlv_alert.callOnClick();
+                                }
+                            });
+                        }
+                    }, 3 * 1000);
+
+
+
+
+                    break;
         }
     }
 

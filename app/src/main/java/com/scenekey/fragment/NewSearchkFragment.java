@@ -35,6 +35,7 @@ import com.scenekey.adapter.Tags_SpecialAdapter;
 import com.scenekey.helper.WebServices;
 import com.scenekey.lib_sources.arc_menu.util.Util;
 import com.scenekey.listener.FollowUnfollowLIstner;
+import com.scenekey.model.Events;
 import com.scenekey.model.SearchTagModal;
 import com.scenekey.model.TagModal;
 import com.scenekey.model.UserInfo;
@@ -333,7 +334,7 @@ public class NewSearchkFragment extends Fragment {
                             search_recycler_view.setLayoutManager(mLayoutManager);
                             tags_specialAdapter = new Tags_SpecialAdapter(context, tag_list, new FollowUnfollowLIstner() {
                                 @Override
-                                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int postion) {
+                                public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id, Object object, int postion) {
                                     tagFollowUnfollow(followUnfollow,biz_tag_id,postion);
                                 }
                             });

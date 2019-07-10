@@ -1,6 +1,5 @@
 package com.scenekey.listener;
 
-
 import com.scenekey.model.Events;
 import com.scenekey.model.Venue;
 
@@ -9,6 +8,6 @@ import com.scenekey.model.Venue;
  */
 
 public interface FollowUnfollowLIstner {
-    void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,int position);
+    void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,Object object, int position);
     //void getVenueFollowUnfollow(final String venueId, final int followUnfollow, final String biz_tag_id,int position);
 }

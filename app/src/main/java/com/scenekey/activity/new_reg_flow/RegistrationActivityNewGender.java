@@ -113,7 +113,19 @@ public class RegistrationActivityNewGender extends RegistrationActivity {
 //                    if(profileImageBitmap == null)
 //                    profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), userInfo.userImage);
 
-                    profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
+                    if(userInfo.byteArray != null){
+                        profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
+                    }
+                    else{
+                        if(imageUri != null) {
+                            try {
+                                profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
                     doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,userInfo.loginstatus);
                 }
                 else {

@@ -327,7 +327,6 @@
             android:orientation="horizontal"
             android:weightSum="4">
 
-
             <RelativeLayout
                 android:id="@+id/rtlv_home"
                 android:layout_width="0dp"
@@ -424,7 +423,7 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/img_four"
-                    android:layout_width="@dimen/_26sdp"
+                    android:layout_width="@dimen/_30sdp"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:scaleType="fitCenter"
@@ -436,15 +435,17 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerHorizontal="true"
                     android:text="99"
+                    android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="@dimen/_6sdp"
+                    android:textSize="@dimen/_8sdp"
                     android:paddingRight="@dimen/_5sdp"
                     android:paddingLeft="@dimen/_7sdp"
-                    android:paddingTop="@dimen/_2sdp"
 
                     />
 
             </RelativeLayout>
         </LinearLayout>
+
     </FrameLayout>
+
 </RelativeLayout>

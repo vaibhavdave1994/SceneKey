@@ -27,6 +27,7 @@ import com.scenekey.fragment.NewSearchkFragment;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.FollowUnfollowLIstner;
+import com.scenekey.model.Events;
 import com.scenekey.model.TagModal;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
@@ -186,6 +187,7 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
         @Override
         public void onClick(View view) {
             TagModal tagModal = tagList.get(getAdapterPosition());
+            Events events = new Events();
             switch (view.getId()) {
                 case R.id.mainRoomView:
                     if(tagModal.makeOwnItem){
@@ -217,11 +219,11 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
                     break;
 
                 case R.id.tv_follow:
-                    followUnfollowLIstner.getFollowUnfollow(1,tagModal.biz_tag_id,getAdapterPosition());
+                    followUnfollowLIstner.getFollowUnfollow(1,tagModal.biz_tag_id,events,getAdapterPosition());
                     break;
 
                 case R.id.tv_unfollow:
-                    followUnfollowLIstner.getFollowUnfollow(0,tagModal.biz_tag_id,getAdapterPosition());
+                    followUnfollowLIstner.getFollowUnfollow(0,tagModal.biz_tag_id,events,getAdapterPosition());
                     break;
             }
         }

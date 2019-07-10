@@ -225,11 +225,11 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             public void onClick(View v) {
 
                 if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0")){
-                    followUnfollowLIstner.getFollowUnfollow(1,object.getVenue().getBiz_tag_id(),position);
+                    followUnfollowLIstner.getFollowUnfollow(1,object.getVenue().getBiz_tag_id(),object,position);
 //                    tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),position);
                 }
                 else {
-                    followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
+                    followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),object,position);
 //                    tagFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
                 }
             }

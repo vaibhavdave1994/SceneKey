@@ -70,6 +70,8 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     ImageView iv_event_detail,img_ListIcon;
     private String[] currentLatLng;
     boolean fromTrending = false;
+    Utility utility;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void inItView() {
+        utility = new Utility(this);
         userInfo = SceneKey.sessionManager.getUserInfo();
         imageList = new ArrayList<>();
         no_member_yet = findViewById(R.id.no_member_yet);
@@ -128,6 +131,12 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
         RecyclerView theRoomRecyclerView = findViewById(R.id.theRoomRecyclerView);
         img_f11_back = findViewById(R.id.img_f11_back);
         img_f11_back.setOnClickListener(this);
+
+        if(object != null){
+            callAddEventApi(object);
+            if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
+                tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),1);
+        }
 
         if (eventAttendyArrayList != null) {
 
@@ -364,6 +373,100 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             Toast.makeText(TheRoomActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
+    }
+
+    private void callAddEventApi(final Events object) {
+
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADD_EVENT, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String Response) {
+                    // get response
+                    JSONObject jsonObject;
+                    try {
+                        dismissProgDialog();
+                        jsonObject = new JSONObject(Response);
+                        String status = jsonObject.getString("status");
+
+                        if (status.equals("event_Added")) {
+
+                        } else if (status.equals("exist")) {
+
+                        }
+
+                    } catch (Exception ex) {
+                        dismissProgDialog();
+                        ex.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("userid", userInfo().userid);
+                    params.put("eventname", object.getEvent().event_name);
+                    params.put("eventid", object.getEvent().event_id);
+                    params.put("eventdate", object.getEvent().event_time);
+                    return params;
+                }
+            };
+
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
+    }
+
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int callFrom) { // 0 from search, 1 for tags long press
+        utility = new Utility(TheRoomActivity.this);
+        if (utility.checkInternetConnection()) {
+            showProgDialog(true, "TAG");
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    dismissProgDialog();
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        dismissProgDialog();
+                        if(jo.has("status")){
+
+                        }
+
+                    } catch (Exception e) {
+                        dismissProgDialog();
+                        Utility.showToast(TheRoomActivity.this, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("biz_tag_id",biz_tag_id);
+                    params.put("follow_status", String.valueOf(followUnfollow));
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(TheRoomActivity.this).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
             dismissProgDialog();
         }
     }

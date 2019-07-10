@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.FirebaseApp;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.SessionManager;
 import com.crashlytics.android.Crashlytics;
@@ -55,6 +56,7 @@ public class SceneKey extends Application {
         sessionManager = new SessionManager(instance.getApplicationContext());
         imageSessionManager = new ImageSessionManager(instance.getApplicationContext());
         EmojiManager.install(new IosEmojiProvider());
+
     }
 
 

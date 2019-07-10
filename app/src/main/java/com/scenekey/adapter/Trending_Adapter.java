@@ -111,14 +111,16 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
             //holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
             holder.tv_follow.setText("Follow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
 //            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
 //            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
         }
         else {
            // holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
-            holder.tv_follow.setText("Following");
-//            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.following_border));
-//            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.gray2));
+            holder.tv_follow.setText("Unfollow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.unfollow_border));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.red_ring));
         }
         Collections.sort(eventsArrayList, new SortByPoint());
         try {
@@ -133,7 +135,6 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 
             if (position == eventsArrayList.size() - 1) {
                 holder.txt_gap.setVisibility(View.VISIBLE);
-
             } else {
                 holder.txt_gap.setVisibility(View.GONE);
                 holder.txt_gap2.setVisibility(View.GONE);
@@ -251,12 +252,10 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             public void onClick(View v) {
 
                 if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0")){
-                    followUnfollowLIstner.getFollowUnfollow(1,object.getVenue().getBiz_tag_id(),position);
-//                    tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),position);
+                    followUnfollowLIstner.getFollowUnfollow(1,object.getVenue().getBiz_tag_id(),object,position);
                 }
                 else {
-                    //followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
-//                    tagFollowUnfollow(0,object.getVenue().getBiz_tag_id(),position);
+                    followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),object,position);
                 }
             }
         });

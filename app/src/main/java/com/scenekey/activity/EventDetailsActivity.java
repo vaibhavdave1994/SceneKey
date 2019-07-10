@@ -302,7 +302,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//      RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(EventDetailsActivity.this) {
             @Override
             public boolean canScrollVertically() {
@@ -570,7 +570,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         super.onPause();
     }
 
-    //GetAllDataApi...........................................................
+    //....................GetAllDataApi...........................................................
 
     @Override
     public void onDestroy() {
@@ -949,7 +949,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    //----------------follow / unfollow
+    //----------------follow / unfollow -----------------------------------
     public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id) {
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
@@ -1030,7 +1030,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     image = list.get(i).getUserimage();
                 }
 
-                Glide.with(this).load(image)
+                Glide.with(getApplicationContext()).load(image)
                         .thumbnail(0.5f)
                         .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.drawable.placeholder_img)
@@ -1055,7 +1055,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                         image = list.get(i).getUserimage();
                     }
 
-                    Glide.with(this).load(image)
+                    Glide.with(getApplicationContext()).load(image)
                             .thumbnail(0.5f)
                             .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
                             .placeholder(R.drawable.placeholder_img)
@@ -1079,7 +1079,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                             image = list.get(i).getUserimage();
                         }
 
-                        Glide.with(this).load(image)
+                        Glide.with(getApplicationContext()).load(image)
                                 .thumbnail(0.5f)
                                 .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .placeholder(R.drawable.placeholder_img)

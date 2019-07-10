@@ -125,11 +125,12 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
             if(!userInfo.lastName.equalsIgnoreCase("") || userInfo.lastName != null)
                 et_l_name.setText(userInfo.lastName);
 
-            if(!userInfo.userImage.equalsIgnoreCase("") && userInfo.userImage != null)
-            Picasso.with(context).load(userInfo.userImage).placeholder(R.drawable.app_icon)
-                    .error(R.drawable.app_icon).into(civ_pp);
+            if(!userInfo.userImage.equalsIgnoreCase("") && userInfo.userImage != null) {
+                Picasso.with(context).load(userInfo.userImage).placeholder(R.drawable.app_icon)
+                        .error(R.drawable.app_icon).into(civ_pp);
 
-            getBitmapFromURL(userInfo.userImage);
+                getBitmapFromURL(userInfo.userImage);
+            }
         }
 
         utility = new Utility(this);
@@ -140,6 +141,9 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                 if(isButtonClickable) {
                     if (userInfo != null) {
                         Intent intent = new Intent(context, RegistrationActivityNewGender.class);
+                        if(userInfo.byteArray == null){
+                            intent.putExtra("imageUri", profileImageUrl);
+                        }
                         userInfo.fullname = et_f_name.getText().toString().trim();
                         userInfo.lastName = et_l_name.getText().toString().trim();
                         intent.putExtra("userInfo", userInfo);
@@ -183,7 +187,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         });
     }
 
-    //------text watcher-----------
+    //------------text watcher-----------
     public void textWatcher(EditText editText) {
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -321,6 +325,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File storageDir = getCacheDir();
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -372,9 +377,9 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                             if(userInfo != null){
                                 userInfo.socialImageChanged = true;
 
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                userInfo.byteArray = stream.toByteArray();
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                userInfo.byteArray = stream.toByteArray();
                             }
                             profileImageUrl = Utility.getImageUri(this, profileImageBitmap).toString();
                             String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, profileImageBitmap));
