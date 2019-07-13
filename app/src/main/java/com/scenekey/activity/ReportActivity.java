@@ -1,38 +1,18 @@
 package com.scenekey.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.helper.CustomProgressBar;
-import com.scenekey.helper.WebServices;
-import com.scenekey.model.NotificationData;
 import com.scenekey.util.Utility;
-import com.scenekey.volleymultipart.VolleySingleton;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.scenekey.activity.HomeActivity.userInfo;
 
 public class ReportActivity extends AppCompatActivity {
 

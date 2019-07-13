@@ -1,12 +1,9 @@
 package com.scenekey.fragment;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -30,10 +26,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.adapter.Search_tag_Adapter;
-import com.scenekey.adapter.Tags_Adapter;
 import com.scenekey.adapter.Tags_SpecialAdapter;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.arc_menu.util.Util;
 import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.Events;
 import com.scenekey.model.SearchTagModal;
@@ -49,7 +43,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -259,6 +252,7 @@ public class NewSearchkFragment extends Fragment {
 
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObject = tagList.getJSONObject(i);
+                                tagModal.venue_id = jsonObject.getString("venue_id");
                                 tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                                 tagModal.tag_name = jsonObject.getString("tag_name");
                                 tagModal.category_name = jsonObject.getString("category_name");
@@ -283,6 +277,7 @@ public class NewSearchkFragment extends Fragment {
 
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
+                                tagModal.venue_id = jsonObjectSTL.getString("venue_id");
                                 tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
                                 tagModal.tag_name = jsonObjectSTL.getString("tag_name");
                                 tagModal.category_name = jsonObjectSTL.getString("category_name");
@@ -307,6 +302,7 @@ public class NewSearchkFragment extends Fragment {
                             if(specialTag_list.size() >0){
                                 TagModal tagModalNew = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(0);
+                                tagModalNew.venue_id = jsonObjectSTL.getString("venue_id");
                                 tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
                                 tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
                                 tagModalNew.category_name = jsonObjectSTL.getString("category_name");
@@ -335,7 +331,8 @@ public class NewSearchkFragment extends Fragment {
                             tags_specialAdapter = new Tags_SpecialAdapter(context, tag_list, new FollowUnfollowLIstner() {
                                 @Override
                                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id, Object object, int postion) {
-                                    tagFollowUnfollow(followUnfollow,biz_tag_id,postion);
+                                    Events events = (Events) object;
+                                    tagFollowUnfollow(followUnfollow,biz_tag_id,postion,events.getVenue().getVenue_id());
                                 }
                             });
                                 search_recycler_view.setAdapter(tags_specialAdapter);
@@ -415,7 +412,7 @@ public class NewSearchkFragment extends Fragment {
         onBack = true;
     }
 
-    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int pos) {
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int pos, final String venueId) {
         utility = new Utility(context);
         if (utility.checkInternetConnection()) {
             activity.showProgDialog(true, "TAG");
@@ -458,6 +455,9 @@ public class NewSearchkFragment extends Fragment {
                     Map<String, String> params = new HashMap<>();
                     params.put("biz_tag_id",biz_tag_id);
                     params.put("follow_status", String.valueOf(followUnfollow));
+                    params.put("venue_id", venueId);
+                    params.put("lat", userInfo.lat);
+                    params.put("long", userInfo.longi);
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     return params;
                 }

@@ -1,7 +1,6 @@
 package com.scenekey.feedsViewPager;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -25,19 +23,13 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.facebook.AccessToken;
 import com.scenekey.R;
 import com.scenekey.activity.FeedUserProfileActivity;
-import com.scenekey.activity.HomeActivity;
-import com.scenekey.adapter.ProfileImagePagerAdapter;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.listener.ImageIndicaterLIstener;
-import com.scenekey.listener.ProfileImageListener;
-import com.scenekey.liveSideWork.LiveProfileActivity;
-import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Feeds;
 import com.scenekey.model.ImagesUpload;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
-import com.scenekey.verticleViewPager.ChildFragment;
 import com.scenekey.verticleViewPager.VerticalViewPager;
 import com.scenekey.verticleViewPager.ViewPagerAdapter;
 

@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -29,43 +28,25 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
-import com.scenekey.activity.RegistrationActivity;
-import com.scenekey.base.BaseActivity;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.Pop_Up_Option;
-import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
-import com.scenekey.volleymultipart.VolleyMultipartRequest;
-import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.scenekey.helper.Constant.MY_PERMISSIONS_REQUEST_LOCATION;
 
 public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
 

@@ -39,7 +39,6 @@ import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.WebServices;
 import com.scenekey.liveSideWork.LiveProfileActivity;
-import com.scenekey.model.EventAttendy;
 import com.scenekey.model.ImagesUpload;
 import com.scenekey.model.KeyInUserModal;
 import com.scenekey.model.UserInfo;
@@ -48,7 +47,6 @@ import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.verticleViewPager.HorizontalKeyInViewPagerAdapter;
 import com.scenekey.verticleViewPager.HorizontalViewPager;
-import com.scenekey.verticleViewPager.HorizontalViewPagerAdapter;
 import com.scenekey.volleymultipart.VolleySingleton;
 
 import org.json.JSONObject;

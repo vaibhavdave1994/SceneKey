@@ -1,7 +1,6 @@
 package com.scenekey.verticleViewPager;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -24,8 +23,6 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.facebook.AccessToken;
 import com.scenekey.R;
-import com.scenekey.activity.HomeActivity;
-import com.scenekey.fragment.Profile_Fragment;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.listener.ImageIndicaterLIstener;

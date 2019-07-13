@@ -3,8 +3,8 @@ package com.scenekey.activity.new_reg_flow;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.AppCompatButton;
@@ -19,9 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.scenekey.R;
-import com.scenekey.activity.LoginActivity;
 import com.scenekey.activity.RegistrationActivity;
-import com.scenekey.helper.Validation;
+import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 
 import java.io.IOException;
@@ -38,6 +37,7 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
      LinearLayout ll_cb;
     Utility utility;
     TextView tv_forgot_pass,tv_heading;
+    UserInfo userInfo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,9 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
         final String l_name = intent.getStringExtra("l_name");
         final String imageUri = intent.getStringExtra("imageUri");
         final String gender = intent.getStringExtra("gender");
+
+        userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
+
         try {
             if(imageUri != null)
             profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
@@ -91,6 +94,26 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
                 String password = et_password.getText().toString().trim();
                 if(!password.equalsIgnoreCase("")){
                     if (cb_tnc.isChecked()) {
+
+                        userInfo.password = password;
+
+                        if (userInfo != null) {
+                            if(userInfo.byteArray != null){
+                             profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
+                        }
+                            else{
+                                if(imageUri != null) {
+                                    try {
+                                        profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,userInfo.loginstatus);
+                        }
+                        else
                         doRegistration(fName, l_name, email, password, gender, "",profileImageBitmap,"");
                     } else {
                         //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();

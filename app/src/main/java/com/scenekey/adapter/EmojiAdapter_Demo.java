@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.cus_view.ProfilePopUp_Demo;
-import com.scenekey.util.Utility;
 import com.vanniktech.emoji.EmojiTextView;
 
 /**

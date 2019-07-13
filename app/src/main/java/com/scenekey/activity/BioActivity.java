@@ -1,8 +1,6 @@
 package com.scenekey.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -10,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -18,13 +15,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
-import com.scenekey.fragment.Bio_Fragment;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
-import com.scenekey.util.StatusBarUtil;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
 

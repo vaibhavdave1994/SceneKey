@@ -1,12 +1,10 @@
 package com.scenekey.helper;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.Window;
 
 import com.scenekey.R;
-import com.scenekey.util.StatusBarUtil;
 
 
 /**

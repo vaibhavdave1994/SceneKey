@@ -1,7 +1,6 @@
 package com.scenekey.helper;
 
 import com.scenekey.model.Events;
-import com.scenekey.util.Utility;
 
 import java.util.Comparator;
 

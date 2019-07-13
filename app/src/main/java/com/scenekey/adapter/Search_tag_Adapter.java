@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
-import com.scenekey.activity.SearchSubCategoryActivity;
 import com.scenekey.activity.TagsActivity;
 import com.scenekey.model.SearchTagModal;
 import com.squareup.picasso.Picasso;

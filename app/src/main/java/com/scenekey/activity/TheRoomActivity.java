@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,7 +29,6 @@ import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.WebServices;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.KeyinUserListener;
-import com.scenekey.listener.RoomDemoListener;
 import com.scenekey.listener.RoomListener;
 import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.EventAttendy;
@@ -391,7 +388,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                         String status = jsonObject.getString("status");
 
                         if (status.equals("event_Added")) {
-
+                            showKeyPoints("+5");
                         } else if (status.equals("exist")) {
 
                         }

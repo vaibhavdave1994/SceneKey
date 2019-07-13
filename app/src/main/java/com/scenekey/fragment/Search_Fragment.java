@@ -2,7 +2,6 @@ package com.scenekey.fragment;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +24,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
-import com.scenekey.activity.EventSearch_tag_Activity;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.adapter.Tag_Adapter;
 import com.scenekey.helper.WebServices;

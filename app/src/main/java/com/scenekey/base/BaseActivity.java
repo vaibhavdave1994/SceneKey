@@ -6,8 +6,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,10 +14,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.scenekey.R;
-import com.scenekey.activity.HomeActivity;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.SessionManager;
 import com.scenekey.listener.StatusBarHide;
@@ -27,8 +23,6 @@ import com.scenekey.model.UserInfo;
 import com.scenekey.util.CommonUtils;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.StatusBarUtil;
-
-import java.util.Objects;
 
 public class BaseActivity extends AppCompatActivity {
 

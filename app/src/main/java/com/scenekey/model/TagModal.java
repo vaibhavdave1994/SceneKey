@@ -14,6 +14,7 @@ public class TagModal  implements Serializable {
     },*/
 
 
+  public  String venue_id;
   public  String biz_tag_id;
   public  String tag_name;
   public  String color_code;

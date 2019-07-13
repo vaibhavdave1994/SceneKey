@@ -6,7 +6,6 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.PointF;
 import android.os.Build;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.widget.Adapter;
 import android.widget.FrameLayout;
 
 import com.scenekey.R;
-import com.scenekey.activity.HomeActivity;
 
 public class SwipeCardView extends BaseFlingAdapterView {
 

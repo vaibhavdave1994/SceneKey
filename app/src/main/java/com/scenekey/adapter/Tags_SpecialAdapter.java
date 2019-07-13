@@ -14,32 +14,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.activity.SearchSubCategoryActivity;
-import com.scenekey.activity.TagsActivity;
 import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.fragment.NewSearchkFragment;
 import com.scenekey.helper.CustomProgressBar;
-import com.scenekey.helper.WebServices;
 import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.Events;
 import com.scenekey.model.TagModal;
-import com.scenekey.util.SceneKey;
+import com.scenekey.model.Venue;
 import com.scenekey.util.Utility;
-import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Handler;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -188,6 +175,7 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
         public void onClick(View view) {
             TagModal tagModal = tagList.get(getAdapterPosition());
             Events events = new Events();
+            events.setVenue(new Venue(tagModal.venue_id));
             switch (view.getId()) {
                 case R.id.mainRoomView:
                     if(tagModal.makeOwnItem){

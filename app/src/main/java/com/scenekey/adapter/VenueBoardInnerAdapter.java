@@ -1,10 +1,8 @@
 package com.scenekey.adapter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,7 +27,6 @@ import com.bumptech.glide.Glide;
 import com.scenekey.R;
 import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TrendinSearchActivity;
-import com.scenekey.helper.Pop_Up_Option_Follow_Unfollow;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.VenueBoard;
 import com.scenekey.util.SceneKey;
@@ -38,7 +35,6 @@ import com.scenekey.volleymultipart.VolleySingleton;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

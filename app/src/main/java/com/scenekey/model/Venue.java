@@ -26,6 +26,13 @@ public class Venue implements Serializable {
     private int     rating;
     private boolean validate;
 
+    public Venue(String venue_id) {
+        this.venue_id = venue_id;
+    }
+
+    public Venue() {
+    }
+
     public String getBiz_tag_id() {
         return biz_tag_id;
     }

@@ -1,7 +1,5 @@
 package com.scenekey.model;
 
-import android.util.Log;
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +9,6 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.arc_menu.util.Util;
 import com.scenekey.util.Utility;
 
 /**

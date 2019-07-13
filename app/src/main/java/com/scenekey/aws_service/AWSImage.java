@@ -30,7 +30,6 @@ import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.helper.Constant;
-import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.ImagesUpload;
 import com.scenekey.model.UserInfo;

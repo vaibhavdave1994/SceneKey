@@ -3,8 +3,6 @@ package com.scenekey.model;
 import com.scenekey.helper.WebServices;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by mindiii on 2/5/17.

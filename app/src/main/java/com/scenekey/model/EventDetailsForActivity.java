@@ -1,7 +1,5 @@
 package com.scenekey.model;
 
-import com.google.gson.JsonArray;
-import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.fragment.Event_Fragment;
 import com.scenekey.helper.Constant;

@@ -14,9 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scenekey.R;
-import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.OnBoardActivity;
-import com.scenekey.activity.ZoomImageActivity;
 import com.scenekey.listener.MySelecteOfferListener;
 import com.scenekey.model.Offers;
 import com.scenekey.util.Utility;

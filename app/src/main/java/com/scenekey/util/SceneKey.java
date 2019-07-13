@@ -5,15 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.FirebaseApp;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.SessionManager;
 import com.crashlytics.android.Crashlytics;

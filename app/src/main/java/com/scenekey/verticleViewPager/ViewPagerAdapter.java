@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.scenekey.listener.ImageIndicaterLIstener;
-import com.scenekey.model.EventAttendy;
 import com.scenekey.model.ImagesUpload;
 
 import java.util.ArrayList;

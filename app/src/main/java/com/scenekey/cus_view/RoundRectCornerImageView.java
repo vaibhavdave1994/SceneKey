@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 /**
  * Created by mindiii on 23/11/18.

@@ -1,10 +1,8 @@
 package com.scenekey.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -35,7 +32,6 @@ import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TheRoomActivity;
 import com.scenekey.helper.SortByPoint;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.arc_menu.util.Util;
 import com.scenekey.listener.CheckEventStatusListener;
 import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.Event;

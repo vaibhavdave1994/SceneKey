@@ -1,13 +1,8 @@
 package com.scenekey.activity;
 
-import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,13 +24,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.scenekey.R;
 import com.scenekey.adapter.Tags_Adapter;
 import com.scenekey.adapter.Tags_SpecialAdapter;
-import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
-import com.scenekey.helper.Pop_Up_Option;
 import com.scenekey.helper.Pop_Up_Option_Follow_Unfollow;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.FollowUnfollowLIstner;
@@ -52,7 +44,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -81,7 +72,6 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout toolbar;
     EditText et_serch_post;
     ImageView iv;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,6 +277,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObject = tagList.getJSONObject(i);
+                                tagModal.venue_id = jsonObject.getString("venue_id");
                                 tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                                 tagModal.tag_name = jsonObject.getString("tag_name");
                                 tagModal.category_name = jsonObject.getString("category_name");
@@ -312,6 +303,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
+                                tagModal.venue_id = jsonObjectSTL.getString("venue_id");
                                 tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
                                 tagModal.tag_text = jsonObjectSTL.getString("tag_name");
                                 tagModal.category_name = jsonObjectSTL.getString("category_name");
@@ -333,6 +325,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             if(specialTag_list.size() >0){
                                 TagModal tagModalNew = new TagModal();
                                 JSONObject jsonObjectSTL = specialTagList.getJSONObject(0);
+                                tagModalNew.venue_id = jsonObjectSTL.getString("venue_id");
                                 tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
                                 tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
                                 tagModalNew.category_name = jsonObjectSTL.getString("category_name");
@@ -355,7 +348,8 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list, new FollowUnfollowLIstner() {
                                 @Override
                                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id, Object object, int postion) {
-                                    tagFollowUnfollow(followUnfollow,biz_tag_id,0);
+                                    Events events = (Events) object;
+                                    tagFollowUnfollow(followUnfollow,biz_tag_id,events.getVenue().getVenue_id(),0);
                                 }
                             });
                             tag_recycler_view.setAdapter(tags_specialAdapter);
@@ -428,6 +422,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                                 TagModal tagModal = new TagModal();
                                 JSONObject jsonObject = tagList.getJSONObject(i);
+                                tagModal.venue_id = jsonObject.getString("venue_id");
                                 tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                                 tagModal.tag_name = jsonObject.getString("tag_name");
                                 tagModal.category_name = jsonObject.getString("category_name");
@@ -454,6 +449,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                                     TagModal tagModal = new TagModal();
                                     JSONObject jsonObjectSTL = specialTagList.getJSONObject(i);
+                                    tagModal.venue_id = jsonObjectSTL.getString("venue_id");
                                     tagModal.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
                                     tagModal.tag_text = jsonObjectSTL.getString("tag_name");
                                     tagModal.category_name = jsonObjectSTL.getString("category_name");
@@ -477,6 +473,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
                                 TagModal tagModalNew = new TagModal();
                                 JSONObject jsonObjectSTL = tagList.getJSONObject(0);
+                                tagModalNew.venue_id = jsonObjectSTL.getString("venue_id");
                                 tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
                                 tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
                                 tagModalNew.category_name = jsonObjectSTL.getString("category_name");
@@ -509,7 +506,8 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                             tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list, new FollowUnfollowLIstner() {
                                 @Override
                                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,Object object,int postion) {
-                                    tagFollowUnfollow(followUnfollow,biz_tag_id,0);
+                                    Events events = (Events) object;
+                                    tagFollowUnfollow(followUnfollow,biz_tag_id,events.getVenue().getVenue_id(),0);
                                 }
                             });
                             tag_recycler_view_second.setAdapter(tags_specialAdapter);
@@ -548,7 +546,6 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
             utility.snackBar(mainView, getString(R.string.internetConnectivityError), 0);
         }
     }
-
     private void setOnClick(View... views) {
         for (View v : views) {
             v.setOnClickListener(this);
@@ -618,7 +615,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                         tags_adapter = new Tags_Adapter(fromProfile,TagsActivity.this, tag_list_for_cat,cat_id,category_name, new FollowUnfollowLIstner() {
                             @Override
                             public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,Object object,int postion) {
-                                tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+                                tagFollowUnfollow(followUnfollow,biz_tag_id,"",2);
                             }
                         });
                         tag_recycler_view.setAdapter(tags_adapter);
@@ -661,9 +658,13 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
 
     public void showProgDialog(boolean b, String TAG) {
         try {
-            customProgressBar.setCanceledOnTouchOutside(b);
-            customProgressBar.setCancelable(b);
-            customProgressBar.show();
+            if(customProgressBar != null) {
+                if(!customProgressBar.isShowing()) {
+                    customProgressBar.setCanceledOnTouchOutside(b);
+                    customProgressBar.setCancelable(b);
+                    customProgressBar.show();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -765,7 +766,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                                         tags_adapter = new Tags_Adapter(fromProfile, TagsActivity.this, tag_list,cat_id,category_name, new FollowUnfollowLIstner() {
                                             @Override
                                             public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,Object object,int postion) {
-                                                tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+                                                tagFollowUnfollow(followUnfollow,biz_tag_id,"",2);
                                             }
                                         });
                                         tag_recycler_view.setAdapter(tags_adapter);
@@ -808,29 +809,29 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onFollowSelect(Pop_Up_Option_Follow_Unfollow dialog, Object object) {
                 TagModal tagModal = (TagModal) object;
-                tagFollowUnfollow(1,tagModal.biz_tag_id,1);
+                tagFollowUnfollow(1,tagModal.biz_tag_id,"",1);
             }
 
             @Override
             public void onUnFollowSelect(Pop_Up_Option_Follow_Unfollow dialog, Object object) {
                 TagModal tagModal = (TagModal) object;
-                tagFollowUnfollow(0,tagModal.biz_tag_id,1);
+                tagFollowUnfollow(0,tagModal.biz_tag_id,"",1);
             }
         };
     }
 
-    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int callFrom) { // 0 from search, 1 for tags long press
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id,final String venueId, final int callFrom) { // 0 from search, 1 for tags long press
         utility = new Utility(TagsActivity.this);
         if (utility.checkInternetConnection()) {
             showProgDialog(true, "TAG");
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    dismissProgDialog();
+
                     // get response
                     try {
                         JSONObject jo = new JSONObject(response);
-                        dismissProgDialog();
+                        //dismissProgDialog();
                         if(jo.has("status")){
                             if(jo.getString("status").equalsIgnoreCase("success")){
 
@@ -896,6 +897,10 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("biz_tag_id",biz_tag_id);
+                    if(!venueId.equals(""))
+                    params.put("venue_id", venueId);
+                    params.put("lat", userInfo.lat);
+                    params.put("long", userInfo.longi);
                     params.put("follow_status", String.valueOf(followUnfollow));
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     return params;
@@ -938,7 +943,7 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
             tags_adapter = new Tags_Adapter(fromProfile, TagsActivity.this, filteredList,cat_id,category_name, new FollowUnfollowLIstner() {
                 @Override
                 public void getFollowUnfollow(final int followUnfollow, final String biz_tag_id,Object object,int postion) {
-                    tagFollowUnfollow(followUnfollow,biz_tag_id,2);
+                    tagFollowUnfollow(followUnfollow,biz_tag_id,"",2);
                 }
             });
             tag_recycler_view.setAdapter(tags_adapter);

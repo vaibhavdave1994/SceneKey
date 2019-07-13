@@ -8,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.lib_sources.SwipeCard.Card;
-import com.scenekey.listener.ViewPagerListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -1,15 +1,12 @@
 package com.scenekey.adapter;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.LocationManager;
 import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -25,14 +22,11 @@ import com.scenekey.R;
 import com.scenekey.activity.SearchSubCategoryActivity;
 import com.scenekey.activity.TagsActivity;
 import com.scenekey.activity.TrendinSearchActivity;
-import com.scenekey.helper.Pop_Up_Option_Follow_Unfollow;
 import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.TagModal;
-import com.scenekey.model.VenueBoard;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -196,7 +190,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             public void onClick(View v) {
                 TagModal tagModal = (TagModal) object;
 //                followUnfollowLIstner.getFollowUnfollow(1,tagModal.biz_tag_id);
-                activity.tagFollowUnfollow(1,tagModal.biz_tag_id,1);
+                activity.tagFollowUnfollow(1,tagModal.biz_tag_id,"",1);
                 dialog.dismiss();
             }
         });
@@ -205,7 +199,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             public void onClick(View v) {
                 TagModal tagModal = (TagModal) object;
 //                followUnfollowLIstner.getFollowUnfollow(0,tagModal.biz_tag_id);
-                activity.tagFollowUnfollow(0,tagModal.biz_tag_id,1);
+                activity.tagFollowUnfollow(0,tagModal.biz_tag_id,"",1);
                 dialog.dismiss();
                 dialog.dismiss();
             }

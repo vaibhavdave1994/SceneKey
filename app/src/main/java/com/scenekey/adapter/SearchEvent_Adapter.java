@@ -12,12 +12,10 @@ import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
-import com.scenekey.fragment.Event_Fragment;
 import com.scenekey.listener.CheckEventStatusListener;
 import com.scenekey.model.Event;
 import com.scenekey.model.Events;
 import com.scenekey.model.Venue;
-import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.squareup.picasso.Picasso;
 

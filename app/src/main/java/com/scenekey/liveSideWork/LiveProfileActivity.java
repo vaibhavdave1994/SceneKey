@@ -40,7 +40,6 @@ import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.EventAttendy;
-import com.scenekey.model.Feeds;
 import com.scenekey.model.ImagesUpload;
 import com.scenekey.model.KeyInUserModal;
 import com.scenekey.model.UserInfo;

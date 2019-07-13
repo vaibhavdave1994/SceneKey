@@ -1,23 +1,17 @@
 package com.scenekey.verticleViewPager;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.ThemedSpinnerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.scenekey.R;
-import com.scenekey.model.EventAttendy;
 import com.scenekey.model.ImagesUpload;
 import com.squareup.picasso.Picasso;
 

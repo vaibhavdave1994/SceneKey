@@ -1,14 +1,9 @@
 package com.scenekey.model;
 
-import android.graphics.Bitmap;
-
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.WebServices;
-import com.scenekey.util.Utility;
 
 import java.io.Serializable;
-
-import static com.scenekey.helper.WebServices.USER_IMAGE;
 
 /**
  * Created by mindiii on 31/1/18.
@@ -57,6 +52,9 @@ public class UserInfo implements Serializable {
 
     public String environment  = "";
     public String userAccessToken  = "";
+
+    public String currentDate  = "";
+
     public boolean firstTimeDemo;
     public boolean currentLocation;
 

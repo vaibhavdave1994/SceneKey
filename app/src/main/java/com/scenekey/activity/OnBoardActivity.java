@@ -1,16 +1,19 @@
 package com.scenekey.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,25 +26,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
-import com.scenekey.adapter.Search_tag_Adapter;
 import com.scenekey.adapter.VenueBoardAdapter;
 import com.scenekey.base.BaseActivity;
-import com.scenekey.helper.Constant;
-import com.scenekey.helper.Pop_Up_Option_Follow_Unfollow;
 import com.scenekey.helper.WebServices;
-import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.model.Event;
 import com.scenekey.model.EventAttendy;
-import com.scenekey.model.EventDetailsForActivity;
 import com.scenekey.model.Events;
-import com.scenekey.model.Feeds;
-import com.scenekey.model.KeyInUserModal;
-import com.scenekey.model.SearchTagModal;
-import com.scenekey.model.TagModal;
 import com.scenekey.model.Venue;
 import com.scenekey.model.VenueBoard;
 import com.scenekey.util.SceneKey;
@@ -1064,7 +1056,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                         String status = jsonObject.getString("status");
 
                         if (status.equals("event_Added")) {
-
+                            showKeyPoints("+5");
                         } else if (status.equals("exist")) {
 
                         }
@@ -1100,5 +1092,32 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
+    }
+
+    private void showKeyPoints(String s) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.custom_keypoint_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.gravity = Gravity.TOP;
+        dialog.getWindow().setAttributes(lp);
+
+        TextView tvKeyPoint;
+
+        tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
+        tvKeyPoint.setText(s);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 3000);
+
+        dialog.show();
     }
 }

@@ -19,7 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
-import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.SettingActivtiy;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;

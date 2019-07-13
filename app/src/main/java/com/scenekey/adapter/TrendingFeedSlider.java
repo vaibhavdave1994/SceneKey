@@ -8,14 +8,11 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.scenekey.R;
 import com.scenekey.activity.OnBoardActivity;
-import com.scenekey.cus_view.RoundRectCornerImageView;
 import com.scenekey.cus_view.RoundRectCornerIv;
-import com.scenekey.cus_view.RoundUpperCornerImageView;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.listener.CheckEventStatusListener;
 import com.scenekey.model.Event;
@@ -25,7 +22,6 @@ import com.scenekey.model.Venue;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class TrendingFeedSlider  extends PagerAdapter {
 

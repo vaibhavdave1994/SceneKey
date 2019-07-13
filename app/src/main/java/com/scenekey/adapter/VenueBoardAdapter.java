@@ -1,6 +1,5 @@
 package com.scenekey.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -13,23 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.scenekey.R;
-import com.scenekey.activity.OnBoardActivity;
-import com.scenekey.activity.SearchSubCategoryActivity;
-import com.scenekey.helper.Pop_Up_Option_Follow_Unfollow;
 import com.scenekey.model.VenueBoard;
-import com.scenekey.util.Border;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VenueBoardAdapter extends RecyclerView.Adapter<VenueBoardAdapter.ViewHolder> {
 

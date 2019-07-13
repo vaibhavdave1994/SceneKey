@@ -8,13 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.listener.MyRedeemListener;
-import com.scenekey.listener.MySelecteOfferListener;
 import com.scenekey.model.Wallets;
 import com.squareup.picasso.Picasso;
 

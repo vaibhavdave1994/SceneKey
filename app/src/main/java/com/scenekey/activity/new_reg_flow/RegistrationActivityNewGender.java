@@ -1,56 +1,27 @@
 package com.scenekey.activity.new_reg_flow;
 
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.scenekey.BuildConfig;
 import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
-import com.scenekey.cropper.CropImage;
-import com.scenekey.cropper.CropImageView;
-import com.scenekey.helper.Constant;
-import com.scenekey.helper.ImageSessionManager;
-import com.scenekey.helper.Pop_Up_Option;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegistrationActivityNewGender extends RegistrationActivity {
 
@@ -104,6 +75,9 @@ public class RegistrationActivityNewGender extends RegistrationActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent intent = new Intent(context, RegistrationActivityNewCreatePassword.class);
+
                 if (userInfo != null) {
                     if (isMaleSelected)
                         userInfo.userGender = "male";
@@ -119,17 +93,21 @@ public class RegistrationActivityNewGender extends RegistrationActivity {
                     else{
                         if(imageUri != null) {
                             try {
-                                profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
-                            } catch (IOException e) {
+                                intent.putExtra("imageUri", imageUri);
+                                //profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     }
 
-                    doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,userInfo.loginstatus);
+                    intent.putExtra("userInfo", userInfo);
+
+
+                    //doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,userInfo.loginstatus);
                 }
                 else {
-                    Intent intent = new Intent(context, RegistrationActivityNewCreatePassword.class);
+
                     intent.putExtra("imageUri", imageUri);
                     intent.putExtra("f_name", fName);
                     intent.putExtra("l_name", l_name);
@@ -138,9 +116,9 @@ public class RegistrationActivityNewGender extends RegistrationActivity {
                         intent.putExtra("gender", "male");
                     else
                         intent.putExtra("gender", "female");
-                    startActivity(intent);
 
                 }
+                startActivity(intent);
             }
         });
 

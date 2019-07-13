@@ -2,13 +2,7 @@ package com.scenekey.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.PagerAdapter;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +13,8 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.scenekey.R;
-import com.scenekey.helper.RoundedImageAspectRatio;
 import com.scenekey.listener.ProfileImageListener;
 import com.scenekey.model.ImagesUpload;
-import com.scenekey.util.CircleTransform;
-import com.scenekey.util.SceneKey;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

@@ -1,9 +1,6 @@
 package com.scenekey.fragment;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,27 +15,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
-import com.scenekey.activity.LoginActivity;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.CustomeClick;
-import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.Validation;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;
-import com.scenekey.model.Wallets;
-import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
-import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

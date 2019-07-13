@@ -1,7 +1,6 @@
 package com.scenekey.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,7 +14,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.adapter.SubCatergoryApdater;
-import com.scenekey.adapter.Tags_Adapter;
 import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.WebServices;

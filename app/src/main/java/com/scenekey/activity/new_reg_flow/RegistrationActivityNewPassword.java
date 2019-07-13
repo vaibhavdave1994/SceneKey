@@ -1,13 +1,9 @@
 package com.scenekey.activity.new_reg_flow;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,7 +14,6 @@ import android.widget.Toast;
 import com.scenekey.R;
 import com.scenekey.activity.ForgotPasswordActivity;
 import com.scenekey.activity.LoginActivity;
-import com.scenekey.helper.Constant;
 
 public class RegistrationActivityNewPassword extends LoginActivity {
 

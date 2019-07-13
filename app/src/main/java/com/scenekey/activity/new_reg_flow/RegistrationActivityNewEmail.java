@@ -3,7 +3,6 @@ package com.scenekey.activity.new_reg_flow;
 
 import android.content.Intent;
 
-import android.os.Build;
 import android.os.Bundle;
 
 import android.support.v7.widget.AppCompatButton;
@@ -20,14 +19,12 @@ import android.widget.Toast;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.scenekey.R;
 import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.WebServices;
-import com.scenekey.model.Events;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;

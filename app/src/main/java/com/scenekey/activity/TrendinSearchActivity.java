@@ -20,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.adapter.TrendingSearchAdapter;
-import com.scenekey.adapter.Trending_Adapter;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;

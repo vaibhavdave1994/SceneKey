@@ -158,8 +158,6 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
 
-
-
         try {
             autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -261,7 +259,6 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         }
         return result;
     }
-
 
     /*.........................onClick()....................................*/
     @Override
@@ -446,7 +443,6 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -467,12 +463,10 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         Log.e("Test", " Setting-OnResume");
     }
 
-
     public void updateSession(UserInfo user) {
         SceneKey.sessionManager.createSession(user);
         userInfo = SceneKey.sessionManager.getUserInfo();
     }
-
 
     @Override
     public void onStart() {
@@ -492,7 +486,6 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         Log.e("Test", " Setting-OnPause");
         super.onPause();
     }
-
 
     /*............................showProgDialog..............................*/
     public void showProgDialog(boolean b) {
@@ -591,4 +584,5 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
     public void onProviderDisabled(String s) {
 
     }
+
 }

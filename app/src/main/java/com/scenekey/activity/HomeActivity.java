@@ -29,6 +29,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -43,7 +44,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.android.volley.DefaultRetryPolicy;
@@ -80,7 +80,6 @@ import com.scenekey.listener.StatusBarHide;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Events;
 import com.scenekey.model.NotificationModal;
-import com.scenekey.model.Offers;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.StatusBarUtil;
@@ -119,7 +118,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     //Shubham
     TabLayout tabLayout, tablayout_home, tablayout_alert;
     private FrameLayout frame_fragments;
-    private TextView tvHomeTitle, tv_key_points;
+    private TextView tvHomeTitle, tv_key_points,tv_key_points_new;
     private RelativeLayout rl_title_view;
     private RelativeLayout rtlv_alert, rtlv_home, rtlv_reward, lastclicked;
     private ImageView img_home_logo, img_three_one;
@@ -149,6 +148,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static String name = "";
     private DatabaseReference mDatabase;
      public TextView tv_alert_badge_count;
+     private AppCompatImageView img_alert;
 /*
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -191,6 +191,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         FirebaseApp.initializeApp(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         getDataFromFB();
+        img_alert = findViewById(R.id.img_alert);
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed: " + refreshedToken);
         //automatically hide status bar
@@ -666,7 +667,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         frm_bottmbar = findViewById(R.id.frm_bottmbar);
         rl_title_view = findViewById(R.id.rl_title_view);
         tvHomeTitle = findViewById(R.id.tvHomeTitle);
-        tv_key_points = findViewById(R.id.tv_key_points_new);
+        tv_key_points = findViewById(R.id.tv_key_points);
+        tv_key_points_new = findViewById(R.id.tv_key_points_new);
         //txt_five = findViewById(R.id.txt_five);
         tv_title = findViewById(R.id.tv_title);
         tv_alert_badge_count = findViewById(R.id.tv_alert_badge_count);
@@ -692,6 +694,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setOnClick(rtlv_alert, rtlv_home, rtlv_profile, rtlv_reward, img_setting);
 
         tv_key_points.setText(userInfo.key_points);
+        tv_key_points_new.setText(userInfo.key_points);
 
 
         //tvHomeTitle.setText(userInfo().fullname + " " + userInfo().lastName);
@@ -1378,6 +1381,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         try {
             //Picasso.with(this).load(userInfo.getUserImage()).placeholder(R.drawable.image_default_profile).into(img_profile);
             tv_key_points.setText(userInfo.key_points);
+            tv_key_points_new.setText(userInfo.key_points);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -2261,8 +2265,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 String val = String.valueOf(dataSnapshot.getValue());
                 if(!val.equalsIgnoreCase("") && val != null && !val.equalsIgnoreCase("null")) {
                     if (Integer.parseInt(val) > 0) {
-                        tv_alert_badge_count.setText(val);
-                        tv_alert_badge_count.setVisibility(View.VISIBLE);
+                        img_alert.setImageResource(R.drawable.alert_dot);
+//                        tv_alert_badge_count.setText(val);
+//                        tv_alert_badge_count.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        img_alert.setImageResource(R.drawable.alert);
                     }
                 }
                 dismissProgDialog();

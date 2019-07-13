@@ -8,7 +8,6 @@ import android.widget.ImageView;
 
 import com.scenekey.R;
 import com.scenekey.helper.SessionManager;
-import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.model.UserInfo;
 
 public class DemoUserProfileActivity extends AppCompatActivity implements View.OnClickListener {

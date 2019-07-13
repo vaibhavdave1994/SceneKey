@@ -4,13 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +19,8 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scenekey.R;
 import com.scenekey.helper.Constant;
@@ -36,7 +32,6 @@ import com.scenekey.model.Feeds;
 import com.scenekey.util.Utility;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHolder> {

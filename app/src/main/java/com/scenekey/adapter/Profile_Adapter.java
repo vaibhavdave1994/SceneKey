@@ -1,9 +1,7 @@
 package com.scenekey.adapter;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
@@ -14,23 +12,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
@@ -45,7 +35,6 @@ import com.scenekey.listener.LikeFeedListener;
 import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.EmoziesModal;
 import com.scenekey.model.EventAttendy;
-import com.scenekey.model.EventDetailsForActivity;
 import com.scenekey.model.Events;
 import com.scenekey.model.Feeds;
 import com.scenekey.util.Utility;
@@ -56,10 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.StringTokenizer;
-
-import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by mindiii on 15/2/18.

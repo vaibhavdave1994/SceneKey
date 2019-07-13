@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.ImageIndicaterLIstener;
 import com.scenekey.model.ImagesUpload;
-import com.scenekey.verticleViewPager.ContentFragment;
 
 import java.util.ArrayList;
 

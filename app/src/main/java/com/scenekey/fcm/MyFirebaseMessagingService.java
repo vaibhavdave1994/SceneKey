@@ -18,15 +18,11 @@ import android.widget.RemoteViews;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.LoginActivity;
 import com.scenekey.fragment.Event_Fragment;
-import com.scenekey.fragment.Key_In_Event_Fragment;
-import com.scenekey.fragment.OfferSFragment;
 import com.scenekey.fragment.Reward_Fragment;
 import com.scenekey.fragment.WalletsFragment;
 import com.scenekey.helper.SessionManager;
@@ -38,12 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import static android.content.ContentValues.TAG;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 

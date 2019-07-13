@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +27,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
-import com.scenekey.activity.SettingActivtiy;
-import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.adapter.Trending_Adapter;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
@@ -47,7 +44,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,6 +64,7 @@ public class Trending_Fragment extends Fragment {
     private Trending_Adapter trendingAdapter;
     private ArrayList<Events> eventsArrayList;
     private ScrollView no_data_trending;
+    UserInfo myUserInfo;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -230,6 +227,9 @@ public class Trending_Fragment extends Fragment {
                                     if (user.has("makeAdmin"))
                                         userInfo.makeAdmin = (user.getString("makeAdmin"));
 
+                                    if (user.has("currentDate"))
+                                        userInfo.currentDate = (user.getString("currentDate"));
+
                                     if (user.has("lat"))
                                         userInfo.lat = (user.getString("lat"));
 
@@ -248,7 +248,7 @@ public class Trending_Fragment extends Fragment {
                                     if (user.has("bio"))
                                         userInfo.bio = (user.getString("bio"));
                                     activity.updateSession(userInfo);
-
+                                    myUserInfo = userInfo;
                                     if (user.getString("fullname").equals("")) {
                                         SceneKey.sessionManager.logout(activity);
                                     }
@@ -267,6 +267,9 @@ public class Trending_Fragment extends Fragment {
                                     if (user.has("makeAdmin"))
                                         userInfo.makeAdmin = (user.getString("makeAdmin"));
 
+                                    if (user.has("currentDate"))
+                                        userInfo.currentDate = (user.getString("currentDate"));
+
                                     if (user.has("lat"))
                                         userInfo.lat = (user.getString("lat"));
 
@@ -286,7 +289,7 @@ public class Trending_Fragment extends Fragment {
                                         userInfo.bio = (user.getString("bio"));
 
                                     activity.updateSession(userInfo);
-
+                                    myUserInfo = userInfo;
                                     if (user.getString("fullname").equals("")) {
                                         SceneKey.sessionManager.logout(activity);
                                     }
@@ -316,6 +319,7 @@ public class Trending_Fragment extends Fragment {
                                         events.setEventJson(object.getJSONObject("events"));
                                     try {
                                         events.setOngoing(events.checkWithTime(events.getEvent().event_date, events.getEvent().interval));
+
 
                                         // New Code
                                         checkWithDate(events.getEvent().event_date, events.getEvent().rating, events);
@@ -506,9 +510,11 @@ public class Trending_Fragment extends Fragment {
         try {
             Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).parse(dateSplit[0] + " " + dateSplit[1]);
 
-            Calendar c = Calendar.getInstance();
+           // Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            String formattedDate = df.format(c.getTime());
+            //String formattedDate = df.format(c.getTime());
+             Date date = df.parse(myUserInfo.currentDate);
+             String formattedDate = df.format(date);
 
             Date curTime = df.parse(formattedDate);
 

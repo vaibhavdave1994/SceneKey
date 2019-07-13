@@ -9,16 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
 import com.scenekey.activity.TheRoomActivity;
-import com.scenekey.helper.WebServices;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.squareup.picasso.Picasso;
 

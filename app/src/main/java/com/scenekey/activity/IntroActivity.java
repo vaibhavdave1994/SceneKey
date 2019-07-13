@@ -2,9 +2,6 @@ package com.scenekey.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,18 +10,11 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scenekey.R;
-import com.scenekey.helper.SessionManager;
-import com.scenekey.listener.StatusBarHide;
-import com.scenekey.util.SceneKey;
-import com.scenekey.util.StatusBarUtil;
 
 public class IntroActivity extends AppCompatActivity {
 

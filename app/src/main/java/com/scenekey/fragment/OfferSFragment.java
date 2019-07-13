@@ -1,7 +1,6 @@
 package com.scenekey.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -25,9 +24,7 @@ import com.scenekey.activity.HomeActivity;
 import com.scenekey.adapter.OfferAdapter;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.MySelecteOfferListener;
-import com.scenekey.model.Events;
 import com.scenekey.model.Offers;
-import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;

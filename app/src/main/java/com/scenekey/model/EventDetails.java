@@ -1,6 +1,5 @@
 package com.scenekey.model;
 
-import com.scenekey.R;
 import com.scenekey.fragment.Event_Fragment;
 import com.scenekey.helper.Constant;
 import com.scenekey.lib_sources.SwipeCard.Card;

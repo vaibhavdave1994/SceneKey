@@ -4,15 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.scenekey.activity.LoginActivity;
-import com.scenekey.activity.RegistrationActivity;
 import com.scenekey.activity.new_reg_flow.NewIntroActivity;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.SceneKey;
@@ -63,6 +56,7 @@ public class SessionManager {
     private final String ADMIN_LONG = "adminLong";
     private final String USER_STATUS = "user_status";
     private final String MAKE_ADMIN = "makeAdmin";
+    private final String CUR_DATE = "currentDate";
     private final String KEY_POINTS = "key_points";
     private final String BIO = "bio";
     private final String APP_BADGE_COUNT = "appBadgeCount";
@@ -149,6 +143,7 @@ public class SessionManager {
         editor.putString(KEY_POINTS, userInfo.key_points);
         editor.putString(BIO, userInfo.bio);
         editor.putString(APP_BADGE_COUNT, userInfo.appBadgeCount);
+        editor.putString(CUR_DATE, userInfo.currentDate);
 
         editor.putString(ENVIRONMENT, userInfo.environment);
         editor.putString(USER_ACCESS_TOKEN, userInfo.userAccessToken);

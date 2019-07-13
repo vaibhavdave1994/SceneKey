@@ -1,6 +1,5 @@
 package com.scenekey.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.scenekey.R;
-import com.scenekey.fragment.ChangePassword_Fragment;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.Validation;
