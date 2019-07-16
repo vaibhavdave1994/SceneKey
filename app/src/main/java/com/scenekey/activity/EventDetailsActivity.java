@@ -425,7 +425,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                             } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
                                 addUserIntoEvent(-1);
                             } else {
-
                                 if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
                                     blurView.setVisibility(View.VISIBLE);
                                     adapter.userExistOrNot = "notStart";

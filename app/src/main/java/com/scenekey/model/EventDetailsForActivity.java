@@ -186,7 +186,7 @@ public class EventDetailsForActivity {
                 }
             }
               Collections.reverse(feeds.feedSmilies);
-              ///cREATE lIST AND INSERT vALUE
+              ///CREATE lIST AND INSERT vALUE
 
             if (feeds.type.equals(Constant.FEED_TYPE_PICTURE)) {
                 Card card = new Card();
