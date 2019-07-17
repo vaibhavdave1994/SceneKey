@@ -31,7 +31,7 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
      AppCompatButton btn_signin;
      String email;
      AppCompatImageView img_back;
-     CheckBox cb_tnc;
+     TextView tv_tnc_one;
      Context context = this;
      Bitmap profileImageBitmap;
      LinearLayout ll_cb;
@@ -62,7 +62,7 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
         et_password = findViewById(R.id.et_password);
         btn_signin = findViewById(R.id.btn_signin);
         ll_cb = findViewById(R.id.ll_cb);
-        cb_tnc = findViewById(R.id.cb_tnc);
+        tv_tnc_one = findViewById(R.id.tv_tnc_one);
         tv_forgot_pass = findViewById(R.id.tv_forgot_pass);
         tv_heading = findViewById(R.id.tv_heading);
         tv_heading.setText("Choose a password");
@@ -93,7 +93,7 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
 
                 String password = et_password.getText().toString().trim();
                 if(!password.equalsIgnoreCase("")){
-                    if (cb_tnc.isChecked()) {
+                   // if (cb_tnc.isChecked()) {
 
                         userInfo.password = password;
 
@@ -115,10 +115,10 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
                         }
                         else
                         doRegistration(fName, l_name, email, password, gender, "",profileImageBitmap,"");
-                    } else {
-                        //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
-                        utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
-                    }
+//                    } else {
+//                        //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
+//                        utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
+//                    }
                 }
                 else {
                     Toast.makeText(RegistrationActivityNewCreatePassword.this, "Enter Password", Toast.LENGTH_SHORT).show();

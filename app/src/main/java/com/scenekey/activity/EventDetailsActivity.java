@@ -300,6 +300,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         blurView.setVisibility(View.GONE);
     }
 
+
     public static List<EmoziesModal> loadCountries(EventDetailsActivity eventDetailsActivity) {
         try {
             try {
@@ -420,28 +421,29 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
 
                         try {
-                            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                                addUserIntoEvent(-1);
-                            } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-                                addUserIntoEvent(-1);
-                            } else {
-                                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
-                                    blurView.setVisibility(View.VISIBLE);
-                                    adapter.userExistOrNot = "notStart";
-                                    userExistOrNotonActivty = "notStart";
-
-                                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                                    blurView.setVisibility(View.VISIBLE);
-                                    adapter.userExistOrNot = "notStart";
-                                    userExistOrNotonActivty = "notStart";
-                                } else {
-                                    blurView.setVisibility(View.VISIBLE);
-                                    adapter.userExistOrNot = "notArrived";
-                                    userExistOrNotonActivty = "notArrived";
-                                }
-                                //cantJoinDialog();
-                            }
-                        } catch (ParseException d) {
+                            keyInToEvent();
+//                            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+//                                addUserIntoEvent(-1);
+//                            } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
+//                                addUserIntoEvent(-1);
+//                            } else {
+//                                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
+//                                    blurView.setVisibility(View.VISIBLE);
+//                                    adapter.userExistOrNot = "notStart";
+//                                    userExistOrNotonActivty = "notStart";
+//
+//                                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+//                                    blurView.setVisibility(View.VISIBLE);
+//                                    adapter.userExistOrNot = "notStart";
+//                                    userExistOrNotonActivty = "notStart";
+//                                } else {
+//                                    blurView.setVisibility(View.VISIBLE);
+//                                    adapter.userExistOrNot = "notArrived";
+//                                    userExistOrNotonActivty = "notArrived";
+//                                }
+//                                //cantJoinDialog();
+//                            }
+                        } catch (Exception d) {
                             d.getMessage();
                         }
                     }
@@ -861,6 +863,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     userInfo.currentLocation = false;
                 }
                 if (user.has("address")) userInfo().address = (user.getString("address"));
+                if (user.has("currentDate")) userInfo().currentDate = (user.getString("currentDate"));
                 updateSession(userInfo());
             }
         } catch (JSONException e) {
@@ -1778,6 +1781,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     dismissProgDialog();
                     // get response
                     try {
+
                         JSONObject jo = new JSONObject(response);
                         if (jo.getInt("success") == 0) {
                             //incrementKeyPoints(getString(R.string.kp_keyin));
@@ -1911,7 +1915,8 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
 
                         Bitmap eventImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
                         if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST))
-                            addUserIntoEvent(1);
+                            keyInToEvent();
+                           // addUserIntoEvent(1);
                         else sendPicture(eventImg);
                     }
 
@@ -1930,6 +1935,61 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         }
+    }
+
+
+
+    private void keyInToEvent(){
+
+        try {
+            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                addUserIntoEvent(-1);
+            } else if (getDistance(new Double[]{Double.valueOf(event.getVenue().getLatitude()), Double.valueOf(event.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
+                    &&isEventOnline(event.getEvent().event_date,userInfo().currentDate)) {
+                addUserIntoEvent(-1);
+            } else {
+                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
+                    blurView.setVisibility(View.VISIBLE);
+                    adapter.userExistOrNot = "notStart";
+                    userExistOrNotonActivty = "notStart";
+
+                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                    blurView.setVisibility(View.VISIBLE);
+                    adapter.userExistOrNot = "notStart";
+                    userExistOrNotonActivty = "notStart";
+                } else {
+                    blurView.setVisibility(View.VISIBLE);
+                    adapter.userExistOrNot = "notArrived";
+                    userExistOrNotonActivty = "notArrived";
+                }
+                //cantJoinDialog();
+            }
+        } catch (Exception d) {
+            d.getMessage();
+        }
+
+    }
+
+    private boolean isEventOnline(String eventDate, String serverCurrentDate){
+        boolean returnValue = false;
+        eventDate = eventDate.split("TO")[0];
+
+        eventDate = eventDate.replace("T"," ");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date eventDateFinal = sdf.parse(eventDate);
+            Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
+
+            if(serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()){
+                returnValue = true;
+            }
+            else
+                returnValue = false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return returnValue;
     }
 
 }

@@ -108,7 +108,6 @@ public class EventDetailsForActivity {
         eventDetailsActivity.setRecyclerView(attendyList);
     }
 
-
     public void setNudgeJson(JSONArray Json,Event_Fragment fragment) throws JSONException {
         if (nudgeModalArrayList != null) nudgeModalArrayList.clear();
         if (nudgeModalArrayList == null) nudgeModalArrayList = new ArrayList<>();

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TheRoomActivity;
+import com.scenekey.helper.Constant;
 import com.scenekey.helper.SortByPoint;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
@@ -46,8 +48,11 @@ import com.scenekey.volleymultipart.VolleySingleton;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,6 +108,12 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         final Events object = eventsArrayList.get(position);
         final Venue venue = object.getVenue();
         final Event event = object.getEvent();
+
+        if(shouldKeyInButtonVisible(object))
+            holder.frame_keyinbutton.setVisibility(View.VISIBLE);
+        else
+            holder.frame_keyinbutton.setVisibility(View.GONE);
+
 
         if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
             //holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
@@ -534,7 +545,6 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         });
 
 
-
     }
 
     @Override
@@ -558,7 +568,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         private ImageView iv_note_book;
         AppCompatImageView iv_comment,iv_add;
         LinearLayout re1;
-
+        FrameLayout frame_keyinbutton;
         TextView tv_follow;
         ViewHolder(View view) {
             super(view);
@@ -586,6 +596,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             iv_comment = view.findViewById(R.id.iv_comment);
             iv_add = view.findViewById(R.id.iv_add);
             tv_follow = view.findViewById(R.id.tv_follow);
+            frame_keyinbutton = view.findViewById(R.id.frame_keyinbutton);
         }
     }
 
@@ -639,5 +650,59 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
+    }
+
+    private boolean shouldKeyInButtonVisible(Events object){
+        boolean value = false;
+        try {
+
+            if (activity.userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                value = true;
+            } else if (getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
+                    &&isEventOnline(object.getEvent().event_date,activity.userInfo().currentDate)) {
+                value = true;
+            }
+        } catch (Exception d) {
+            d.getMessage();
+        }
+
+        return  value;
+    }
+
+    private boolean isEventOnline(String eventDate, String serverCurrentDate){
+        boolean returnValue = false;
+        eventDate = eventDate.split("TO")[0];
+
+        eventDate = eventDate.replace("T"," ");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date eventDateFinal = sdf.parse(eventDate);
+            Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
+
+            if(serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()){
+                returnValue = true;
+            }
+            else
+                returnValue = false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return returnValue;
+    }
+
+    public int getDistance(Double[] LL) {
+        Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(LL[0]);
+        startPoint.setLongitude(LL[1]);
+
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(LL[2]);
+        endPoint.setLongitude(LL[3]);
+
+        double distance = startPoint.distanceTo(endPoint);
+
+        return (int) distance;
     }
 }

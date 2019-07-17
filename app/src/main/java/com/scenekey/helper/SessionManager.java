@@ -190,6 +190,7 @@ public class SessionManager {
         userInfo.user_status = (mypref.getString(USER_STATUS, null));
         userInfo.makeAdmin = (mypref.getString(MAKE_ADMIN, null));
         userInfo.key_points = (mypref.getString(KEY_POINTS, null));
+        userInfo.currentDate = (mypref.getString(CUR_DATE, null));
         userInfo.bio = (mypref.getString(BIO, null));
         userInfo.appBadgeCount = (mypref.getString(APP_BADGE_COUNT, null));
 

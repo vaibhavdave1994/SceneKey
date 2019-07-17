@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Handler;
 import android.provider.Settings;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
 import com.scenekey.adapter.VenueBoardAdapter;
 import com.scenekey.base.BaseActivity;
+import com.scenekey.helper.Constant;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.Event;
 import com.scenekey.model.EventAttendy;
@@ -132,6 +134,9 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             if (currentLatLng == null) {
                 currentLatLng = new String[]{userInfo().lat, userInfo().longi};
             }
+            if(object != null)
+            keyInToEvent();
+
             onBoard_txt_event_name.setText("" + event.event_name);
             getSearchTagList(event.event_id, venuid.getVenue_id());
 
@@ -1119,5 +1124,111 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         }, 3000);
 
         dialog.show();
+    }
+
+    //---------------
+
+    private void keyInToEvent(){
+        try {
+            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                addUserIntoEvent(-1);
+            } else if (getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
+                    &&isEventOnline(object.getEvent().event_date,userInfo().currentDate)) {
+                addUserIntoEvent(-1);
+            }
+        } catch (Exception d) {
+            d.getMessage();
+        }
+
+    }
+
+    private boolean isEventOnline(String eventDate, String serverCurrentDate){
+        boolean returnValue = false;
+        eventDate = eventDate.split("TO")[0];
+
+        eventDate = eventDate.replace("T"," ");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date eventDateFinal = sdf.parse(eventDate);
+            Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
+
+            if(serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()){
+                returnValue = true;
+            }
+            else
+                returnValue = false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return returnValue;
+    }
+
+    public int getDistance(Double[] LL) {
+        Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(LL[0]);
+        startPoint.setLongitude(LL[1]);
+
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(LL[2]);
+        endPoint.setLongitude(LL[3]);
+
+        double distance = startPoint.distanceTo(endPoint);
+
+        return (int) distance;
+    }
+
+    private void addUserIntoEvent(final int type) {
+        if (type != -1) showProgDialog(false, "");
+
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADD_EVENT, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    //String userExistOrNot = "no exist";
+                    dismissProgDialog();
+                    // get response
+                    try {
+
+                        JSONObject jo = new JSONObject(response);
+                        if (jo.getInt("success") == 0) {
+                            //incrementKeyPoints(getString(R.string.kp_keyin));
+                        }
+                        else {
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        dismissProgDialog();
+                        Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+
+                    params.put("userid", userInfo().userid);
+                    params.put("eventid", object.getEvent().event_id);
+                    params.put("eventname", object.getEvent().event_name);
+                    params.put("eventdate",object.getEvent().event_time);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            // utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
+            dismissProgDialog();
+        }
     }
 }
