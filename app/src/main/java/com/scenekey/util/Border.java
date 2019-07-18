@@ -3,6 +3,7 @@ package com.scenekey.util;
 public class Border extends android.graphics.drawable.Drawable {
             public android.graphics.Paint paint;
            public android.graphics.Rect bounds_rect;
+           int returnValue = 0;
 
            public Border(int colour, int width)
            {
@@ -36,6 +37,6 @@ public class Border extends android.graphics.drawable.Drawable {
            public int getOpacity()
           {
             // TODO: Implement this method
-             return 0;
+             return returnValue;
            }
          }

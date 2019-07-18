@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
@@ -20,8 +18,6 @@ import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
-
-import java.io.IOException;
 
 public class RegistrationActivityNewGender extends RegistrationActivity {
 

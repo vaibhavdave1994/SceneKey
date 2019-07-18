@@ -185,7 +185,6 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                     btnSubmit.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
                     btnSubmit.setTextColor(getResources().getColor(R.color.white));
                     isValidEmail = true;
-                    return;
                 }
                 else {
                     isValidEmail = false;

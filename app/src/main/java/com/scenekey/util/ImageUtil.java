@@ -338,14 +338,12 @@ public class ImageUtil {
     public static Bitmap resizeBitmap(Bitmap bitmap, int multiple_Width, int multiple_Height) {
 
 
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * multiple_Width, bitmap.getHeight() * multiple_Height, false);
-        return resizedBitmap;
+        return Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * multiple_Width, bitmap.getHeight() * multiple_Height, false);
 
     }
 
 
     public static String encodeTobase64(Bitmap image) {
-        Bitmap immagex = image;
 
        /* ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -354,7 +352,7 @@ public class ImageUtil {
         return encoded;*/
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immagex.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        image.compress(Bitmap.CompressFormat.JPEG, 80, baos);
         byte[] b = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.NO_WRAP);
         Utility.printBigLogcat("BASH64",imageEncoded);

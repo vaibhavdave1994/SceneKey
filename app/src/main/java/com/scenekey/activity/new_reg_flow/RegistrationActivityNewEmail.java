@@ -124,7 +124,6 @@ public class RegistrationActivityNewEmail extends BaseActivity {
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
                     btn_next.setTextColor(getResources().getColor(R.color.white));
                     isValidEmail = true;
-                    return;
                 }
                 else {
                     isValidEmail = false;

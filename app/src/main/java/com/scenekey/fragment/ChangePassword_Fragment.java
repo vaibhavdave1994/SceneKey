@@ -147,15 +147,15 @@ public class ChangePassword_Fragment extends Fragment implements View.OnClickLis
         Validation validation = new Validation(context);
 
 
-        if (!validation.isEmpty(OldPassword)) {
+        if (validation.isEmpty(OldPassword)) {
             oldPassword.startAnimation(shake);
-        } else if (!validation.isEmpty(NewPassword)) {
+        } else if (validation.isEmpty(NewPassword)) {
             newPassword.startAnimation(shake);
         } else if (!validation.isPasswordValid(newPassword)) {
 //            Utility.showToast(context, getString(R.string.NEW_PASSWORD_VALID), 0);
             utility.showCustomPopup(context.getString(R.string.NEW_PASSWORD_VALID), String.valueOf(R.font.montserrat_medium));
             newPassword.startAnimation(shake);
-        } else if (!validation.isEmpty(ConfirmPassword)) {
+        } else if (validation.isEmpty(ConfirmPassword)) {
             confirmPassword.startAnimation(shake);
         } else if (!validation.isPasswordValid(confirmPassword)) {
             utility.showCustomPopup(context.getString(R.string.NEW_PASSWORD_VALID), String.valueOf(R.font.montserrat_medium));

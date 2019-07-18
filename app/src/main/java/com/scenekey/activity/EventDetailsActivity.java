@@ -1938,7 +1938,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
     private void keyInToEvent(){
 
         try {

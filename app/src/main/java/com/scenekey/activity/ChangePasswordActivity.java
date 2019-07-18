@@ -133,15 +133,15 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         Validation validation = new Validation(this);
 
 
-        if (!validation.isEmpty(OldPassword)) {
+        if (validation.isEmpty(OldPassword)) {
             oldPassword.startAnimation(shake);
-        } else if (!validation.isEmpty(NewPassword)) {
+        } else if (validation.isEmpty(NewPassword)) {
             newPassword.startAnimation(shake);
         } else if (!validation.isPasswordValid(newPassword)) {
 //            Utility.showToast(context, getString(R.string.NEW_PASSWORD_VALID), 0);
             utility.showCustomPopup(this.getString(R.string.NEW_PASSWORD_VALID), String.valueOf(R.font.montserrat_medium));
             newPassword.startAnimation(shake);
-        } else if (!validation.isEmpty(ConfirmPassword)) {
+        } else if (validation.isEmpty(ConfirmPassword)) {
             confirmPassword.startAnimation(shake);
         } else if (!validation.isPasswordValid(confirmPassword)) {
             utility.showCustomPopup(this.getString(R.string.NEW_PASSWORD_VALID), String.valueOf(R.font.montserrat_medium));

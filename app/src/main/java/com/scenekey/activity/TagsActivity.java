@@ -515,7 +515,6 @@ public class TagsActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         else {
                                 no_data_found.setVisibility(View.VISIBLE);
-                                return;
 
                         }
 

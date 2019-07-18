@@ -192,7 +192,6 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
                     btn_next.setTextColor(getResources().getColor(R.color.white));
                     isButtonClickable = true;
-                    return;
                 }
                 else {
                     isButtonClickable = false;

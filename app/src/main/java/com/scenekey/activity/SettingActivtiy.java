@@ -553,7 +553,9 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
             fragmentTransaction.add(R.id.frame_fragments, fragmentHolder, fragmentName).addToBackStack(fragmentName);
             fragmentTransaction.commit();
 
-            hideKeyBoard();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                hideKeyBoard();
+            }
             return fragmentHolder;
         } catch (Exception e) {
             return null;

@@ -150,9 +150,9 @@ public class Validation {
     /*.................................isEmpty......................................*/
     public boolean isEmpty(String textView) {
         if (textView.equals("") || textView.length() == 0) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
 
