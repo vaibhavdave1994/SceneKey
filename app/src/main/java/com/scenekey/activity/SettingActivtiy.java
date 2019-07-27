@@ -77,6 +77,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
     private CustomProgressBar customProgressBar;
     private double latitude = 0.0, longitude = 0.0;
     private LocationManager locationManager;
+    View view_bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         txt_location = findViewById(R.id.txt_location);
         txt_logout = findViewById(R.id.txt_logout);
 
+        view_bio = findViewById(R.id.view_bio);
         TextView txt_email = findViewById(R.id.txt_email);
         TextView txt_feedback = findViewById(R.id.txt_feedback);
         TextView txt_admin = findViewById(R.id.txt_admin);
@@ -120,8 +122,10 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
 
         if (!updateUserInfo.socialType.equals("facebook") && !updateUserInfo.socialType.equals("gmail")) {
             linLayChangePassword.setVisibility(View.VISIBLE);
+            view_bio.setVisibility(View.VISIBLE);
         } else {
             linLayChangePassword.setVisibility(View.GONE);
+            view_bio.setVisibility(View.GONE);
         }
 
         try {
@@ -319,13 +323,13 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
 
-
             case R.id.linLayBio:
                 Intent bioIntent = new Intent(this, BioActivity.class);
                 bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 bioIntent.putExtra("from", "setting");
                 startActivity(bioIntent);
                 break;
+
             case R.id.img_default_location:
                 UserInfo userInfo = userInfo();
                 userInfo.lat = (latitude + "");

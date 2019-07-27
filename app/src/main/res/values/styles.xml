@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -110,9 +110,9 @@
     </declare-styleable>
 
     <style name="MyCheckbox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="android:colorControlNormal">#242424</item>
-        <item name="android:colorControlActivated">@color/colorPrimaryDark_new</item>
-        <item name="android:colorControlHighlight">#c51162</item>
+        <item name="android:colorControlNormal" tools:targetApi="lollipop">#242424</item>
+        <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/colorPrimaryDark_new</item>
+        <item name="android:colorControlHighlight" tools:targetApi="lollipop">#c51162</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
     </style>
 </resources>

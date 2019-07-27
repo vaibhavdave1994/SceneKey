@@ -331,7 +331,8 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                                 dismissProgDialog();
                                 try {
                                     no_data_trending.setVisibility(View.VISIBLE);
-                                    tv_error.setText("Unfortunately there are no results for '"+tag_name+"' in your area at this time. Follow the token and we will notify you of any activity!");
+//                                    tv_error.setText("Unfortunately there are no results for '"+tag_name+"' in your area at this time. Follow the token and we will notify you of any activity!");
+                                    tv_error.setText("Unfortunately there are no results for '"+tag_name+"' in your area at this time.");
                                     if(tagModal.status != null) {
                                         if (!tagModal.status.equalsIgnoreCase("active")) {
                                             tv_error.setText("Unfortunately '" + tag_name + "' is not active in your area at this time. Follow it for notifications when it comes in your area. To follow, hold down the button below.");

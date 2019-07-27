@@ -1066,7 +1066,6 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                 public void onErrorResponse(VolleyError volleyError) {
                     dismissProgDialog();
                     Toast.makeText(ImageUploadActivity.this, "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
-                    ;
                 }
             }) {
                 //adding parameters to send

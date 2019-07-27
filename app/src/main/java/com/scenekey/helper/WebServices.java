@@ -7,8 +7,9 @@ package com.scenekey.helper;
 public class WebServices {
 
 //    /*New Code*/
-    private static final String BASE_URL = "https://dev.scenekey.com/event/";   // Dev
-//  private static final String BASE_URL = "https://scenekey.com/event/";   // Live
+    private static final String BASE_URL = "https://scenekey.com/event/";   // Live
+//    private static final String BASE_URL = "https://dev.scenekey.com/event/";   // Dev
+    private static final String WEBVIEWBASE_URL = "https://dev.scenekey.com/";   // Dev
 
     //--------deepak's code------
     public final static String IMAGEUPLOAD_BUCKET = BASE_URL + "awsImage";
@@ -66,6 +67,9 @@ public class WebServices {
 
     public final static String VENUEBOARD_EVENT_TAG = BASE_URL + "eventTags";
     public final static String VENUEBOARD = BASE_URL + "venueBoard";
+
+    public final static String TNC_WEBURL = WEBVIEWBASE_URL + "Terms&conditions-min.pdf";
+    public final static String PRIVACY_POLICY_WEBURL = WEBVIEWBASE_URL + "Privacypolicy.pdf";
 
     /**
      * Event Like , Comment and post picture

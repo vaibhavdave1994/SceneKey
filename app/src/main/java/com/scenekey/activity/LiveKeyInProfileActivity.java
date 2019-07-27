@@ -1,7 +1,12 @@
 package com.scenekey.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +15,7 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,9 +23,12 @@ import android.widget.TextView;
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.scenekey.R;
 import com.scenekey.adapter.ProfileImagePagerAdapter;
+import com.scenekey.fragment.ProfileNew_fragment;
+import com.scenekey.fragment.Profile_Fragment;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.VerticalViewPager;
 import com.scenekey.listener.ProfileImageListener;
+import com.scenekey.listener.StatusBarHide;
 import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.ImagesUpload;
 import com.scenekey.model.KeyInUserModal;
@@ -98,9 +107,14 @@ public class LiveKeyInProfileActivity extends AppCompatActivity implements View.
                         keyInUserModalArrayList = (ArrayList<KeyInUserModal>) getIntent().getSerializableExtra("keyInUserModalArrayList");
                         int pos = getIntent().getIntExtra("fromTrendingHomePostion", 0);
 
-                        imageList.add(new ImagesUpload(keyInUserModalArrayList.get(0).userImage));
-                        showKeyInUI(pos);
-                        setUpView();
+                        if (keyInUserModalArrayList.get(0).userid.equalsIgnoreCase(userInfo().userid)) {
+//
+                        } else {
+
+                            imageList.add(new ImagesUpload(keyInUserModalArrayList.get(0).userImage));
+                            showKeyInUI(pos);
+                            setUpView();
+                        }
                     }
                     break;
             }
@@ -335,5 +349,27 @@ public class LiveKeyInProfileActivity extends AppCompatActivity implements View.
         }
     }
 
+    public Fragment addFragment(Fragment fragmentHolder, int animationValue) {
+        try {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            String fragmentName = fragmentHolder.getClass().getName();
 
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if (animationValue == 0) {
+
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up, R.anim.slide_out_down, R.anim.slide_in_down);
+            }
+            if (animationValue == 1)
+                fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setEnterTransition(null);
+            }
+            fragmentTransaction.add(R.id.frame_fragments, fragmentHolder, fragmentName).addToBackStack(fragmentName);
+            fragmentTransaction.commit();
+
+            return fragmentHolder;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

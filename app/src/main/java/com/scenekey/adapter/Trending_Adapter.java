@@ -241,7 +241,6 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             }
         });
 
-
         holder.iv_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -531,7 +530,6 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             }
         }
 
-
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -543,7 +541,6 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                 activity.startActivity(intent);
             }
         });
-
 
     }
 

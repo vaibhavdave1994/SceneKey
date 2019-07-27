@@ -69,12 +69,15 @@
             android:layout_marginTop="@dimen/_20sdp"
             >
             
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/civ_pp"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_90sdp"
             android:layout_gravity="center"
             android:src="@drawable/placeholder_user1"
+            app:civ_border_color="@color/black70p"
+            app:civ_border_width="@dimen/_1sdp"
             />
 
             <ImageView
@@ -90,7 +93,6 @@
                 />
         
         </RelativeLayout>
-        
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -167,13 +169,13 @@
             android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/new_next_btn_desable"
             android:layout_marginTop="@dimen/_40sdp"
-            android:textSize="@dimen/_14sdp"
+            android:background="@drawable/new_next_btn_desable"
             android:fontFamily="@font/roboto_medium"
+            android:text="Next"
             android:textAllCaps="false"
             android:textColor="@color/button_text_new_reg"
-            android:text="Next"/>
+            android:textSize="@dimen/_14sdp" />
 
     </LinearLayout>
 

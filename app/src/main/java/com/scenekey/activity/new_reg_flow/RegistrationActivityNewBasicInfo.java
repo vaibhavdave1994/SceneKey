@@ -161,9 +161,22 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         rl_pic_selection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pop_up_option = initializePopup();
-                pop_up_option.setObject(null);
-                pop_up_option.show();
+
+
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        callIntent(Constant.MY_PERMISSIONS_REQUEST_EXTERNAL);
+                    } else {
+                        pop_up_option = initializePopup();
+                        pop_up_option.setObject(null);
+                        pop_up_option.show();
+                    }
+                } else {
+                    pop_up_option = initializePopup();
+                    pop_up_option.setObject(null);
+                    pop_up_option.show();
+                }
+
             }
         });
     }
@@ -229,7 +242,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                 // New Code
                 if (Build.VERSION.SDK_INT >= 23) {
                     if (getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        callIntent(Constant.REQUEST_CAMERA);
+                        callIntent(Constant.MY_PERMISSIONS_REQUEST_CAMERA);
                     } else {
                         dispatchTakePictureIntent();
 
@@ -272,6 +285,13 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             Constant.MY_PERMISSIONS_REQUEST_EXTERNAL);
+                }
+                break;
+
+            case Constant.MY_PERMISSIONS_REQUEST_CAMERA:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA},
+                            Constant.MY_PERMISSIONS_REQUEST_CAMERA);
                 }
                 break;
         }
@@ -389,7 +409,10 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         switch (requestCode) {
             case Constant.MY_PERMISSIONS_REQUEST_EXTERNAL: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    callIntent(Constant.RESULT_LOAD);
+                    //callIntent(Constant.RESULT_LOAD);
+                    pop_up_option = initializePopup();
+                    pop_up_option.setObject(null);
+                    pop_up_option.show();
                 } else {
                     Toast.makeText(this, "You denied permission , can't select image", Toast.LENGTH_LONG).show();
                 }
@@ -398,12 +421,11 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
 
             case Constant.MY_PERMISSIONS_REQUEST_CAMERA:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    callIntent(Constant.INTENT_CAMERA);
+                    dispatchTakePictureIntent();
                 } else {
                     Toast.makeText(this, "permission denied by user ", Toast.LENGTH_LONG).show();
                 }
                 break;
-
         }
     }
 

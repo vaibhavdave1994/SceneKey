@@ -148,9 +148,9 @@
         android:paddingLeft="@dimen/_30sdp"
         android:paddingRight="@dimen/_30sdp"
         android:text="Unfollow"
+        android:visibility="gone"
         android:textSize="@dimen/_13sdp"
         android:fontFamily="@font/montserrat_semibold"
-        android:visibility="gone"
         android:textColor="@color/white" />
 
 </RelativeLayout>

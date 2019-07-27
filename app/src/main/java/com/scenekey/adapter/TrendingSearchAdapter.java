@@ -84,6 +84,18 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         final Event event = object.getEvent();
 
         if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
+            holder.tv_follow.setText("Follow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
+
+        }
+        else {
+            holder.tv_follow.setText("Unfollow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.unfollow_border));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.red_ring));
+        }
+
+        if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
             holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
         }
         else {
@@ -487,6 +499,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         private ImageView green_dot;
         private ImageView iv_note_book;
         AppCompatImageView iv_add;
+        TextView tv_follow;
 
         ViewHolder(View view) {
             super(view);
@@ -512,6 +525,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             iv_note_book = view.findViewById(R.id.iv_note_book);
             iv_add = view.findViewById(R.id.iv_add);
             iv_comment = view.findViewById(R.id.iv_comment);
+            tv_follow = view.findViewById(R.id.tv_follow);
         }
     }
 }

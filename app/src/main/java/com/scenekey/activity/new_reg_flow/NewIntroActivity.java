@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
+import com.scenekey.activity.TnCWebView;
 
 public class NewIntroActivity extends RegistrationActivity {
 

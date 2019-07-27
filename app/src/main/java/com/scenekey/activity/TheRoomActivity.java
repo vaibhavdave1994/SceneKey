@@ -164,13 +164,18 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 @Override
                 public void getRoomData(int pos, ArrayList<KeyInUserModal> keyInUserModalArrayList) {
 
-                    Intent intent = new Intent(TheRoomActivity.this, LiveKeyInProfileActivity.class);
-                    intent.putExtra("from", "fromTrendingHomeActivity");
-                    intent.putExtra("fromTrendingHomePostion", pos);
-                    intent.putExtra("keyInUserModalArrayList", keyInUserModalArrayList);
-                    //intent.putExtra("eventId", eventId);
-                    startActivityForResult(intent, 2);
 
+                    if (keyInUserModalArrayList.get(0).userid.equalsIgnoreCase(userInfo().userid)) {
+                        startActivity(new Intent(TheRoomActivity.this,OwnProfileActivity.class));
+
+                    } else {
+                        Intent intent = new Intent(TheRoomActivity.this, LiveKeyInProfileActivity.class);
+                        intent.putExtra("from", "fromTrendingHomeActivity");
+                        intent.putExtra("fromTrendingHomePostion", pos);
+                        intent.putExtra("keyInUserModalArrayList", keyInUserModalArrayList);
+                        //intent.putExtra("eventId", eventId);
+                        startActivityForResult(intent, 2);
+                    }
 
                 }
             });

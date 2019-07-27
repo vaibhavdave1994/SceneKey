@@ -19,6 +19,8 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
 
+    <string name="running_less_keypoint">You are running out of key points! Earn more by sharing on the status page when you are out and about!</string>
+
 
     <string name="sign_up_with_facebook">Signup with Facebook</string>
     <string name="sign_up_with_gmail">Signup with Gmail</string>
@@ -1169,4 +1171,5 @@
     <string name="we_need_it"> We need it to look up your account or create a new one. </string>
     <string name="basic_info"> Enter your basic info </string>
     <string name="tnc"> <u> Term &amp; Conditions </u> </string>
+    <string name="privacy_policy"> <u> Privacy &amp; policy </u> </string>
 </resources>

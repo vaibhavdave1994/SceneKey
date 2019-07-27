@@ -66,10 +66,8 @@ public class OfferSFragment extends Fragment {
         offerAdapter = new OfferAdapter(context, offerList, new MySelecteOfferListener() {
             @Override
             public void getSelectedOffer(Offers offers) {
-
                 Log.v("offers", offers.reward_id);
                 addToWalletList(offers);
-
             }
         });
         offerRecyclerView.setAdapter(offerAdapter);

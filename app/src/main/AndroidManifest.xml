@@ -203,6 +203,9 @@
         <activity android:name=".activity.Edit_NAmeActivity" />
         <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.EventSearch_tag_Activity" />
+        <activity android:name=".activity.OwnProfileActivity" />
+        <activity android:name=".activity.TnCWebView" />
+        <activity android:name=".activity.TnCAndPrivacyActivity" />
     </application>
 
 </manifest>

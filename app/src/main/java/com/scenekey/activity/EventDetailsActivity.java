@@ -582,6 +582,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     try {
                         if (new JSONObject(response).getString("msg").equals("Success")) {
                             et_comment_feed.setText("");
+                            showKeyPoints("+5");
                             //incrementKeyPoints(getString(R.string.kp_keyin));
                         }
                     } catch (Exception e) {
@@ -1844,6 +1845,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
                     try {
                         JSONObject respo = new JSONObject(response);
                         if (respo.getInt("success") == 0) {
+                            showKeyPoints("+5");
                             Utility.showToast(EventDetailsActivity.this, respo.getString("msg"), 0);
                         }
                     } catch (Exception e) {

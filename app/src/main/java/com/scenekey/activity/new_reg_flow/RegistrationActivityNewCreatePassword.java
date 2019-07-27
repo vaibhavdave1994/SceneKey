@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
+import com.scenekey.activity.TnCAndPrivacyActivity;
+import com.scenekey.activity.TnCWebView;
+import com.scenekey.helper.WebServices;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 
@@ -30,12 +33,12 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
      AppCompatButton btn_signin;
      String email;
      AppCompatImageView img_back;
-     TextView tv_tnc_one;
+     TextView tv_tnc;
      Context context = this;
      Bitmap profileImageBitmap;
      LinearLayout ll_cb;
     Utility utility;
-    TextView tv_forgot_pass,tv_heading;
+    TextView tv_forgot_pass,tv_heading,tv_privacy_policy;
     UserInfo userInfo = null;
 
     @Override
@@ -61,7 +64,8 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
         et_password = findViewById(R.id.et_password);
         btn_signin = findViewById(R.id.btn_signin);
         ll_cb = findViewById(R.id.ll_cb);
-        tv_tnc_one = findViewById(R.id.tv_tnc_one);
+        tv_tnc = findViewById(R.id.tv_tnc);
+        tv_privacy_policy = findViewById(R.id.tv_privacy_policy);
         tv_forgot_pass = findViewById(R.id.tv_forgot_pass);
         tv_heading = findViewById(R.id.tv_heading);
         tv_heading.setText("Choose a password");
@@ -92,11 +96,10 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
 
                 String password = et_password.getText().toString().trim();
                 if(!password.equalsIgnoreCase("")){
-                   // if (cb_tnc.isChecked()) {
-
-                        userInfo.password = password;
+                    if(password.length() >= 6){
 
                         if (userInfo != null) {
+                            userInfo.password = password;
                             if(userInfo.byteArray != null){
                              profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
                         }
@@ -114,13 +117,14 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
                         }
                         else
                         doRegistration(fName, l_name, email, password, gender, "",profileImageBitmap,"");
-//                    } else {
-//                        //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
-//                        utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
-//                    }
+                    } else {
+                        //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
+                        utility.showCustomPopup("Password must be atleast 6 characters long.", String.valueOf(R.font.montserrat_medium));
+                    }
                 }
                 else {
-                    Toast.makeText(RegistrationActivityNewCreatePassword.this, "Enter Password", Toast.LENGTH_SHORT).show();
+                    utility.showCustomPopup("Please enter password.", String.valueOf(R.font.montserrat_medium));
+                    //Toast.makeText(RegistrationActivityNewCreatePassword.this, "Enter Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -131,6 +135,27 @@ public class RegistrationActivityNewCreatePassword extends RegistrationActivity 
                 onBackPressed();
             }
         });
+
+        tv_tnc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToWebView = new Intent(RegistrationActivityNewCreatePassword.this,
+                        TnCWebView.class);
+                intentToWebView.putExtra("url", WebServices.TNC_WEBURL);
+                startActivity(intentToWebView);
+            }
+        });
+
+        tv_privacy_policy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToWebView = new Intent(RegistrationActivityNewCreatePassword.this,
+                        TnCWebView.class);
+                intentToWebView.putExtra("url", WebServices.PRIVACY_POLICY_WEBURL);
+                startActivity(intentToWebView);
+            }
+        });
+
     }
 
     @Override
