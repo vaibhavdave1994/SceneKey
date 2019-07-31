@@ -32,8 +32,6 @@ public class NewIntroActivity extends RegistrationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //  StatusBarUtil.setTranslucent(this);
-
         setContentView(R.layout.activity_intro_new);
         initView();
     }

@@ -76,7 +76,7 @@
             android:textSize="@dimen/_14sdp"
             android:textAllCaps="false"
             style="?android:attr/borderlessButtonStyle"
-            android:fontFamily="@font/roboto_medium"/>
+            android:fontFamily="@font/roboto_bold"/>
 
 
         <LinearLayout
@@ -130,6 +130,7 @@
                 android:drawablePadding="4dp"
                 android:textAllCaps="false"
                 android:textSize="@dimen/_13sdp"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="left|center_vertical"
                 android:paddingLeft="@dimen/_25sdp"
                 android:drawableLeft="@drawable/ic_facebook_logo_new"
@@ -146,12 +147,13 @@
                 android:drawablePadding="4dp"
                 android:textSize="@dimen/_13sdp"
                 android:gravity="left|center_vertical"
+                android:fontFamily="@font/roboto_bold"
                 android:paddingLeft="@dimen/_35sdp"
                 android:textAllCaps="false"
                 android:drawableLeft="@drawable/ic_gmail_new"
                 android:background="@drawable/gmail_btn_border"
                 android:capitalize="words"
-                android:text="Gmail"/>
+                android:text="Google"/>
 
         </LinearLayout>
     </RelativeLayout>

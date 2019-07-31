@@ -69,6 +69,7 @@
                     android:gravity="center_vertical"
                     android:text="About Me"
                     android:textStyle="bold"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textColor="@color/black2"
                     android:padding="@dimen/_10sdp"
                     android:textSize="@dimen/_12ssp" />
@@ -99,6 +100,7 @@
                         android:textStyle="bold"
                         android:gravity="center_vertical"
                         android:text="Name"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"/>
 
@@ -141,6 +143,7 @@
                         android:textStyle="bold"
                         android:gravity="center_vertical"
                         android:text="@string/lastname"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"/>
 
@@ -180,6 +183,7 @@
                         android:text="@string/email"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -212,6 +216,7 @@
                         android:text="@string/bio"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textStyle="bold" />
 
                     <android.support.v7.widget.AppCompatImageView
@@ -252,6 +257,7 @@
                         android:text="@string/changePassword"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textStyle="bold" />
 
                     <android.support.v7.widget.AppCompatImageView
@@ -279,6 +285,7 @@
                 android:text="@string/information"
                 android:textColor="@color/colorPrimaryDark_new"
                 android:padding="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_regular"
                 android:textSize="@dimen/_12ssp" />
 
             <View
@@ -310,6 +317,7 @@
                     android:text="@string/termsandcc"
                     android:textColor="@color/setting_txt_color"
                     android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.AppCompatImageView
@@ -351,6 +359,7 @@
                     android:text="@string/privacy"
                     android:textColor="@color/setting_txt_color"
                     android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:textStyle="bold"/>
 
                 <android.support.v7.widget.AppCompatImageView
@@ -398,6 +407,7 @@
                         android:text="@string/feedback"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textStyle="bold" />
 
                     <android.support.v7.widget.AppCompatImageView
@@ -407,7 +417,6 @@
                         android:tint="@color/gray2"
                         app:srcCompat="@drawable/ic_arrow_point_to_right" />
                 </LinearLayout>
-
 
                 <View
                     android:layout_width="match_parent"
@@ -438,6 +447,7 @@
                         android:clickable="false"
                         android:gravity="center_vertical"
                         android:text="@string/logout"
+                        android:fontFamily="@font/montserrat_regular"
                         android:textColor="@color/setting_txt_color"
                         android:textSize="@dimen/_10ssp"
                         android:textStyle="bold"/>
@@ -463,12 +473,12 @@
                     android:id="@+id/txt_admin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/myriadpro_regular"
                     android:gravity="center_vertical"
                     android:text="@string/admin"
                     android:textColor="@color/black2"
                     android:textSize="@dimen/_14sdp"
                     android:textStyle="bold"
+                    android:fontFamily="@font/montserrat_regular"
                     android:padding="@dimen/_10sdp"
                     tools:ignore="SpUsage" />
 
@@ -512,8 +522,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
+                            android:fontFamily="@font/montserrat_regular"
                             android:background="@null"
-                            android:fontFamily="@font/myriadpro_regular"
                             android:gravity="center_vertical"
                             android:maxLines="4"
                             android:text="@string/yourlocatoion"

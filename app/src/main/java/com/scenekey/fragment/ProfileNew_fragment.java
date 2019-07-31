@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -49,6 +50,7 @@ import com.scenekey.activity.TagsActivity;
 import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.adapter.ProfileImagePagerAdapter;
 import com.scenekey.helper.Constant;
+import com.scenekey.helper.OnDragTouchListener;
 import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.VerticalViewPager;
 import com.scenekey.helper.WebServices;
@@ -126,6 +128,9 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     public static boolean shouldRefresh = false;
     TagModal tagModal,tagModal1,tagModal2,tagModal3,tagModal4;
     NestedScrollView bottom_sheet;
+    LinearLayout ll_for_drag;
+    RelativeLayout rl_;
+    CardView cv1,cv2;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -144,6 +149,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
         outerBouder2 = v.findViewById(R.id.outerBouder2);
         outerBouder3 = v.findViewById(R.id.outerBouder3);
         outerBouder4 = v.findViewById(R.id.outerBouder4);
+
         iv_tag__special_circulerImage = v.findViewById(R.id.iv_tag__special_circulerImage);
         iv_tag__special_circulerImage1 = v.findViewById(R.id.iv_tag__special_circulerImage1);
         iv_tag__special_circulerImage2 = v.findViewById(R.id.iv_tag__special_circulerImage2);
@@ -252,7 +258,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
         if (activity.userInfo().bio.equals("")) {
             //tv_bio.setText("N/A");
-           // ll_donothavebio.setVisibility(View.VISIBLE);
+            ll_donothavebio.setVisibility(View.VISIBLE);
         } else {
             tv_bio.setText(activity.userInfo().bio);
             ll_donothavebio.setVisibility(View.GONE);
@@ -1100,6 +1106,9 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                                         jsonArray = jo.getJSONArray("followTag");
                                         if(jsonArray.length()>0){
                                             rl_error.setVisibility(View.GONE);
+                                        }
+                                        else {
+                                            rl_error.setVisibility(View.VISIBLE);
                                         }
                                         for(int i =0; i<jsonArray.length(); i++){
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);

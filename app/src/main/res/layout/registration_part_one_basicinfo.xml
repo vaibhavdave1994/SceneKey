@@ -56,7 +56,7 @@
             android:text="@string/basic_info"
             android:textColor="@color/black"
             android:textSize="@dimen/_19sdp"
-            android:fontFamily="@font/raleway_medium"
+            android:fontFamily="@font/raleway_semibold"
             android:textStyle="bold"
             />
 
@@ -116,6 +116,7 @@
                 android:textColorHint="@color/email_hint_new_reg"
                 android:textColor="@color/email_text_new_reg"
                 android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/raleway_medium"
                 android:layout_centerVertical="true"
                 android:inputType="textEmailAddress"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -151,6 +152,7 @@
                 android:textColorHint="@color/email_hint_new_reg"
                 android:textColor="@color/email_text_new_reg"
                 android:textSize="@dimen/_11sdp"
+                android:fontFamily="@font/raleway_medium"
                 android:layout_centerVertical="true"
                 android:inputType="textEmailAddress"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -171,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
             android:background="@drawable/new_next_btn_desable"
-            android:fontFamily="@font/roboto_medium"
+            android:fontFamily="@font/roboto_bold"
             android:text="Next"
             android:textAllCaps="false"
             android:textColor="@color/button_text_new_reg"

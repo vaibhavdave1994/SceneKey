@@ -50,7 +50,7 @@
             android:text="@string/who_are_you"
             android:textColor="@color/black"
             android:textSize="@dimen/_19sdp"
-            android:fontFamily="@font/raleway_medium"
+            android:fontFamily="@font/raleway_semibold"
             android:textStyle="bold"
             />
 
@@ -177,7 +177,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:textAllCaps="false"
             android:textSize="@dimen/_14sdp"
-            android:fontFamily="@font/roboto_medium"/>
+            android:fontFamily="@font/roboto_bold"/>
 
     </LinearLayout>
 

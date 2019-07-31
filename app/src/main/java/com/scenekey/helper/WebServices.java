@@ -6,10 +6,26 @@ package com.scenekey.helper;
 
 public class WebServices {
 
-//    /*New Code*/
-    private static final String BASE_URL = "https://scenekey.com/event/";   // Live
-//    private static final String BASE_URL = "https://dev.scenekey.com/event/";   // Dev
+
+//    private static final String BASE_URL = "https://scenekey.com/event/";   // Live
+    private static final String BASE_URL = "https://dev.scenekey.com/event/";   // Dev
     private static final String WEBVIEWBASE_URL = "https://dev.scenekey.com/";   // Dev
+//    private static final String WEBVIEWBASE_URL = "https://scenekey.com/";   // Live
+
+
+    public final static String EVENT_BY_TAG = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/dev/events/search";
+    public final static String EVENT_TAG = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/dev/tags";
+    public final static String DEFAULT_IMAGE = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/dev/users";
+    public final static String FEED_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-events/dev/";
+    public final static String VENUE_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-venues/dev/";   //prod
+    public final static String EVENT_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-events/dev/";  //dev is environment type=development
+
+//    public final static String EVENT_BY_TAG = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/events/search/prod/";
+//    public final static String EVENT_TAG = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/tags/prod/";
+//    public final static String DEFAULT_IMAGE = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/users/prod/";
+//    public final static String FEED_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-events/prod/";
+//    public final static String VENUE_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-venues/prod/";   //prod
+//    public final static String EVENT_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-events/prod/";  //dev is environment type=development
 
     //--------deepak's code------
     public final static String IMAGEUPLOAD_BUCKET = BASE_URL + "awsImage";
@@ -31,7 +47,6 @@ public class WebServices {
     public final static String CHANGEPASSWORD = BASE_URL + "webservices/resetPassword";
     public final static String UPDATEPROFILE = BASE_URL + "webservices/updateProfile";
 
-
     public final static String CHECK_EVENT_STATUS = BASE_URL + "webservices/checkeventstatus";
 
     public final static String DELETE_FEED = BASE_URL + "deleteFeed";
@@ -44,12 +59,7 @@ public class WebServices {
     public final static String PRIVACY_ = "https://scenekey.com/Privacypolicy.pdf";
     public final static String BASE_IMAGE_URL = "https://dev.scenekey.com/"; //old
 
-    public final static String EVENT_BY_TAG = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/dev/events/search";
-    public final static String EVENT_TAG = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/dev/tags";
-    public final static String DEFAULT_IMAGE = "https://0kh929t4ng.execute-api.us-west-1.amazonaws.com/dev/users";
-    public final static String FEED_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-events/dev/";
-    public final static String VENUE_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-venues/dev/";   //prod
-    public final static String EVENT_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-events/dev/";  //dev is environment type=development
+
     public final static String USER_IMAGE = "https://s3-us-west-1.amazonaws.com/scenekey-profile-images/";
 
     public static final String CHK_LOGIN = BASE_URL + "webservices/chkLogin";

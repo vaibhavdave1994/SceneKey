@@ -246,6 +246,19 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             }
         });
 
+        holder.tv_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0")){
+                    followUnfollowLIstner.getFollowUnfollow(1,object.getVenue().getBiz_tag_id(),object,position);
+                }
+                else {
+                    followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),object,position);
+                }
+            }
+        });
+
 
         if (event.imageslideList.isEmpty()) {
             if (event.getImage().contains("defaultevent.jpg")) {
@@ -476,6 +489,8 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                 activity.startActivity(intent);
             }
         });
+
+
     }
 
     @Override

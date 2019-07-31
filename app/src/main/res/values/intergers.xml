@@ -8,6 +8,7 @@
     <integer name="threedealy">1700</integer>
     <integer name="four">600</integer>
     <integer name="fourdelay">2300</integer>
+    <integer name="fodelay">230000</integer>
 
 
     <!--try button-->

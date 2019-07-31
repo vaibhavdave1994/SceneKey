@@ -15,7 +15,7 @@
         android:text="Share with the community"
         android:textColor="@color/colorPrimaryDark_new"
         android:textSize="@dimen/_18sdp"
-        android:fontFamily="@font/roboto_medium"/>
+        android:fontFamily="@font/montserrat_semibold"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
         android:text="Check-in, share and help other scenesters with their real time discovery. You earn keypoints for sharing."
         android:textColor="@color/reward_day_color"
         android:textSize="@dimen/_12sdp"
-        android:fontFamily="@font/roboto_regular"/>
+        android:fontFamily="@font/montserrat_regular"/>
 
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="@dimen/_200sdp"

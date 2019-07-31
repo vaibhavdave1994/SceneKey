@@ -65,7 +65,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Splash">
         <!--<activity-->
-            <!--android:name=".activity.new_reg_flow.NewIntroActivity"-->
+            <!--android:name=".ScrollTempActivity"-->
             <!--android:screenOrientation="portrait"-->
             <!--&gt;-->
             <intent-filter>

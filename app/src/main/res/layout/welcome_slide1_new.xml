@@ -16,7 +16,7 @@
         android:text="Find your scene"
         android:textColor="@color/colorPrimaryDark_new"
         android:textSize="@dimen/_18sdp"
-        android:fontFamily="@font/roboto_medium"/>
+        android:fontFamily="@font/montserrat_semibold"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:text="Easily find unique, specific things you are looking for, all in real time. "
         android:textColor="@color/reward_day_color"
         android:textSize="@dimen/_12sdp"
-        android:fontFamily="@font/roboto_regular"/>
+        android:fontFamily="@font/montserrat_regular"/>
 
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="@dimen/_180sdp"

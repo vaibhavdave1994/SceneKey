@@ -1468,7 +1468,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 public void onErrorResponse(VolleyError volleyError) {
                     dismissProgDialog();
                     Toast.makeText(RegistrationActivity.this, "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
-                    ;
                 }
             }) {
                 //adding parameters to send
