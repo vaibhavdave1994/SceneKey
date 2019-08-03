@@ -141,7 +141,6 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             getSearchTagList(event.event_id, venuid.getVenue_id());
 
             if (object != null) {
-                callAddEventApi(object);
                 if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
                  tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),1);
             }
@@ -1063,7 +1062,6 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                         if (status.equals("event_Added")) {
                             showKeyPoints("+5");
                         } else if (status.equals("exist")) {
-
                         }
 
                        // if(object.getVenue().getIs_tag_follow().equalsIgnoreCase(""))
@@ -1104,7 +1102,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_keypoint_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -1119,22 +1117,20 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                showAlertDialog("You've keyed into "+event.event_name);
                 dialog.dismiss();
             }
-        }, 3000);
+        }, 2000);
 
         dialog.show();
     }
-
-    //---------------
-
     private void keyInToEvent(){
         try {
             if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                addUserIntoEvent(-1);
-            } else if (getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
-                    &&isEventOnline(object.getEvent().event_date,userInfo().currentDate)) {
-                addUserIntoEvent(-1);
+               callAddEventApi(object);
+            }
+            else if (event.ableToKeyIn) {
+                callAddEventApi(object);
             }
         } catch (Exception d) {
             d.getMessage();

@@ -156,7 +156,6 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
                             if(fromScreen.equals("setting")){
                               onBackPressed();
                             }else {
-
                                 callIntent();
                             }
 

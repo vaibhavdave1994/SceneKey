@@ -28,6 +28,7 @@ public class Event implements Serializable {
     public String isEventLike;
     public String likeCount;
     public int isFeed;
+    public boolean ableToKeyIn = false;
 
 
     public ArrayList<ImageSlidModal> imageslideList = new ArrayList<>();

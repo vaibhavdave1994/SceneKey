@@ -10,6 +10,7 @@
     tools:context="com.scenekey.activity.HomeActivity">
 
     <LinearLayout
+        android:id="@+id/ll_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_margin_view"
@@ -434,10 +435,10 @@
                     android:gravity="center"
                     android:paddingLeft="@dimen/_7sdp"
                     android:paddingRight="@dimen/_5sdp"
-                    android:text="99"
+                    android:text=""
                     android:textSize="@dimen/_8sdp"
                     android:textStyle="bold"
-
+                    android:fontFamily="@font/montserrat_medium"
                     />
 
             </RelativeLayout>

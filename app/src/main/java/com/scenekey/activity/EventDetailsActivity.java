@@ -49,6 +49,7 @@ import com.scenekey.R;
 import com.scenekey.adapter.Profile_Adapter;
 import com.scenekey.adapter.SmilyUserAdapter;
 import com.scenekey.aws_service.Aws_Web_Service;
+import com.scenekey.base.BaseActivity;
 import com.scenekey.cropper.CropImage;
 import com.scenekey.cropper.CropImageView;
 import com.scenekey.helper.Constant;
@@ -92,7 +93,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class EventDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class EventDetailsActivity extends BaseActivity implements View.OnClickListener {
 
     public static UserInfo userInfo;
     private static String FROM_TAB = "from_tab";
@@ -135,7 +136,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     //calling other class
     private Utility utility;
     private CustomProgressBar customProgressBar;
-    private Events event;
+    public Events event;
     private String eventName = "";
     private SmilyUserAdapter smilyUserAdapter;
     private TextView txt_show_emojies;
@@ -205,6 +206,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             venueId = getIntent().getStringExtra("venueId");
             currentLatLng = getIntent().getStringArrayExtra("currentLatLng");
             event = (Events) getIntent().getSerializableExtra("object");
+
         }
 
         if(event != null) {
@@ -226,16 +228,16 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         Log.i("date", date);
 
         //callAddEventApi() Api for trending tanb and map tab
-        CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
-            @Override
-            public void onTextChange(UserInfo user) {
-                if (from_tab.equals("trending") && !isKeyInAble) {
-                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
-                } else if (from_tab.equals("map_tab") && !isKeyInAble) {
-                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
-                }
-            }
-        });
+//        CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
+//            @Override
+//            public void onTextChange(UserInfo user) {
+//                if (from_tab.equals("trending") && !isKeyInAble) {
+//                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
+//                } else if (from_tab.equals("map_tab") && !isKeyInAble) {
+//                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
+//                }
+//            }
+//        });
 
         txt_event_name.setText(eventName);
 
@@ -299,7 +301,6 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         feedLIstRecyclerView.setAdapter(adapter);
         blurView.setVisibility(View.GONE);
     }
-
 
     public static List<EmoziesModal> loadCountries(EventDetailsActivity eventDetailsActivity) {
         try {
@@ -881,7 +882,7 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void callAddEventApi(final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
+    private void callAddEventApi( final Events object) {
         final Utility utility = new Utility(this);
 
         if (utility.checkInternetConnection()) {
@@ -937,6 +938,47 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
+    }
+
+    private void showKeyPoints(String s) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.custom_keypoint_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.gravity = Gravity.TOP;
+        dialog.getWindow().setAttributes(lp);
+
+        TextView tvKeyPoint;
+
+        tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
+        tvKeyPoint.setText(s);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showAlertDialog("You've keyed into "+event.getEvent().event_name);
+                dialog.dismiss();
+            }
+        }, 2000);
+
+        dialog.show();
+    }
+    private void keyInToEvent(){
+        try {
+            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                callAddEventApi(event);
+            }
+            else if (event.getEvent().ableToKeyIn) {
+                callAddEventApi(event);
+            }
+        } catch (Exception d) {
+            d.getMessage();
+        }
+
     }
 
     //----------------follow / unfollow -----------------------------------
@@ -1717,49 +1759,49 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
     }*/
 
 
-    private void showKeyPoints(String s) {
-        final Dialog dialog = new Dialog(this);
-
-        try {
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setContentView(R.layout.custom_keypoint_layout);
-            assert dialog.getWindow() != null;
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
-
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(dialog.getWindow().getAttributes());
-            lp.gravity = Gravity.TOP;
-            dialog.getWindow().setAttributes(lp);
-
-            TextView tvKeyPoint;
-
-            tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
-            tvKeyPoint.setText(s);
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    try {
-                        dialog.dismiss();
-                    } catch (Exception e) {
-
-                        e.printStackTrace();
-                        dialog.dismiss();
-                    }
-
-
-                }
-            }, 1500);
-
-            dialog.show();
-        } catch (Exception e) {
-
-            e.printStackTrace();
-            dialog.dismiss();
-        }
-    }
+//    private void showKeyPoints(String s) {
+//        final Dialog dialog = new Dialog(this);
+//
+//        try {
+//            dialog.setCanceledOnTouchOutside(false);
+//            dialog.setContentView(R.layout.custom_keypoint_layout);
+//            assert dialog.getWindow() != null;
+//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
+//
+//            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//            lp.copyFrom(dialog.getWindow().getAttributes());
+//            lp.gravity = Gravity.TOP;
+//            dialog.getWindow().setAttributes(lp);
+//
+//            TextView tvKeyPoint;
+//
+//            tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
+//            tvKeyPoint.setText(s);
+//
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    try {
+//                        dialog.dismiss();
+//                    } catch (Exception e) {
+//
+//                        e.printStackTrace();
+//                        dialog.dismiss();
+//                    }
+//
+//
+//                }
+//            }, 1500);
+//
+//            dialog.show();
+//        } catch (Exception e) {
+//
+//            e.printStackTrace();
+//            dialog.dismiss();
+//        }
+//    }
 
     public String getCurrentTimeInFormat() {
         return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).format(new Date(System.currentTimeMillis()));
@@ -1939,37 +1981,36 @@ public class EventDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
-    private void keyInToEvent(){
-
-        try {
-            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                addUserIntoEvent(-1);
-            } else if (getDistance(new Double[]{Double.valueOf(event.getVenue().getLatitude()), Double.valueOf(event.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
-                    &&isEventOnline(event.getEvent().event_date,userInfo().currentDate)) {
-                addUserIntoEvent(-1);
-            } else {
-                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
-                    blurView.setVisibility(View.VISIBLE);
-                    adapter.userExistOrNot = "notStart";
-                    userExistOrNotonActivty = "notStart";
-
-                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                    blurView.setVisibility(View.VISIBLE);
-                    adapter.userExistOrNot = "notStart";
-                    userExistOrNotonActivty = "notStart";
-                } else {
-                    blurView.setVisibility(View.VISIBLE);
-                    adapter.userExistOrNot = "notArrived";
-                    userExistOrNotonActivty = "notArrived";
-                }
-                //cantJoinDialog();
-            }
-        } catch (Exception d) {
-            d.getMessage();
-        }
-
-    }
+//    private void keyInToEvent(){
+//
+//        try {
+//            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+//                addUserIntoEvent(-1);
+//            } else if (getDistance(new Double[]{Double.valueOf(event.getVenue().getLatitude()), Double.valueOf(event.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
+//                    &&isEventOnline(event.getEvent().event_date,userInfo().currentDate)) {
+//                addUserIntoEvent(-1);
+//            } else {
+//                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
+//                    blurView.setVisibility(View.VISIBLE);
+//                    adapter.userExistOrNot = "notStart";
+//                    userExistOrNotonActivty = "notStart";
+//
+//                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+//                    blurView.setVisibility(View.VISIBLE);
+//                    adapter.userExistOrNot = "notStart";
+//                    userExistOrNotonActivty = "notStart";
+//                } else {
+//                    blurView.setVisibility(View.VISIBLE);
+//                    adapter.userExistOrNot = "notArrived";
+//                    userExistOrNotonActivty = "notArrived";
+//                }
+//                //cantJoinDialog();
+//            }
+//        } catch (Exception d) {
+//            d.getMessage();
+//        }
+//
+//    }
 
     private boolean isEventOnline(String eventDate, String serverCurrentDate){
         boolean returnValue = false;

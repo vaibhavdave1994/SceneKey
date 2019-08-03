@@ -109,10 +109,10 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         final Venue venue = object.getVenue();
         final Event event = object.getEvent();
 
-        if(shouldKeyInButtonVisible(object))
-            holder.frame_keyinbutton.setVisibility(View.VISIBLE);
-        else
-            holder.frame_keyinbutton.setVisibility(View.GONE);
+//        if(shouldKeyInButtonVisible(object))
+//            holder.frame_keyinbutton.setVisibility(View.VISIBLE);
+//        else
+//            holder.frame_keyinbutton.setVisibility(View.GONE);
 
 
         if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
@@ -191,9 +191,17 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         holder.txt_eventAdress.setText((venue.getVenue_name().trim().length() > 29 ? venue.getVenue_name().trim().substring(0, 29) : venue.getVenue_name().trim()));
 
         //distance bw event and user
-        String miles = String.valueOf(getDistanceMile(new Double[]{Double.valueOf(venue.getLatitude()), Double.valueOf(venue.getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}));
-        Utility.e("Miles---", miles);
+        double doubleMiles = getDistanceMile(new Double[]{Double.valueOf(venue.getLatitude()), Double.valueOf(venue.getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
+        String miles = String.valueOf(doubleMiles);
         holder.txt_eventmile.setText(miles + " M");
+        if(doubleMiles <=  0.9 && object.getEvent().strStatus == 0){
+            holder.frame_keyinbutton.setVisibility(View.VISIBLE);
+            event.ableToKeyIn = true;
+        }
+        else {
+            holder.frame_keyinbutton.setVisibility(View.GONE);
+            event.ableToKeyIn = false;
+        }
 
         holder.iv_heart.setOnClickListener(new View.OnClickListener() {
             @Override

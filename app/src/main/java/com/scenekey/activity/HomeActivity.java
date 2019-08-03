@@ -865,7 +865,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     rl_title_main_view.setVisibility(View.GONE);
 
                     if (isPermissionAvail) {
-
                         EventAttendy attendy = new EventAttendy();
                         attendy.userid = (userInfo.userid);
                         attendy.userFacebookId = (userInfo.userFacebookId);

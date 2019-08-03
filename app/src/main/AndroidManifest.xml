@@ -206,6 +206,8 @@
         <activity android:name=".activity.OwnProfileActivity" />
         <activity android:name=".activity.TnCWebView" />
         <activity android:name=".activity.TnCAndPrivacyActivity" />
+        <activity android:name=".activity.ProfileNewActivity" />
+        <activity android:name=".activity.ProfileOtherUserNewActivity" />
     </application>
 
 </manifest>

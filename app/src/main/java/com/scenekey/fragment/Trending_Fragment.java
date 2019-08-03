@@ -345,6 +345,7 @@ public class Trending_Fragment extends Fragment {
                                         Utility.e("Exception Remaining", e.toString());
                                     }
                                     eventsArrayList.add(events);
+
                                     // Util.printLog("Result",events.toString());
                                 }
                                 if (eventsArrayList.size() <= 0) {

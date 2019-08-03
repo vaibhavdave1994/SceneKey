@@ -1,19 +1,21 @@
-package com.scenekey.fragment;
+package com.scenekey.activity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -46,12 +48,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.scenekey.R;
-import com.scenekey.activity.BioActivity;
-import com.scenekey.activity.HomeActivity;
-import com.scenekey.activity.ImageUploadActivity;
-import com.scenekey.activity.TagsActivity;
-import com.scenekey.activity.TrendinSearchActivity;
 import com.scenekey.adapter.ProfileImagePagerAdapter;
+import com.scenekey.base.BaseActivity;
+import com.scenekey.fragment.Event_Fragment;
+import com.scenekey.fragment.Key_In_Event_Fragment;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.OnDragTouchListener;
 import com.scenekey.helper.SessionManager;
@@ -83,12 +83,11 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileNew_fragment extends Fragment implements  View.OnClickListener{
+public class ProfileNewActivity extends BaseActivity implements  View.OnClickListener{
 
     View v;
-    private final String TAG = ProfileNew_fragment.class.toString();
+    private final String TAG = ProfileNewActivity.class.toString();
     private Context context;
-    private HomeActivity activity;
     private Utility utility;
     private CognitoCredentialsProvider credentialsProvider;
     private EventAttendy attendy;
@@ -110,9 +109,6 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     private EditText tv_bio;
 
     private ImageView btn1, btn2, btn3, btn4, btn5;
-    //private RelativeLayout ly_match_profile;
-   // private BottomSheetBehavior<View> mBottomSheetBehavior;
-   // private View bottom_sheet;
     private int profilePos;
     //private RelativeLayout customizeView;
     private ProfileImagePagerAdapter pagerAdapter;
@@ -128,130 +124,96 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     RelativeLayout rl,rl1,rl2,rl3,rl4,rl_error;
     TextView tv_viewall_interest,follow_tokens;
     LinearLayout ll_donothavebio;
-    public static boolean shouldRefresh = false;
     TagModal tagModal,tagModal1,tagModal2,tagModal3,tagModal4;
-    NestedScrollView bottom_sheet;
-    LinearLayout ll_for_drag;
-    RelativeLayout rl_;
-    CardView cv1,cv2;
+    RelativeLayout toolbar;
+    AppCompatImageView img_f11_back;
+    TextView txt_event_name;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        View v =  inflater.inflate(R.layout.fragment_profile_new_fragment, container, false);
-        v =  inflater.inflate(R.layout.new_fragment_profile_new_fragment, container, false);
-//        v =  inflater.inflate(R.layout.user_detail_activity_layout, container, false);
-       // ly_match_profile = v.findViewById(R.id.ly_match_profile);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.new_fragment_profile_new_fragment);
+        context = this;
+        utility = new Utility(context);
 
-//        bottom_sheet = v.findViewById(R.id.bottom_sheet);
-//        bottom_sheet.smoothScrollTo(0,90);
-
-        RelativeLayout relativeLayout = v.findViewById(R.id.relativeLayout);
+        txt_event_name = findViewById(R.id.txt_event_name);
+        txt_event_name.setText(userInfo().fullname);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+        img_f11_back = findViewById(R.id.img_f11_back);
+        img_f11_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
         relativeLayout.setOnTouchListener(new OnDragTouchListener(relativeLayout));
 
-        outerBouder = v.findViewById(R.id.outerBouder);
-        outerBouder1 = v.findViewById(R.id.outerBouder1);
-        outerBouder2 = v.findViewById(R.id.outerBouder2);
-        outerBouder3 = v.findViewById(R.id.outerBouder3);
-        outerBouder4 = v.findViewById(R.id.outerBouder4);
 
-        iv_tag__special_circulerImage = v.findViewById(R.id.iv_tag__special_circulerImage);
-        iv_tag__special_circulerImage1 = v.findViewById(R.id.iv_tag__special_circulerImage1);
-        iv_tag__special_circulerImage2 = v.findViewById(R.id.iv_tag__special_circulerImage2);
-        iv_tag__special_circulerImage3 = v.findViewById(R.id.iv_tag__special_circulerImage3);
-        iv_tag__special_circulerImage4 = v.findViewById(R.id.iv_tag__special_circulerImage4);
-        tag__special_name = v.findViewById(R.id.tag__special_name);
-        tag__special_name1 = v.findViewById(R.id.tag__special_name1);
-        tag__special_name2 = v.findViewById(R.id.tag__special_name2);
-        tag__special_name3 = v.findViewById(R.id.tag__special_name3);
-        tag__special_name4 = v.findViewById(R.id.tag__special_name4);
+        outerBouder =  findViewById(R.id.outerBouder);
+        outerBouder1 = findViewById(R.id.outerBouder1);
+        outerBouder2 = findViewById(R.id.outerBouder2);
+        outerBouder3 = findViewById(R.id.outerBouder3);
+        outerBouder4 = findViewById(R.id.outerBouder4);
 
-        rl = v.findViewById(R.id.rl);
-        rl1 = v.findViewById(R.id.rl1);
-        rl2 = v.findViewById(R.id.rl2);
-        rl3 = v.findViewById(R.id.rl3);
-        rl4 = v.findViewById(R.id.rl4);
+        iv_tag__special_circulerImage = findViewById(R.id.iv_tag__special_circulerImage);
+        iv_tag__special_circulerImage1 = findViewById(R.id.iv_tag__special_circulerImage1);
+        iv_tag__special_circulerImage2 = findViewById(R.id.iv_tag__special_circulerImage2);
+        iv_tag__special_circulerImage3 = findViewById(R.id.iv_tag__special_circulerImage3);
+        iv_tag__special_circulerImage4 = findViewById(R.id.iv_tag__special_circulerImage4);
+        tag__special_name = findViewById(R.id.tag__special_name);
+        tag__special_name1 = findViewById(R.id.tag__special_name1);
+        tag__special_name2 = findViewById(R.id.tag__special_name2);
+        tag__special_name3 = findViewById(R.id.tag__special_name3);
+        tag__special_name4 = findViewById(R.id.tag__special_name4);
+
+        rl = findViewById(R.id.rl);
+        rl1 = findViewById(R.id.rl1);
+        rl2 = findViewById(R.id.rl2);
+        rl3 = findViewById(R.id.rl3);
+        rl4 = findViewById(R.id.rl4);
         rl.setOnClickListener(this);
         rl1.setOnClickListener(this);
         rl2.setOnClickListener(this);
         rl3.setOnClickListener(this);
         rl4.setOnClickListener(this);
 
-        rl_error = v.findViewById(R.id.rl_error);
-        ll_donothavebio = v.findViewById(R.id.ll_donothavebio);
+        rl_error = findViewById(R.id.rl_error);
+        ll_donothavebio = findViewById(R.id.ll_donothavebio);
 
-        tv_viewall_interest = v.findViewById(R.id.tv_viewall_interest);
+        tv_viewall_interest = findViewById(R.id.tv_viewall_interest);
         tv_viewall_interest.setOnClickListener(this);
-        follow_tokens = v.findViewById(R.id.follow_tokens);
+        follow_tokens = findViewById(R.id.follow_tokens);
         follow_tokens.setOnClickListener(this);
 
-        btn1 = v.findViewById(R.id.d_btn1);
-        btn2 = v.findViewById(R.id.d_btn2);
-        btn3 = v.findViewById(R.id.d_btn3);
-        btn4 = v.findViewById(R.id.d_btn4);
-        btn5 = v.findViewById(R.id.d_btn5);
+        btn1 = findViewById(R.id.d_btn1);
+        btn2 = findViewById(R.id.d_btn2);
+        btn3 = findViewById(R.id.d_btn3);
+        btn4 = findViewById(R.id.d_btn4);
+        btn5 = findViewById(R.id.d_btn5);
 
-        //listViewFragProfile = v.findViewById(R.id.listViewFragProfile);
-        //bottom_sheet = v.findViewById(R.id.bottom_sheet);
-       // mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         imageList = new ArrayList<>();
 
-        //customizeView = v.findViewById(R.id.customizeView);
-        demo_View_dot = v.findViewById(R.id.demo_View_dot);
+        demo_View_dot = findViewById(R.id.demo_View_dot);
 
-        Display display = activity.getWindowManager().getDefaultDisplay();
+        Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
 
         getBucketDetatils();
         getMyFollowTag();
-        ImageView iv_image_upload = v.findViewById(R.id.iv_image_upload);
+        ImageView iv_image_upload = findViewById(R.id.iv_image_upload);
         iv_image_upload.setOnClickListener(this);
-        tv_user_name = v.findViewById(R.id.tv_user_name);
-        tv_bio = v.findViewById(R.id.tv_bio);
-        TextView tv_update_bio = v.findViewById(R.id.tv_update_bio);
+        tv_user_name = findViewById(R.id.tv_user_name);
+        tv_bio = findViewById(R.id.tv_bio);
+        TextView tv_update_bio = findViewById(R.id.tv_update_bio);
         tv_update_bio.setOnClickListener(this);
+
         setProfileData();
-
-        int dpHeight = outMetrics.heightPixels;
-        int dpWidth = outMetrics.widthPixels;
-
-//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) customizeView.getLayoutParams();
-//        params.height = (dpWidth - 20);
-//        customizeView.setLayoutParams(params);
-        return v;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-
-//        Handler handler = new Handler();
-//        demo_View_dot.setVisibility(View.VISIBLE);
-//        downloadFileFromS3((credentialsProvider == null ? credentialsProvider = getCredentials() : credentialsProvider));
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                activity.showProgDialog(false, TAG);
-//                getProfileDataApi();
-//            }
-//        }, 200);
-//
-//        feedsList = new ArrayList<>();
-//
-//        // New Code
-
-//        img_green = view.findViewById(R.id.img_green);
-//        img_yellow = view.findViewById(R.id.img_yellow);
-//        img_red = view.findViewById(R.id.img_red);
-
-
-
-        //setClick(iv_image_upload, img_green, img_yellow, img_red, tv_bio, tv_update_bio);
-    }
 
     private void setProfileData() {
 
@@ -262,57 +224,18 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
         else
             tv_user_name.setText(userInfo.fullname);
 
-        if (activity.userInfo().bio.equals("")) {
+        if (userInfo().bio.equals("")) {
             tv_bio.setVisibility(View.GONE);
             ll_donothavebio.setVisibility(View.VISIBLE);
         } else {
-            tv_bio.setText(activity.userInfo().bio);
+            tv_bio.setText(userInfo().bio);
             ll_donothavebio.setVisibility(View.GONE);
             tv_bio.setVisibility(View.VISIBLE);
         }
 
-//        if (userInfo.user_status != null) {
-//            switch (userInfo.user_status) {
-//                case "1":
-//                    img_green.setImageResource(R.drawable.ic_active_grn_circle);
-//                    img_red.setImageResource(R.drawable.bg_red_ring);
-//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-//                    break;
-//
-//                case "2":
-//                    img_green.setImageResource(R.drawable.bg_green_ring);
-//                    img_red.setImageResource(R.drawable.bg_red_ring);
-//                    img_yellow.setImageResource(R.drawable.ic_active_ylw_circle);
-//                    break;
-//
-//                case "3":
-//                    img_green.setImageResource(R.drawable.bg_green_ring);
-//                    img_red.setImageResource(R.drawable.ic_active_red_circle);
-//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-//                    break;
-//
-//                default:
-//                    img_green.setImageResource(R.drawable.bg_green_ring);
-//                    img_red.setImageResource(R.drawable.ic_active_red_circle);
-//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-//
-//            }
-//        }
     }
 
-    private void setClick(View... views) {
-        for (View view : views) {
-            view.setOnClickListener(this);
-        }
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-        activity = (HomeActivity) getActivity();
-        utility = new Utility(context);
-    }
 
     @Override
     public void onClick(View v) {
@@ -329,23 +252,6 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 }
                 break;
 
-            case R.id.img_green:
-                img_red.setImageResource(R.drawable.bg_red_ring);
-                img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-                setUserStatus(1, (ImageView) v);
-                break;
-
-            case R.id.img_yellow:
-                img_green.setImageResource(R.drawable.bg_green_ring);
-                img_red.setImageResource(R.drawable.bg_red_ring);
-                setUserStatus(2, (ImageView) v);
-                break;
-
-            case R.id.img_red:
-                img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-                img_green.setImageResource(R.drawable.bg_green_ring);
-                setUserStatus(3, (ImageView) v);
-                break;
 
             case R.id.tv_update_bio:
                 if(tv_bio.getVisibility() == View.VISIBLE) {
@@ -355,7 +261,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                         utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
                 }
                 else {
-                    Intent bioIntent = new Intent(getActivity(), BioActivity.class);
+                    Intent bioIntent = new Intent(this, BioActivity.class);
                     bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     bioIntent.putExtra("from", "setting");
                     startActivity(bioIntent);
@@ -389,7 +295,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                  intent1.putExtra("name", "");
                  intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                  startActivity(intent1);
-                 getActivity().finish();
+                 finish();
                 break;
 
             case R.id.rl:
@@ -426,55 +332,18 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
     @Override
     public void onResume() {
-     //   setProfileData();
         super.onResume();
-        if(shouldRefresh){
-            // Reload current fragment
-//            Fragment frg = null;
-//            frg = activity.getSupportFragmentManager().findFragmentByTag(getFragmentManager().getFragments().getClass().getName());
-//            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-//            ft.detach(frg);
-//            ft.attach(frg);
-//            ft.commit();
-//            getBucketDetatils();
-//            getMyFollowTag();
-        }
-    }
+         }
 
-    private void profileImgClick() {
-        listViewFragProfile.smoothScrollToPosition(0);
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.profile_pic_scale_up);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                StatusBarUtil.setColorNoTranslucent(activity, getResources().getColor(R.color.black70p));
-                txt_dimmer.setVisibility(View.VISIBLE);
-                img_cross.setVisibility(View.VISIBLE);
-                img_right.setVisibility(View.VISIBLE);
-                img_left.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                Utility.e(TAG, "Animation Repeat");
-            }
-        });
-
-    }
 
     private void crossImgClicked() {
-        Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.profile_pic_scale_down);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.profile_pic_scale_down);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
                 //img_profile_pic2.setAlpha(1.0f);
                 //img_profile_pic2.setBorderColor(getResources().getColor(R.color.colorPrimary));
-                Animation dimmer = AnimationUtils.loadAnimation(getContext(), R.anim.alpha_to_o);
+                Animation dimmer = AnimationUtils.loadAnimation(ProfileNewActivity.this, R.anim.alpha_to_o);
                 img_right.startAnimation(dimmer);
                 img_left.startAnimation(dimmer);
             }
@@ -487,7 +356,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
                 img_right.setVisibility(View.GONE);
                 img_left.setVisibility(View.GONE);
-                StatusBarUtil.setColorNoTranslucent(activity, getResources().getColor(R.color.white));
+                StatusBarUtil.setColorNoTranslucent(ProfileNewActivity.this, getResources().getColor(R.color.white));
             }
 
             @Override
@@ -505,7 +374,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
         }
     }
 
-    public ProfileNew_fragment setData(EventAttendy attendy, boolean myProfile, Event_Fragment fragment, int mutulFriendCount) {
+    public ProfileNewActivity setData(EventAttendy attendy, boolean myProfile, Event_Fragment fragment, int mutulFriendCount) {
         this.attendy = attendy;
         this.myProfile = myProfile;
         this.event_fragment = fragment;
@@ -532,13 +401,13 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                     if (feedsList == null) {
                         feedsList = new ArrayList<>();
                     }
-                    activity.dismissProgDialog();
+                    dismissProgDialog();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
+                    dismissProgDialog();
                 }
             }) {
                 @Override
@@ -546,7 +415,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                     Map<String, String> params = new HashMap<>();
                     params.put("user_id", attendy.userid);
                     params.put("type", "app");
-                    params.put("myId", activity.userInfo().userid);
+                    params.put("myId", userInfo().userid);
                     Log.e("step1", "Pass");
                     Utility.e(TAG, " params " + params.toString());
                     return params;
@@ -558,7 +427,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             //utility.snackBar(mainLayout, getString(R.string.internetConnectivityError), 0);
             //utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
             Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
-            activity.dismissProgDialog();
+            dismissProgDialog();
         }
     }
 
@@ -571,7 +440,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
         try {
             if (object.has("myInfo")) {
-                UserInfo userInfo = activity.userInfo();
+                UserInfo userInfo = userInfo();
                 JSONObject user = object.getJSONObject("myInfo");
                 if (user.has("fullname")) userInfo.fullname = (user.getString("fullname"));
                 if (user.has("address")) userInfo.address = (user.getString("address"));
@@ -582,7 +451,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
                 Utility.e("Profile session update.", userInfo.getUserImage());
 
-                activity.updateSession(userInfo);
+                //updateSession(userInfo);
                 Log.e("step3", "Pass");
             }
         } catch (Exception e) {
@@ -611,7 +480,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 if (feedJson.has("feed")) feeds.feed = (feedJson.getString("feed"));
 
                 feedsList.add(feeds);
-                if (i == 1) activity.dismissProgDialog();
+                if (i == 1) dismissProgDialog();
                 Log.e("step4", "Pass");
             }
             //adapter.notifyDataSetChanged();
@@ -679,16 +548,16 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             });
 
             thread.start();
-            activity.dismissProgDialog();
+            dismissProgDialog();
         } catch (Exception e) {
             Utility.e("AMAZON", e.toString());
-            activity.dismissProgDialog();
+            dismissProgDialog();
             Log.e("step09", "fail");
         }
     }
 
     private void updateImages(final List<S3ObjectSummary> summaries) {
-        activity.runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
@@ -702,9 +571,8 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                     e.printStackTrace();
                 }
 
-                if (getView() != null) {
-                    setUpView(getView());
-                }
+                    setUpView();
+
                 Log.e("step10", "pass");
             }
         });
@@ -764,9 +632,9 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                     imageList.clear();
                     UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
                     userInfo.userImage = SceneKey.sessionManager.getUserInfo().getUserImage();
-                    activity.updateSession(userInfo);
-                    Picasso.with(activity).load(SceneKey.sessionManager.getUserInfo().getUserImage()).transform(new CircleTransform()).placeholder(R.drawable.image_default_profile);
-                    activity.showProgDialog(false, TAG);
+                    //updateSession(userInfo);
+                    Picasso.with(ProfileNewActivity.this).load(SceneKey.sessionManager.getUserInfo().getUserImage()).transform(new CircleTransform()).placeholder(R.drawable.image_default_profile);
+                    showProgDialog(false, TAG);
                     downloadFileFromS3((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider));
                 }
             }
@@ -774,8 +642,8 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
     }//onActivityResult
 
     // New Code
-    private void setUpView(View view) {
-        VerticalViewPager viewPager = view.findViewById(R.id.viewpager);
+    private void setUpView() {
+        VerticalViewPager viewPager = findViewById(R.id.viewpager);
 
         pagerAdapter = new ProfileImagePagerAdapter(context, imageList, new ProfileImageListener() {
             @Override
@@ -939,16 +807,16 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 @Override
                 public void onResponse(String response) {
                     Utility.e(TAG, response);
-                    UserInfo userInfo = activity.userInfo();
+                    UserInfo userInfo = userInfo();
                     userInfo.user_status = String.valueOf(value);
-                    activity.updateSession(userInfo);
-                    activity.dismissProgDialog();
+                    //updateSession(userInfo);
+                    dismissProgDialog();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
+                    dismissProgDialog();
                     Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
                 }
             }) {
@@ -957,7 +825,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                     Map<String, String> params = new HashMap<>();
 
                     params.put("status", value + "");
-                    params.put("user_id", activity.userInfo().userid);
+                    params.put("user_id", userInfo().userid);
 
                     Utility.e(TAG, " params " + params.toString());
                     return params;
@@ -967,12 +835,12 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
-            activity.dismissProgDialog();
+            dismissProgDialog();
         }
     }
 
     private void updateBio(final String bio) {
-        activity.showProgDialog(false, TAG);
+        showProgDialog(false, TAG);
         final Utility utility = new Utility(context);
 
         Log.e("step12", "Pass");
@@ -985,16 +853,16 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                     // get response
                     JSONObject jsonObject;
                     try {
-                        activity.dismissProgDialog();
+                        dismissProgDialog();
                         // System.out.println(" login response" + response);
                         jsonObject = new JSONObject(Response);
                         int statusCode = jsonObject.getInt("status");
                         String message = jsonObject.getString("message");
 
                         if (statusCode == 1) {
-                            UserInfo userInfo = activity.userInfo();
+                            UserInfo userInfo = userInfo();
                             userInfo.bio = bio;
-                            activity.updateSession(userInfo);
+                            //updateSession(userInfo);
                             utility.showCustomPopup("Bio updated successfully", String.valueOf(R.font.montserrat_medium));
                             //  callIntent();
                             Log.e("step13", "Pass");
@@ -1004,7 +872,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                         }
 
                     } catch (Exception ex) {
-                        activity.dismissProgDialog();
+                        dismissProgDialog();
                         ex.printStackTrace();
                         Log.e("step15", "Pass");
                     }
@@ -1013,14 +881,14 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
                 @Override
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
+                    dismissProgDialog();
                 }
             }) {
                 @Override
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("bio", bio);
-                    params.put("user_id", activity.userInfo().userid);
+                    params.put("user_id", userInfo().userid);
 
                     return params;
                 }
@@ -1029,7 +897,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
-            activity.dismissProgDialog();
+            dismissProgDialog();
         }
     }
 
@@ -1070,7 +938,7 @@ public class ProfileNew_fragment extends Fragment implements  View.OnClickListen
 
                                             imageList.add(new ImagesUpload(Key));
                                         }
-                                        setUpView(v);
+                                        setUpView();
                                     }
 
                             } catch (Exception e) {

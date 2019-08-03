@@ -73,6 +73,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     private String[] currentLatLng;
     boolean fromTrending = false;
     Utility utility;
+    TheKeyInUserAdapter theKeyInUserAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +137,6 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
 
         if(object != null){
             keyInToEvent();
-          //  callAddEventApi(object);
             if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
                 tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),1);
         }
@@ -146,12 +146,12 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
             TheRoomAdapter theRoomAdapter = new TheRoomAdapter(eventAttendyArrayList, TheRoomActivity.this, eventId, new RoomListener() {
                 @Override
                 public void getRoomData(int pos, ArrayList<EventAttendy> list, String eventId) {
-                    Intent intent = new Intent(TheRoomActivity.this, LiveProfileActivity.class);
-                    intent.putExtra("from", "fromTheRoomActivity");
-                    intent.putExtra("fromliveRoomadptPostion", pos);
-                    intent.putExtra("fromLiveRoomList", list);
-                    intent.putExtra("eventId", eventId);
-                    startActivityForResult(intent, 2);
+//                    Intent intent = new Intent(TheRoomActivity.this, LiveProfileActivity.class);
+//                    intent.putExtra("from", "fromTheRoomActivity");
+//                    intent.putExtra("fromliveRoomadptPostion", pos);
+//                    intent.putExtra("fromLiveRoomList", list);
+//                    intent.putExtra("eventId", eventId);
+//                    startActivityForResult(intent, 2);
                 }
             });
             theRoomRecyclerView.setLayoutManager(new GridLayoutManager(TheRoomActivity.this, 3));
@@ -160,21 +160,29 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
 
         if (keyInUserModalList != null) {
 
-            TheKeyInUserAdapter theKeyInUserAdapter = new TheKeyInUserAdapter(keyInUserModalList, this, new KeyinUserListener() {
+            theKeyInUserAdapter = new TheKeyInUserAdapter(keyInUserModalList, this, new KeyinUserListener() {
                 @Override
                 public void getRoomData(int pos, ArrayList<KeyInUserModal> keyInUserModalArrayList) {
 
 
-                    if (keyInUserModalArrayList.get(0).userid.equalsIgnoreCase(userInfo().userid)) {
-                        startActivity(new Intent(TheRoomActivity.this,OwnProfileActivity.class));
+                    if (keyInUserModalArrayList.get(pos).userid.equalsIgnoreCase(userInfo().userid)) {
+                        startActivity(new Intent(TheRoomActivity.this,ProfileNewActivity.class));
 
-                    } else {
-                        Intent intent = new Intent(TheRoomActivity.this, LiveKeyInProfileActivity.class);
-                        intent.putExtra("from", "fromTrendingHomeActivity");
+                    }
+                    else {
+                        KeyInUserModal keyInUserModal = new KeyInUserModal();
+                        keyInUserModal.userid = keyInUserModalArrayList.get(pos).userid;
+                        keyInUserModal.userImage = keyInUserModalArrayList.get(pos).userImage;
+                        keyInUserModal.bio = keyInUserModalArrayList.get(pos).bio;
+                        keyInUserModal.userName = keyInUserModalArrayList.get(pos).userName;
+                        keyInUserModal.userFacebookId = keyInUserModalArrayList.get(pos).userFacebookId;
+                        keyInUserModal.keyIn = keyInUserModalArrayList.get(pos).keyIn;
+
+                        Intent intent = new Intent(TheRoomActivity.this, ProfileOtherUserNewActivity.class);
+                        intent.putExtra("from", "fromRoom");
                         intent.putExtra("fromTrendingHomePostion", pos);
-                        intent.putExtra("keyInUserModalArrayList", keyInUserModalArrayList);
-                        //intent.putExtra("eventId", eventId);
-                        startActivityForResult(intent, 2);
+                        intent.putExtra("keyInUserModal", keyInUserModal);
+                        startActivity( intent);
                     }
 
                 }
@@ -252,33 +260,6 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 return response;
             }
         }.updateKeyPoint(points + 1, userInfo.userid);
-    }
-
-    private void showKeyPoints(String s) {
-        final Dialog dialog = new Dialog(this);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(R.layout.custom_keypoint_layout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.gravity = Gravity.TOP;
-        dialog.getWindow().setAttributes(lp);
-
-        TextView tvKeyPoint;
-
-        tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
-        tvKeyPoint.setText(s);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialog.dismiss();
-            }
-        }, 3000);
-
-        dialog.show();
     }
 
     public void updateSession(UserInfo user) {
@@ -397,12 +378,37 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                         dismissProgDialog();
                         jsonObject = new JSONObject(Response);
                         String status = jsonObject.getString("status");
+                        String success = jsonObject.getString("success");
 
-                        if (status.equals("event_Added")) {
-                            showKeyPoints("+5");
-                        } else if (status.equals("exist")) {
+                        if(success.equalsIgnoreCase("1")){
+                            if (status.equals("event_Added")) {
+                                showKeyPoints("+5");
+                            } else if (status.equals("exist")) {
+
+                            }
+                            KeyInUserModal keyInUserModal = new KeyInUserModal();
+                            keyInUserModal.userid = userInfo().userid;
+                            keyInUserModal.userImage = userInfo().userImage;
+                            keyInUserModal.userName = userInfo().userName;
+                            keyInUserModal.bio = userInfo().bio;
+                            keyInUserModal.userFacebookId = userInfo().userFacebookId;
+                            keyInUserModal.keyIn = "1";
+                            boolean bValue = true;
+                            for(int i =0; i<keyInUserModalList.size(); i++){
+                                if(keyInUserModalList.get(i).userid.equalsIgnoreCase(keyInUserModal.userid)){
+                                    bValue = false;
+                                }
+                            }
+                            if(bValue){
+                                keyInUserModalList.add(keyInUserModal);
+
+                                no_member_yet.setVisibility(View.GONE);
+                                if(theKeyInUserAdapter != null)
+                                    theKeyInUserAdapter.notifyDataSetChanged();
+                            }
 
                         }
+
 
                     } catch (Exception ex) {
                         dismissProgDialog();
@@ -479,17 +485,42 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-
-
     //---------------
 
+    private void showKeyPoints(String s) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.custom_keypoint_layout);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.gravity = Gravity.TOP;
+        dialog.getWindow().setAttributes(lp);
+
+        TextView tvKeyPoint;
+
+        tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
+        tvKeyPoint.setText(s);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showAlertDialog("You've keyed into "+object.getEvent().event_name);
+                dialog.dismiss();
+            }
+        }, 2000);
+
+        dialog.show();
+    }
     private void keyInToEvent(){
         try {
             if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                addUserIntoEvent(-1);
-            } else if (getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
-                    &&isEventOnline(object.getEvent().event_date,userInfo().currentDate)) {
-                addUserIntoEvent(-1);
+                callAddEventApi(object);
+            }
+            else if (object.getEvent().ableToKeyIn) {
+                callAddEventApi(object);
             }
         } catch (Exception d) {
             d.getMessage();
