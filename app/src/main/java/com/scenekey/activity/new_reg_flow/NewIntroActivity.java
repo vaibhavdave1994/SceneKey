@@ -2,6 +2,7 @@ package com.scenekey.activity.new_reg_flow;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -19,7 +20,7 @@ import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
 import com.scenekey.activity.TnCWebView;
 
-public class NewIntroActivity extends RegistrationActivity {
+public class NewIntroActivity extends RegistrationActivity{
 
     private TextView[] dots;
     private int[] layouts;

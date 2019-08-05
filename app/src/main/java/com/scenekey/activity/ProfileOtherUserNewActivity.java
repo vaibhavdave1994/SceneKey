@@ -132,12 +132,7 @@ public class ProfileOtherUserNewActivity extends BaseActivity{
         txt_event_name = findViewById(R.id.txt_event_name);
         toolbar = findViewById(R.id.toolbar);
         img_f11_back = findViewById(R.id.img_f11_back);
-        img_f11_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+
         RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
         relativeLayout.setOnTouchListener(new OnDragTouchListener(relativeLayout));
 

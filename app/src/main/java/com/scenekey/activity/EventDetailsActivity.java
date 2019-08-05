@@ -583,7 +583,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     try {
                         if (new JSONObject(response).getString("msg").equals("Success")) {
                             et_comment_feed.setText("");
-                            showKeyPoints("+5");
+                            showKeyPoints("+3",false);
                             //incrementKeyPoints(getString(R.string.kp_keyin));
                         }
                     } catch (Exception e) {
@@ -901,7 +901,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                             feedList.clear();
                             getAllData();
                             adapter.notifyDataSetChanged();
-                            showKeyPoints("+5");
+                            showKeyPoints("+5",true);
                         } else if (status.equals("exist")) {
                             isKeyInAble = true;
                             feedList.clear();
@@ -940,7 +940,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
         }
     }
 
-    private void showKeyPoints(String s) {
+    private void showKeyPoints(String s, final boolean shouldMsgDialogShow) {
         final Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_keypoint_layout);
@@ -960,7 +960,10 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showAlertDialog("You've keyed into "+event.getEvent().event_name);
+                if(shouldMsgDialogShow){
+                    showAlertDialog("You've keyed into "+event.getEvent().event_name);
+                }
+
                 dialog.dismiss();
             }
         }, 2000);
@@ -1685,7 +1688,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     if (new JSONObject(s).getInt("serverStatus") == 2) {
                         //   utility.showCustomPopup(msg, String.valueOf(R.font.arial_regular));
 
-                        showKeyPoints("-1");
+                        showKeyPoints("-1",false);
                         userInfo.key_points = (points <= 0 ? 0 + "" : (points - 1) + "");
                         updateSession(userInfo);
                     }
@@ -1712,7 +1715,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     if (new JSONObject(s).getInt("serverStatus") == 2) {
                         Utility.e("Response", s);
                         userInfo.key_points = ((points + 1) + "");
-                        showKeyPoints("+1");
+                        showKeyPoints("+1",false);
                         updateSession(userInfo);
                     }
                 } catch (IOException e) {
@@ -1724,39 +1727,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             }
         }.updateKeyPoint(points + 1, userInfo.userid);
     }
-
-/*
-    Dialog dialog = null;
-    private void showKeyPoints(String s) {
-        dialog = new Dialog(this);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(R.layout.custom_keypoint_layout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.gravity = Gravity.TOP;
-
-        dialog.getWindow().setAttributes(lp);
-        TextView tvKeyPoint;
-        tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
-        tvKeyPoint.setText(s);
-        mRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (dialog != null) {
-                    if (dialog != null)
-                    dialog.dismiss();
-                }
-            }
-        };
-        mHandler.postDelayed(mRunnable, 3000);
-
-        if (dialog != null) {
-            dialog.show();
-        }
-    }*/
 
 
 //    private void showKeyPoints(String s) {
@@ -1887,7 +1857,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     try {
                         JSONObject respo = new JSONObject(response);
                         if (respo.getInt("success") == 0) {
-                            showKeyPoints("+5");
+                            showKeyPoints("+5",false);
                             Utility.showToast(EventDetailsActivity.this, respo.getString("msg"), 0);
                         }
                     } catch (Exception e) {
@@ -1933,7 +1903,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
 
                 if (imageUri != null) {
                     CropImage.activity(imageUri).setCropShape(CropImageView.CropShape.RECTANGLE).setMinCropResultSize(160, 160).setMaxCropResultSize(4000, 3500).setAspectRatio(400, 300).start(this);
-
                 } else {
                     Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
                 }

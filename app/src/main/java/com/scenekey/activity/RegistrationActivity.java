@@ -2,6 +2,7 @@ package com.scenekey.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -1375,6 +1376,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             == PackageManager.PERMISSION_GRANTED) {
                         //success permission granted & call Location method
                         //   getDeviceLocation();
+                        initLocation();
                     }
                 } else {
                     // permission denied, boo! Disable the
