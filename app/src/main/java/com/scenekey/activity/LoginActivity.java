@@ -17,9 +17,9 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -100,7 +100,7 @@ import java.util.Map;
 
 import static com.scenekey.helper.Constant.REQUEST_ID_MULTIPLE_PERMISSIONS;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,LocationListener , GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 007;
     private final String TAG = "LoginActivity";
@@ -243,7 +243,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         doLogin(email, password);
                     }
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context,"No network connection","","");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -259,7 +260,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context,"No network connection","","");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -274,7 +276,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context,"No network connection","","");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -310,15 +313,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.imgRegiMale:
                 maleFemale = "male";
 
-                imgRegiMale.setImageResource(R.drawable.active_male_ico);
-                imgRegiFemale.setImageResource(R.drawable.inactive_female_ico);
+//                imgRegiMale.setImageResource(R.drawable.active_male_ico);
+//                imgRegiFemale.setImageResource(R.drawable.inactive_female_ico);
                 break;
 
             case R.id.imgRegiFemale:
                 maleFemale = "female";
 
-                imgRegiMale.setImageResource(R.drawable.inactive_male_ico);
-                imgRegiFemale.setImageResource(R.drawable.active_female_ico);
+//                imgRegiMale.setImageResource(R.drawable.inactive_male_ico);
+//                imgRegiFemale.setImageResource(R.drawable.active_female_ico);
                 break;
         }
     }
@@ -451,12 +454,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(multipartRequest);
         } else {
-            Toast.makeText(LoginActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(LoginActivity.this,"No network connection","","");
+//            Toast.makeText(LoginActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void showErrorPopup(final String type) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -635,7 +639,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             VolleySingleton.getInstance(this.getBaseContext()).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(etEmail, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(LoginActivity.this,"No network connection","","");
+//            utility.snackBar(etEmail, getString(R.string.internetConnectivityError), 0);
             customProgressBar.cancel();
         }
 
@@ -1112,7 +1117,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(multipartRequest);
         } else {
-            Toast.makeText(LoginActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(LoginActivity.this,"No network connection","","");
+//            Toast.makeText(LoginActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1237,7 +1243,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // setImage();
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {

@@ -3,9 +3,9 @@ package com.scenekey.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,7 +39,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -79,6 +78,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
         utility = new Utility(this);
         userInfo = SceneKey.sessionManager.getUserInfo();
         customProgressBar = new CustomProgressBar(this);
+        SceneKey.sessionManager.putMapFragment("");
 
         img_search_back = findViewById(R.id.img_search_back);
         btn_follow = findViewById(R.id.btn_follow);
@@ -110,9 +110,13 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             tag_name = getIntent().getStringExtra("tag_name");
 
             if(fromSpecial || fromSearchSpecial){
-                if (getIntent().getStringExtra("tag_text") != null) {
+                if (getIntent().getStringExtra("tag_text") != null && !getIntent().getStringExtra("tag_text").equalsIgnoreCase("")  ) {
                     tag_text = getIntent().getStringExtra("tag_text");
                     txt_f1_title.setText("" + tag_text);
+                }
+                else {
+                    txt_f1_title.setText("" + tag_name);
+
                 }
             }
             else {
@@ -130,7 +134,9 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             if(tagModal.status != null) {
                 if (!tagModal.status.equalsIgnoreCase("active")) {
                     no_data_trending.setVisibility(View.VISIBLE);
-                    tv_error.setText("Unfortunately '" + tag_name + "' is not active in your area at this time. Follow it for notifications when it comes in your area. To follow, hold down the button below.");
+//                    tv_error.setText("Unfortunately '" + tag_name + "' is not active in your area at this time. Follow it for notifications when it comes in your area. To follow, hold down the button below.");
+                    tv_error.setText("Unfortunately there are no results for '" + tag_name + "' in your area at this time.Follow the token and we will notify you of any activity!");
+
 
                     if(tagModal.is_tag_follow.equalsIgnoreCase("0")){
                         if(fromSpecial){
@@ -257,7 +263,8 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Toast.makeText(TrendinSearchActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(TrendinSearchActivity.this,"No network connection","","");
+//            Toast.makeText(TrendinSearchActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
     }
@@ -332,10 +339,10 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                                 try {
                                     no_data_trending.setVisibility(View.VISIBLE);
 //                                    tv_error.setText("Unfortunately there are no results for '"+tag_name+"' in your area at this time. Follow the token and we will notify you of any activity!");
-                                    tv_error.setText("Unfortunately there are no results for '"+tag_name+"' in your area at this time.");
+                                    tv_error.setText("Unfortunately there are no results for '"+tag_name+"' in your area at this time. Follow the token and we will notify you of any activity!");
                                     if(tagModal.status != null) {
                                         if (!tagModal.status.equalsIgnoreCase("active")) {
-                                            tv_error.setText("Unfortunately '" + tag_name + "' is not active in your area at this time. Follow it for notifications when it comes in your area. To follow, hold down the button below.");
+                                            tv_error.setText("Unfortunately there are no results for '" + tag_name + "' in your area at this time.Follow the token and we will notify you of any activity!");
                                         }
                                     }
                                     if(fromSpecial){
@@ -436,10 +443,20 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                                     if (object.has("events"))
                                         events.setEventJson(object.getJSONObject("events"));
                                     try {
-                                        events.setOngoing(events.checkWithTime(events.getEvent().event_date, events.getEvent().interval));
+                                        String dateSplit = "0.0";
+                                        if (events.getEvent().interval != null) {
+                                            String interval = String.valueOf(events.getEvent().interval);
 
+                                            if (interval.contains(":")) {
+                                                dateSplit = (interval.replace(":", "."));
+                                            } else {
+                                                dateSplit = String.valueOf(events.getEvent().interval);
+                                            }
+
+                                            events.setOngoing(events.checkWithTime(events.getEvent().event_date, Double.parseDouble(dateSplit)));
+                                        }
                                         // New Code
-                                        checkWithDate(events.getEvent().event_date, events.getEvent().rating, events);
+                                        newCheckWithDate(events.getEvent().event_date, events.getEvent().rating, events);
                                     } catch (Exception e) {
                                         Utility.e("Date exception", e.toString());
                                     }
@@ -476,7 +493,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                         }
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(TrendinSearchActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(TrendinSearchActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -506,22 +523,67 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(TrendinSearchActivity.this,"No network connection","","");
+//            utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }
 
+
+    public  void newCheckWithDate(final String startDate, final String rating, Events events){
+        String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
+        try {
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+
+            //1current date
+            UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+            Date currentdate = simpleDateFormat.parse(userInfo.currentDate);
+
+            //2start date
+            Date startdate = simpleDateFormat.parse(dateSplit[0] + " " + dateSplit[1]);
+
+
+            //3 End date
+            Date enddate = simpleDateFormat.parse(dateSplit[0] + " " + dateSplit[2]);
+
+
+            compareDateLiveOrNot(currentdate,startdate,enddate,rating,events);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void  compareDateLiveOrNot(Date currentdate,Date startDate, Date endDate, String rating, Events events)
+    {
+
+        if (currentdate.compareTo(startDate)< 0)
+        {
+            events.getEvent().strStatus = 2;
+
+        }
+        else {
+            if (currentdate.compareTo(endDate)<0){
+                events.getEvent().strStatus = 2;
+            }
+            else {
+                events.getEvent().strStatus = 0;
+            }
+        }
+
+    }
+
+
     public void checkWithDate(final String startDate, final String rating, Events events) {  //2018-11-12 18:00:00TO08:00:00
         String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
         try {
-            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).parse(dateSplit[0] + " " + dateSplit[1]);
-
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            String formattedDate = df.format(c.getTime());
-
+            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).parse(dateSplit[0] + " " + dateSplit[1]);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+            Date date = df.parse(userInfo.currentDate);
+            String formattedDate = df.format(date);
             Date curTime = df.parse(formattedDate);
-
             getDayDifference(startTime, curTime, rating, events);
 
         } catch (ParseException e) {
@@ -675,7 +737,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
 
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(TrendinSearchActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(TrendinSearchActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -697,7 +759,8 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(TrendinSearchActivity.this,"No network connection","","");
+//            utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }
@@ -719,12 +782,12 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
                                     Venue venue = eventsArrayList.get(pos).getVenue();
                                     venue.setIs_tag_follow("0");
                                     eventsArrayList.get(pos).setVenue(venue);
-                                    trendingAdapter.notifyItemChanged(pos);
+                                    trendingAdapter.notifyDataSetChanged();
                                 }else {
                                     Venue venue = eventsArrayList.get(pos).getVenue();
                                     venue.setIs_tag_follow("1");
                                     eventsArrayList.get(pos).setVenue(venue);
-                                    trendingAdapter.notifyItemChanged(pos);
+                                    trendingAdapter.notifyDataSetChanged();
                                 }
 //                                setRecyclerView();
                                 // getTrendingData();
@@ -734,7 +797,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
 
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(TrendinSearchActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(TrendinSearchActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -756,6 +819,7 @@ public class TrendinSearchActivity extends AppCompatActivity implements View.OnC
             VolleySingleton.getInstance(TrendinSearchActivity.this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(TrendinSearchActivity.this,"No network connection","","");
             // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }

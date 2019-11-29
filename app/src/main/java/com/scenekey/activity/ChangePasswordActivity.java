@@ -1,7 +1,7 @@
 package com.scenekey.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -163,7 +163,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             if (utility.checkInternetConnection()) {
                 updatePassword_Api(OldPassword, NewPassword, ConfirmPassword);
             } else {
-                utility.showCustomPopup(this.getString(R.string.internetConnectivityError), String.valueOf(R.font.montserrat_medium));
+                Utility.showCheckConnPopup(this,"No network connection","","");
+//                utility.showCustomPopup(this.getString(R.string.internetConnectivityError), String.valueOf(R.font.montserrat_medium));
                 //Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
             }
         }
@@ -230,7 +231,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
         } else {
-            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
 

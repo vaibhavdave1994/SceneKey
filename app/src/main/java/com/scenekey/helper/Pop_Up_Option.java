@@ -2,7 +2,7 @@ package com.scenekey.helper;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +30,7 @@ public abstract class Pop_Up_Option extends Dialog {
 
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(pop_up_view);
-        this.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
+        this.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop;
         this.setCanceledOnTouchOutside(true);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();

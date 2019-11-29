@@ -28,6 +28,6 @@
         android:gravity="center"
         android:alpha="1"
         android:layout_gravity="center"
-        android:background="@drawable/btn_bg"/>
+       />
 
 </FrameLayout>

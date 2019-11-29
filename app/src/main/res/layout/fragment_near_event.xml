@@ -5,13 +5,13 @@
     android:background="@color/new_white_bg"
     tools:context="com.scenekey.fragment.NearEvent_Fragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewNearEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="always"
         android:paddingBottom="@dimen/_42sdp">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

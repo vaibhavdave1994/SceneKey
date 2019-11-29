@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:id="@+id/card"
+<androidx.cardview.widget.CardView android:id="@+id/card"
     android:layout_width="@dimen/_260sdp"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/trending_round"
@@ -18,7 +18,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"
                 android:scaleType="fitXY"
-                android:background="@drawable/def_scene"
                 app:riv_corner_radius="@dimen/trending_round"
                 android:src="@color/white03p" />
 
@@ -56,7 +55,7 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent">
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:padding="@dimen/_2sdp"
@@ -75,7 +74,7 @@
                             android:layout_marginStart="@dimen/_20sdp"
                             android:textSize="@dimen/_10sdp" />
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:scaleType="centerInside"
@@ -96,7 +95,7 @@
                             android:textColor="@color/black2"
                             android:textSize="@dimen/_10sdp" />
 
-                        <android.support.v7.widget.AppCompatImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_15sdp"
                             android:padding="@dimen/_2sdp"
@@ -131,7 +130,7 @@
                             android:orientation="vertical"
                             android:gravity="center">
 
-                            <android.support.v7.widget.AppCompatImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_15sdp"
                                 android:scaleType="centerInside"
@@ -155,7 +154,7 @@
                             android:orientation="vertical"
                             android:gravity="center">
 
-                            <android.support.v7.widget.AppCompatImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/heart"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_15sdp"
@@ -179,6 +178,6 @@
             </RelativeLayout>
         </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>
 
 

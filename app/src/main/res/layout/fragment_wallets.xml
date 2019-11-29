@@ -7,11 +7,11 @@
     android:background="@color/new_white_bg"
     tools:context=".fragment.WalletsFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/walletRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <ScrollView
         android:id="@+id/no_data_inWallet"

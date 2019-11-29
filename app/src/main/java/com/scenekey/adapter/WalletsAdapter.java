@@ -3,8 +3,8 @@ package com.scenekey.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +48,7 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
 
 
         if(!wallets.exp.equals("1")){
-            holder.txt_wallets_exp_days.setText(wallets.exp+""+" days");
+            holder.txt_wallets_exp_days.setText("in "+wallets.exp+""+" days");
         }else {
             holder.txt_wallets_exp_days.setText("today");
         }

@@ -7,9 +7,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,10 +25,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.LoginActivity;
@@ -54,7 +53,7 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
 
     private final String TAG = Setting_Fragment.class.toString();
     public LinearLayout linLayBio, linLayChangePassword;
-    public PlaceAutocompleteFragment autocompleteFragment;
+//    public PlaceAutocompleteFragment autocompleteFragment;
     private Context context;
     private HomeActivity activity;
     private Utility utility;
@@ -150,7 +149,7 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
         setClick(txt_email, lnr_lastName, lnr_deatils, txt_last_name, linLayBio, linLayTnC, linLayPriPolicy, mainLayout, txt_logout, txt_feedback, img_f1_back, img_default_location);
 
         try {
-            autocompleteFragment = (PlaceAutocompleteFragment) activity.getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+          /*  autocompleteFragment = (PlaceAutocompleteFragment) activity.getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
                 public void onPlaceSelected(Place place) {
@@ -174,7 +173,7 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
                 public void onError(Status status) {
                     Log.d("ERROR:::", status.getStatusMessage());
                 }
-            });
+            });*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -250,7 +249,7 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
                 } catch (ActivityNotFoundException e) {
                     Utility.showToast(context, getString(R.string.enoactivity), 0);
                 } catch (Exception e) {
-                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                 }
                 break;
             case R.id.linLayBio:
@@ -279,7 +278,7 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
                 } catch (ActivityNotFoundException e) {
                     Utility.showToast(context, getString(R.string.enoactivity), 0);
                 } catch (Exception e) {
-                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                 }
                 break;
         }
@@ -293,8 +292,8 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
                 //check
                 //fragment.reloadeData(activity.userInfo());
             }
-            if (activity != null)
-                activity.getFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
+//            if (activity != null)
+//                activity.getFragmentManager().beginTransaction().remove(autocompleteFragment).commit();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
@@ -398,12 +397,12 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
                             activity.updateSession(userInfo);
 
                         } else {
-                            Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                            Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
 
                 }
@@ -430,7 +429,8 @@ public class Setting_Fragment extends Fragment implements View.OnClickListener {
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(txt_logout, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(context,"No network connection","","");
+//            utility.snackBar(txt_logout, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
 

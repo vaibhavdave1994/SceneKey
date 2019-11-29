@@ -2,7 +2,7 @@ package com.scenekey.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -160,7 +160,8 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
                             }
 
                         } else {
-                            Utility.showToast(BioActivity.this, message, 0);
+                            Utility.showCheckConnPopup(BioActivity.this,"No network connection","","");
+//                            Utility.showToast(BioActivity.this, message, 0);
                         }
 
                     } catch (Exception ex) {
@@ -187,7 +188,8 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(et_for_enterTxt, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            utility.snackBar(et_for_enterTxt, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }

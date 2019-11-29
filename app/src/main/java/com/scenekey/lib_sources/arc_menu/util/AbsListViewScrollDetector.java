@@ -2,7 +2,7 @@
 
 package com.scenekey.lib_sources.arc_menu.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.AbsListView;
 

@@ -1,8 +1,8 @@
 package com.scenekey.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +40,7 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
     TagModal intentTagModal;
     String catId = "";
     boolean fromSpecial = false;
+    ArrayList<TagModal> object;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,10 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
         userInfo = SceneKey.sessionManager.getUserInfo();
 
         if (getIntent().getSerializableExtra("tagModal") != null) {
-            intentTagModal = (TagModal) getIntent().getSerializableExtra("tagModal");
+            intentTagModal = (TagModal) getIntent().getSerializableExtra("tagModal");}
+        if (getIntent().getBundleExtra("BUNDLE") != null){
+            Bundle args = getIntent().getBundleExtra("BUNDLE");
+            object = (ArrayList<TagModal>) args.getSerializable("ARRAYLIST");}
             catId =  getIntent().getStringExtra("catId");
             fromSpecial =  getIntent().getBooleanExtra("fromSpecial",false);
             txt_f1_title.setText("" + intentTagModal.tag_name);
@@ -67,11 +71,27 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
                     .placeholder(R.drawable.app_icon)
                     .error(R.drawable.app_icon)
                     .into(tag_image);
-        }
+
 
         setOnClick(img_back);
-        if(catId != null)
+
         getSearchTagList(catId);
+
+        tag_sub_recycler_view.setLayoutManager(new LinearLayoutManager(SearchSubCategoryActivity.this));
+        if (object != null)
+        {
+            subCatergoryApdater = new SubCatergoryApdater(SearchSubCategoryActivity.this, object);
+            tag_sub_recycler_view.setAdapter(subCatergoryApdater);
+
+        }
+        else {
+            subCatergoryApdater = new SubCatergoryApdater(SearchSubCategoryActivity.this, tag_list);
+            tag_sub_recycler_view.setAdapter(subCatergoryApdater);
+
+        }
+
+       /* if(catId != null)
+        getSearchTagList(catId);*/
     }
 
     private void setOnClick(View... views) {
@@ -128,7 +148,7 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
 //                            if(!tagModal.tag_name.equalsIgnoreCase("Happy Hour")){
 //                               tagModal.tag_text = tagModal.tag_name;
 ////                            }
-                            if (intentTagModal.tag_text.equalsIgnoreCase("Happy Hour")){
+                            if (intentTagModal.tag_text.equalsIgnoreCase("Happy Hour") ){
                                 String text_array[]= tagModal.tag_text.split("_");
                                 for(int j =0; j<text_array.length; j++){
                                     TagModal tagModalNew = new TagModal();
@@ -157,6 +177,7 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
                                 }
                             }
                         }
+                        subCatergoryApdater.notifyDataSetChanged();
 
                        /* if (!category_name.equals("Specials")) {
 
@@ -171,11 +192,6 @@ public class SearchSubCategoryActivity extends BaseActivity implements View.OnCl
                             tags_specialAdapter = new Tags_SpecialAdapter(TagsActivity.this, tag_list);
                             tag_recycler_view.setAdapter(tags_specialAdapter);
                         }*/
-
-                        tag_sub_recycler_view.setLayoutManager(new LinearLayoutManager(SearchSubCategoryActivity.this));
-
-                        subCatergoryApdater = new SubCatergoryApdater(SearchSubCategoryActivity.this, tag_list);
-                        tag_sub_recycler_view.setAdapter(subCatergoryApdater);
 
                     }
 

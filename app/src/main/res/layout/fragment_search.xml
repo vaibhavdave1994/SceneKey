@@ -35,7 +35,6 @@
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_gravity="center"
-                    android:src="@drawable/scenekey_logo"
                     android:tint="@color/old_primary" />
 
                 <TextView
@@ -63,7 +62,7 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcViewSearch"
             android:layout_width="match_parent"
             android:layout_height="0dp"

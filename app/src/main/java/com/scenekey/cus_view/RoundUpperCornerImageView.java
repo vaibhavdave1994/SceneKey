@@ -10,7 +10,7 @@ import android.util.AttributeSet;
  * Created by mindiii on 23/11/18.
  */
 
-public class RoundUpperCornerImageView extends android.support.v7.widget.AppCompatImageView {
+public class RoundUpperCornerImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     private float radius = 10.0f;
     private Path path;

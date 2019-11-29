@@ -6,13 +6,13 @@
     android:background="@color/new_white_bg"
     tools:context="com.scenekey.fragment.Trending_Fragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewTrending"
         android:layout_width="match_parent"
         android:overScrollMode="always"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <ScrollView
         android:id="@+id/no_data_trending"

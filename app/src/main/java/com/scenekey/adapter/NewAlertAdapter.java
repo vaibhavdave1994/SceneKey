@@ -3,9 +3,9 @@ package com.scenekey.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +70,7 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
     @Override
     public NewAlertAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_custom_trending, parent, false);
+                .inflate(R.layout.adapter_trending, parent, false);
 
         return new NewAlertAdapter.ViewHolder(itemView);
     }
@@ -131,9 +131,9 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
         }
 
         if (object.getEvent().isEventLike.equals("1")) {
-            holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
+            holder.iv_heart.setImageResource(R.drawable.active_like_ico);
         } else {
-            holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
+            holder.iv_heart.setImageResource(R.drawable.inactive_like_ico);
         }
 
         if (!object.getEvent().likeCount.isEmpty()) {
@@ -193,6 +193,8 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
             }
         });
 
+
+
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(final View v) {
@@ -242,7 +244,12 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
         }
 
         Collections.reverse(event.imageslideList);
-        TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, event.imageslideList,event,venue,listener,object,currentLatLng);
+        TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, event.imageslideList, event, venue, listener, object, currentLatLng, new TrendingFeedSlider.MapListener() {
+            @Override
+            public void mapFeed(String event_name, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings) {
+
+            }
+        });
         holder.viewPager.setAdapter(trendingFeedSlider);
 
         int listSize = event.imageslideList.size();
@@ -306,12 +313,12 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
                             int newLikeCount = likeCount + 1;
                             holder.like_count_txt.setText("" + newLikeCount);
                             object.getEvent().likeCount = String.valueOf(newLikeCount);
-                            holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
+                            holder.iv_heart.setImageResource(R.drawable.active_like_ico);
                         } else {
                             int newLikeCount = likeCount - 1;
                             holder.like_count_txt.setText(likeCount >= 0 ? newLikeCount + "" : "0");
                             object.getEvent().likeCount = String.valueOf(newLikeCount);
-                            holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
+                            holder.iv_heart.setImageResource(R.drawable.inactive_like_ico);
                         }
                     }
                 } catch (Exception e) {

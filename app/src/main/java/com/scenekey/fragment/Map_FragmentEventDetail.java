@@ -5,9 +5,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +91,7 @@ public class Map_FragmentEventDetail extends Fragment implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         try {
             mMap = googleMap;
-            Bitmap img = BitmapFactory.decodeResource(getResources(), R.drawable.map_pin);
+            Bitmap img = BitmapFactory.decodeResource(getResources(), R.drawable.inactive_map_ico);
             BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(img);
             // Add a marker in Sydney and move the camera
             LatLng eventLoc = new LatLng(Double.parseDouble(events.getVenue().getLatitude()), Double.parseDouble(events.getVenue().getLongitude()));

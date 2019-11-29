@@ -1,7 +1,7 @@
 package com.scenekey.adapter;
 
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +46,7 @@ public class SearchEvent_Adapter extends RecyclerView.Adapter<SearchEvent_Adapte
     @Override
     public SearchEvent_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_custom_trending, parent, false);
+                .inflate(R.layout.adapter_trending, parent, false);
 
         return new SearchEvent_Adapter.ViewHolder(itemView);
     }
@@ -84,7 +84,7 @@ public class SearchEvent_Adapter extends RecyclerView.Adapter<SearchEvent_Adapte
             holder.hour.setVisibility(View.GONE);
             holder.like.setVisibility(View.VISIBLE);
             holder.txt_like.setTextColor(activity.getResources().getColor(R.color.black2));
-            holder.heart.setImageResource(R.drawable.ico_like);
+            holder.heart.setImageResource(R.drawable.inactive_like_ico);
             try {
                 if (Integer.parseInt(event.rating) == 0) holder.txt_like.setText("--");
                 else {

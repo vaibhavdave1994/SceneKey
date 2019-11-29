@@ -4,13 +4,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
-import android.os.Handler;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Handler;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,7 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.scenekey.R;
-
+import com.scenekey.activity.Bottomsheet.PeopleBottomSheetDialog;
+import com.scenekey.activity.trending_summery.Summary_Activity;
 import com.scenekey.adapter.TheKeyInUserAdapter;
 import com.scenekey.adapter.TheRoomAdapter;
 import com.scenekey.aws_service.Aws_Web_Service;
@@ -32,7 +35,6 @@ import com.scenekey.helper.WebServices;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.KeyinUserListener;
 import com.scenekey.listener.RoomListener;
-import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Events;
 import com.scenekey.model.ImagesUpload;
@@ -54,12 +56,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TheRoomActivity extends BaseActivity implements View.OnClickListener {
+public class TheRoomActivity extends BaseActivity implements View.OnClickListener, PeopleBottomSheetDialog.PeopleSheetListener {
 
     public static UserInfo userInfo;
     private final String TAG = TheRoomActivity.class.toString();
     public boolean isApiM;
     public ArrayList<ImagesUpload> imageList;
+    //private CognitoCredentialsProvider credentialsProvider;
+    Events object;
+    ImageView iv_event_detail, img_ListIcon;
+    boolean fromTrending = false;
+    Utility utility;
+    TheKeyInUserAdapter theKeyInUserAdapter;
     private ArrayList<EventAttendy> eventAttendyArrayList;
     private ArrayList<Card> rooDemoList;
     private ImageView img_f11_back;
@@ -67,13 +75,8 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     private ScrollView no_member_yet;
     private String eventId;
     private ArrayList<KeyInUserModal> keyInUserModalList;
-    //private CognitoCredentialsProvider credentialsProvider;
-    Events object;
-    ImageView iv_event_detail,img_ListIcon;
     private String[] currentLatLng;
-    boolean fromTrending = false;
-    Utility utility;
-    TheKeyInUserAdapter theKeyInUserAdapter;
+    private ImageView img_dot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +90,14 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
         utility = new Utility(this);
         userInfo = SceneKey.sessionManager.getUserInfo();
         imageList = new ArrayList<>();
+        img_dot = findViewById(R.id.img_dot);
         no_member_yet = findViewById(R.id.no_member_yet);
         iv_event_detail = findViewById(R.id.iv_event_detail);
         img_ListIcon = findViewById(R.id.img_ListIcon);
+        TextView txt_event_name = findViewById(R.id.txt_event_name);
         iv_event_detail.setOnClickListener(this);
         img_ListIcon.setOnClickListener(this);
+        img_dot.setOnClickListener(this);
         //downloadFileFromS3(eventAttendy, (credentialsProvider == null ? credentialsProvider = getCredentials() : credentialsProvider));
 
         if (getIntent().getStringExtra("noMemberYet") != null) {
@@ -103,7 +109,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
             }
         }
 
-        fromTrending = getIntent().getBooleanExtra("fromTrending",false);
+        fromTrending = getIntent().getBooleanExtra("fromTrending", false);
 
         if (getIntent().getSerializableExtra("commentPesionList") != null) {
             eventAttendyArrayList = (ArrayList<EventAttendy>) getIntent().getSerializableExtra("commentPesionList");
@@ -121,10 +127,9 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
         if (getIntent().getSerializableExtra("fromTrendingHome") != null) {
             keyInUserModalList = (ArrayList<KeyInUserModal>) getIntent().getSerializableExtra("fromTrendingHome");
 
-            if(keyInUserModalList.size() > 0){
+            if (keyInUserModalList.size() > 0) {
                 no_member_yet.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 no_member_yet.setVisibility(View.VISIBLE);
             }
         }
@@ -134,11 +139,12 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
         RecyclerView theRoomRecyclerView = findViewById(R.id.theRoomRecyclerView);
         img_f11_back = findViewById(R.id.img_f11_back);
         img_f11_back.setOnClickListener(this);
+        txt_event_name.setText(object.getEvent().event_name);
 
-        if(object != null){
+        if (object != null) {
             keyInToEvent();
-            if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
-                tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),1);
+            if (object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
+                tagFollowUnfollow(1, object.getVenue().getBiz_tag_id(), 1);
         }
 
         if (eventAttendyArrayList != null) {
@@ -165,26 +171,32 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 public void getRoomData(int pos, ArrayList<KeyInUserModal> keyInUserModalArrayList) {
 
 
-                    if (keyInUserModalArrayList.get(pos).userid.equalsIgnoreCase(userInfo().userid)) {
-                        startActivity(new Intent(TheRoomActivity.this,ProfileNewActivity.class));
+                    if (keyInUserModalList.get(pos).keyIn.equals("0") && !userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+
+                        utility.showCustomPopup("Sorry! you must be at this venue to see profiles", String.valueOf(R.font.montserrat_medium));
+
+                    } else {
+                        if (keyInUserModalArrayList.get(pos).userid.equalsIgnoreCase(userInfo().userid)) {
+                            startActivity(new Intent(TheRoomActivity.this, OwnProfileActivity.class));
+
+                        } else {
+                            KeyInUserModal keyInUserModal = new KeyInUserModal();
+                            keyInUserModal.userid = keyInUserModalArrayList.get(pos).userid;
+                            keyInUserModal.userImage = keyInUserModalArrayList.get(pos).userImage;
+                            keyInUserModal.bio = keyInUserModalArrayList.get(pos).bio;
+                            keyInUserModal.userName = keyInUserModalArrayList.get(pos).userName;
+                            keyInUserModal.userFacebookId = keyInUserModalArrayList.get(pos).userFacebookId;
+                            keyInUserModal.keyIn = keyInUserModalArrayList.get(pos).keyIn;
+
+                            Intent intent = new Intent(TheRoomActivity.this, ProfileOtherUserNewActivity.class);
+                            intent.putExtra("from", "fromRoom");
+                            intent.putExtra("fromTrendingHomePostion", pos);
+                            intent.putExtra("from", "fromProfileAdapter");
+                            intent.putExtra("keyInUserModal", keyInUserModal);
+                            startActivity(intent);
+                        }
 
                     }
-                    else {
-                        KeyInUserModal keyInUserModal = new KeyInUserModal();
-                        keyInUserModal.userid = keyInUserModalArrayList.get(pos).userid;
-                        keyInUserModal.userImage = keyInUserModalArrayList.get(pos).userImage;
-                        keyInUserModal.bio = keyInUserModalArrayList.get(pos).bio;
-                        keyInUserModal.userName = keyInUserModalArrayList.get(pos).userName;
-                        keyInUserModal.userFacebookId = keyInUserModalArrayList.get(pos).userFacebookId;
-                        keyInUserModal.keyIn = keyInUserModalArrayList.get(pos).keyIn;
-
-                        Intent intent = new Intent(TheRoomActivity.this, ProfileOtherUserNewActivity.class);
-                        intent.putExtra("from", "fromRoom");
-                        intent.putExtra("fromTrendingHomePostion", pos);
-                        intent.putExtra("keyInUserModal", keyInUserModal);
-                        startActivity( intent);
-                    }
-
                 }
             });
             theRoomRecyclerView.setLayoutManager(new GridLayoutManager(TheRoomActivity.this, 3));
@@ -196,13 +208,17 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
 
         switch (view.getId()) {
-                case R.id.img_f11_back:
-                    onBackPressed();
-                    break;
+            case R.id.img_f11_back:
+                onBackPressed();
+                break;
+            case R.id.img_dot:
+                PeopleBottomSheetDialog bottomSheet = new PeopleBottomSheetDialog();
+                bottomSheet.show(getSupportFragmentManager(), "BoardBottomSheet");
+                break;
 
-                case R.id.iv_event_detail:
-                    callCheckEventStatusApi(object.getEvent().event_name, object.getEvent().event_id, object.getVenue(),object,currentLatLng
-                            ,new String[]{object.getVenue().getLatitude(), object.getVenue().getLongitude()});
+            case R.id.iv_event_detail:
+                callCheckEventStatusApi(object.getEvent().event_name, object.getEvent().event_id, object.getVenue(), object, currentLatLng
+                        , new String[]{object.getVenue().getLatitude(), object.getVenue().getLongitude()});
 
 //                    Intent intent = new Intent(TheRoomActivity.this, EventDetailsActivity.class);
 //                    intent.putExtra("event_id", object.getEvent().event_id);
@@ -216,21 +232,20 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
 //                    startActivity(intent);
                 break;
 
-                case R.id.img_ListIcon:
-                    Intent intent1 = new Intent(TheRoomActivity.this, OnBoardActivity.class);
-                    intent1.putExtra("eventid", object.getEvent());
-                    intent1.putExtra("venuid", object.getVenue());
-                    intent1.putExtra("object", object);
-                    intent1.putExtra("currentLatLng", currentLatLng);
-                    if(fromTrending){
-                        intent1.putExtra("fromTrending", true);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent1);
-                        finish();
-                    }
-                    else {
-                        startActivity(intent1);
-                    }
+            case R.id.img_ListIcon:
+                Intent intent1 = new Intent(TheRoomActivity.this, OnBoardActivity.class);
+                intent1.putExtra("eventid", object.getEvent());
+                intent1.putExtra("venuid", object.getVenue());
+                intent1.putExtra("object", object);
+                intent1.putExtra("currentLatLng", currentLatLng);
+                if (fromTrending) {
+                    intent1.putExtra("fromTrending", true);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent1);
+                    finish();
+                } else {
+                    startActivity(intent1);
+                }
 
                 break;
         }
@@ -249,7 +264,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                     if (new JSONObject(s).getInt("serverStatus") == 2) {
                         Utility.e("Response", s);
                         userInfo.key_points = ((points + 1) + "");
-                        showKeyPoints("+1");
+                        showKeyPoints("+1",1);
                         updateSession(userInfo);
                     }
                 } catch (IOException e) {
@@ -268,6 +283,28 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
+    public void onBackPressed() {
+        if (SceneKey.sessionManager.getBackOrIntent() && SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("trending")) {
+            Intent intent = new Intent(TheRoomActivity.this, HomeActivity.class);
+            intent.putExtra("fromSearch1", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+        else if (SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("map")){
+            Intent intent = new Intent(TheRoomActivity.this, HomeActivity.class);
+            intent.putExtra("fromSearch2", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            super.onBackPressed();
+        }
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             super.onActivityResult(requestCode, resultCode, data);
@@ -280,7 +317,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 } else if (requestCode == 3) {
                     String requiredValue = data.getStringExtra("demoRoomIncres");
                     if (requiredValue.equals("1")) {
-                        showKeyPoints("+1");
+                        showKeyPoints("+1",1);
                     }
                 }
             }
@@ -322,13 +359,12 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                             intent.putExtra("event_name", event_name);
                             intent.putExtra("object", object);
                             intent.putExtra("venueId", venue_name.getVenue_id());
-                            if(fromTrending){
+                            if (fromTrending) {
                                 intent.putExtra("fromTrending", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
-                                finish();
-                            }
-                            else {
+//                                finish();
+                            } else {
                                 startActivity(intent);
                             }
 
@@ -361,6 +397,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(TheRoomActivity.this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(TheRoomActivity.this,"No network connection","","");
             Toast.makeText(TheRoomActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -380,30 +417,44 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                         String status = jsonObject.getString("status");
                         String success = jsonObject.getString("success");
 
-                        if(success.equalsIgnoreCase("1")){
+                        KeyInUserModal keyInUserModal = new KeyInUserModal();
+                        if (success.equalsIgnoreCase("1") || success.equalsIgnoreCase("0")) {
                             if (status.equals("event_Added")) {
-                                showKeyPoints("+5");
-                            } else if (status.equals("exist")) {
+                                showKeyPoints("+3",3);
 
+                            } else if (status.equals("exist")) {
+                                keyInUserModal.keyIn = "1";
                             }
-                            KeyInUserModal keyInUserModal = new KeyInUserModal();
+
                             keyInUserModal.userid = userInfo().userid;
                             keyInUserModal.userImage = userInfo().userImage;
                             keyInUserModal.userName = userInfo().userName;
                             keyInUserModal.bio = userInfo().bio;
                             keyInUserModal.userFacebookId = userInfo().userFacebookId;
-                            keyInUserModal.keyIn = "1";
+
                             boolean bValue = true;
-                            for(int i =0; i<keyInUserModalList.size(); i++){
-                                if(keyInUserModalList.get(i).userid.equalsIgnoreCase(keyInUserModal.userid)){
-                                    bValue = false;
+                            if (keyInUserModalList != null) {
+                                for (int i = 0; i < keyInUserModalList.size(); i++) {
+                                    if (keyInUserModalList.get(i).userid.equalsIgnoreCase(keyInUserModal.userid)) {
+                                        bValue = false;
+                                        if (!keyInUserModalList.get(i).userid.equalsIgnoreCase(SceneKey.sessionManager.getUserInfo().userid)) {
+                                            keyInUserModalList.get(i).keyIn = "0";
+                                        }
+
+                                    }
+                                    else {
+                                        keyInUserModalList.get(i).keyIn = "1";
+
+                                    }
                                 }
                             }
-                            if(bValue){
-                                keyInUserModalList.add(keyInUserModal);
+                            if (bValue) {
+                                if (keyInUserModalList != null) {
+                                    keyInUserModalList.add(keyInUserModal);
+                                }
 
                                 no_member_yet.setVisibility(View.GONE);
-                                if(theKeyInUserAdapter != null)
+                                if (theKeyInUserAdapter != null)
                                     theKeyInUserAdapter.notifyDataSetChanged();
                             }
 
@@ -429,6 +480,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                     params.put("eventname", object.getEvent().event_name);
                     params.put("eventid", object.getEvent().event_id);
                     params.put("eventdate", object.getEvent().event_time);
+                    params.put("big_tag_id", object.getVenue().getBiz_tag_id());
                     return params;
                 }
             };
@@ -436,6 +488,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(TheRoomActivity.this,"No network connection","","");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -453,13 +506,13 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                     try {
                         JSONObject jo = new JSONObject(response);
                         dismissProgDialog();
-                        if(jo.has("status")){
+                        if (jo.has("status")) {
 
                         }
 
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(TheRoomActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(TheRoomActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -472,7 +525,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 @Override
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("biz_tag_id",biz_tag_id);
+                    params.put("biz_tag_id", biz_tag_id);
                     params.put("follow_status", String.valueOf(followUnfollow));
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     return params;
@@ -487,12 +540,12 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
 
     //---------------
 
-    private void showKeyPoints(String s) {
+    private void showKeyPoints(String s,int value) {
         final Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_keypoint_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -503,24 +556,63 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
 
         tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
         tvKeyPoint.setText(s);
+        userInfo().key_points = String.valueOf(Integer.parseInt(userInfo().key_points) + value);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showAlertDialog("You've keyed into "+object.getEvent().event_name);
-                dialog.dismiss();
-            }
-        }, 2000);
 
-        dialog.show();
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,  // fromYDelta
+                50);                // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        ((ViewGroup) dialog.getWindow().getDecorView()).getChildAt(0).startAnimation(animate);
+        Handler handler = new Handler();
+
+        handler.postDelayed((Runnable) () -> {
+            TranslateAnimation animate1 = new TranslateAnimation(
+                    0,                 // fromXDelta
+                    0,                 // toXDelta
+                    50,  // fromYDelta
+                    0);                // toYDelta
+            animate1.setDuration(500);
+            animate1.setFillAfter(true);
+            ((ViewGroup) dialog.getWindow().getDecorView()).getChildAt(0).startAnimation(animate1);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showAlertDialog("You've keyed into " + object.getEvent().event_name);
+                    dialog.dismiss();
+                }
+            }, 500);
+
+
+        }, 1400);
+
+
+        try {
+            dialog.show();
+        } catch (WindowManager.BadTokenException e) {
+            //use a log message
+        }
+
     }
-    private void keyInToEvent(){
+
+    private void keyInToEvent() {
         try {
             if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
                 callAddEventApi(object);
-            }
-            else if (object.getEvent().ableToKeyIn) {
+            } else if (object.getEvent().ableToKeyIn) {
                 callAddEventApi(object);
+            }
+            else{
+                if (keyInUserModalList != null) {
+                    for (int i = 0; i < keyInUserModalList.size(); i++) {
+                                keyInUserModalList.get(i).keyIn = "0";
+                            }
+
+                }
             }
         } catch (Exception d) {
             d.getMessage();
@@ -528,26 +620,25 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private boolean isEventOnline(String eventDate, String serverCurrentDate){
+    private boolean isEventOnline(String eventDate, String serverCurrentDate) {
         boolean returnValue = false;
         eventDate = eventDate.split("TO")[0];
 
-        eventDate = eventDate.replace("T"," ");
+        eventDate = eventDate.replace("T", " ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             Date eventDateFinal = sdf.parse(eventDate);
             Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
 
-            if(serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()){
+            if (serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()) {
                 returnValue = true;
-            }
-            else
+            } else
                 returnValue = false;
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-       return returnValue;
+        return returnValue;
     }
 
     public int getDistance(Double[] LL) {
@@ -581,15 +672,14 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                         JSONObject jo = new JSONObject(response);
                         if (jo.getInt("success") == 0) {
                             //incrementKeyPoints(getString(R.string.kp_keyin));
-                        }
-                        else {
+                        } else {
 
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                         dismissProgDialog();
-                        Utility.showToast(TheRoomActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(TheRoomActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -606,15 +696,65 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                     params.put("userid", userInfo().userid);
                     params.put("eventid", eventId);
                     params.put("eventname", object.getEvent().event_name);
-                    params.put("eventdate",object.getEvent().event_time);
+                    params.put("eventdate", object.getEvent().event_time);
                     return params;
                 }
             };
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-           // utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
+            // utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
+        }
+    }
+
+    @Override
+    public void onButtonClicked(String text) {
+
+        switch (text) {
+            case "board": {
+                Intent intent1 = new Intent(TheRoomActivity.this, OnBoardActivity.class);
+                intent1.putExtra("eventid", object.getEvent());
+                intent1.putExtra("venuid", object.getVenue());
+                intent1.putExtra("object", object);
+                intent1.putExtra("currentLatLng", currentLatLng);
+                if (fromTrending) {
+                    intent1.putExtra("fromTrending", true);
+//                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent1);
+//                    finish();
+                } else {
+                    startActivity(intent1);
+                }
+
+            }
+
+            break;
+            case "summery": {
+                Intent intent = new Intent(TheRoomActivity.this, Summary_Activity.class);
+                intent.putExtra("event_id", object.getEvent().event_id);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                if (fromTrending) {
+                    intent.putExtra("fromTrending", true);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+//                    finish();
+                } else {
+                    startActivity(intent);
+                }
+
+            }
+            break;
+
+            case "post": {
+                callCheckEventStatusApi(object.getEvent().event_name, object.getEvent().event_id, object.getVenue(), object, currentLatLng
+                        , new String[]{object.getVenue().getLatitude(), object.getVenue().getLongitude()});
+
+
+            }
+            break;
+
         }
     }
 }

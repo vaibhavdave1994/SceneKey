@@ -13,7 +13,7 @@
         android:layout_height="@dimen/_50sdp"
         android:background="@drawable/bg_top_bar">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_f10_back_map"
             android:layout_width="@dimen/top_bar_profile"
             android:layout_height="@dimen/top_bar_profile"

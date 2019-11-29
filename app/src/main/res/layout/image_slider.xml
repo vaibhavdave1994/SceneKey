@@ -11,7 +11,7 @@
     <com.scenekey.cus_view.RoundRectCornerIv
         android:id="@+id/imagee"
         android:layout_width="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@drawable/bg_event_card"
         android:layout_height="match_parent"/>
 </LinearLayout>

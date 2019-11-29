@@ -1,6 +1,6 @@
 package com.scenekey.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -82,7 +82,8 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
                     String lastName = et_lastName.getText().toString().trim();
                     updateName(firstName, lastName);
                 } else {
-                    Utility.showToast(this, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(this,"No network connection","","");
+//                    Utility.showToast(this, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -155,7 +156,8 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
-            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
     }

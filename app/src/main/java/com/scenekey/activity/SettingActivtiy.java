@@ -1,6 +1,7 @@
 package com.scenekey.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -13,12 +14,16 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,18 +32,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.scenekey.R;
+import com.scenekey.activity.invite_friend.InviteFriendsActivity;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.CustomeClick;
@@ -54,6 +69,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -64,9 +82,11 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
 
     public static UserInfo userInfo;
     private final String TAG = SettingActivtiy.class.toString();
-    public LinearLayout linLayBio, linLayChangePassword;
-    public PlaceAutocompleteFragment autocompleteFragment;
+    public LinearLayout linLayBio, linLayChangePassword, linLayinvitefriend;
+    private AutocompleteSupportFragment autocompleteFragment;
     public boolean isApiM;
+    private PlacesClient placesClient;
+    View view_bio;
     private Utility utility;
     private TextView txt_location;
     private TextView txt_first_name;
@@ -77,7 +97,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
     private CustomProgressBar customProgressBar;
     private double latitude = 0.0, longitude = 0.0;
     private LocationManager locationManager;
-    View view_bio;
+    private int AUTOCOMPLETE_REQUEST_CODE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +121,13 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         LinearLayout lnr_lastName = findViewById(R.id.lnr_lastName);
 
         lnr_location = findViewById(R.id.lnr_location);
+        RelativeLayout rl_place = findViewById(R.id.rl_place);
         txt_first_name = findViewById(R.id.txt_first_name);
         txt_last_name = findViewById(R.id.txt_last_name);
         linLayBio = findViewById(R.id.linLayBio);
         txt_location = findViewById(R.id.txt_location);
         txt_logout = findViewById(R.id.txt_logout);
+        linLayinvitefriend = findViewById(R.id.linLayinvitefriend);
 
         view_bio = findViewById(R.id.view_bio);
         TextView txt_email = findViewById(R.id.txt_email);
@@ -117,7 +139,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         linLayChangePassword = findViewById(R.id.linLayChangePassword);
 
 
-        setClick(txt_email, lnr_lastName, lnr_deatils, txt_last_name, linLayBio, linLayTnC, linLayPriPolicy, mainLayout, txt_logout, txt_feedback, img_f1_back, img_default_location);
+        setClick(rl_place,txt_email, lnr_lastName, lnr_deatils, txt_last_name, linLayBio, linLayTnC, linLayPriPolicy, mainLayout, txt_logout, txt_feedback, img_f1_back, img_default_location, linLayinvitefriend);
         linLayChangePassword.setOnClickListener(this);
 
         if (!updateUserInfo.socialType.equals("facebook") && !updateUserInfo.socialType.equals("gmail")) {
@@ -162,38 +184,53 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
 
-        try {
-            autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-                @Override
-                public void onPlaceSelected(Place place) {
-                    txt_location.setText(place.getAddress().toString());
-                    latLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
-                    if (userInfo().makeAdmin.contains(Constant.ADMIN_YES)) {
-                        UserInfo userInfo = userInfo();
-                        userInfo.lat = (latLng.latitude + "");
-                        userInfo.longi = (latLng.longitude + "");
-                        userInfo.adminLat = userInfo.lat;
-                        userInfo.adminLong = userInfo.longi;
-                        userInfo.address = (place.getAddress().toString());
-                        userInfo.currentLocation = (false);
-                        updateSession(userInfo);
-                        updateLocation(userInfo);
-                    }
-                }
-
-                @Override
-                public void onError(Status status) {
-                    Log.d("ERROR:::", status.getStatusMessage());
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
+    private void placeApi() {
+
+        try {
+
+            if (!Places.isInitialized()) {
+                Places.initialize(this, getString(R.string.google_key), Locale.US);
+            }
+            List<Place.Field>  fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME,Place.Field.LAT_LNG);
+
+            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                    .build(this);
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                assert data != null;
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                txt_location.setText(place.getAddress());
+                if (userInfo().makeAdmin.contains(Constant.ADMIN_YES)) {
+                    UserInfo userInfo = userInfo();
+                    userInfo.lat = (Objects.requireNonNull(place.getLatLng()).latitude + "");
+                    userInfo.longi = (Objects.requireNonNull(place.getLatLng()).longitude + "");
+                    userInfo.adminLat = userInfo.lat;
+                    userInfo.adminLong = userInfo.longi;
+                    userInfo.address = (place.getAddress());
+                    userInfo.currentLocation = (false);
+                    updateSession(userInfo);
+                    updateLocation(userInfo);
+                }
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+
+            }
+        }
+    }
 
     /*.........................initLocation....................................*/
     private void initLocation() {
@@ -274,12 +311,23 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                 SceneKey.sessionManager.logout(this);
                 break;
 
+            case R.id.rl_place:
+                placeApi();
+                break;
+
             case R.id.txt_last_name:
 
                 Intent seetingIntet = new Intent(this, Edit_NAmeActivity.class);
                 seetingIntet.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(seetingIntet);
                 break;
+            case R.id.linLayinvitefriend: {
+
+                Intent intent = new Intent(this, InviteFriendsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            break;
 
             case R.id.lnr_deatils:
 
@@ -317,9 +365,9 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                     i.setData(Uri.parse(WebServices.TERMS_));
                     startActivity(i);
                 } catch (ActivityNotFoundException e) {
-                    Utility.showToast(this, getString(R.string.enoactivity), 0);
+//                    Utility.showToast(this, getString(R.string.enoactivity), 0);
                 } catch (Exception e) {
-                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
                 }
                 break;
 
@@ -351,7 +399,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                 } catch (ActivityNotFoundException e) {
                     Utility.showToast(this, getString(R.string.enoactivity), 0);
                 } catch (Exception e) {
-                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
                 }
                 break;
         }
@@ -410,12 +458,12 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
                             updateSession(userInfo);
 
                         } else {
-                            Utility.showToast(SettingActivtiy.this, getString(R.string.somethingwentwrong), 0);
+//                            Utility.showToast(SettingActivtiy.this, getString(R.string.somethingwentwrong), 0);
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Utility.showToast(SettingActivtiy.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(SettingActivtiy.this, getString(R.string.somethingwentwrong), 0);
                     }
 
                 }
@@ -442,10 +490,12 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(txt_logout, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(SettingActivtiy.this,"No network connection","","");
+//            utility.snackBar(txt_logout, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }
+
 
     @Override
     public void onResume() {
@@ -592,3 +642,123 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+//
+////            String placeId = "INSERT_PLACE_ID_HERE";
+////            assert autocompleteFragment != null;
+////            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+//
+//            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//                @Override
+//                public void onPlaceSelected(@NonNull Place place) {
+//
+//                }
+//
+//                @Override
+//                public void onError(@NonNull Status status) {
+//
+//                }
+//            });
+           /* FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields)
+                    .build();
+            placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
+                Place place = response.getPlace();
+                txt_location.setText(place.getAddress().toString());
+                latLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                if (userInfo().makeAdmin.contains(Constant.ADMIN_YES)) {
+                    UserInfo userInfo = userInfo();
+                    userInfo.lat = (latLng.latitude + "");
+                    userInfo.longi = (latLng.longitude + "");
+                    userInfo.adminLat = userInfo.lat;
+                    userInfo.adminLong = userInfo.longi;
+                    userInfo.address = (place.getAddress().toString());
+                    userInfo.currentLocation = (false);
+                    updateSession(userInfo);
+                    updateLocation(userInfo);
+                }
+
+                Log.i(TAG, "Place found: " + place.getName());
+            }).addOnFailureListener((exception) -> {
+                if (exception instanceof ApiException) {
+                    ApiException apiException = (ApiException) exception;
+                    int statusCode = apiException.getStatusCode();
+                    // Handle error with given status code.
+                    Log.e(TAG, "Place not found: " + exception.getMessage());
+                }
+            });*/
+        /*    autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    txt_location.setText(place.getAddress().toString());
+                    latLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+                    if (userInfo().makeAdmin.contains(Constant.ADMIN_YES)) {
+                        UserInfo userInfo = userInfo();
+                        userInfo.lat = (latLng.latitude + "");
+                        userInfo.longi = (latLng.longitude + "");
+                        userInfo.adminLat = userInfo.lat;
+                        userInfo.adminLong = userInfo.longi;
+                        userInfo.address = (place.getAddress().toString());
+                        userInfo.currentLocation = (false);
+                        updateSession(userInfo);
+                        updateLocation(userInfo);
+                    }
+                }
+
+                @Override
+                public void onError(Status status) {
+                    Log.d("ERROR:::", status.getStatusMessage());
+                }
+            });*/

@@ -1,7 +1,7 @@
 package com.scenekey.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +103,7 @@ public class TheKeyInUserAdapter extends RecyclerView.Adapter<TheKeyInUserAdapte
                 case R.id.mainRoomView:
                     KeyInUserModal keyInUserModal = keyInUserModalsList.get(getAdapterPosition());
                     Log.e("keyInUserModal", ""+keyInUserModal);
+
 
                     if (getAdapterPosition() != -1) {
                         keyinUserListener.getRoomData(getAdapterPosition(),keyInUserModalsList);

@@ -3,15 +3,14 @@ package com.scenekey.base;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -19,12 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scenekey.R;
-import com.scenekey.activity.TrendinSearchActivity;
+import com.scenekey.activity.invite_friend.roomdatabase.AppDataManager;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.SessionManager;
 import com.scenekey.listener.StatusBarHide;
 import com.scenekey.model.UserInfo;
-import com.scenekey.model.VenueBoard;
 import com.scenekey.util.CommonUtils;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.StatusBarUtil;
@@ -54,6 +52,11 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    public AppDataManager dataManager(){
+        return SceneKey.getDataManager();
+    }
+
+
 
     public Fragment addFragment(Fragment fragmentHolder, int animationValue) {
         try {
@@ -221,7 +224,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showAlertDialog(String msg) {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(this,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -232,34 +235,32 @@ public class BaseActivity extends AppCompatActivity {
         //tvTitle = dialog.findViewById(R.id.tvTitle);
 
         tvMessages = dialog.findViewById(R.id.custom_popup_tvMessage);
-
-
         tvPopupOk = dialog.findViewById(R.id.custom_popup_ok);
-
-//for layout position
-       // tvPopupCancel.setText(R.string.cancel);
-        tvPopupOk.setText(R.string.yes);
-       // tvPopupCancel.setVisibility(View.GONE);
-
        // tvTitle.setText(title);
         tvMessages.setText(msg);
 
-//        tvPopupCancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Show location settings when the user acknowledges the alert dialog
-//                dialog.dismiss();
-//            }
-//        });
+    //        tvPopupCancel.setOnClickListener(new View.OnClickListener() {
+    //            @Override
+    //            public void onClick(View view) {
+    //                // Show location settings when the user acknowledges the alert dialog
+    //                dialog.dismiss();
+    //            }
+    //        });
 
         tvPopupOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+
             }
         });
 
-        dialog.show();
+        try {
+            dialog.show();
+        }
+        catch (WindowManager.BadTokenException e) {
+            //use a log message
+        }
     }
 
 }

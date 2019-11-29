@@ -1,78 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_250sdp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/popup_bg"
-    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/montserrat_semibold"
-        android:gravity="bottom|center"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_16sdp" />
-
-    <TextView
-        android:id="@+id/tvMessages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:fontFamily="@font/montserrat_regular"
-        android:gravity="center"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_14sdp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@color/gray_bottom" />
-
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/popup_bg"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvPopupCancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="bottom|center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_16sdp" />
+
+        <TextView
+            android:id="@+id/tvMessages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/montserrat_regular"
             android:gravity="center"
-            android:text="@string/cancel"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/_14sdp" />
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingRight="@dimen/_15sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp" />
 
         <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/gray_bottom" />
 
-        <TextView
-            android:id="@+id/tvPopupOk"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat_regular"
-            android:gravity="center"
-            android:text="@string/try_again"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/_14sdp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/tvPopupCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_14sdp" />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_bottom" />
+
+            <TextView
+                android:id="@+id/tvPopupOk"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="center"
+                android:text="@string/try_again"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_14sdp" />
+
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
+</RelativeLayout>
 
-</LinearLayout>

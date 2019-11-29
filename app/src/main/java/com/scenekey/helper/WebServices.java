@@ -41,6 +41,7 @@ public class WebServices {
 
     public final static String CHECK_FB_LOGIN = BASE_URL + "webservices/checkSocialLogin";
     public final static String REWARD_OFFER = BASE_URL + "webservices/getRewardList";
+    public final static String READSTATUS = BASE_URL + "invite/readStatus";
     public final static String REWARD_ADDTOWALLET = BASE_URL + "webservices/addToWallet";
     public final static String REWARD_WALLETS = BASE_URL + "webservices/getWalletList";
     public final static String REWARD_ADDTOREDEEM = BASE_URL + "webservices/addRedeem";
@@ -66,6 +67,7 @@ public class WebServices {
     public final static String LOGIN = BASE_URL + "webservices/facebookLogin";
     public final static String BIO = BASE_URL + "webservices/updateBio";
     public final static String EVENT_BY_LOCAL = BASE_URL + "eventByLocation";
+    public final static String NEW_EVENT_BY_LOCAL = BASE_URL + "eventByLocationNew";
     //public final static String TRENDING = BASE_URL + "trending";
     public final static String TRENDING = BASE_URL + "trendingNew";
     public final static String TRENDING_TAG = BASE_URL + "trending_tag";
@@ -100,6 +102,11 @@ public class WebServices {
     public final static String GET_NUDGE = BASE_URL + "webservices/getnudges";
     public final static String SET_STATUS = BASE_URL + "webservices/SetUserStatus";
     public final static String LISTATTENDEDEVENT = BASE_URL + "webservices/listofuserattendedevent";
+    public final static String ALERTVENUEBOARD = BASE_URL + "venueBoard";
+//    https://dev.scenekey.com/event/venueBoard
+
+
+
 
     /*[{"key":"user_id","value":"174"},{"key":"venue_id","value":"130178"},{"key":"date","value":"2017-06-05"},{"key":"time","value":"9:00:00"},{"key":"event_name","value":"Monday ..... Test "},{"key":"interval","value":"15"},{"key":"description","value":"Android Testing Event For IOS also"}]*/
     //Update

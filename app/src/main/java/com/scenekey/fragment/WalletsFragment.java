@@ -2,9 +2,9 @@ package com.scenekey.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +56,17 @@ public class WalletsFragment extends Fragment {
     }
 
     private void inItView(View view) {
+        /*if (!SceneKey.sessionManager.getkeypoint().equals(""))
+        {
+        if (Integer.parseInt(SceneKey.sessionManager.getkeypoint()) > 1000) {
+            HomeActivity.tv_key_points.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getkeypoint()), 0));
+            HomeActivity.tv_key_points_new.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getkeypoint()), 0));
+        } else {
+            HomeActivity.tv_key_points.setText(SceneKey.sessionManager.getkeypoint());
+            HomeActivity.tv_key_points_new.setText(SceneKey.sessionManager.getkeypoint());
+
+        }
+        }*/
         walletRecyclerView = view.findViewById(R.id.walletRecyclerView);
         no_data_inWallet = view.findViewById(R.id.no_data_inWallet);
         walletsArrayList = new ArrayList<>();
@@ -129,6 +140,7 @@ public class WalletsFragment extends Fragment {
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(context,"No network connection","","");
             //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
             Toast.makeText(context, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();
@@ -203,6 +215,7 @@ public class WalletsFragment extends Fragment {
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(context,"No network connection","","");
             //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
             Toast.makeText(context, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();

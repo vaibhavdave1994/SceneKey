@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.scenekey.R;
 import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TrendinSearchActivity;
+import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.VenueBoard;
 import com.scenekey.util.SceneKey;
@@ -95,7 +96,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
                 @Override
                 public void onClick(View v) {
 
-                    showSearchConfirmDialog(isGridview,socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+" ?");
+                    showSearchConfirmDialog(isGridview,socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_name()+"?");
 
                 }
             });
@@ -118,6 +119,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
         else {
             holder.tag__special_name.setText(socialMediaBean.getTag_text());
             holder.tag__special_text.setText(socialMediaBean.getTag_name());
+            holder.outerBouder.setBorderColor(Color.parseColor(socialMediaBean.getColor_code()));
             Glide.with(context).load(socialMediaBean.getTag_image()).centerCrop().placeholder(R.drawable.app_icon)
                     .into(holder.iv_tag__special_circulerImage);
 
@@ -154,7 +156,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
 //                    alertDialog.setCancelable(false);
 //                    alertDialog.show();
 
-                    showSearchConfirmDialog(isGridview,socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_text()+" ?");
+                    showSearchConfirmDialog(isGridview,socialMediaBean,"Scenekey","Want to search for "+socialMediaBean.getTag_text()+"?");
                 }
             });
 
@@ -295,7 +297,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
 
                     } catch (Exception e) {
                         onBoardActivity.dismissProgDialog();
-                        Utility.showToast(context, context.getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, context.getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -356,6 +358,8 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
         tvPopupOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SessionManager sessionManager = new SessionManager(context);
+                sessionManager.backOrIntent(false);
                 Intent intent = new Intent(context, TrendinSearchActivity.class);
                 intent.putExtra("tag_name", socialMediaBean.getTag_name());
                 intent.putExtra("tag_image", socialMediaBean.getTag_image());

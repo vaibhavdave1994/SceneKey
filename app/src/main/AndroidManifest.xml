@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.scenekey">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -15,21 +14,27 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name=".util.SceneKey"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/BaseTheme"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
+        <activity android:name=".activity.trending_summery.GallerySlideActivity">
 
-
-
+        </activity>
+        <activity android:name=".activity.trending_summery.MapActivity" />
+        <activity android:name=".activity.trending_summery.GalleryMultiViewActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -46,74 +51,68 @@
             android:name=".activity.SearchSubCategoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
-
         <activity
             android:name=".activity.TrendinSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
-
         <activity android:name=".activity.LiveKeyInProfileActivity" />
-
         <activity
             android:name=".activity.TagsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".activity.OnBoardActivity"
-            android:theme="@style/MyCustomTheme" />
+            android:theme="@style/MyCustomTheme"
+            />
         <activity android:name=".activity.ZoomImageActivity" />
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Splash">
-        <!--<activity-->
-            <!--android:name=".ScrollTempActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--&gt;-->
+
+            <!-- <activity -->
+            <!-- android:name=".ScrollTempActivity" -->
+            <!-- android:screenOrientation="portrait" -->
+            <!-- &gt; -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.new_reg_flow.NewIntroActivity"
-            android:screenOrientation="portrait"
-            />
-
+            android:theme="@style/MyCustomTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyCustomTheme"
+            />
         <activity
             android:name=".activity.RegistrationActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@style/MyCustomTheme"
             />
-
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewEmail"
+            android:theme="@style/MyCustomTheme"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewPassword"
+            android:theme="@style/MyCustomTheme"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewCreatePassword"
             android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme"/>
-
+            android:theme="@style/MyCustomTheme" />
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewBasicInfo"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewGender"
             android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme"/>
-
+            android:theme="@style/MyCustomTheme" />
         <activity
             android:name=".activity.IntroActivity"
             android:screenOrientation="portrait"
@@ -121,7 +120,6 @@
         <activity
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme"
             android:windowSoftInputMode="adjustPan" />
 
         <meta-data
@@ -153,13 +151,18 @@
             android:name=".activity.BioActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme" />
-        <activity
+        <!--
+            <activity
             android:name=".cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CropImage" />
+        -->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -199,17 +202,61 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyCustomTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".activity.FeedUserProfileActivity" />
-        <activity android:name=".activity.EventDetailsActivity" />
-        <activity android:name=".activity.SettingActivtiy" />
-        <activity android:name=".activity.Edit_NAmeActivity" />
-        <activity android:name=".activity.ChangePasswordActivity" />
-        <activity android:name=".activity.EventSearch_tag_Activity" />
-        <activity android:name=".activity.OwnProfileActivity" />
-        <activity android:name=".activity.TnCWebView" />
-        <activity android:name=".activity.TnCAndPrivacyActivity" />
-        <activity android:name=".activity.ProfileNewActivity" />
-        <activity android:name=".activity.ProfileOtherUserNewActivity" />
+        <activity
+            android:name=".activity.FeedUserProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EventDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
+        <activity
+            android:name=".activity.SettingActivtiy"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".activity.Edit_NAmeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EventSearch_tag_Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.OwnProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TnCWebView"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TnCAndPrivacyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProfileNewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ProfileOtherUserNewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.invite_friend.InviteFriendsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden|adjustPan" />
+        <activity android:name=".base.BaseActivity" />
+        <!--
+  <service
+            android:name=".activity.invite_friend.ContentObserver.ContactWatchService"
+            android:enabled="true"
+            android:exported="false" />
+        -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.trending_summery.Summary_Activity"
+            android:theme="@style/MyCustomTheme" />
+        <activity android:name=".activity.TagsOtherActivity" />
+        <activity android:name=".activity.trending_summery.MenuActivity" />
     </application>
 
 </manifest>

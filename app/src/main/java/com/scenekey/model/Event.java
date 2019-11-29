@@ -23,7 +23,7 @@ public class Event implements Serializable {
     public Double interval;
     public String status;
     public String trending_point;
-    public int strStatus = 0;
+    public int strStatus;
     public String returnDay;
     public String isEventLike;
     public String likeCount;

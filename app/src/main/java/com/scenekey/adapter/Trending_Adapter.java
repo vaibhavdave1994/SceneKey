@@ -3,9 +3,9 @@ package com.scenekey.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +31,7 @@ import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TheRoomActivity;
+import com.scenekey.activity.trending_summery.Summary_Activity;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.SortByPoint;
 import com.scenekey.helper.WebServices;
@@ -39,8 +40,8 @@ import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.Event;
 import com.scenekey.model.Events;
 import com.scenekey.model.ImageSlidModal;
-import com.scenekey.model.Venue;
 import com.scenekey.model.KeyInUserModal;
+import com.scenekey.model.Venue;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
@@ -63,14 +64,15 @@ import java.util.Map;
 public class
 Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 
+    FollowUnfollowLIstner followUnfollowLIstner;
+    Utility utility;
     private String TAG = "Trending_Adapter";
     private HomeActivity activity;
     private ArrayList<Events> eventsArrayList;
     private String[] currentLatLng;
-    private boolean clicked;
+    private boolean clicked = false;
+    private int imgfollopos;
     private CheckEventStatusListener listener;
-    FollowUnfollowLIstner followUnfollowLIstner;
-    Utility utility;
 
     public Trending_Adapter(HomeActivity activity, ArrayList<Events> eventsArrayList, String[] currentLatLng, CheckEventStatusListener listener,
                             FollowUnfollowLIstner followUnfollowLIstner) {
@@ -80,12 +82,13 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         this.listener = listener;
         this.followUnfollowLIstner = followUnfollowLIstner;
         utility = new Utility(activity);
+        setHasStableIds(true);
     }
 
     @Override
     public Trending_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_custom_trending, parent, false);
+                .inflate(R.layout.adapter_trending, parent, false);
 
         return new Trending_Adapter.ViewHolder(itemView);
     }
@@ -94,14 +97,13 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
     public void onBindViewHolder(final Trending_Adapter.ViewHolder holder, final int position) {
 
         try {
-            AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-            blinkanimation.setDuration(800); // duration - half a second
+            AlphaAnimation blinkanimation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+            blinkanimation.setDuration(1000); // duration - half a second
             blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
             blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
             blinkanimation.setRepeatMode(Animation.REVERSE);
             holder.re1.startAnimation(blinkanimation);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -115,26 +117,49 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 //            holder.frame_keyinbutton.setVisibility(View.GONE);
 
 
-        if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
+      /*  if (venue.getIs_tag_follow().equalsIgnoreCase("0")) {
             //holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
             holder.tv_follow.setText("Follow");
             holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
             holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
 //            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
 //            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
-        }
-        else {
-           // holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
+        } else {
+            // holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
             holder.tv_follow.setText("Unfollow");
             holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.unfollow_border));
             holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.red_ring));
+        }*/
+        if (!object.getEvent().likeCount.isEmpty()) {
+            holder.like_count_txt.setText(object.getEvent().likeCount);
         }
+
+        if (object.getEvent().isEventLike.equals("1")) {
+            holder.iv_heart.setImageResource(R.drawable.active_like_ico);
+        } else {
+            holder.iv_heart.setImageResource(R.drawable.inactive_like_ico);
+        }
+
+        if (venue.getIs_tag_follow().equalsIgnoreCase("0")) {
+            //holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
+            holder.tv_follow.setText("Follow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border_gray));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.reward_day_color));
+//            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
+//            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
+        } else {
+            // holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
+            holder.tv_follow.setText("Unfollow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_active_gray));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.white));
+        }
+
         Collections.sort(eventsArrayList, new SortByPoint());
         try {
             if (event.keyInUserModalList.size() != 0) {
                 holder.iv_group.setVisibility(View.GONE);
                 holder.parent.setVisibility(View.VISIBLE);
-                setRecyclerView(holder, event.keyInUserModalList,object);
+                setRecyclerView(holder, event.keyInUserModalList, object);
             } else {
                 holder.parent.setVisibility(View.GONE);
                 holder.iv_group.setVisibility(View.VISIBLE);
@@ -166,39 +191,61 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         String mTime = hhmmss[0] + ":" + hhmmss[1] + a;
 
         // Old Code
+
+
         if (object.getEvent().strStatus == 0) {
+            //live
+
+            holder.txt_time.setVisibility(View.GONE);
+            holder.txt_live.setVisibility(View.VISIBLE);
+            holder.green_dot.setVisibility(View.VISIBLE);
+            holder.green_dot.setImageResource(R.drawable.abc_dot);
+
+        }  else {
+            //time
+            holder.txt_time.setVisibility(View.VISIBLE);
+            holder.txt_live.setVisibility(View.GONE);
+            holder.green_dot.setVisibility(View.GONE);
+            holder.txt_time.setText(mTime);
+        }
+
+
+      /*  if (object.getEvent().strStatus == 2) {
+
             holder.txt_time.setVisibility(View.GONE);
             holder.txt_live.setVisibility(View.VISIBLE);
             holder.green_dot.setImageResource(R.drawable.abc_dot);
         } else {
             holder.txt_time.setVisibility(View.VISIBLE);
             holder.txt_live.setVisibility(View.GONE);
-            holder.green_dot.setImageResource(R.drawable.gray_dot);
+            holder.green_dot.setVisibility(View.GONE);
+//            holder.green_dot.setImageResource(R.drawable.gray_dot);
             holder.txt_time.setText(mTime);
-        }
+        }*/
 
-        if (object.getEvent().isEventLike.equals("1")) {
-            holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
-        } else {
-            holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
-        }
-
-        if (!object.getEvent().likeCount.isEmpty()) {
-            holder.like_count_txt.setText(object.getEvent().likeCount);
-        }
 
         holder.txt_eventName.setText(event.event_name);
         holder.txt_eventAdress.setText((venue.getVenue_name().trim().length() > 29 ? venue.getVenue_name().trim().substring(0, 29) : venue.getVenue_name().trim()));
 
         //distance bw event and user
-        double doubleMiles = getDistanceMile(new Double[]{Double.valueOf(venue.getLatitude()), Double.valueOf(venue.getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
-        String miles = String.valueOf(doubleMiles);
-        holder.txt_eventmile.setText(miles + " M");
-        if(doubleMiles <=  0.9 && object.getEvent().strStatus == 0){
+        final double Miles = getDistanceMile(new Double[]{Double.valueOf(venue.getLatitude()), Double.valueOf(venue.getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
+        final int distance = getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
+        String miles = String.valueOf(Miles);
+        if (Miles == 0.0) {
+            holder.txt_eventmile.setText(miles + "0 " + " M");
+
+        } else if (String.valueOf(Miles).length() == 3){
+            holder.txt_eventmile.setText(String.format("%.2f", Miles)+ " M");
+
+
+        }else {
+            holder.txt_eventmile.setText(miles + " M");
+
+        }
+        if (distance < Constant.MAXIMUM_DISTANCE && object.getEvent().strStatus != 2 ) {
             holder.frame_keyinbutton.setVisibility(View.VISIBLE);
             event.ableToKeyIn = true;
-        }
-        else {
+        } else {
             holder.frame_keyinbutton.setVisibility(View.GONE);
             event.ableToKeyIn = false;
         }
@@ -206,13 +253,15 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         holder.iv_heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                like_Api(object.getEvent().event_id, holder, object);
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
+                like_Api(object.getEvent().event_id, holder, object, position);
             }
         });
 
         holder.iv_note_book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
                 Intent intent = new Intent(activity, OnBoardActivity.class);
                 intent.putExtra("eventid", event);
                 intent.putExtra("venuid", venue);
@@ -226,19 +275,59 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         holder.iv_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    activity.showProgDialog(false, "");
-                    listener.getCheckEventStatusListener(event.event_name, event.event_id, venue, object, currentLatLng, new String[]{venue.getLatitude(), venue.getLongitude()});
-                } catch (NullPointerException e) {
-                    activity.dismissProgDialog();
-                    e.printStackTrace();
+
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
+
+                if (activity.userInfo().makeAdmin != null && activity.userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                    try {
+                        activity.showProgDialog(false, "");
+                        listener.getCheckEventStatusListener(event.event_name, event.event_id, venue, object, currentLatLng, new String[]{venue.getLatitude(), venue.getLongitude()});
+                    } catch (NullPointerException e) {
+                        activity.dismissProgDialog();
+                        e.printStackTrace();
+                    }
+                } else {
+
+                    if (event.isFeed != 0) {
+
+                        try {
+                            activity.showProgDialog(false, "");
+                            listener.getCheckEventStatusListener(event.event_name, event.event_id, venue, object, currentLatLng, new String[]{venue.getLatitude(), venue.getLongitude()});
+                        } catch (NullPointerException e) {
+                            activity.dismissProgDialog();
+                            e.printStackTrace();
+                        }
+
+                    } else if (event.strStatus != 2 && distance < Constant.MAXIMUM_DISTANCE) {
+                        try {
+                            activity.showProgDialog(false, "");
+                            listener.getCheckEventStatusListener(event.event_name, event.event_id, venue, object, currentLatLng, new String[]{venue.getLatitude(), venue.getLongitude()});
+                        } catch (NullPointerException e) {
+                            activity.dismissProgDialog();
+                            e.printStackTrace();
+                        }
+                    } else {
+
+
+                        Intent intent = new Intent(activity, OnBoardActivity.class);
+                        intent.putExtra("eventid", event);
+                        intent.putExtra("venuid", venue);
+                        intent.putExtra("object", object);
+                        intent.putExtra("currentLatLng", currentLatLng);
+                        intent.putExtra("fromTrending", true);
+                        activity.startActivity(intent);
+                    }
+
                 }
+
+
             }
         });
 
         holder.re1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
                 try {
                     activity.showProgDialog(false, "");
                     listener.getCheckEventStatusListener(event.event_name, event.event_id, venue, object, currentLatLng, new String[]{venue.getLatitude(), venue.getLongitude()});
@@ -252,6 +341,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         holder.iv_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
                 Intent intent = new Intent(activity, TheRoomActivity.class);
                 intent.putExtra("fromTrendingHome", event.keyInUserModalList);
                 intent.putExtra("object", object);
@@ -261,15 +351,26 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             }
         });
 
+
+        /*holder.ll_summery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
+                Intent intent = new Intent(activity, Summary_Activity.class);
+                intent.putExtra("event_id", event.event_id);
+                activity.startActivity(intent);
+            }
+        });
+*/
         holder.tv_follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0")){
-                    followUnfollowLIstner.getFollowUnfollow(1,object.getVenue().getBiz_tag_id(),object,position);
-                }
-                else {
-                    followUnfollowLIstner.getFollowUnfollow(0,object.getVenue().getBiz_tag_id(),object,position);
+                SceneKey.sessionManager.putPosTrendingList(event.event_id);
+                clicked = true;
+                if (object.getVenue().getIs_tag_follow().equalsIgnoreCase("0")) {
+                    followUnfollowLIstner.getFollowUnfollow(1, object.getVenue().getBiz_tag_id(), object, position);
+                } else {
+                    followUnfollowLIstner.getFollowUnfollow(0, object.getVenue().getBiz_tag_id(), object, position);
                 }
             }
         });
@@ -312,6 +413,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 //            }
 //        });
 
+
         ArrayList<ImageSlidModal> imageslideList = new ArrayList<>();
         if (event.imageslideList.isEmpty()) {
 
@@ -323,18 +425,30 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             }
         }
 
-        Collections.reverse(event.imageslideList);
-        if (event.imageslideList.isEmpty()) {
-            TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity,imageslideList,event,venue,listener,object,currentLatLng);
-            holder.viewPager.setAdapter(trendingFeedSlider);
+        if (!clicked) {
+            Collections.reverse(event.imageslideList);
         }
-        else {
-            TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, event.imageslideList,event,venue,listener,object,currentLatLng);
+
+        if (event.imageslideList.isEmpty()) {
+            TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, imageslideList, event, venue, listener, object, currentLatLng, new TrendingFeedSlider.MapListener() {
+                @Override
+                public void mapFeed(String event_name, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings) {
+
+                }
+            });
+            holder.viewPager.setAdapter(trendingFeedSlider);
+        } else {
+            TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, event.imageslideList, event, venue, listener, object, currentLatLng, new TrendingFeedSlider.MapListener() {
+                @Override
+                public void mapFeed(String event_name, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings) {
+
+                }
+            });
             holder.viewPager.setAdapter(trendingFeedSlider);
         }
 
         int listSize = event.imageslideList.size();
-        if (listSize == 0 ) {
+        if (listSize == 0) {
             holder.indicator_linear_layout.setVisibility(View.GONE);
         } else {
             holder.indicator_linear_layout.setVisibility(View.VISIBLE);
@@ -355,7 +469,11 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                 }
             });
         }
+
+
     }
+
+
 
     private double getDistanceMile(Double[] LL) {
         Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
@@ -372,7 +490,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         return new BigDecimal(distance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    private void like_Api(final String event_id, final ViewHolder holder, final Events object) {
+    private void like_Api(final String event_id, final ViewHolder holder, final Events object, final int myPos) {
 
         activity.showProgDialog(true, "TAG");
 
@@ -394,12 +512,17 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                             int newLikeCount = likeCount + 1;
                             holder.like_count_txt.setText("" + newLikeCount);
                             object.getEvent().likeCount = String.valueOf(newLikeCount);
-                            holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
+                            // holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
+                            eventsArrayList.get(myPos).getEvent().isEventLike = "1";
+                            notifyDataSetChanged();
+
                         } else {
                             int newLikeCount = likeCount - 1;
                             holder.like_count_txt.setText(likeCount >= 0 ? newLikeCount + "" : "0");
                             object.getEvent().likeCount = String.valueOf(newLikeCount);
-                            holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
+                            eventsArrayList.get(myPos).getEvent().isEventLike = "0";
+                            notifyDataSetChanged();
+                            //  holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
                         }
                     }
                 } catch (Exception e) {
@@ -429,13 +552,37 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
     private void addBottomDots(LinearLayout indicator_linear_layout, int size, int i) {
         ImageView[] dots = new ImageView[size];
         indicator_linear_layout.removeAllViews();
-        for (int j = 0; j < dots.length; j++) {
-            dots[j] = new ImageView(activity);
-            dots[j].setImageResource(R.drawable.inactive_dot_img);
-            indicator_linear_layout.addView(dots[j]);
+
+
+        if (dots.length > 1) {
+            for (int j = 0; j < dots.length; j++) {
+                dots[j] = new ImageView(activity);
+                dots[j].setImageResource(R.drawable.inactive_dot_img);
+
+                if (j == 0 || j == 1 || j == 2) {
+                    indicator_linear_layout.addView(dots[j]);
+                }
+            }
+
+
+            if (i == 0) {
+
+                dots[0].setImageResource(R.drawable.dot_ico);
+            }
+            if (i == 1) {
+                dots[1].setImageResource(R.drawable.dot_ico);
+            }
+            if (i > 1) {
+                if (dots.length - 1 == i) {
+                    dots[2].setImageResource(R.drawable.dot_ico);
+                } else {
+                    dots[1].setImageResource(R.drawable.dot_ico);
+                }
+
+            }
         }
-        if (dots.length > 0)
-            dots[i].setImageResource(R.drawable.dot_ico);
+
+
     }
 
     private void setRecyclerView(ViewHolder holder, final ArrayList<KeyInUserModal> keyInUserModalList, final Events object) {
@@ -444,11 +591,11 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         holder.parent.removeAllViews();
-        int loopCount  = keyInUserModalList.size();
-        if(loopCount >5){
+        int loopCount = keyInUserModalList.size();
+        if (loopCount > 5) {
             loopCount = 5;
         }
-        for (int i = 0; i < loopCount ; i++) {
+        for (int i = 0; i < loopCount; i++) {
 
             assert inflater != null;
             View v = inflater.inflate(R.layout.trend_user_view, null);
@@ -476,12 +623,12 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
 
 
             } else {
-                if (i ==1) {
+                if (i == 1) {
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(15 * i, 0, 0, 0);
+                    params.setMargins(20 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
                     String image = "";
@@ -498,14 +645,12 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                             .placeholder(R.drawable.placeholder_img)
                             .error(R.drawable.placeholder_img)
                             .into(comeInUserProfile);
-                }
-                else
-                if (i == 2) {
+                } else if (i == 2) {
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(15 * i, 0, 0, 0);
+                    params.setMargins(20 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
                     String image = "";
@@ -525,15 +670,30 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                 }
 
                 if (i == 3) {
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                RelativeLayout.LayoutParams.WRAP_CONTENT
-                        );
-                        params.setMargins(15 * i, 0, 0, 0);
-                        marginlayout.setLayoutParams(params);
-                        holder.parent.addView(v, i);
-                        no_count.setText(" +" + (keyInUserModalList.size() - i));
-                        no_count.setVisibility(View.VISIBLE);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(20 * i, 0, 0, 0);
+                    marginlayout.setLayoutParams(params);
+                    holder.parent.addView(v, i);
+                    no_count.setText(" +" + (keyInUserModalList.size() - i));
+                    String image = "";
+
+                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                        image = "dev-" + keyInUserModalList.get(i).getUserimage();
+                    } else {
+                        image = keyInUserModalList.get(i).getUserimage();
+                    }
+
+                    Glide.with(activity).load(image)
+                            .thumbnail(0.5f)
+                            .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.placeholder_img)
+                            .error(R.drawable.placeholder_img)
+                            .into(comeInUserProfile);
+
+                    no_count.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -550,6 +710,7 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             }
         });
 
+
     }
 
     @Override
@@ -557,7 +718,119 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         return eventsArrayList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+/*
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int pos) {
+        if (utility.checkInternetConnection()) {
+            activity.showProgDialog(true, "TAG");
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    activity.dismissProgDialog();
+                    // get response
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        if (jo.has("status")) {
+                            if (jo.getString("status").equalsIgnoreCase("success")) {
+
+                                if (followUnfollow == 0) {
+                                    eventsArrayList.get(pos).getVenue().setIs_tag_follow("1");
+                                    notifyItemChanged(pos);
+                                } else {
+                                    eventsArrayList.get(pos).getVenue().setIs_tag_follow("0");
+                                    notifyItemChanged(pos);
+                                }
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        activity.dismissProgDialog();
+                        Utility.showToast(activity, activity.getString(R.string.somethingwentwrong), 0);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    activity.dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("biz_tag_id", biz_tag_id);
+                    params.put("follow_status", String.valueOf(followUnfollow));
+                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
+                    return params;
+                }
+            };
+            VolleySingleton.getInstance(activity).addToRequestQueue(request, "HomeApi");
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
+            activity.dismissProgDialog();
+        }
+    }
+*/
+
+    private boolean shouldKeyInButtonVisible(Events object) {
+        boolean value = false;
+        try {
+
+            if (activity.userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                value = true;
+            } else if (getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
+                    && isEventOnline(object.getEvent().event_date, activity.userInfo().currentDate)) {
+                value = true;
+            }
+        } catch (Exception d) {
+            d.getMessage();
+        }
+
+        return value;
+    }
+
+    private boolean isEventOnline(String eventDate, String serverCurrentDate) {
+        boolean returnValue = false;
+        eventDate = eventDate.split("TO")[0];
+
+        eventDate = eventDate.replace("T", " ");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date eventDateFinal = sdf.parse(eventDate);
+            Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
+
+            if (serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()) {
+                returnValue = true;
+            } else
+                returnValue = false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return returnValue;
+    }
+
+
+    public int getDistance(Double[] LL) {
+        Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(LL[0]);
+        startPoint.setLongitude(LL[1]);
+
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(LL[2]);
+        endPoint.setLongitude(LL[3]);
+
+        double distance = startPoint.distanceTo(endPoint);
+
+        return (int) distance;
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        AppCompatImageView iv_comment, iv_add;
+        LinearLayout re1;
+        FrameLayout frame_keyinbutton;
+        TextView tv_follow;
         private ImageView img_event;
         private ImageView iv_heart;
         private TextView txt_eventName, txt_eventAdress, txt_eventDate, txt_time, txt_like, txt_gap, txt_gap2, txt_eventmile;
@@ -571,13 +844,14 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
         private TextView txt_live;
         private ImageView green_dot;
         private ImageView iv_note_book;
-        AppCompatImageView iv_comment,iv_add;
-        LinearLayout re1;
-        FrameLayout frame_keyinbutton;
-        TextView tv_follow;
+        private ImageView iv_summery;
+        private LinearLayout ll_summery;
+
         ViewHolder(View view) {
             super(view);
 
+            iv_summery = view.findViewById(R.id.iv_summery);
+            ll_summery = view.findViewById(R.id.ll_summery);
             re1 = view.findViewById(R.id.rl_anim);
             rl_main = view.findViewById(R.id.rl_main);
             img_event = view.findViewById(R.id.img_event);
@@ -602,112 +876,36 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
             iv_add = view.findViewById(R.id.iv_add);
             tv_follow = view.findViewById(R.id.tv_follow);
             frame_keyinbutton = view.findViewById(R.id.frame_keyinbutton);
+
+            iv_summery.setOnClickListener(this);
         }
-    }
 
-    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final int pos) {
-        if (utility.checkInternetConnection()) {
-            activity.showProgDialog(true, "TAG");
-            StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    activity.dismissProgDialog();
-                    // get response
-                    try {
-                        JSONObject jo = new JSONObject(response);
-                        if(jo.has("status")){
-                            if(jo.getString("status").equalsIgnoreCase("success")){
-
-                                if(followUnfollow == 0){
-                                    eventsArrayList.get(pos).getVenue().setIs_tag_follow("1");
-                                    notifyItemChanged(pos);
-                                }else {
-                                    eventsArrayList.get(pos).getVenue().setIs_tag_follow("0");
-                                    notifyItemChanged(pos);
-                                }
-                            }
-                        }
-
-                    } catch (Exception e) {
-                        activity.dismissProgDialog();
-                        Utility.showToast(activity, activity.getString(R.string.somethingwentwrong), 0);
-                    }
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.iv_summery: {
+                    final Events object = eventsArrayList.get(getAdapterPosition());
+                    SceneKey.sessionManager.putPosTrendingList(object.getEvent().event_id);
+                    Intent intent = new Intent(activity, Summary_Activity.class);
+                    intent.putExtra("event_id", object.getEvent().event_id);
+                    intent.putExtra("object", object);
+                    intent.putExtra("currentLatLng", currentLatLng);
+                    activity.startActivity(intent);
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    activity.dismissProgDialog();
-                }
-            }) {
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("biz_tag_id",biz_tag_id);
-                    params.put("follow_status", String.valueOf(followUnfollow));
-                    params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(activity).addToRequestQueue(request, "HomeApi");
-            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-        } else {
-            // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
-            activity.dismissProgDialog();
-        }
-    }
-
-    private boolean shouldKeyInButtonVisible(Events object){
-        boolean value = false;
-        try {
-
-            if (activity.userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-                value = true;
-            } else if (getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
-                    &&isEventOnline(object.getEvent().event_date,activity.userInfo().currentDate)) {
-                value = true;
+                break;
             }
-        } catch (Exception d) {
-            d.getMessage();
         }
-
-        return  value;
     }
 
-    private boolean isEventOnline(String eventDate, String serverCurrentDate){
-        boolean returnValue = false;
-        eventDate = eventDate.split("TO")[0];
-
-        eventDate = eventDate.replace("T"," ");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            Date eventDateFinal = sdf.parse(eventDate);
-            Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
-
-            if(serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()){
-                returnValue = true;
-            }
-            else
-                returnValue = false;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return returnValue;
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
-    public int getDistance(Double[] LL) {
-        Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
-        Location startPoint = new Location("locationA");
-        startPoint.setLatitude(LL[0]);
-        startPoint.setLongitude(LL[1]);
 
-        Location endPoint = new Location("locationA");
-        endPoint.setLatitude(LL[2]);
-        endPoint.setLongitude(LL[3]);
-
-        double distance = startPoint.distanceTo(endPoint);
-
-        return (int) distance;
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
+
 }

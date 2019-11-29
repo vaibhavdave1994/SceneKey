@@ -1,18 +1,39 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
-       <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
 
+
+    </style>
+
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="BaseTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
 
+    </style>
+
+
+    <style name="FullyTranslucent" parent="android:Theme.Translucent.NoTitleBar">
+        <item name="android:progressBarStyle">@style/InvisibleProgress</item>
+    </style>
+
+    <style name="InvisibleProgress">
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="CropImage" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -36,6 +57,8 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
 
     </style>
 
@@ -46,8 +69,12 @@
     </style>
 
     <style name="DialogAnimationBottTop" parent="AppTheme">
-        <item name="android:windowEnterAnimation">@anim/slide_up2</item>
-        <item name="android:windowExitAnimation">@anim/slide_bottom2</item>
+        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
+    <style name="KeyAnimtion" parent="AppTheme">
+        <item name="android:windowEnterAnimation">@anim/entertoptobottom</item>
     </style>
 
     <style name="fragment_txt_top">
@@ -111,16 +138,12 @@
 
     <style name="MyCheckbox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:colorControlNormal" tools:targetApi="lollipop">#242424</item>
-        <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/colorPrimaryDark_new</item>
+        <item name="android:colorControlActivated" tools:targetApi="lollipop">
+            @color/colorPrimaryDark_new
+        </item>
         <item name="android:colorControlHighlight" tools:targetApi="lollipop">#c51162</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
     </style>
 
-    <style name="FullyTranslucent" parent="android:Theme.Translucent.NoTitleBar">
-        <item name="android:progressBarStyle">@style/InvisibleProgress</item>
-    </style>
 
-    <style name="InvisibleProgress">
-        <item name="android:visibility">gone</item>
-    </style>
 </resources>

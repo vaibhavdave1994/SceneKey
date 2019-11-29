@@ -15,8 +15,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -136,7 +137,7 @@ public class CommonUtils {
         toast.show();
     }
 
-    public static void snackbar(Activity activity, @NonNull View coordinatorLayout, @NonNull String message) {
+   /* public static void snackbar(Activity activity, @NonNull View coordinatorLayout, @NonNull String message) {
         if (toast != null) toast.cancel();
         Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
         View sbView = snackbar.getView();
@@ -146,7 +147,7 @@ public class CommonUtils {
         snackbar.setActionTextColor(Color.parseColor("#1976d2"));
         sbView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimaryDark));  //Color.WHITE
         snackbar.show();
-    }
+    }*/
 
 
   /*  public static void showCustomAlertt(final Activity activity, String message) {
@@ -387,4 +388,23 @@ public class CommonUtils {
 
        dialog.show();
    }*/
+
+    public static String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+    public static Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }
+        catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 }

@@ -32,6 +32,9 @@ public class Events implements Serializable {
     public void setVenue(Venue venue) {
         this.venue = venue;
     }
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
     public ArrayList<Artists> getArtistsArrayList() {
         return artistsArrayList;

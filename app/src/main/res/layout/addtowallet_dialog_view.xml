@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/_230sdp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:animateLayoutChanges="true"
     android:layout_margin="@dimen/_5sdp"
+    android:layout_centerInParent="true"
     card_view:cardCornerRadius="@dimen/_15sdp"
     card_view:cardElevation="5dp"
     android:orientation="vertical">
@@ -31,7 +35,7 @@
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:paddingTop="@dimen/_10sdp"
-                android:text="Use 15 key points to add this reward to your wallet?"
+                android:text="@string/use_15_keypoints_to_get_this_reward"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14sdp" />
 
@@ -53,7 +57,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_regular"
                     android:gravity="center"
-                    android:text="NO"
+                    android:text="No"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/_12sdp" />
 
@@ -70,11 +74,12 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/montserrat_regular"
                     android:gravity="center"
-                    android:text="YES"
+                    android:text="Yes"
                     android:textColor="@color/blue"
                     android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
         </LinearLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>
+</RelativeLayout>

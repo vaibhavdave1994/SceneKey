@@ -14,8 +14,7 @@
         android:id="@+id/comeInProfile_t"
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
-        android:src="@drawable/image_default_profile"
-        app:civ_border_color="@color/room_circle_iv_color"
+        app:civ_border_color="#46AA81"
         android:padding="2dp"
         app:civ_border_width="@dimen/_1sdp" />
 

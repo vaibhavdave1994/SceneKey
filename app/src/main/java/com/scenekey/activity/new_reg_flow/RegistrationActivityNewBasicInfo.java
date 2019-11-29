@@ -3,9 +3,12 @@ package com.scenekey.activity.new_reg_flow;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -13,11 +16,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,8 +33,6 @@ import android.widget.Toast;
 
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
-import com.scenekey.cropper.CropImage;
-import com.scenekey.cropper.CropImageView;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.Pop_Up_Option;
@@ -39,6 +40,9 @@ import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,20 +54,59 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
 
-     EditText et_f_name,et_l_name;
-     AppCompatImageView img_back;
-     AppCompatButton btn_next;
-     RelativeLayout rl_pic_selection;
-     boolean isButtonClickable = false;
-     Utility utility;
-     String imageUri = "";
-     CircleImageView civ_pp;
     protected Pop_Up_Option pop_up_option;
-    private String  profileImageUrl = "", mCurrentPhotoPath;
+    EditText et_f_name, et_l_name;
+    AppCompatImageView img_back;
+    AppCompatButton btn_next;
+    RelativeLayout rl_pic_selection;
+    boolean isButtonClickable = false;
+    Utility utility;
+    String imageUri = "";
+    CircleImageView civ_pp;
     Context context = this;
-    private Bitmap profileImageBitmap;
     String email;
     UserInfo userInfo = null;
+    Uri uriforbitmap;
+    private String profileImageUrl = "", mCurrentPhotoPath;
+    private Bitmap profileImageBitmap;
+
+    public static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID},
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[]{filePath}, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    protected static Uri convertFileToContentUri(Context context, File file) throws Exception {
+
+        //Uri localImageUri = Uri.fromFile(localImageFile); // Not suitable as it's not a content Uri
+
+        ContentResolver cr = context.getContentResolver();
+        String imagePath = file.getAbsolutePath();
+        String imageName = null;
+        String imageDescription = null;
+        String uriString = MediaStore.Images.Media.insertImage(cr, imagePath, imageName, imageDescription);
+        return Uri.parse(uriString);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,17 +139,17 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
 
         userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
 
-        if(userInfo != null){
-            if(!userInfo.userEmail.equalsIgnoreCase("") || userInfo.userEmail != null)
+        if (userInfo != null) {
+            if (!userInfo.userEmail.equalsIgnoreCase("") || userInfo.userEmail != null)
                 email = userInfo.userEmail;
 
-            if(!userInfo.fullname.equalsIgnoreCase("") || userInfo.fullname != null)
-               et_f_name.setText(userInfo.fullname);
+            if (!userInfo.fullname.equalsIgnoreCase("") || userInfo.fullname != null)
+                et_f_name.setText(userInfo.fullname);
 
-            if(!userInfo.lastName.equalsIgnoreCase("") || userInfo.lastName != null)
+            if (!userInfo.lastName.equalsIgnoreCase("") || userInfo.lastName != null)
                 et_l_name.setText(userInfo.lastName);
 
-            if(!userInfo.userImage.equalsIgnoreCase("") && userInfo.userImage != null) {
+            if (!userInfo.userImage.equalsIgnoreCase("") && userInfo.userImage != null) {
                 Picasso.with(context).load(userInfo.userImage).placeholder(R.drawable.app_icon)
                         .error(R.drawable.app_icon).into(civ_pp);
 
@@ -119,33 +162,31 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isButtonClickable) {
+                if (isButtonClickable) {
                     if (userInfo != null) {
                         Intent intent = new Intent(context, RegistrationActivityNewGender.class);
-                        if(userInfo.byteArray == null){
+                        if (userInfo.byteArray == null) {
                             intent.putExtra("imageUri", profileImageUrl);
                         }
                         userInfo.fullname = et_f_name.getText().toString().trim();
                         userInfo.lastName = et_l_name.getText().toString().trim();
                         intent.putExtra("userInfo", userInfo);
                         startActivity(intent);
-                    }
-                    else {
-
-                    if (!profileImageUrl.equalsIgnoreCase("")) {
-                        Intent intent = new Intent(context, RegistrationActivityNewGender.class);
-                        intent.putExtra("imageUri", profileImageUrl);
-                        intent.putExtra("f_name", et_f_name.getText().toString().trim());
-                        intent.putExtra("l_name", et_l_name.getText().toString().trim());
-                        intent.putExtra("email", email);
-                        intent.putExtra("from", "basic_info");
-                        startActivity(intent);
                     } else {
-                        Toast.makeText(context, "Please select Profile image", Toast.LENGTH_SHORT).show();
+
+                        if (!profileImageUrl.equalsIgnoreCase("")) {
+                            Intent intent = new Intent(context, RegistrationActivityNewGender.class);
+                            intent.putExtra("imageUri", profileImageUrl);
+                            intent.putExtra("f_name", et_f_name.getText().toString().trim());
+                            intent.putExtra("l_name", et_l_name.getText().toString().trim());
+                            intent.putExtra("email", email);
+                            intent.putExtra("from", "basic_info");
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(context, "Please select Profile image", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-                }
-                else {
+                } else {
                     Toast.makeText(RegistrationActivityNewBasicInfo.this, "Please Enter Name", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -162,20 +203,24 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        callIntent(Constant.MY_PERMISSIONS_REQUEST_EXTERNAL);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constant.MY_PERMISSIONS_REQUEST_CAMERA);
                     } else {
+
                         pop_up_option = initializePopup();
                         pop_up_option.setObject(null);
                         pop_up_option.show();
                     }
+
+
                 } else {
+
                     pop_up_option = initializePopup();
                     pop_up_option.setObject(null);
                     pop_up_option.show();
                 }
+
 
             }
         });
@@ -199,19 +244,18 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
                 String searchText = editable.toString();
-                
-                if(!et_f_name.getText().toString().trim().equalsIgnoreCase("")
-                && !et_l_name.getText().toString().trim().equalsIgnoreCase("")){
+
+                if (!et_f_name.getText().toString().trim().equalsIgnoreCase("")
+                        && !et_l_name.getText().toString().trim().equalsIgnoreCase("")) {
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
                     btn_next.setTextColor(getResources().getColor(R.color.white));
                     isButtonClickable = true;
-                }
-                else {
+                } else {
                     isButtonClickable = false;
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_next_btn_desable));
                     btn_next.setTextColor(getResources().getColor(R.color.button_text_new_reg));
                 }
-                
+
             }
         });
     }
@@ -346,6 +390,57 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
             switch (requestCode) {
                 case Constant.RESULT_LOAD:
                     Uri uri = data.getData();
+                    uriforbitmap = uri;
+                    long time = System.currentTimeMillis();
+                    String str = String.valueOf(time);
+                    String destinatiomPath = str + ".jpg";
+
+                    UCrop.Options options = new UCrop.Options();
+                    options.setHideBottomControls(true);
+                    assert uri != null;
+                    UCrop.of(uri, Uri.fromFile(new File(getCacheDir(),destinatiomPath)))
+                            .withAspectRatio(1f, 1f)
+                            .withMaxResultSize(450, 450)
+                            .withOptions(options)
+                            .start(this);
+                    break;
+
+                case Constant.REQUEST_CAMERA:
+                    // New Code
+                    UCrop.Options options1 = new UCrop.Options();
+                    options1.setHideBottomControls(true);
+                    Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
+                    UCrop.of(uri1, Uri.fromFile(new File(mCurrentPhotoPath)))
+                            .withAspectRatio(1f, 1f)
+                            .withMaxResultSize(450, 450)
+                            .withOptions(options1)
+                            .start(this);
+                    break;
+
+                // New Code
+                case UCrop.REQUEST_CROP:// Image Cropper
+                    if (data != null) {
+                        handleCropResult(data);
+                    }
+                    break;
+
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
+                    break;
+            }
+        }
+    }
+
+
+    /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //   Bitmap bitmap;
+
+        if (resultCode != 0) {
+            switch (requestCode) {
+                case Constant.RESULT_LOAD:
+                    Uri uri = data.getData();
+                    uriforbitmap = uri;
                     // New Code
                     if (uri != null) {
                         // Calling Image Cropper
@@ -359,6 +454,14 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                 case Constant.REQUEST_CAMERA:
                     // New Code
                     Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
+                   *//* try {
+                        uriforbitmap = convertFileToContentUri(this,new File(uri1.getPath()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*//*
+                   *//* Uri uri2 = getImageContentUri(this, new File(uri1.getPath()));
+                    uriforbitmap = uri2;*//*
+
                     if (uri1 != null) {
                         // Calling Image Cropper
                         CropImage.activity(uri1).setCropShape(CropImageView.CropShape.RECTANGLE)
@@ -371,25 +474,70 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                 // New Code
                 case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:// Image Cropper
                     CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
                     try {
                         if (result != null) {
+                            civ_pp.setImageURI(result.getUri());
+
+
                             profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
-                            if(userInfo != null){
+
+                            if (profileImageBitmap != null ) {
+                                Picasso.with(this)
+                                        .load(result.getUri())
+                                        .into(new Target() {
+                                            @Override
+                                            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                                                *//* Save the bitmap or do something with it here *//*
+
+                                                //Set it in the ImageView
+                                                profileImageBitmap = bitmap;
+                                            }
+
+                                            @Override
+                                            public void onBitmapFailed(Drawable errorDrawable) {
+
+                                            }
+
+                                            @Override
+                                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                            }
+                                        });
+                            }
+
+                            int value = 0;
+                            if (profileImageBitmap.getHeight() <= profileImageBitmap.getWidth()) {
+                                value = profileImageBitmap.getHeight();
+                            } else {
+                                value = profileImageBitmap.getWidth();
+                            }
+
+                            Bitmap finalBitmap = Bitmap.createBitmap(profileImageBitmap, 0, 0, value, value);
+
+                            if (userInfo != null) {
                                 userInfo.socialImageChanged = true;
 
+
+//                                file:///data/user/0/com.scenekey/cache/cropped8147193972981792531.jpg
+//                                file:///data/user/0/com.scenekey/cache/cropped-976234933.jpg
 //                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //                                profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 //                                userInfo.byteArray = stream.toByteArray();
                             }
-                            profileImageUrl = Utility.getImageUri(this, profileImageBitmap).toString();
-                            String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, profileImageBitmap));
+                            profileImageUrl = Utility.getImageUri(this, finalBitmap).toString();
+                            String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, finalBitmap));
                             ImageSessionManager.getInstance().createImageSession(uri_path, false);
 
                             Log.e("UPLOAD PATH", uri_path);
-                            Picasso.with(context).load(profileImageUrl).into(civ_pp);
+
+                            //String uri_path = Utility.getRealPathFromURI(this,result.getUri());
+                            //ImageSessionManager.getInstance().createImageSession(uri_path, false);
+                            //Log.e("UPLOAD PATH", uri_path);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+
                         Toast.makeText(context, getResources().getString(R.string.alertImageException), Toast.LENGTH_SHORT).show();
                     } catch (OutOfMemoryError error) {
                         Toast.makeText(context, getResources().getString(R.string.alertOutOfMemory), Toast.LENGTH_SHORT).show();
@@ -401,7 +549,7 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
                     break;
             }
         }
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -460,4 +608,76 @@ public class RegistrationActivityNewBasicInfo extends AppCompatActivity {
             });
         }
     }
+
+    private void handleCropResult(Intent data) {
+        final Uri result = UCrop.getOutput(data);
+        try {
+            if (result != null) {
+                civ_pp.setImageURI(result);
+
+
+                profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result);
+
+                if (profileImageBitmap == null ) {
+                    Picasso.with(this)
+                            .load(result)
+                            .into(new Target() {
+                                @Override
+                                public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                                    /* Save the bitmap or do something with it here */
+
+                                    //Set it in the ImageView
+                                    profileImageBitmap = bitmap;
+                                }
+
+                                @Override
+                                public void onBitmapFailed(Drawable errorDrawable) {
+
+                                }
+
+                                @Override
+                                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                                }
+                            });
+                }
+
+                int value = 0;
+                if (profileImageBitmap.getHeight() <= profileImageBitmap.getWidth()) {
+                    value = profileImageBitmap.getHeight();
+                } else {
+                    value = profileImageBitmap.getWidth();
+                }
+
+                Bitmap finalBitmap = Bitmap.createBitmap(profileImageBitmap, 0, 0, value, value);
+
+                if (userInfo != null) {
+                    userInfo.socialImageChanged = true;
+
+
+//                                file:///data/user/0/com.scenekey/cache/cropped8147193972981792531.jpg
+//                                file:///data/user/0/com.scenekey/cache/cropped-976234933.jpg
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                profileImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                userInfo.byteArray = stream.toByteArray();
+                }
+                profileImageUrl = result.toString();
+//                String uri_path = Utility.getRealPathFromURI(this, result);
+//                ImageSessionManager.getInstance().createImageSession(uri_path, false);
+//
+//                Log.e("UPLOAD PATH", uri_path);
+
+                //String uri_path = Utility.getRealPathFromURI(this,result.getUri());
+                //ImageSessionManager.getInstance().createImageSession(uri_path, false);
+                //Log.e("UPLOAD PATH", uri_path);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            Toast.makeText(context, getResources().getString(R.string.alertImageException), Toast.LENGTH_SHORT).show();
+        } catch (OutOfMemoryError error) {
+            Toast.makeText(context, getResources().getString(R.string.alertOutOfMemory), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

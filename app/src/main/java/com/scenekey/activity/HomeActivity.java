@@ -20,16 +20,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
-
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -45,12 +35,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -108,23 +108,32 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static int ActivityWidth;
     public static int ActivityHeight;
     public static UserInfo userInfo;
+    public static boolean fromSearch = false;
+    public static boolean fromSearch1 = false;
+    public static boolean fromSearch2 = false;
+    public static String name = "";
+    private static TextView tvHomeTitle;
+    public static TextView tv_key_points;
+    public static TextView tv_key_points_new;
     private final String TAG = "HomeActivity";
     public Context context = this;
     public RelativeLayout rtlv_profile;
     public FrameLayout frm_bottmbar;
     public boolean isApiM, isKitKat, statusKey;
+    public String frequency = "";
+    public String venue_id = "";
+    public TextView tv_alert_badge_count;
     int lastClick = 0;
     boolean isFirstTimeTrending = false;
     //Shubham
     TabLayout tabLayout, tablayout_home, tablayout_alert;
     private FrameLayout frame_fragments;
-    private TextView tvHomeTitle, tv_key_points,tv_key_points_new;
     private RelativeLayout rl_title_view;
     private RelativeLayout rtlv_alert, rtlv_home, rtlv_reward, lastclicked;
     private ImageView img_home_logo, img_three_one;
     private View view, bottom_margin_view, top_status;
     private boolean doubleBackPress;
-    private ArrayList<Events> eventsArrayList, eventsNearbyList;
+    public static ArrayList<Events> eventsArrayList, eventsNearbyList;
     private boolean isPermissionAvail;
     private Map_Fragment map_fragment;
     private double latitude = 0.0, longitude = 0.0;
@@ -135,8 +144,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private Utility utility;
     private int position = 0;
     private String notificationType1 = "";
-    public String frequency = "";
-    public String venue_id = "";
     private String eventId = "";
     private String currentScreen = "";
     private String isBroadCast;
@@ -144,11 +151,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     //private TextView txt_five;
     private TextView tv_title;
     private boolean myProfile;
-    public static boolean fromSearch = false;
-    public static String name = "";
     private DatabaseReference mDatabase;
-     public TextView tv_alert_badge_count;
-     private AppCompatImageView img_alert;
+    private AppCompatImageView img_alert;
+    String isseclect ="";
 /*
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -158,16 +163,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     https://stackoverflow.com/questions/47351172/i-want-to-show-tab-bar-icon-left-side-of-text?rq=1
 */
 
-    private int[] tabIcons = {R.drawable.ic_flame, R.drawable.ic_location, R.drawable.ic_search};
+    private int[] tabIcons = {R.drawable.ic_flame, R.drawable.ic_search, R.drawable.ic_location};
 
     private int[] navLabels = {
             R.string.trending,
-            R.string.map,
-            R.string.search
+            R.string.search,
+            R.string.map
+
     };
 
     private int[] tabIconsActive = {
-            R.drawable.ic_flame_active, R.drawable.ic_location_active, R.drawable.ic_search_active
+            R.drawable.ic_flame_active, R.drawable.ic_search_active, R.drawable.ic_location_active
     };
 
     private RelativeLayout rl_title_view_home, rl_title_main_view, rl_toolbar_alert, rl_profileView;
@@ -180,17 +186,48 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             handleNotification(intent);
         }
     };
+    private LinearLayout tab;
+
+    public static void updateSession(UserInfo user) {
+        SceneKey.sessionManager.createSession(user);
+        userInfo = SceneKey.sessionManager.getUserInfo();
+        try {
+            //Picasso.with(this).load(userInfo.getUserImage()).placeholder(R.drawable.image_default_profile).into(img_profile);
+            if (Integer.parseInt(userInfo.key_points) > 1000) {
+                tv_key_points.setText(Utility.coolFormat(Double.parseDouble(userInfo.key_points), 0));
+                tv_key_points_new.setText(Utility.coolFormat(Double.parseDouble(userInfo.key_points), 0));
+            } else {
+                tv_key_points.setText(userInfo.key_points);
+                tv_key_points_new.setText(userInfo.key_points);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View decor = getWindow().getDecorView();
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.white));// set status background white
+        }
         //StatusBarUtil.setTranslucent(this);
-        overridePendingTransition(R.anim.slide_left, R.anim.fab_slide_out_to_left);
+//        overridePendingTransition(R.anim.slide_left, R.anim.fab_slide_out_to_left);
         setContentView(R.layout.activity_home);
+        userInfo = SceneKey.sessionManager.getUserInfo();
         FirebaseApp.initializeApp(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        getDataFromFB();
+
+            getDataFromFB();
+
+
         img_alert = findViewById(R.id.img_alert);
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "Refreshed: " + refreshedToken);
@@ -213,11 +250,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
-        fromSearch = getIntent().getBooleanExtra("fromSearch",false);
-        name = getIntent().getStringExtra("name");
-        if(name == null){
-            name = "";
-        }
+        fromSearch = getIntent().getBooleanExtra("fromSearch", false);
+        fromSearch1 = getIntent().getBooleanExtra("fromSearch1", false);
+        fromSearch2 = getIntent().getBooleanExtra("fromSearch2", false);
+
+
+        //        tablayout_home
+        tablayout_home = findViewById(R.id.tablayout_home);
+
         //Reward Screen Toolbar...............................................
         tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Offers"));
@@ -284,8 +324,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        tablayout_home
-        tablayout_home = findViewById(R.id.tablayout_home);
 
         TabLayout.Tab fTab = tablayout_home.newTab();
 //        fTab.setText("Trending");
@@ -302,11 +340,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //        thTab.setIcon(R.drawable.ic_search);
         tablayout_home.addTab(thTab);
 
+
+      /*  name = getIntent().getStringExtra("name");
+        if (name == null) {
+            name = "";
+        }
+*/
+
         //----------new code-----------------
-        for (int i = 0; i <3; i++) {
+        for (int i = 0; i < 3; i++) {
             // inflate the Parent LinearLayout Container for the tab
             // from the layout nav_tab.xml file that we created 'R.layout.nav_tab
-            LinearLayout tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.new_home_tab_items, null);
+            tab = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.new_home_tab_items, null);
 
             // get child TextView and ImageView from this layout for the icon and label
             TextView tab_label = (TextView) tab.findViewById(R.id.nav_label);
@@ -317,7 +362,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             tab_label.setText(getResources().getString(navLabels[i]));
 
             // set the home to be active at first
-            if(i == 0) {
+            if (i == 0) {
                 tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
                 tab_icon.setImageResource(tabIconsActive[i]);
             } else {
@@ -328,7 +373,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             tablayout_home.getTabAt(i).setCustomView(tab);
         }
 
+        name = getIntent().getStringExtra("name");
+
+
         //Objects.requireNonNull(Objects.requireNonNull(tablayout_home.getTabAt(0)).getIcon()).setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+
 
         tablayout_home.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -353,36 +402,37 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         break;
 
                     case 1:
-                        if (isPermissionAvail) {
-                            assert tab.getIcon() != null;
-                           // tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
-                            //setBottomBar((RelativeLayout) v, lastclicked);
-                            View tabView = tab.getCustomView();
-                            // get inflated children Views the icon and the label by their id
-                            TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
-                            ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
-                            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
-                            tab_icon.setImageResource(tabIconsActive[1]);
-                            if (map_fragment == null) map_fragment = new Map_Fragment();
-                            replaceFragment(map_fragment);
-                        } else {
-                            utility.snackBar(rtlv_home, "Location permission not available", 0);
-                        }
-
-                        break;
-
-                    case 2:
                         assert tab.getIcon() != null;
-                       // fromSearch = false;
-                      //  tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                        // fromSearch = false;
+                        //  tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                         //replaceFragment(new Search_Fragment());
                         View tabView = tab.getCustomView();
                         // get inflated children Views the icon and the label by their id
                         TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
                         ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
                         tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
-                        tab_icon.setImageResource(tabIconsActive[2]);
+                        tab_icon.setImageResource(tabIconsActive[1]);
                         replaceFragment(new NewSearchkFragment());
+                        break;
+
+
+                    case 2:
+                        if (isPermissionAvail) {
+                            assert tab.getIcon() != null;
+                            // tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                            //setBottomBar((RelativeLayout) v, lastclicked);
+                            tabView = tab.getCustomView();
+                            // get inflated children Views the icon and the label by their id
+                            tab_label = (TextView) tabView.findViewById(R.id.nav_label);
+                            tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
+                            tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
+                            tab_icon.setImageResource(tabIconsActive[2]);
+                            if (map_fragment == null) map_fragment = new Map_Fragment();
+                            replaceFragment(map_fragment);
+                        } else {
+                            utility.snackBar(rtlv_home, "Location permission not available", 0);
+                        }
+
                         break;
 
                     default:
@@ -436,6 +486,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 notificationType":22 = nudge
               notificationType":1 = make admin*/
 
+
+
         if (intent.getSerializableExtra("notificationModalEvent") != null) {
             NotificationModal notificationModal = (NotificationModal) intent.getSerializableExtra("notificationModalEvent");
             eventId = notificationModal.eventId;
@@ -456,21 +508,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             currentScreen = notificationModal.notificationCurrentScreen;
             isBroadCast = notificationModal.isBroadCast;
 
-        } else if (intent.getSerializableExtra("notificationModalReward") != null) {
-            NotificationModal notificationModal = (NotificationModal) intent.getSerializableExtra("notificationModalReward");
-            eventId = notificationModal.eventId;
-            String fullAddress = notificationModal.fullAddress;
-            String bag_admin = notificationModal.bag_admin;
-            notificationType1 = notificationModal.notificationType1;
-            frequency = notificationModal.frequency;
-            venue_id = notificationModal.venue_id;
-            notificationMessage = notificationModal.message;
-            currentScreen = notificationModal.notificationCurrentScreen;
-            isBroadCast = notificationModal.isBroadCast;
+        } else {
 
-           /* txt_notification.setVisibility(View.VISIBLE);
-            txt_notification.setText("1");*/
+            if (intent.getStringExtra("currentScreen") != null){
+            currentScreen =intent.getStringExtra("currentScreen");
+            isBroadCast =intent.getStringExtra("isBroadCast");
+            eventId =intent.getStringExtra("eventId");
+            notificationType1 =intent.getStringExtra("notificationType1");
+            frequency =intent.getStringExtra("frequency");
+            venue_id =intent.getStringExtra("venue_id");
+            notificationMessage =intent.getStringExtra("message");}
+
         }
+
+
 
         switch (notificationType1) {
 
@@ -515,22 +566,64 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 //            notificationType":3 = Reward
             case "3":
-//                if (currentScreen.equals("HomeScreen")) {
-//                    if (isBroadCast.equals("isBroadCast")) {
-//                        rewardNotification(notificationMessage);
-//                    } else {
-//                        isBgNoti = true;
-//                    }
-//                } else if (currentScreen.equals("RewardScreen")) {
-//                    if (isBroadCast.equals("isBroadCast")) {
-//                Fragment fragment = getCurrentFragment();
-//                if (fragment instanceof OfferSFragment) {
-//                    OfferSFragment reward_fragment = (OfferSFragment) fragment;
-//                    reward_fragment.getOffersList();
-//                }
-//            }
-                //}
+                if (currentScreen.equals("HomeScreen")) {
+                    if (isBroadCast.equals("isBroadCast")) {
+                        rewardNotification(notificationMessage);
+                    }else {
+                        isseclect = "3";
+                    }
+                } else if (currentScreen.equals("RewardScreen")) {
+                    if (isBroadCast.equals("isBroadCast")) {
+                        Fragment fragment = getCurrentFragment();
+                        if (fragment instanceof OfferSFragment) {
+                            OfferSFragment reward_fragment = (OfferSFragment) fragment;
+                            reward_fragment.getOffersList();
+                        }
+                    }
+                }
 
+                break;
+         case "tag":
+
+
+
+               if (currentScreen.equals("RewardScreen")) {
+                    if (isBroadCast.equals("isBroadCast")) {
+                        Fragment fragment = getCurrentFragment();
+                        if (fragment instanceof OfferSFragment) {
+                            OfferSFragment reward_fragment = (OfferSFragment) fragment;
+                            reward_fragment.getOffersList();
+                        }
+                    }
+                }
+               else {
+                   Intent intentVenueBoard = new Intent(context, OnBoardActivity.class);
+                   intentVenueBoard.putExtra("frequency", frequency);
+                   intentVenueBoard.putExtra("venuid", venue_id);
+                   intentVenueBoard.putExtra("fromAlert", true);
+                   startActivity(intentVenueBoard);
+               }
+
+
+               /* new Handler().postDelayed(new Runnable() {
+                    // Using handler with postDelayed called runnable run method
+                    @Override
+                    public void run() {
+
+                        HomeActivity.this.runOnUiThread(new Runnable() {
+                            public void run() {
+                                lastClick = 0;
+                                isPermissionAvail = true;
+                                rtlv_alert.callOnClick();
+                            }
+                        });
+                    }
+                }, 3 * 1000);*/
+
+                break;
+
+
+            case "8":
 
                 new Handler().postDelayed(new Runnable() {
                     // Using handler with postDelayed called runnable run method
@@ -547,40 +640,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }, 3 * 1000);
 
-                break;
-
-            case "tag":
-
-                Intent intentVenueBoard = new Intent(context, OnBoardActivity.class);
-                intentVenueBoard.putExtra("frequency", frequency);
-                intentVenueBoard.putExtra("venuid", venue_id);
-                intentVenueBoard.putExtra("fromAlert", true);
-                startActivity(intentVenueBoard);
 
                 break;
 
-                case "8":
+            case "30": {
 
-                    new Handler().postDelayed(new Runnable() {
-                        // Using handler with postDelayed called runnable run method
-                        @Override
-                        public void run() {
+                lastClick = 0;
+                isPermissionAvail = true;
+                rtlv_alert.callOnClick();
 
-                            HomeActivity.this.runOnUiThread(new Runnable() {
-                                public void run() {
-                                    lastClick = 0;
-                                    isPermissionAvail = true;
-                                    rtlv_alert.callOnClick();
-                                }
-                            });
-                        }
-                    }, 3 * 1000);
+            }
 
-
-
-
-                    break;
+                break;
         }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -631,9 +704,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         Permission permission = new Permission(context);
-        userInfo = SceneKey.sessionManager.getUserInfo();
+
         initView();
-        dimmedEffect();
+//        dimmedEffect();
         isPermissionAvail = permission.checkLocationPermission();
 
         replaceFragment(new Home_No_Event_Fragment());
@@ -653,13 +726,36 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rtlv_home.callOnClick();
+        if (getIntent().getStringExtra("reward") != null && getIntent().getStringExtra("reward").equalsIgnoreCase("reward")) {
+            rtlv_reward.callOnClick();
 
-        if(fromSearch){
-            if(tablayout_home != null){
+        }
+        else if(isseclect.equalsIgnoreCase("3"))
+        {
+            rtlv_alert.callOnClick();
+
+        }
+        else {
+            rtlv_home.callOnClick();
+        }
+        if (fromSearch) {
+            if (tablayout_home != null) {
+                tablayout_home.getTabAt(1).select();
+            }
+        }
+
+        if (fromSearch1) {
+            if (tablayout_home != null) {
+                tablayout_home.getTabAt(0).select();
+            }
+        }
+
+        if (fromSearch2) {
+            if (tablayout_home != null) {
                 tablayout_home.getTabAt(2).select();
             }
         }
+
     }
 
     private void initView() {
@@ -693,9 +789,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         setOnClick(rtlv_alert, rtlv_home, rtlv_profile, rtlv_reward, img_setting);
 
-        tv_key_points.setText(userInfo.key_points);
-        tv_key_points_new.setText(userInfo.key_points);
 
+        SceneKey.sessionManager.putKeypoint("");
+        if (Integer.parseInt(userInfo().key_points) > 1000) {
+            tv_key_points.setText(Utility.coolFormat(Double.parseDouble(userInfo.key_points), 0));
+            tv_key_points_new.setText(Utility.coolFormat(Double.parseDouble(userInfo.key_points), 0));
+        } else {
+            tv_key_points.setText(userInfo().key_points);
+            tv_key_points_new.setText(userInfo().key_points);
+
+        }
 
         //tvHomeTitle.setText(userInfo().fullname + " " + userInfo().lastName);
         tvHomeTitle.setText(userInfo().fullname);
@@ -764,6 +867,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         getImgV(rtlv_profile).setAnimation(animat4);
     }
 
+    //Shubham.................................
+
     public UserInfo userInfo() {
 
         if (!SceneKey.sessionManager.isLoggedIn()) {
@@ -771,8 +876,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         return SceneKey.sessionManager.getUserInfo();
     }
-
-    //Shubham.................................
 
     @Override
     public void onClick(View v) {
@@ -788,7 +891,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     rl_profileView.setVisibility(View.GONE);
 
                     if (isPermissionAvail) {
-                        if(!isFirstTimeTrending){
+                        if (!isFirstTimeTrending) {
                             isFirstTimeTrending = true;
                             replaceFragment(new Trending_Fragment());
 
@@ -800,8 +903,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             tab_icon.setImageResource(tabIconsActive[0]);
 
                             //tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
-                        }
-                      else {
+                        } else {
                             replaceFragment(new Trending_Fragment());
 
                             View tabView = tablayout_home.getTabAt(0).getCustomView();
@@ -811,7 +913,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
                             tab_icon.setImageResource(tabIconsActive[0]);
 
-                           // tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
+                            // tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                             tablayout_home.getTabAt(0).select();
                         }
                         setBottomBar((RelativeLayout) v, lastclicked);
@@ -835,7 +937,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     tv_title.setText("Alerts");
 
                     if (isPermissionAvail) {
-                       // replaceFragment(new Alert_fragment());
+                        // replaceFragment(new Alert_fragment());
                         replaceFragment(new OfferSFragment());
                         setBottomBar((RelativeLayout) v, lastclicked);
                     } else {
@@ -847,11 +949,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.img_setting:
 
-               // if (lastClick != R.id.img_setting) {
+                if (lastClick != R.id.img_setting) {
                     lastClick = R.id.img_setting;
                     Intent seetingIntet = new Intent(this, SettingActivtiy.class);
                     startActivity(seetingIntet);
-               // }
+                }
 
                 break;
 
@@ -894,12 +996,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     rl_title_view_home.setVisibility(View.GONE);
                     rl_title_main_view.setVisibility(View.GONE);
                     rl_profileView.setVisibility(View.GONE);
-                    tv_title.setText("Reward");
+                    tv_title.setText("Rewards");
                     hideKeyBoard();
                     //replaceFragment(new OfferSFragment());
                     replaceFragment(new WalletsFragment());
                     setBottomBar((RelativeLayout) v, lastclicked);
-                   // txt_five.setTextColor(getResources().getColor(R.color.selected_bb_text));
+                    // txt_five.setTextColor(getResources().getColor(R.color.selected_bb_text));
                 }
 
                 break;
@@ -927,8 +1029,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void onResume() {
-        registerReceiver(myReceiver, new IntentFilter("BroadcastNotification"));
 
+
+        registerReceiver(myReceiver, new IntentFilter("BroadcastNotification"));
+        getDataFromFB();
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof Event_Fragment) {
             Event_Fragment event_fragment = (Event_Fragment) fragment;
@@ -940,8 +1044,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //            profileNew_fragment.onResume();
             lastClick = 0;
             rtlv_profile.performClick();
-        }
-        else if (fragment instanceof Trending_Fragment) {
+        } else if (fragment instanceof Trending_Fragment) {
             replaceFragment(new Trending_Fragment());
 
             View tabView = tablayout_home.getTabAt(0).getCustomView();
@@ -968,12 +1071,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         if (lastClicked != null) {
 
-           // setRtlvText(lastClicked, false);
+            // setRtlvText(lastClicked, false);
 
             switch (lastClicked.getId()) {
 
                 case R.id.rtlv_home:
-                        getImgV(lastClicked).setImageResource(R.drawable.home);
+                    getImgV(lastClicked).setImageResource(R.drawable.home);
                     break;
 
 
@@ -999,7 +1102,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.rtlv_alert:
-                 getImgV(v).setImageResource(R.drawable.alert_active);
+                getImgV(v).setImageResource(R.drawable.alert_active);
 
                 break;
 
@@ -1014,6 +1117,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         this.lastclicked = v;
     }
+    //..............................................
 
     void chaeckReward(boolean chaeckValue) {
         if (chaeckValue) {
@@ -1024,7 +1128,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             tabLayout.setVisibility(View.GONE);
         }
     }
-    //..............................................
 
     void setRtlvText(RelativeLayout rtlv, boolean isClicked) {
         if (isClicked) {
@@ -1129,10 +1232,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (view.requestFocus()) {
             try {
                 InputMethodManager imm = (InputMethodManager)
-                       getSystemService(Context.INPUT_METHOD_SERVICE);
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -1330,7 +1432,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
 
                     if (isBgNoti) {
@@ -1368,22 +1470,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             VolleySingleton.getInstance(this.getBaseContext()).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(frame_fragments, getString(R.string.internetConnectivityError), 0);
+//            utility.snackBar(frame_fragments, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
-    }
-
-    public void updateSession(UserInfo user) {
-        SceneKey.sessionManager.createSession(user);
-        userInfo = SceneKey.sessionManager.getUserInfo();
-        try {
-            //Picasso.with(this).load(userInfo.getUserImage()).placeholder(R.drawable.image_default_profile).into(img_profile);
-            tv_key_points.setText(userInfo.key_points);
-            tv_key_points_new.setText(userInfo.key_points);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private boolean isLocation() {
@@ -1400,7 +1489,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void showErrorPopup() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -1438,7 +1527,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 rtlv_home.callOnClick();
                                 break;
 
-                           /* case "getCurrentLatLng":
+                           /* case "atLng":
                                 getCurrentLatLng();
                                 break;*/
 
@@ -1623,20 +1712,28 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public String[] getLatLng() {
         String latLng[] = new String[2];
 
-        if (userInfo.makeAdmin.contains(Constant.ADMIN_YES) && userInfo().currentLocation) {
-            latLng[0] = userInfo.adminLat = (latitudeAdmin + "");
-            latLng[1] = userInfo.adminLong = (longitudeAdmin + "");
-            return latLng;
-        } else if (userInfo.makeAdmin.contains(Constant.ADMIN_YES) && isLocation()) {
-            //userInfo.setAddress("");
-            latLng[0] = userInfo.adminLat;
-            latLng[1] = userInfo.adminLong;
-            return latLng;
+        if (userInfo.makeAdmin != null) {
+            if (userInfo.makeAdmin.contains(Constant.ADMIN_YES) && userInfo().currentLocation) {
+                latLng[0] = userInfo.adminLat = (latitudeAdmin + "");
+                latLng[1] = userInfo.adminLong = (longitudeAdmin + "");
+                return latLng;
+            } else if (userInfo.makeAdmin.contains(Constant.ADMIN_YES) && isLocation()) {
+                //userInfo.setAddress("");
+                latLng[0] = userInfo.adminLat;
+                latLng[1] = userInfo.adminLong;
+                return latLng;
+            } else {
+                latLng[0] = latitude + "";
+                latLng[1] = longitude + "";
+                return latLng;
+            }
+
         } else {
             latLng[0] = latitude + "";
             latLng[1] = longitude + "";
             return latLng;
         }
+
 
     }
 
@@ -1687,8 +1784,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         try {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return null;
-            }
-            else {
+            } else {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 String fragmentTag = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1).getName();
                 return fragmentManager.findFragmentByTag(fragmentTag);
@@ -2144,7 +2240,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void showCustomPopup(String message, final int call) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -2253,32 +2349,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void getDataFromFB(){
+    public void getDataFromFB() {
         //String userId = mDatabase.push().getKey();
-        showProgDialog(true,"");
+        showProgDialog(true, "");
         mDatabase.child("dev").child("reward").child(SceneKey.sessionManager.getUserInfo().userid).
                 child("count").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String val = String.valueOf(dataSnapshot.getValue());
-                if(!val.equalsIgnoreCase("") && val != null && !val.equalsIgnoreCase("null")) {
+                if (!val.equalsIgnoreCase("") && val != null && !val.equalsIgnoreCase("null")) {
                     if (Integer.parseInt(val) > 0) {
-                        img_alert.setImageResource(R.drawable.alert_dot);
+                        if (currentScreen.equals("RewardScreen"))
+                        {
+                            img_alert.setImageResource(R.drawable.alert_active);
+
+                        }
+                        else {
+                            img_alert.setImageResource(R.drawable.alert_dot);
+
+                        }
 //                        tv_alert_badge_count.setText(val);
 //                        tv_alert_badge_count.setVisibility(View.VISIBLE);
-                    }
-                    else {
-                        img_alert.setImageResource(R.drawable.alert);
+                    } else {
+                        if (currentScreen.equals("RewardScreen") || R.id.rtlv_alert == lastClick){
+                            img_alert.setImageResource(R.drawable.alert_active);
+
+                        }else {
+                            img_alert.setImageResource(R.drawable.alert);
+                        }
+
                     }
                 }
-                dismissProgDialog();
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
-               dismissProgDialog();
+                dismissProgDialog();
             }
         });
     }

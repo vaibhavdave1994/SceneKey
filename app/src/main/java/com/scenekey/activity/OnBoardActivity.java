@@ -1,20 +1,22 @@
 package com.scenekey.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
+import com.scenekey.activity.Bottomsheet.BoardBottomSheetDialog;
+import com.scenekey.activity.trending_summery.Summary_Activity;
 import com.scenekey.adapter.VenueBoardAdapter;
 import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.Constant;
@@ -36,6 +40,7 @@ import com.scenekey.helper.WebServices;
 import com.scenekey.model.Event;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Events;
+import com.scenekey.model.UserInfo;
 import com.scenekey.model.Venue;
 import com.scenekey.model.VenueBoard;
 import com.scenekey.util.SceneKey;
@@ -55,8 +60,17 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class OnBoardActivity extends BaseActivity implements View.OnClickListener {
+public class OnBoardActivity extends BaseActivity implements View.OnClickListener, BoardBottomSheetDialog.BoardSheetListener {
 
+    public Events object;
+    Event event;
+    Venue venue;
+    RelativeLayout venuName;
+    boolean fromTrending = false;
+    boolean fromAlert = false;
+    RelativeLayout lnrLeft, comeInUser_lnr;
+    String venuid = "";
+    String frequency = "";
     private ArrayList<EventAttendy> attendyList;
     private TextView onBoard_txt_event_name;
     private ImageView img_eventDetail_back;
@@ -69,20 +83,11 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     private VenueBoardAdapter venueBoardAdapter;
     private RecyclerView venuRecyclerView;
     private ArrayList<VenueBoard.EventTagBean.TagListBean> venuBoardCatList;
-    Event event;
-    Venue venue;
     private String[] currentLatLng;
-    public Events object;
-    private ImageView iv_tag__special_image,img_no_member,iv_group;
+    private ImageView iv_tag__special_image, img_no_member, iv_group;
     private TextView tag__vanue_name;
-    RelativeLayout venuName;
-    boolean fromTrending = false;
-    boolean fromAlert = false;
-    RelativeLayout lnrLeft,comeInUser_lnr;
     private ArrayList<Events> eventsArrayList;
-    String venuid ="";
-    String frequency ="";
-
+    private ImageView img_dot;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +100,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         venuBoardList = new ArrayList<>();
         venuBoardCatList = new ArrayList<>();
 
+        img_dot = findViewById(R.id.img_dot);
         container = findViewById(R.id.container);
         onBoard_txt_event_name = findViewById(R.id.onBoard_txt_event_name);
         img_eventDetail_back = findViewById(R.id.img_eventDetail_back);
@@ -116,12 +122,43 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 //        }
 
         img_eventDetail_back.setOnClickListener(this);
+        img_dot.setOnClickListener(this);
 
-        fromAlert = getIntent().getBooleanExtra("fromAlert",false);
-        if(fromAlert){
-            venuid =  getIntent().getStringExtra("venuid");
-            frequency =  getIntent().getStringExtra("frequency");
-            getDataViaAlert(frequency,venuid);
+        fromAlert = getIntent().getBooleanExtra("fromAlert", false);
+        if (fromAlert) {
+            venuid = getIntent().getStringExtra("venuid");
+            frequency = getIntent().getStringExtra("frequency");
+            String event_name = getIntent().getStringExtra("event_name");
+           /* String event_id = getIntent().getStringExtra("event_id");
+            String event_time = getIntent().getStringExtra("event_time");
+*/
+            String week = Utility.checkWeek();
+            if (frequency.contains(",")){
+            String[] animalsArray = frequency.split(",");
+            for (String s : animalsArray) {
+                if (week.equals(s)) {
+                    frequency = s;
+                }
+
+            }
+            }
+
+
+
+            String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+
+            if (frequency.equalsIgnoreCase(date) || frequency.equalsIgnoreCase("daily") || week.equalsIgnoreCase(frequency)){
+                img_dot.setVisibility(View.VISIBLE);
+
+            }
+            else {
+                img_dot.setVisibility(View.GONE);
+            }
+
+            getDataViaAlert(frequency, venuid);
+
+
+
         }
 
         if (getIntent().getSerializableExtra("eventid") != null) {
@@ -134,23 +171,22 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             if (currentLatLng == null) {
                 currentLatLng = new String[]{userInfo().lat, userInfo().longi};
             }
-            if(object != null)
-            keyInToEvent();
+            if (object != null)
+                keyInToEvent();
 
-            onBoard_txt_event_name.setText("" + event.event_name);
+            onBoard_txt_event_name.setText(event.event_name);
             getSearchTagList(event.event_id, venuid.getVenue_id());
 
             if (object != null) {
-                if(object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
-                 tagFollowUnfollow(1,object.getVenue().getBiz_tag_id(),1);
+                if (object.getVenue().getIs_tag_follow().equalsIgnoreCase("0"))
+                    tagFollowUnfollow(1, object.getVenue().getBiz_tag_id(), 1);
             }
-        }
-        else {
+        } else {
             String event_name = getIntent().getStringExtra("event_name");
-            onBoard_txt_event_name.setText("" + event_name);
+            onBoard_txt_event_name.setText(event_name);
         }
 
-        fromTrending = getIntent().getBooleanExtra("fromTrending",false);
+        fromTrending = getIntent().getBooleanExtra("fromTrending", false);
 
         venuBoardEventTagBeanList = new ArrayList<>();
 
@@ -161,44 +197,67 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
 
         switch (view.getId()) {
-                case R.id.img_eventDetail_back:
-                     onBackPressed();
-                     break;
+            case R.id.img_eventDetail_back:
+                onBackPressed();
+                break;
 
-                case R.id.iv_group:
-                        Intent intent = new Intent(OnBoardActivity.this, TheRoomActivity.class);
-                        intent.putExtra("fromTrendingHome", event.keyInUserModalList);
-                        intent.putExtra("object", object);
-                        intent.putExtra("currentLatLng", currentLatLng);
-                    if(fromTrending){
-                        intent.putExtra("fromTrending", true);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-                    }
-                    else {
-                        startActivity(intent);
-                    }
 
-                 break;
+            case R.id.img_dot: {
+                BoardBottomSheetDialog bottomSheet = new BoardBottomSheetDialog();
+                bottomSheet.show(getSupportFragmentManager(), "BoardBottomSheet");
+            }
+            break;
 
-                case R.id.img_no_member:
-                        callCheckEventStatusApi(event.event_name, event.event_id, venue,object,currentLatLng
-                                ,new String[]{venue.getLatitude(), venue.getLongitude()});
-                  break;
+            case R.id.iv_group:
+                Intent intent = new Intent(OnBoardActivity.this, TheRoomActivity.class);
+                intent.putExtra("fromTrendingHome", event.keyInUserModalList);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                if (fromTrending) {
+                    intent.putExtra("fromTrending", true);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    startActivity(intent);
+                }
+
+                break;
+
+            case R.id.img_no_member:
+                callCheckEventStatusApi(event.event_name, event.event_id, venue, object, currentLatLng
+                        , new String[]{venue.getLatitude(), venue.getLongitude()});
+                break;
         }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (SceneKey.sessionManager.getBackOrIntent() && SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("trending")) {
+            Intent intent = new Intent(OnBoardActivity.this, HomeActivity.class);
+            intent.putExtra("fromSearch1", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+        else if (SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("map")){
+            Intent intent = new Intent(OnBoardActivity.this, HomeActivity.class);
+            intent.putExtra("fromSearch2", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            super.onBackPressed();
+        }
+
     }
 
     //-------from alert---------
     private void getDataViaAlert(final String frequency, final String venue_id) {
 
         if (utility.checkInternetConnection()) {
-            setLoading(true);
+
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.VENUEBOARD, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -209,9 +268,10 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                         JSONObject jo = new JSONObject(response);
                         String status = jo.getString("status");
                         String event_name = jo.getString("event_name");
-                        onBoard_txt_event_name.setText("" + event_name);
+                        onBoard_txt_event_name.setText(event_name);
                         if (status.equals("success")) {
 
+                            venuBoardEventTagBeanList = new ArrayList<>();
                             JSONArray eventTag = jo.getJSONArray("eventTag");
                             VenueBoard.EventTagBean eventTagBean;
                             VenueBoard.EventTagBean eventTagBeanSpecial = null;
@@ -220,9 +280,9 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
                                 JSONObject jsonObject1 = eventTag.getJSONObject(i);
                                 JSONArray tagList = jsonObject1.getJSONArray("tagList");
-                                if(tagList.length()>0){
+                                if (tagList.length() > 0) {
 
-                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Specials")){
+                                    if (jsonObject1.getString("category_name").equalsIgnoreCase("Specials")) {
                                         eventTagBeanSpecial = new VenueBoard.EventTagBean();
                                         eventTagBeanSpecial.setCat_id(jsonObject1.getString("cat_id"));
                                         eventTagBeanSpecial.setCategory_name(jsonObject1.getString("category_name"));
@@ -246,9 +306,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                             venuBoardListSpecial.add(tagListBean);
                                         }
                                         eventTagBeanSpecial.setTagList(venuBoardListSpecial);
-                                    }
-                                    else
-                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Happy Hour")){
+                                    } else if (jsonObject1.getString("category_name").equalsIgnoreCase("Happy Hour")) {
                                         eventTagBeanHappyHour = new VenueBoard.EventTagBean();
                                         eventTagBeanHappyHour.setCat_id(jsonObject1.getString("cat_id"));
                                         eventTagBeanHappyHour.setCategory_name(jsonObject1.getString("category_name"));
@@ -272,8 +330,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                             venuBoardListHappyHour.add(tagListBean);
                                         }
                                         eventTagBeanHappyHour.setTagList(venuBoardListHappyHour);
-                                    }
-                                    else {
+                                    } else {
                                         eventTagBean = new VenueBoard.EventTagBean();
                                         eventTagBean.setCat_id(jsonObject1.getString("cat_id"));
                                         eventTagBean.setCategory_name(jsonObject1.getString("category_name"));
@@ -302,15 +359,15 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                 }
                             }
 
-                            if(eventTagBeanHappyHour != null){
+                            if (eventTagBeanHappyHour != null) {
                                 venuBoardEventTagBeanList.add(eventTagBeanHappyHour);
                             }
 
-                            if(eventTagBeanSpecial != null){
+                            if (eventTagBeanSpecial != null) {
                                 venuBoardEventTagBeanList.add(eventTagBeanSpecial);
                             }
                             //venueBoardAdapter.notifyDataSetChanged();
-                            venueBoardAdapter = new VenueBoardAdapter(OnBoardActivity.this, venuBoardEventTagBeanList,fromTrending);
+                            venueBoardAdapter = new VenueBoardAdapter(OnBoardActivity.this, venuBoardEventTagBeanList, fromTrending);
                             venuRecyclerView.setAdapter(venueBoardAdapter);
 
                             //-------------eventdata-----------------
@@ -355,10 +412,12 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                         Utility.e("Exception Remaining", e.toString());
                                     }
                                     eventsArrayList.add(events);
+
                                     if (i == 0) {
                                         event = events.getEvent();
                                         venue = events.getVenue();
                                         object = events;
+                                        forAlertEventApi(object.getEvent().event_name,object.getEvent().event_id,object.getEvent().event_time);
                                     }
                                 }
 
@@ -382,7 +441,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     params.put("frequency", frequency);
                     params.put("venue_id", venue_id);
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
-                    params.put("lat",userInfo().lat);
+                    params.put("lat", userInfo().lat);
                     params.put("long", userInfo().longi);
                     return params;
                 }
@@ -390,12 +449,28 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
         }
     }
 
     public void checkWithDate(final String startDate, final String rating, Events events) {  //2018-11-12 18:00:00TO08:00:00
+
         String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
+        try {
+            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).parse(dateSplit[0] + " " + dateSplit[1]);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+            Date date = df.parse(userInfo.currentDate);
+            String formattedDate = df.format(date);
+            Date curTime = df.parse(formattedDate);
+            getDayDifference(startTime, curTime, rating, events);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        /* String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
         try {
             Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).parse(dateSplit[0] + " " + dateSplit[1]);
 
@@ -409,7 +484,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     //********** day diffrence  ****************//
@@ -477,7 +552,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     private void getSearchTagList(final String event_id, final String venue_id) {
 
         if (utility.checkInternetConnection()) {
-            setLoading(true);
+//            setLoading(true);
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.VENUEBOARD_EVENT_TAG, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -488,7 +563,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                         JSONObject jo = new JSONObject(response);
                         String status = jo.getString("status");
                         if (status.equals("success")) {
-
+                            venuBoardEventTagBeanList = new ArrayList<>();
                             JSONArray eventTag = jo.getJSONArray("eventTag");
                             VenueBoard.EventTagBean eventTagBean;
                             VenueBoard.EventTagBean eventTagBeanSpecial = null;
@@ -497,9 +572,9 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
                                 JSONObject jsonObject1 = eventTag.getJSONObject(i);
                                 JSONArray tagList = jsonObject1.getJSONArray("tagList");
-                                if(tagList.length()>0){
+                                if (tagList.length() > 0) {
 
-                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Specials")){
+                                    if (jsonObject1.getString("category_name").equalsIgnoreCase("Specials")) {
                                         eventTagBeanSpecial = new VenueBoard.EventTagBean();
                                         eventTagBeanSpecial.setCat_id(jsonObject1.getString("cat_id"));
                                         eventTagBeanSpecial.setCategory_name(jsonObject1.getString("category_name"));
@@ -523,9 +598,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                             venuBoardListSpecial.add(tagListBean);
                                         }
                                         eventTagBeanSpecial.setTagList(venuBoardListSpecial);
-                                    }
-                                    else
-                                    if(jsonObject1.getString("category_name").equalsIgnoreCase("Happy Hour")){
+                                    } else if (jsonObject1.getString("category_name").equalsIgnoreCase("Happy Hour")) {
                                         eventTagBeanHappyHour = new VenueBoard.EventTagBean();
                                         eventTagBeanHappyHour.setCat_id(jsonObject1.getString("cat_id"));
                                         eventTagBeanHappyHour.setCategory_name(jsonObject1.getString("category_name"));
@@ -549,8 +622,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                             venuBoardListHappyHour.add(tagListBean);
                                         }
                                         eventTagBeanHappyHour.setTagList(venuBoardListHappyHour);
-                                    }
-                                    else {
+                                    } else {
                                         eventTagBean = new VenueBoard.EventTagBean();
                                         eventTagBean.setCat_id(jsonObject1.getString("cat_id"));
                                         eventTagBean.setCategory_name(jsonObject1.getString("category_name"));
@@ -579,15 +651,15 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                 }
                             }
 
-                            if(eventTagBeanHappyHour != null){
+                            if (eventTagBeanHappyHour != null) {
                                 venuBoardEventTagBeanList.add(eventTagBeanHappyHour);
                             }
 
-                            if(eventTagBeanSpecial != null){
+                            if (eventTagBeanSpecial != null) {
                                 venuBoardEventTagBeanList.add(eventTagBeanSpecial);
                             }
                             //venueBoardAdapter.notifyDataSetChanged();
-                            venueBoardAdapter = new VenueBoardAdapter(OnBoardActivity.this, venuBoardEventTagBeanList,fromTrending);
+                            venueBoardAdapter = new VenueBoardAdapter(OnBoardActivity.this, venuBoardEventTagBeanList, fromTrending);
                             venuRecyclerView.setAdapter(venueBoardAdapter);
                         }
 
@@ -613,7 +685,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
         }
     }
 
@@ -649,13 +722,12 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                             intent.putExtra("event_name", event_name);
                             intent.putExtra("object", object);
                             intent.putExtra("venueId", venue_name.getVenue_id());
-                            if(fromTrending){
+                            if (fromTrending) {
                                 intent.putExtra("fromTrending", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
-                                finish();
-                            }
-                            else {
+//                                finish();
+                            } else {
                                 startActivity(intent);
                             }
 
@@ -688,6 +760,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(OnBoardActivity.this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             Toast.makeText(OnBoardActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -698,7 +771,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
      */
     public void getAllData() {
 
-       // showProgDialog(false,"");
+        // showProgDialog(false,"");
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.LISTEVENTFEED, new Response.Listener<String>() {
                 @Override
@@ -708,8 +781,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     // get response
                     try {
                         if (response != null) getResponse(response);
-                        else
-                            Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        else
+//                            Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
                     } catch (Exception e) {
                         e.printStackTrace();
                         dismissProgDialog();
@@ -729,7 +802,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     params.put("event_id", event.event_id);
                     params.put("user_id", userInfo().userid);
 
-                   // Utility.e(TAG, " params " + params.toString());
+                    // Utility.e(TAG, " params " + params.toString());
                     return params;
                 }
             };
@@ -737,6 +810,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(20000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             //utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
@@ -755,7 +829,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 Object objectType = obj1.get("eventattendy");
 
                 if (objectType instanceof String) {
-                        iv_group.setVisibility(View.VISIBLE);
+                    iv_group.setVisibility(View.VISIBLE);
                 } else if (objectType instanceof JSONArray) {
                     setAttendyJson(obj1.getJSONArray("eventattendy"));
                     iv_group.setVisibility(View.GONE);
@@ -763,16 +837,17 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 }
             }
 
-            if(fromAlert)
+            if (fromAlert)
                 manageFrequency(frequency);
 
         } catch (JSONException e) {
             e.printStackTrace();
-            if(fromAlert)
-            manageFrequency(frequency);
+            if (fromAlert)
+                manageFrequency(frequency);
         }
 
     }
+
     public void setAttendyJson(JSONArray Json) throws JSONException {
         if (attendyList != null) attendyList.clear();
         if (attendyList == null) attendyList = new ArrayList<>();
@@ -780,19 +855,19 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             EventAttendy attendy = new EventAttendy();
             JSONObject attendyJosn = Json.getJSONObject(i);
             if (attendyJosn.has("username"))
-                attendy.username=(attendyJosn.getString("username"));
+                attendy.username = (attendyJosn.getString("username"));
             if (attendyJosn.has("userFacebookId"))
-                attendy.userFacebookId=(attendyJosn.getString("userFacebookId"));
-            if (attendyJosn.has("userid")) attendy.userid=(attendyJosn.getString("userid"));
+                attendy.userFacebookId = (attendyJosn.getString("userFacebookId"));
+            if (attendyJosn.has("userid")) attendy.userid = (attendyJosn.getString("userid"));
             if (attendyJosn.has("user_status"))
-                attendy.user_status=(attendyJosn.getString("user_status"));
+                attendy.user_status = (attendyJosn.getString("user_status"));
             if (attendyJosn.has("usertype"))
-                attendy.usertype=(attendyJosn.getString("usertype"));
-            if (attendyJosn.has("rating")) attendy.rating=(attendyJosn.getInt("rating") + "");
+                attendy.usertype = (attendyJosn.getString("usertype"));
+            if (attendyJosn.has("rating")) attendy.rating = (attendyJosn.getInt("rating") + "");
             if (attendyJosn.has("stagename"))
-                attendy.stagename=(attendyJosn.getString("stagename"));
+                attendy.stagename = (attendyJosn.getString("stagename"));
             if (attendyJosn.has("bio"))
-                attendy.bio=(attendyJosn.getString("bio"));
+                attendy.bio = (attendyJosn.getString("bio"));
             if (attendyJosn.has("userimage"))
                 attendy.setUserimage(attendyJosn.getString("userimage"));
             attendyList.add(attendy);
@@ -810,8 +885,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup parent = findViewById(R.id.comeInUser_lnr);
         parent.removeAllViews();
-        int loopCount  = list.size();
-        if(loopCount >5){
+        int loopCount = list.size();
+        if (loopCount > 5) {
             loopCount = 5;
         }
         if (list.size() != 0) {
@@ -872,9 +947,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                             .placeholder(R.drawable.placeholder_img)
                             .error(R.drawable.placeholder_img)
                             .into(comeInUserProfile);
-                }
-                else
-                if (i == 2) {
+                } else if (i == 2) {
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -905,7 +978,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     params.setMargins(15 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     parent.addView(v, i);
-                    no_count.setText(" +" + (list.size() - i) );
+                    no_count.setText(" +" + (list.size() - i));
                     no_count.setVisibility(View.VISIBLE);
                 }
             }
@@ -924,13 +997,12 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 intent.putExtra("venuid", object.getVenue());
                 intent.putExtra("object", object);
                 intent.putExtra("currentLatLng", currentLatLng);
-                if(fromTrending){
+                if (fromTrending) {
                     intent.putExtra("fromTrending", true);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
-                }
-                else {
+                } else {
                     startActivity(intent);
                 }
                 //  }
@@ -950,8 +1022,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     try {
                         JSONObject jo = new JSONObject(response);
                         dismissProgDialog();
-                        if(jo.has("status")){
-                            if(jo.getString("status").equalsIgnoreCase("success")){
+                        if (jo.has("status")) {
+                            if (jo.getString("status").equalsIgnoreCase("success")) {
                                 venuBoardEventTagBeanList = new ArrayList<>();
                                 getSearchTagList(event.event_id, object.getVenue().getVenue_id());
                             }
@@ -959,7 +1031,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -972,7 +1044,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 @Override
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("biz_tag_id",biz_tag_id);
+                    params.put("biz_tag_id", biz_tag_id);
                     params.put("follow_status", String.valueOf(followUnfollow));
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     return params;
@@ -986,13 +1058,13 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    public void manageFrequency(String frequency){
+    public void manageFrequency(String frequency) {
 //        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
 //        Date d = new Date();
 //        String dayOfTheWeek = sdf.format(d);
 //        Toast.makeText(this, dayOfTheWeek, Toast.LENGTH_SHORT).show();
 
-        switch (frequency){
+        switch (frequency) {
             case "daily":
                 iv_group.setVisibility(View.VISIBLE);
                 img_no_member.setVisibility(View.VISIBLE);
@@ -1009,37 +1081,35 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
                 Calendar calendar = Calendar.getInstance();
                 int day = calendar.get(Calendar.DAY_OF_WEEK);
-                day = day -1;
+                day = day - 1;
 
-                if(day == Integer.parseInt(frequency)){
+                if (day == Integer.parseInt(frequency)) {
                     iv_group.setVisibility(View.VISIBLE);
                     img_no_member.setVisibility(View.VISIBLE);
                     comeInUser_lnr.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     iv_group.setVisibility(View.GONE);
                     img_no_member.setVisibility(View.GONE);
                     comeInUser_lnr.setVisibility(View.GONE);
                 }
                 break;
 
-                default:
+            default:
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date d = new Date();
-        String curDate = sdf.format(d);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date d = new Date();
+                String curDate = sdf.format(d);
 
-        if(frequency.equalsIgnoreCase(curDate)){
-            iv_group.setVisibility(View.VISIBLE);
-            img_no_member.setVisibility(View.VISIBLE);
-            comeInUser_lnr.setVisibility(View.VISIBLE);
-        }
-        else {
-            iv_group.setVisibility(View.GONE);
-            img_no_member.setVisibility(View.GONE);
-            comeInUser_lnr.setVisibility(View.GONE);
-        }
-       break;
+                if (frequency.equalsIgnoreCase(curDate)) {
+                    iv_group.setVisibility(View.VISIBLE);
+                    img_no_member.setVisibility(View.VISIBLE);
+                    comeInUser_lnr.setVisibility(View.VISIBLE);
+                } else {
+                    iv_group.setVisibility(View.GONE);
+                    img_no_member.setVisibility(View.GONE);
+                    comeInUser_lnr.setVisibility(View.GONE);
+                }
+                break;
 
         }
 
@@ -1055,16 +1125,16 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     // get response
                     JSONObject jsonObject;
                     try {
-                        dismissProgDialog();
+                            dismissProgDialog();
                         jsonObject = new JSONObject(Response);
                         String status = jsonObject.getString("status");
 
                         if (status.equals("event_Added")) {
-                            showKeyPoints("+5");
+                            showKeyPoints("+3");
                         } else if (status.equals("exist")) {
                         }
 
-                       // if(object.getVenue().getIs_tag_follow().equalsIgnoreCase(""))
+                        // if(object.getVenue().getIs_tag_follow().equalsIgnoreCase(""))
 
                     } catch (Exception ex) {
                         dismissProgDialog();
@@ -1092,6 +1162,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -1102,7 +1173,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_keypoint_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
+        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
@@ -1114,22 +1185,52 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
         tvKeyPoint.setText(s);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showAlertDialog("You've keyed into "+event.event_name);
-                dialog.dismiss();
-            }
-        }, 2000);
 
-        dialog.show();
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,  // fromYDelta
+                50);                // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        ((ViewGroup) dialog.getWindow().getDecorView()).getChildAt(0).startAnimation(animate);
+        Handler handler = new Handler();
+
+        handler.postDelayed((Runnable) () -> {
+            TranslateAnimation animate1 = new TranslateAnimation(
+                    0,                 // fromXDelta
+                    0,                 // toXDelta
+                    50,  // fromYDelta
+                    0);                // toYDelta
+            animate1.setDuration(500);
+            animate1.setFillAfter(true);
+            ((ViewGroup) dialog.getWindow().getDecorView()).getChildAt(0).startAnimation(animate1);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showAlertDialog("You've keyed into " + object.getEvent().event_name);
+                    dialog.dismiss();
+                }
+            }, 500);
+
+
+        }, 1400);
+
+
+        try {
+            dialog.show();
+        } catch (WindowManager.BadTokenException e) {
+            //use a log message
+        }
+
     }
-    private void keyInToEvent(){
+
+    private void keyInToEvent() {
         try {
             if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-               callAddEventApi(object);
-            }
-            else if (event.ableToKeyIn) {
+                callAddEventApi(object);
+            } else if (event.ableToKeyIn) {
                 callAddEventApi(object);
             }
         } catch (Exception d) {
@@ -1138,20 +1239,19 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private boolean isEventOnline(String eventDate, String serverCurrentDate){
+    private boolean isEventOnline(String eventDate, String serverCurrentDate) {
         boolean returnValue = false;
         eventDate = eventDate.split("TO")[0];
 
-        eventDate = eventDate.replace("T"," ");
+        eventDate = eventDate.replace("T", " ");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         try {
             Date eventDateFinal = sdf.parse(eventDate);
             Date serverCurrentDateFinal = sdf.parse(serverCurrentDate);
 
-            if(serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()){
+            if (serverCurrentDateFinal.getTime() >= eventDateFinal.getTime()) {
                 returnValue = true;
-            }
-            else
+            } else
                 returnValue = false;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1191,15 +1291,14 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                         JSONObject jo = new JSONObject(response);
                         if (jo.getInt("success") == 0) {
                             //incrementKeyPoints(getString(R.string.kp_keyin));
-                        }
-                        else {
+                        } else {
 
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                         dismissProgDialog();
-                        Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(OnBoardActivity.this, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -1216,7 +1315,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     params.put("userid", userInfo().userid);
                     params.put("eventid", object.getEvent().event_id);
                     params.put("eventname", object.getEvent().event_name);
-                    params.put("eventdate",object.getEvent().event_time);
+                    params.put("eventdate", object.getEvent().event_time);
                     return params;
                 }
             };
@@ -1227,4 +1326,112 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             dismissProgDialog();
         }
     }
+
+    @Override
+    public void onButtonClicked(String text) {
+
+        switch (text) {
+            case "post": {
+                callCheckEventStatusApi(event.event_name, event.event_id, venue, object, currentLatLng
+                        , new String[]{venue.getLatitude(), venue.getLongitude()});
+
+            }
+            break;
+            case "summery": {
+                Intent intent = new Intent(OnBoardActivity.this, Summary_Activity.class);
+                intent.putExtra("event_id", event.event_id);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                if (fromTrending) {
+                    intent.putExtra("fromTrending", true);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+//                    finish();
+                } else {
+                    startActivity(intent);
+                }
+
+            }
+            break;
+
+            case "people": {
+
+                Intent intent = new Intent(OnBoardActivity.this, TheRoomActivity.class);
+                intent.putExtra("fromTrendingHome", event.keyInUserModalList);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                if (fromTrending) {
+                    intent.putExtra("fromTrending", true);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+//                    finish();
+                } else {
+                    startActivity(intent);
+                }
+
+            }
+            break;
+
+        }
+
+
+    }
+
+    private void forAlertEventApi(final String event_name,String event_id,String event_time) {
+        final Utility utility = new Utility(this);
+
+        if (utility.checkInternetConnection()) {
+            StringRequest request = new StringRequest(Request.Method.POST, WebServices.ADD_EVENT, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String Response) {
+                    // get response
+                    JSONObject jsonObject;
+                    try {
+                        dismissProgDialog();
+                        jsonObject = new JSONObject(Response);
+                        String status = jsonObject.getString("status");
+
+                        if (status.equals("event_Added")) {
+                            showKeyPoints("+3");
+                        } else if (status.equals("exist")) {
+                        }
+
+                        // if(object.getVenue().getIs_tag_follow().equalsIgnoreCase(""))
+
+                    } catch (Exception ex) {
+                        dismissProgDialog();
+                        ex.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError e) {
+                    utility.volleyErrorListner(e);
+                    dismissProgDialog();
+                }
+            }) {
+                @Override
+                public Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("userid", userInfo().userid);
+                    params.put("eventname",event_name);
+                    params.put("eventid", event_id);
+                    params.put("eventdate", event_time);
+                    return params;
+                }
+            };
+
+            VolleySingleton.getInstance(this).addToRequestQueue(request);
+            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
+        } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
+            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            dismissProgDialog();
+        }
+    }
+
+
+
+
+
 }

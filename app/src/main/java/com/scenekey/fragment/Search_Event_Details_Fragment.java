@@ -13,13 +13,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -54,8 +54,8 @@ import com.scenekey.activity.TheRoomActivity;
 import com.scenekey.adapter.Profile_Adapter;
 import com.scenekey.adapter.UserInAdapter;
 import com.scenekey.aws_service.AWSImage;
-import com.scenekey.cropper.CropImage;
-import com.scenekey.cropper.CropImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.scenekey.cus_view.ProfilePopUp_Notification;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomeClick;
@@ -192,7 +192,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
         listViewFragProfile = view.findViewById(R.id.feedLIstRecyclerView);
 
         feedsList = new ArrayList<>();
-        adapter = new Profile_Adapter(event,context, userInfo.userid,feedsList,userLIst,eventId,null,null,null,null);
+        adapter = new Profile_Adapter(event,context, userInfo.userid,userInfo.userFacebookId,feedsList,userLIst,eventId,null,null,null,null);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         listViewFragProfile.setLayoutManager(layoutManager);
         listViewFragProfile.setAdapter(adapter);
@@ -400,7 +400,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                     } catch (Exception e) {
                         e.printStackTrace();
                         activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -426,7 +426,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
 
@@ -460,7 +461,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getResources().getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -484,7 +485,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -540,7 +542,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
 
@@ -771,7 +774,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                         .position(new LatLng(lat, lng))
                         .anchor(0.5f, 0.5f)
                         .title(event.getVenue().getVenue_name())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.inactive_map_ico)));
                 mr.showInfoWindow();
 
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
@@ -879,7 +882,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                     CropImage.activity(imageUri).setCropShape(CropImageView.CropShape.RECTANGLE).setMinCropResultSize(160, 160).setMaxCropResultSize(4000, 3500).setAspectRatio(400, 300).start(context, this);
 
                 } else {
-                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                 }
 
             } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -999,7 +1002,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                     // get response
                     try {
                         if (response != null) getResponse(response);
-                        else Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+
+//                            Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     } catch (Exception e) {
                         e.printStackTrace();
                         activity.dismissProgDialog();
@@ -1026,7 +1030,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(20000, 0, 1));
         } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -1062,7 +1067,7 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
                     utility.volleyErrorListner(e);
                     activity.dismissProgDialog();
                     if (dialog != null) dialog.dismiss();
-                    Utility.showToast(getContext(), getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(getContext(), getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -1082,7 +1087,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(usercomeInRecyclerView, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -1217,7 +1223,8 @@ public class Search_Event_Details_Fragment extends Fragment implements View.OnCl
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();
         }
     }

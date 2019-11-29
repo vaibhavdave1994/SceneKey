@@ -2,7 +2,7 @@ package com.scenekey.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,7 +95,8 @@ public class Edit_NameFragment extends Fragment implements View.OnClickListener 
                     String lastName = et_lastName.getText().toString().trim();
                     updateName(firstName, lastName);
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context,"No network connection","","");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -159,6 +160,7 @@ public class Edit_NameFragment extends Fragment implements View.OnClickListener 
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(context,"No network connection","","");
             //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
             Toast.makeText(context, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();

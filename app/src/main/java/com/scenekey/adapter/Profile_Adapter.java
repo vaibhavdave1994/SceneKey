@@ -3,17 +3,16 @@ package com.scenekey.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +24,8 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
+import com.scenekey.activity.OwnProfileActivity;
+import com.scenekey.activity.ProfileOtherUserNewActivity;
 import com.scenekey.fragment.Map_FragmentEventDetail;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.DoubleClickListener;
@@ -32,15 +33,16 @@ import com.scenekey.helper.WebServices;
 import com.scenekey.listener.ForDeleteFeed;
 import com.scenekey.listener.GetZoomImageListener;
 import com.scenekey.listener.LikeFeedListener;
-import com.scenekey.liveSideWork.LiveProfileActivity;
 import com.scenekey.model.EmoziesModal;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.Events;
 import com.scenekey.model.Feeds;
+import com.scenekey.model.KeyInUserModal;
 import com.scenekey.util.Utility;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,8 +71,9 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
     private Utility utility;
     private GetZoomImageListener getZoomImageListener;
     Events events;
+    private String facebookuserid;
 
-    public Profile_Adapter( Events events,Context context, String userId,
+    public Profile_Adapter( Events events,Context context, String userId,String facebookuserid,
                            ArrayList<Feeds> feedsList,
                            ArrayList<EventAttendy> userList, String eventid,
                            List<EmoziesModal> emoziesModalArrayList, ForDeleteFeed deleteFeed,
@@ -82,6 +85,7 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
         this.userList = userList;
         this.eventid = eventid;
         this.userId = userId;
+        this.facebookuserid = facebookuserid;
         this.deleteFeed = deleteFeed;
         this.likeFeedListener = likeFeedListener;
         this.emoziesModalArrayList = emoziesModalArrayList;
@@ -115,7 +119,7 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
 
 //            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss", Locale.getDefault());
-            SimpleDateFormat dateinPmAm = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+            SimpleDateFormat dateinPmAm = new SimpleDateFormat("h:mm a", Locale.US);
             Date dt = null;
             try {
                 dt = sdf.parse(feeds.date);
@@ -141,11 +145,11 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
                     break;
             }
 
-            Picasso.with(context).load(WebServices.USER_IMAGE + feeds.userimage).placeholder(R.drawable.bg_event_card).into(holder.demo_profile_user);
+            Picasso.with(context).load(WebServices.USER_IMAGE + feeds.userimage).into(holder.demo_profile_user);
         } else {
             holder.demo_date_tv.setVisibility(View.GONE);
             holder.emaojisRecyclerView.setVisibility(View.GONE);
-            Picasso.with(context).load(feeds.userimage).placeholder(R.drawable.bg_event_card).into(holder.demo_profile_user);
+            Picasso.with(context).load(feeds.userimage).into(holder.demo_profile_user);
         }
 
         holder.demo_user_name.setText(feeds.username);
@@ -158,7 +162,7 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
         } else if (feeds.type.equals(Constant.FEED_TYPE_PICTURE)) {
             holder.txt_demo_comment.setVisibility(View.GONE);
             holder.img_demo_event.setVisibility(View.VISIBLE);
-            Picasso.with(context).load(feeds.isUri ? feeds.feed : WebServices.FEED_IMAGE + feeds.feed).placeholder(R.drawable.bg_event_card).into(holder.img_demo_event);
+                Picasso.with(context).load(feeds.isUri ? feeds.feed : WebServices.FEED_IMAGE + feeds.feed).into(holder.img_demo_event);
         }
 
         EmoziesAdapter adapter = new EmoziesAdapter(holder.demo_date_tv.getContext(),
@@ -208,16 +212,18 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
             txt_demo_comment.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Feeds feeds = feedList.get(getAdapterPosition());
-                    if (userId.equals(feeds.userid)) {
+                    if (getAdapterPosition() != -1) {
+                        Feeds feeds = feedList.get(getAdapterPosition());
+                        if (userId.equals(feeds.userid)) {
 
-                        if (!userExistOrNot.equals("")) {
+                       /* if (!userExistOrNot.equals("")) {
                             cantJoinNotExixtUserDialog(userExistOrNot);
-                        } else {
+                        } else {*/
                             deleteFeed.getFeedIdForDelete(feeds.feedId, "", "");
+//                        }
                         }
-                    }
 
+                    }
                     return true;
                 }
             });
@@ -335,11 +341,11 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
                     Feeds feeds = feedList.get(getAdapterPosition());
                     if (userId.equals(feeds.userid)) {
 
-                        if (!userExistOrNot.equals("")) {
+                        /*if (!userExistOrNot.equals("")) {
                             cantJoinNotExixtUserDialog(userExistOrNot);
-                        } else {
+                        } else {*/
                             deleteFeed.getFeedIdForDelete(feeds.feedId, "", "");
-                        }
+//                        }
                     }
 
                     return true;
@@ -357,12 +363,14 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
                 case R.id.demo_profile_user:
 
                     if(events.getVenue().getVenue_name().equalsIgnoreCase(feeds.username)){
-                        EventDetailsActivity.detail_frame_fragments.setVisibility(View.VISIBLE);
-                        addFragment(new Map_FragmentEventDetail(events),0);
+                        /*EventDetailsActivity.detail_frame_fragments.setVisibility(View.VISIBLE);
+                        addFragment(new Map_FragmentEventDetail(events),0);*/
                     }
                    else {
                         if (!userExistOrNot.equals("")) {
-                            cantJoinNotExixtUserDialog(userExistOrNot);
+                            utility.showCustomPopup("Sorry!! You have to be at this event to interact",String.valueOf(R.font.montserrat_medium));
+
+//                            cantJoinNotExixtUserDialog(userExistOrNot);
                         } else {
                                 boolean isUserKeyIn = false;
                             if (feedList.size() != 0) {
@@ -378,12 +386,33 @@ public class Profile_Adapter extends RecyclerView.Adapter<Profile_Adapter.ViewHo
                                     }
 
                                     if(isUserKeyIn){
-                                        Intent intent = new Intent(context, LiveProfileActivity.class);
-                                        intent.putExtra("from", "fromProfileAdapter");
-                                        intent.putExtra("fromLiveRoomList", userList);
-                                        intent.putExtra("eventId", eventid);
-                                        intent.putExtra("feedsid", feeds.userid);
-                                        context.startActivity(intent);
+
+
+                                        if (facebookuserid.equals(feeds.userFacebookId)) {
+
+                                            Intent intent = new Intent(context, OwnProfileActivity.class);
+                                            intent.putExtra("from", "fromProfileAdapter");
+                                            intent.putExtra("fromLiveRoomList", userList);
+                                            intent.putExtra("eventId", eventid);
+                                            intent.putExtra("otherusername", feeds.username);
+                                            intent.putExtra("otheruserimage",feeds.userimage);
+                                            intent.putExtra("feedsid", feeds.userFacebookId);
+                                            context.startActivity(intent);
+                                        }
+                                        else {
+                                            KeyInUserModal keyInUserModal = new KeyInUserModal();
+                                            keyInUserModal.userid = events.getEvent().keyInUserModalList.get(getAdapterPosition()).userid;
+                                            keyInUserModal.userImage = events.getEvent().keyInUserModalList.get(getAdapterPosition()).userImage;
+                                            keyInUserModal.bio = events.getEvent().keyInUserModalList.get(getAdapterPosition()).bio;
+                                            keyInUserModal.userName = events.getEvent().keyInUserModalList.get(getAdapterPosition()).userName;
+                                            keyInUserModal.userFacebookId = events.getEvent().keyInUserModalList.get(getAdapterPosition()).userFacebookId;
+                                            keyInUserModal.keyIn = events.getEvent().keyInUserModalList.get(getAdapterPosition()).keyIn;
+
+                                            Intent intent = new Intent(context, ProfileOtherUserNewActivity.class);
+                                            intent.putExtra("from", "fromProfileAdapter");
+                                            intent.putExtra("keyInUserModal", keyInUserModal);
+                                            context.startActivity(intent);
+                                        }
                                     }
                                     else {
                                         utility.showCustomPopup("This user is no longer in the room.",String.valueOf(R.font.montserrat_medium));

@@ -14,13 +14,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/boundry_of_dilog">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/smaesamlyUserRview"
             android:layout_width="match_parent"
             android:layout_margin="8dp"
             android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </LinearLayout>

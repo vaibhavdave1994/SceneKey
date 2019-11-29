@@ -14,7 +14,6 @@
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_3sdp"
         android:layout_marginTop="@dimen/_8sdp"
-        android:src="@drawable/image_default_profile"
         app:civ_border_color="@color/old_primary"
         app:civ_border_width="1dp"
         android:layout_marginStart="@dimen/_10sdp"
@@ -26,12 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_toRightOf="@+id/demo_profile_user"
-        android:fontFamily="@font/montserrat_light"
+        android:fontFamily="@font/nunitoregular"
         android:paddingLeft="@dimen/_4sdp"
         android:text="Shubham"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_12ssp"
         android:layout_toEndOf="@+id/demo_profile_user"
         android:paddingStart="@dimen/_4sdp"
         tools:ignore="RtlSymmetry,SpUsage" />
@@ -53,7 +52,6 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp"
             android:scaleType="fitXY"
-            android:src="@drawable/bg_event_card"
             android:visibility="gone"
             app:riv_border_color="@color/gray2"
             app:riv_border_width="0.5dp"
@@ -65,12 +63,13 @@
             android:id="@+id/txt_demo_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_medium"
-            android:gravity="start"
+            android:fontFamily="@font/nunitoregular"
+            android:gravity="start|center_vertical"
             android:background="@drawable/border"
             android:padding="@dimen/_5sdp"
             android:textColor="@color/black2"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10ssp"
+            android:text="sdsd"
             tools:ignore="SpUsage" />
 
     </RelativeLayout>
@@ -81,18 +80,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/demo_image_view"
         android:layout_toRightOf="@+id/demo_profile_user"
-        android:fontFamily="@font/raleway_light"
+        android:fontFamily="@font/nunitolight"
         android:paddingBottom="3dp"
         android:paddingLeft="@dimen/_4sdp"
         android:text="12:00 PM"
-        android:textColor="@color/gray2"
+        android:textColor="@color/grayLightColor2"
         android:textSize="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_3sdp"
         android:layout_toEndOf="@+id/demo_profile_user"
         android:paddingStart="@dimen/_4sdp"
         tools:ignore="RtlSymmetry,SpUsage" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/emaojisRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45sdp"
@@ -102,6 +101,11 @@
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_15sdp"
         android:layout_toEndOf="@+id/demo_date_tv"
+        android:scrollbars="vertical"
+        android:scrollbarSize="2dp"
+        android:scrollbarThumbVertical="@android:color/darker_gray"
+        android:dividerHeight="4dp"
+        android:background="@color/white"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_15sdp"/>
 

@@ -3,7 +3,7 @@ package com.scenekey.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -71,12 +71,15 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         switch (view.getId()) {
             case R.id.btnSubmit:
                 Validation validation = new Validation(context);
-                if (validation.isEmailValid(etEmailForgot)) {
-                    //Utility.showToast(context, getString(R.string.underDevelopment), 0);
-                    String email = etEmailForgot.getText().toString().trim();
-                    forgotPassword(email);
-                } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                if (Utility.checkInternetConnection1(this)) {
+                    if (validation.isEmailValid(etEmailForgot)) {
+                        //Utility.showToast(context, getString(R.string.underDevelopment), 0);
+                        String email = etEmailForgot.getText().toString().trim();
+                        forgotPassword(email);
+                    }
+                }else {
+                    Utility.showCheckConnPopup(this,"No network connection","","");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -112,9 +115,10 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                                 userInfo.userID = userDetail.getString("userid");
 */
                             Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+                            onBackPressed();
+                            /*Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            startActivity(intent);*/
 
                         } else {
                             Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -148,6 +152,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(ForgotPasswordActivity.this).addToRequestQueue(multipartRequest);
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             Toast.makeText(ForgotPasswordActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }

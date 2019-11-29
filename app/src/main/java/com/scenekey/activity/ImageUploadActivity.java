@@ -16,11 +16,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -55,8 +55,8 @@ import com.facebook.AccessToken;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
 import com.scenekey.adapter.NewImageUpload_Adapter;
-import com.scenekey.cropper.CropImage;
-import com.scenekey.cropper.CropImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.scenekey.fragment.ProfileNew_fragment;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
@@ -71,6 +71,7 @@ import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,22 +93,22 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
 
     private final String TAG = ImageUploadActivity.class.toString();
     public boolean isChanged = false;
+    ArrayList<BucketDataModel> alOfBucketData;
+    RecyclerView recyclerView;
     private Context context = this;
-//  private ImageUpload_Adapter adapter;
+    //  private ImageUpload_Adapter adapter;
     private NewImageUpload_Adapter adapter;
-    private ImageView img_profile, img_f1_back,img_profile_pic2;
+    private ImageView img_profile, img_f1_back, img_profile_pic2;
     private CognitoCredentialsProvider credentialsProvider;
     private int value = 0;
     private String key, from = "";
     private CustomProgressBar prog;
     private Bitmap bitmap;
     private Utility utility;
-    ArrayList<BucketDataModel> alOfBucketData;
     // New Code
     private String registerFileUrl, mCurrentPhotoPath;
     private boolean doubleBackPress = false;
     private boolean isSummaryZero = false, isUploadDialog = false;
-    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,16 +147,15 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
 
         recyclerView.setLayoutManager(layoutManager);
 
-        if(alOfBucketData != null && alOfBucketData.size()>0) {
+        if (alOfBucketData != null && alOfBucketData.size() > 0) {
             adapter = new NewImageUpload_Adapter(this, alOfBucketData);
             recyclerView.setAdapter(adapter);
-        }
-        else {
+        } else {
             getBucketDetatils();
         }
 
         prog = new CustomProgressBar(this);
-      //  showProgDialog(false);
+        //  showProgDialog(false);
 
         credentialsProvider = this.getCredentials();
 
@@ -168,7 +168,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         CardView.LayoutParams params = (CardView.LayoutParams) img_profile.getLayoutParams();
         params.height = (ActivityWidth) - 10;
 
-       // downloadFileFromS3((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider));
+        // downloadFileFromS3((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider));
         img_profile.setLayoutParams(params);
 //      img_profile.setImageResource(R.drawable.image_default_profile);
     }
@@ -411,10 +411,10 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
 
                 for (S3ObjectSummary obj : summaries) {
                     if (userImage != null && !userImage.equals("") && !userImage.equals(WebServices.USER_IMAGE)) {
-                          Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE + obj.getKey()).fit().into(img_profile);
-                       if(userImage.equals(WebServices.USER_IMAGE + obj.getKey())){
-                           Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE + obj.getKey()).fit().into(img_profile);
-                       }
+                        Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE + obj.getKey()).fit().into(img_profile);
+                        if (userImage.equals(WebServices.USER_IMAGE + obj.getKey())) {
+                            Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE + obj.getKey()).fit().into(img_profile);
+                        }
 
                     } else {
                         if (isFirst) {
@@ -422,7 +422,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                             isFirst = false;
                         }
                     }
-                   // adapter.addImage(obj.getKey());
+                    // adapter.addImage(obj.getKey());
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -623,7 +623,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
             adapter.showDefaultDialog(getString(R.string.default_profile_title), getString(R.string.default_profile_msg));
         } else {
-             setDefoultProfileImage(s,"Default Profile Image","Are you sure you want to make this your defoult Profile Photo?");
+            setDefoultProfileImage(s, "Default Profile Image", "Are you sure you want to make this your defoult Profile Photo?");
         }
     }
 
@@ -634,7 +634,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         //      deleteDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
 
-        TextView tvPopupOk,tvPopupCancel, tvTitle, tvMessages;
+        TextView tvPopupOk, tvPopupCancel, tvTitle, tvMessages;
         tvTitle = dialog.findViewById(R.id.tvTitle);
         tvMessages = dialog.findViewById(R.id.tvMessages);
 
@@ -720,7 +720,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
     }
 
     //-----new Remove method --
-    public void removeImageFromServer(final int position){
+    public void removeImageFromServer(final int position) {
         if (utility.checkInternetConnection()) {
             showProgDialog(false);
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.DELETE_BUCKET_IMAGE, new Response.Listener<String>() {
@@ -736,7 +736,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                             if (success == 1) {
                                 try {
                                     alOfBucketData.remove(position);
-                                    adapter = new NewImageUpload_Adapter(ImageUploadActivity.this,alOfBucketData);
+                                    adapter = new NewImageUpload_Adapter(ImageUploadActivity.this, alOfBucketData);
                                     recyclerView.setAdapter(adapter);
 
                                 } catch (Exception e) {
@@ -747,7 +747,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
                         dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -761,7 +761,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("key",alOfBucketData.get(position).getKey());
+                    params.put("key", alOfBucketData.get(position).getKey());
                     return params;
                 }
             };
@@ -809,8 +809,60 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constant.RESULT_LOAD) {
             if (data == null) return;
+            Uri uri = data.getData();
+            long time = System.currentTimeMillis();
+            String str = String.valueOf(time);
+            String destinatiomPath = str + ".jpg";
+
+            UCrop.Options options = new UCrop.Options();
+            options.setHideBottomControls(true);
+            assert uri != null;
+            UCrop.of(uri, Uri.fromFile(new File(getCacheDir(),destinatiomPath)))
+                    .withAspectRatio(1f, 1f)
+                    .withMaxResultSize(450, 450)
+                    .withOptions(options)
+                    .start(this);
+
+        }
+        if (requestCode == Constant.REQUEST_CAMERA) {
+            UCrop.Options options1 = new UCrop.Options();
+            options1.setHideBottomControls(true);
+            Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
+            UCrop.of(uri1, Uri.fromFile(new File(mCurrentPhotoPath)))
+                    .withAspectRatio(1f, 1f)
+                    .withMaxResultSize(450, 450)
+                    .withOptions(options1)
+                    .start(this);
+
+        }
+        if (requestCode == UCrop.REQUEST_CROP) {// Image Cropper
+            final Uri result = UCrop.getOutput(data);
+            try {
+                if (result != null) {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result);
+                    uploadNewBase64(SceneKey.sessionManager.getUserInfo().userFacebookId, bitmap);
+//                    String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, bitmap));
+//                    ImageSessionManager.getInstance().createImageSession(uri_path, false);
+//
+//                    upload((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider), ImageUtil.saveToInternalfile(bitmap, this));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(context, getResources().getString(R.string.alertImageException), Toast.LENGTH_SHORT).show();
+            } catch (OutOfMemoryError error) {
+                Toast.makeText(context, getResources().getString(R.string.alertOutOfMemory), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+/*
+  @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constant.RESULT_LOAD) {
+            if (data == null) return;
             Uri selectedImage = data.getData();
-           /* String[] filePathColumn = {MediaStore.Images.Media.DATA};
+           */
+/* String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             // Get the cursor
             Cursor cursor = this.getContentResolver().query(selectedImage,
@@ -831,7 +883,8 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                 e.printStackTrace();
             }
             //adpter.addImage(bitmap);
-            cursor.close();*/
+            cursor.close();*//*
+
 
             if (selectedImage != null) {
                 // Calling Image Cropper
@@ -842,14 +895,16 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             }
         }
         if (requestCode == Constant.REQUEST_CAMERA) {
-            /*try {
+            */
+/*try {
                 if (data == null) return;
                 bitmap = (Bitmap) data.getExtras().get("data");
                 File file = ImageUtil.saveToInternalfile(bitmap, this);
                 upload((credentialsProvider == null ? credentialsProvider = this.getCredentials() : credentialsProvider), file);
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }*//*
+
 
 
             // New Code
@@ -863,14 +918,16 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             }
 
 
-            /*try {
+            */
+/*try {
                  Util.printLog("path",file.getPath()+"\n"+file.getCanonicalPath());
 
                 /data/user/0/com.scenekey/app_imageDir/profile.jpg
                         /data/data/com.scenekey/app_imageDir/profile.jpg
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }*//*
+
 
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {// Image Cropper
@@ -878,7 +935,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             try {
                 if (result != null) {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
-                    uploadNewBase64(SceneKey.sessionManager.getUserInfo().userFacebookId,bitmap);
+                    uploadNewBase64(SceneKey.sessionManager.getUserInfo().userFacebookId, bitmap);
 //                    String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, bitmap));
 //                    ImageSessionManager.getInstance().createImageSession(uri_path, false);
 //
@@ -892,6 +949,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
+*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -935,7 +993,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
             JSONObject jsonBody = new JSONObject();
             jsonBody.put("method", "PUT");
             jsonBody.put("action", "updateImage");
-            jsonBody.put("userid", SceneKey.sessionManager.getUserInfo().userFacebookId);
+            jsonBody.put("userid", SceneKey.sessionManager.getUserInfo().userid);
             jsonBody.put("userImage", s);
 
             final String mRequestBody = jsonBody.toString();
@@ -949,7 +1007,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                     UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
                     userInfo.userImage = key;
                     // Constant.DEF_PROFILE=key;
-                    HomeActivity.userInfo=userInfo;
+                    HomeActivity.userInfo = userInfo;
                     SceneKey.sessionManager.createSession(userInfo);
                     Picasso.with(ImageUploadActivity.this).load(userInfo.getUserImage()).fit().into(img_profile);
 
@@ -1040,7 +1098,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
     }
 
     //-----------------new code to upload image 16-05-19---------
-    public void uploadNewBase64(final String userId, Bitmap bitmap){
+    public void uploadNewBase64(final String userId, Bitmap bitmap) {
         if (utility.checkInternetConnection()) {
             showProgDialog(false);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1058,7 +1116,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                     } catch (Exception e) {
                         dismissProgDialog();
                         //activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -1102,9 +1160,9 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                                 try {
 
                                     JSONArray jsonArray = new JSONArray();
-                                    if(jo.has("bucketInfo")){
+                                    if (jo.has("bucketInfo")) {
                                         jsonArray = jo.getJSONArray("bucketInfo");
-                                        for(int i =0; i<jsonArray.length(); i++){
+                                        for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
 //                                             if(jsonObject.has("Key"))
                                             String Key = jsonObject.getString("Key");
@@ -1112,18 +1170,18 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                                             String ETag = jsonObject.getString("ETag");
                                             String Size = jsonObject.getString("Size");
                                             String StorageClass = jsonObject.getString("StorageClass");
-                                            JSONObject Owner  = jsonObject.getJSONObject("Owner");
+                                            JSONObject Owner = jsonObject.getJSONObject("Owner");
 
                                             String DisplayName = Owner.getString("DisplayName");
                                             String ID = Owner.getString("ID");
-                                            OwnerModel ownerModel = new OwnerModel(DisplayName,ID);
-                                            alOfBucketData.add(new BucketDataModel(Key,LastModified,ETag,Size,
-                                                    StorageClass,ownerModel));
+                                            OwnerModel ownerModel = new OwnerModel(DisplayName, ID);
+                                            alOfBucketData.add(new BucketDataModel(Key, LastModified, ETag, Size,
+                                                    StorageClass, ownerModel));
                                         }
-                                        if(alOfBucketData.size() == 1)
-                                        Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE+alOfBucketData.get(0).getKey()).fit().into(img_profile);
+                                        if (alOfBucketData.size() == 1)
+                                            Picasso.with(ImageUploadActivity.this).load(WebServices.USER_IMAGE + alOfBucketData.get(0).getKey()).fit().into(img_profile);
 
-                                        adapter = new NewImageUpload_Adapter(ImageUploadActivity.this,alOfBucketData);
+                                        adapter = new NewImageUpload_Adapter(ImageUploadActivity.this, alOfBucketData);
                                         recyclerView.setAdapter(adapter);
                                     }
 
@@ -1135,7 +1193,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
                         dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {

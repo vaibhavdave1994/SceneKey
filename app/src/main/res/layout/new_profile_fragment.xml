@@ -9,7 +9,7 @@
     android:clickable="true"
     android:orientation="vertical">
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="@dimen/_5sdp"
@@ -44,7 +44,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
 
@@ -111,14 +111,14 @@
 
         </LinearLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="true"
             app:behavior_hideable="false"
             app:behavior_peekHeight="250dp"
-            app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
@@ -172,7 +172,7 @@
                                     android:layout_height="match_parent"
                                     android:orientation="vertical">
 
-                                    <android.support.v7.widget.AppCompatImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/img_green"
                                         android:layout_width="@dimen/_30sdp"
                                         android:layout_height="@dimen/_30sdp"
@@ -196,7 +196,7 @@
                                     android:layout_marginLeft="@dimen/_40sdp"
                                     android:orientation="vertical">
 
-                                    <android.support.v7.widget.AppCompatImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/img_yellow"
                                         android:layout_width="@dimen/_30sdp"
                                         android:layout_height="@dimen/_30sdp"
@@ -222,7 +222,7 @@
                                     android:layout_marginLeft="@dimen/_40sdp"
                                     android:orientation="vertical">
 
-                                    <android.support.v7.widget.AppCompatImageView
+                                    <androidx.appcompat.widget.AppCompatImageView
                                         android:id="@+id/img_red"
                                         android:layout_width="@dimen/_30sdp"
                                         android:layout_height="@dimen/_30sdp"
@@ -244,9 +244,9 @@
 
                         </LinearLayout>
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_100sdp"
                         android:layout_margin="@dimen/_10sdp"
@@ -285,7 +285,7 @@
 
                         </LinearLayout>
 
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/tv_update_bio"
@@ -306,7 +306,7 @@
 
                 </LinearLayout>
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_image_upload"
                     android:layout_width="@dimen/_38sdp"
                     android:layout_height="@dimen/_38sdp"
@@ -315,14 +315,13 @@
                     android:elevation="@dimen/_2sdp"
                     android:padding="@dimen/_1sdp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/photo_camera"
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="@dimen/_18sdp" />
             </RelativeLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <RelativeLayout
         android:id="@+id/rl_title_view"
@@ -331,7 +330,7 @@
         android:background="@drawable/bg_top_bar"
         android:gravity="center_vertical">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_back"
             android:layout_width="@dimen/top_bar_profile"
             android:layout_height="@dimen/top_bar_profile"

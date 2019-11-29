@@ -2,7 +2,7 @@ package com.scenekey.helper;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.util.AttributeSet;
 
 import com.github.siyamed.shapeimageview.RoundedImageView;

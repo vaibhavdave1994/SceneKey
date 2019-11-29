@@ -4,9 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -310,6 +311,24 @@ public class EmoziesAdapter extends RecyclerView.Adapter<EmoziesAdapter.ViewHold
                     emoziesDilog.dismiss();
                 }
             });
+
+            (et_search).setOnEditorActionListener(
+                    new EditText.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            // Identifier of the action. This will be either the identifier you supplied,
+                            // or EditorInfo.IME_NULL if being called due to the enter key being pressed.
+                            if (actionId == EditorInfo.IME_ACTION_SEARCH
+                                    || actionId == EditorInfo.IME_ACTION_DONE
+                                    || event.getAction() == KeyEvent.ACTION_DOWN
+                                    && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                                emoziesDilog.dismiss();
+                                return true;
+                            }
+                            // Return true if you have consumed the action, else false.
+                            return false;
+                        }
+                    });
 
             emoziesDilog.setOnKeyListener(new Dialog.OnKeyListener() {
 

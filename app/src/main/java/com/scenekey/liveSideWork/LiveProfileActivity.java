@@ -2,10 +2,10 @@ package com.scenekey.liveSideWork;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -716,7 +716,7 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     dismissProgDialog();
-                    Utility.showToast(LiveProfileActivity.this, getResources().getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(LiveProfileActivity.this, getResources().getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -789,7 +789,7 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     dismissProgDialog();
-                    Utility.showToast(LiveProfileActivity.this, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(LiveProfileActivity.this, getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override

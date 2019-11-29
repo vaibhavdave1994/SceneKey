@@ -1,5 +1,7 @@
 package com.scenekey.model;
 
+import androidx.room.Query;
+
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.WebServices;
 
@@ -21,7 +23,7 @@ public class UserInfo implements Serializable {
     public String fullname ="";
     public String lastName ="";
     public String password ="";
-    public String userImage ="";
+    public String userImage ;
     public String age ="";
     public String dob ="";
     public String gender ="";
@@ -69,3 +71,4 @@ public class UserInfo implements Serializable {
         //return (userImage.contains("https:") ? userImage : WebServices.USER_IMAGE + userImage);
     }
 }
+

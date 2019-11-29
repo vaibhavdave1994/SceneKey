@@ -98,13 +98,62 @@ public class SessionManager {
         return instance;
     }
 
-    public void canTutorial(boolean tutorial) {
+    public void putContactcheck(boolean tutorial) {
         editor2.putBoolean(TUTORIAL, tutorial);
         editor2.commit();
     }
 
-    public boolean showTutorial() {
-        return tuto_pref.getBoolean(TUTORIAL, true);
+    public boolean getContactcheck() {
+        return tuto_pref.getBoolean(TUTORIAL, false);
+    }
+
+     public void putKeypoint(String keypoint) {
+        editor2.putString("keypoint", keypoint);
+        editor2.commit();
+    }
+
+    public String getkeypoint() {
+        return tuto_pref.getString("keypoint","" );
+    }
+
+
+    public void backOrIntent(boolean back) {
+        editor2.putBoolean("back", back);
+        editor2.commit();
+    }
+
+
+    public boolean getBackOrIntent() {
+        return tuto_pref.getBoolean("back", false);
+    }
+
+
+    public void putbadgecount(int badgecount) {
+        editor2.putInt("badgecount", badgecount);
+        editor2.commit();
+    }
+
+
+    public int getbadgecount() {
+        return tuto_pref.getInt("badgecount", 0);
+    }
+
+    public void putMapFragment(String map) {
+        editor2.putString("map", map);
+        editor2.commit();
+    }
+    public String getMapFragment() {
+        return tuto_pref.getString("map", "");
+    }
+
+
+    public void putPosTrendingList(String pos) {
+        editor2.putString("pos", pos);
+        editor2.commit();
+    }
+
+    public String getPosTrendingList() {
+        return tuto_pref.getString("pos","");
     }
 
     public void createSession(UserInfo userInfo) {
@@ -210,8 +259,6 @@ public class SessionManager {
         editor.clear();
         editor.commit();
 
-        editor2.clear();
-        editor2.commit();
 
 //        Intent intent = new Intent(activity, RegistrationActivity.class);
         Intent intent = new Intent(activity, NewIntroActivity.class);

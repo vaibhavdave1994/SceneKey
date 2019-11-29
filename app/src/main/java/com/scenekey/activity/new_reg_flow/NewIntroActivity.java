@@ -2,11 +2,10 @@ package com.scenekey.activity.new_reg_flow;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationListener;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatButton;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.AppCompatButton;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
-import com.scenekey.activity.TnCWebView;
 
 public class NewIntroActivity extends RegistrationActivity{
 
@@ -28,7 +26,9 @@ public class NewIntroActivity extends RegistrationActivity{
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int position;
-    AppCompatButton btn_continue,btn_google,btn_fb;
+    private int lastClick = 0;
+    AppCompatButton btn_continue;
+    private TextView btn_google,btn_fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +64,16 @@ public class NewIntroActivity extends RegistrationActivity{
         btn_fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                facebookLoginApi();
+                if (lastClick != R.id.btn_fb) {
+                    facebookLoginApi();
+                }
             }
         });
 
         btn_google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 gmialLoginApi();
             }
         });

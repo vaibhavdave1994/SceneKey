@@ -24,7 +24,7 @@
             android:layout_height="@dimen/_65sdp"
             android:layout_gravity="center"
             android:src="@drawable/placeholder_img"
-            app:civ_border_color="@color/old_primary"
+            app:civ_border_color="#46AA81"
             app:civ_border_width="1dp" />
     </FrameLayout>
 
@@ -37,7 +37,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:minHeight="@dimen/_16sdp"
-        android:textColor="@color/black"
+        android:textColor="#46AA81"
         android:textSize="@dimen/_8sdp" />
 
 </LinearLayout>

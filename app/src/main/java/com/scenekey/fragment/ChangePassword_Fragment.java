@@ -3,8 +3,8 @@ package com.scenekey.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -177,6 +177,8 @@ public class ChangePassword_Fragment extends Fragment implements View.OnClickLis
             if (utility.checkInternetConnection()) {
                 updatePassword_Api(OldPassword, NewPassword, ConfirmPassword);
             } else {
+                Utility.showCheckConnPopup(context,"No network connection","","");
+                Utility.showCheckConnPopup(context,"No network connection","","");
                 utility.showCustomPopup(context.getString(R.string.internetConnectivityError), String.valueOf(R.font.montserrat_medium));
                 //Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
             }
@@ -244,6 +246,7 @@ public class ChangePassword_Fragment extends Fragment implements View.OnClickLis
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(context).addToRequestQueue(multipartRequest);
         } else {
+            Utility.showCheckConnPopup(context,"No network connection","","");
             Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }

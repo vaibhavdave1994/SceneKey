@@ -6,22 +6,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.CardView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -424,6 +421,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             //utility.snackBar(mainLayout, getString(R.string.internetConnectivityError), 0);
             //utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
             Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
@@ -817,7 +815,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     dismissProgDialog();
-                    Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -834,6 +832,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -896,6 +895,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(this,"No network connection","","");
             Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -948,7 +948,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                       }
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -1118,7 +1118,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                         }
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {

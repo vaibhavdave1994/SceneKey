@@ -11,3 +11,4 @@ import com.scenekey.model.Venue;
 public interface CheckEventStatusListener {
     void getCheckEventStatusListener(String eventName, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings);
 }
+

@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 
+import com.scenekey.activity.invite_friend.roomdatabase.AppDataManager;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.helper.SessionManager;
 import com.crashlytics.android.Crashlytics;
@@ -23,6 +24,7 @@ public class SceneKey extends Application {
     public static SceneKey instance = null;
     public static SessionManager sessionManager;
     public static ImageSessionManager imageSessionManager;
+    private static AppDataManager appInstance;
     private Activity activeActivity;
     // public static final String TAG = Impress.class.getSimpleName();
 
@@ -43,6 +45,7 @@ public class SceneKey extends Application {
     public void onCreate() {
         super.onCreate();
         Fabric.with(this, new Crashlytics());
+            appInstance = AppDataManager.getInstance(this);
         setupActivityListener();
         instance = this;
         sessionManager = new SessionManager(instance.getApplicationContext());
@@ -50,6 +53,11 @@ public class SceneKey extends Application {
         EmojiManager.install(new IosEmojiProvider());
 
     }
+
+    public static AppDataManager getDataManager() {
+        return appInstance;
+    }
+
 
 
     private void setupActivityListener() {

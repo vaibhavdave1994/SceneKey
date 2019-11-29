@@ -2,10 +2,14 @@ package com.scenekey.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyCharacterMap;
@@ -17,6 +21,10 @@ import com.scenekey.R;
 import com.scenekey.activity.new_reg_flow.NewIntroActivity;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.util.SceneKey;
+import com.scenekey.util.Utility;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -27,8 +35,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        SceneKey.sessionManager.putbadgecount(0);
 
-      //  getFacebookKeyHash();
     }
 
     @Override
@@ -98,7 +106,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-  /*  public void getFacebookKeyHash() {
+    public void getFacebookKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo("com.scenekey", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
@@ -108,6 +116,9 @@ public class SplashActivity extends AppCompatActivity {
                 String something = new String(Base64.encode(md.digest(), 0));
                 //String something = new String(Base64.encodeBytes(md.digest()));
                 Utility.e("hash key", something);
+
+//                GNsxVbIvnGf6o/M0ClW+TlnutTA=
+
             }
         } catch (PackageManager.NameNotFoundException e1) {
             Utility.e("name not found", e1.toString());
@@ -116,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
         } catch (Exception e) {
             Utility.e("exception", e.toString());
         }
-    }*/
+    }
 
     private boolean hasSoftKeys(WindowManager windowManager) {
         boolean hasSoftwareKeys = true;

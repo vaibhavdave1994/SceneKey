@@ -2,8 +2,8 @@ package com.scenekey.activity.new_reg_flow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,6 +22,7 @@ public class RegistrationActivityNewPassword extends LoginActivity {
      String email;
      AppCompatImageView img_back;
      TextView tv_forgot_pass;
+     int click =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +53,17 @@ public class RegistrationActivityNewPassword extends LoginActivity {
             @Override
             public void onClick(View v) {
 
+
                 String password = et_password.getText().toString().trim();
                 if(!password.equalsIgnoreCase("")){
                     doLogin(email, password);
+
                 }
                 else {
                     Toast.makeText(RegistrationActivityNewPassword.this, "Enter Password", Toast.LENGTH_SHORT).show();
                 }
-            }
+                }
+
         });
 
         img_back.setOnClickListener(new View.OnClickListener() {

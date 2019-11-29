@@ -72,7 +72,7 @@ public class MapInfo_Adapter implements GoogleMap.InfoWindowAdapter {
             LinearLayout like =  myContentsView.findViewById(R.id.like);
 
             try{
-                Picasso.with(activity).load(events.getEvent().getImage()).transform(new RoundedTransformation(radius,0)).placeholder(R.drawable.scene1).into(img_event);
+                Picasso.with(activity).load(events.getEvent().getImage()).transform(new RoundedTransformation(radius,0)).into(img_event);
             }
             catch (Exception e) {
                 e.printStackTrace();

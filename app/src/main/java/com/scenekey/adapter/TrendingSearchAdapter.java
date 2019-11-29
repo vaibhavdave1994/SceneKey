@@ -1,16 +1,22 @@
 package com.scenekey.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +34,8 @@ import com.scenekey.R;
 import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TheRoomActivity;
 import com.scenekey.activity.TrendinSearchActivity;
+import com.scenekey.activity.trending_summery.Summary_Activity;
+import com.scenekey.helper.Constant;
 import com.scenekey.helper.SortByPoint;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
@@ -58,7 +66,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
     private boolean clicked;
     private CheckEventStatusListener listener;
     FollowUnfollowLIstner followUnfollowLIstner;
-
+    boolean isclick = false;
     public TrendingSearchAdapter(TrendinSearchActivity activity, ArrayList<Events> eventsArrayList, String[] currentLatLng, CheckEventStatusListener listener,
                                  FollowUnfollowLIstner followUnfollowLIstner) {
         this.activity = activity;
@@ -71,7 +79,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
     @Override
     public TrendingSearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_custom_trending, parent, false);
+                .inflate(R.layout.adapter_trending, parent, false);
 
         return new TrendingSearchAdapter.ViewHolder(itemView);
     }
@@ -83,7 +91,20 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         final Venue venue = object.getVenue();
         final Event event = object.getEvent();
 
-        if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
+        try {
+            AlphaAnimation blinkanimation= new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
+            blinkanimation.setDuration(1000); // duration - half a second
+            blinkanimation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+            blinkanimation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+            blinkanimation.setRepeatMode(Animation.REVERSE);
+            holder.rl_anim.startAnimation(blinkanimation);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+      /*  if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
             holder.tv_follow.setText("Follow");
             holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
             holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
@@ -93,10 +114,24 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             holder.tv_follow.setText("Unfollow");
             holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.unfollow_border));
             holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.red_ring));
+        }*/
+
+        if (venue.getIs_tag_follow().equalsIgnoreCase("0")) {
+            //holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
+            holder.tv_follow.setText("Follow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border_gray));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.reward_day_color));
+//            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_border));
+//            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.green));
+        } else {
+            // holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
+            holder.tv_follow.setText("Unfollow");
+            holder.tv_follow.setBackground(activity.getResources().getDrawable(R.drawable.follow_active_gray));
+            holder.tv_follow.setTextColor(activity.getResources().getColor(R.color.white));
         }
 
         if(venue.getIs_tag_follow().equalsIgnoreCase("0")){
-            holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
+//            holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.add_ico));
         }
         else {
             holder.iv_add.setImageDrawable(activity.getResources().getDrawable(R.drawable.right_tick_ico));
@@ -148,14 +183,15 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         } else {
             holder.txt_time.setVisibility(View.VISIBLE);
             holder.txt_live.setVisibility(View.GONE);
-            holder.green_dot.setImageResource(R.drawable.gray_dot);
+//            holder.green_dot.setImageResource(R.drawable.gray_dot);
+            holder.green_dot.setVisibility(View.GONE);
             holder.txt_time.setText(mTime);
         }
 
         if (object.getEvent().isEventLike.equals("1")) {
-            holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
+            holder.iv_heart.setImageResource(R.drawable.active_like_ico);
         } else {
-            holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
+            holder.iv_heart.setImageResource(R.drawable.inactive_like_ico);
         }
 
         if (!object.getEvent().likeCount.isEmpty()) {
@@ -166,14 +202,37 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         holder.txt_eventAdress.setText((venue.getVenue_name().trim().length() > 29 ? venue.getVenue_name().trim().substring(0, 29) : venue.getVenue_name().trim()));
 
         //distance bw event and user
-        String miles = String.valueOf(getDistanceMile(new Double[]{Double.valueOf(venue.getLatitude()), Double.valueOf(venue.getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}));
-        Utility.e("Miles---", miles);
-        holder.txt_eventmile.setText(miles + " M");
+        String miles1 = String.valueOf(getDistanceMile(new Double[]{Double.valueOf(venue.getLatitude()), Double.valueOf(venue.getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}));
+        final int distance = getDistance(new Double[]{Double.valueOf(object.getVenue().getLatitude()), Double.valueOf(object.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])});
+        Utility.e("Miles---", miles1);
+        if (Double.parseDouble(miles1) == 0.0)
+        {
+            holder.txt_eventmile.setText(miles1 +"0" + " M");
+
+        }else if (miles1.length() == 3){
+            holder.txt_eventmile.setText(String.format("%.2f", Double.parseDouble(miles1))+ " M");
+
+
+        }
+        else {
+            holder.txt_eventmile.setText(miles1 + " M");
+
+        }
+
+        if(distance < Constant.MAXIMUM_DISTANCE && object.getEvent().strStatus != 2){
+            holder.frame_keyinbutton.setVisibility(View.VISIBLE);
+            event.ableToKeyIn = true;
+        }
+        else {
+            holder.frame_keyinbutton.setVisibility(View.GONE);
+            event.ableToKeyIn = false;
+        }
+
 
         holder.iv_heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                like_Api(object.getEvent().event_id, holder, object);
+                like_Api(object.getEvent().event_id, holder, object,position);
             }
         });
 
@@ -269,8 +328,13 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             }
         }
 
-        TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, event.imageslideList,event,venue,
-                listener,object,currentLatLng);
+        TrendingFeedSlider trendingFeedSlider = new TrendingFeedSlider(activity, event.imageslideList, event, venue,
+                listener, object, currentLatLng, new TrendingFeedSlider.MapListener() {
+            @Override
+            public void mapFeed(String event_name, String event_id, Venue venue_name, Events object, String[] currentLatLng, String[] strings) {
+
+            }
+        });
         holder.viewPager.setAdapter(trendingFeedSlider);
 
         int listSize = event.imageslideList.size();
@@ -297,6 +361,21 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         }
     }
 
+    public int getDistance(Double[] LL) {
+        Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(LL[0]);
+        startPoint.setLongitude(LL[1]);
+
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(LL[2]);
+        endPoint.setLongitude(LL[3]);
+
+        double distance = startPoint.distanceTo(endPoint);
+
+        return (int) distance;
+    }
+
     private double getDistanceMile(Double[] LL) {
         Utility.e("LAT LONG ", LL[0] + " " + LL[1] + " " + LL[2] + " " + LL[3]);
 
@@ -312,7 +391,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         return new BigDecimal(distance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
-    private void like_Api(final String event_id, final ViewHolder holder, final Events object) {
+    private void like_Api(final String event_id, final ViewHolder holder, final Events object,int myPos) {
 
         activity.showProgDialog(true, "TAG");
 
@@ -334,12 +413,14 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                             int newLikeCount = likeCount + 1;
                             holder.like_count_txt.setText("" + newLikeCount);
                             object.getEvent().likeCount = String.valueOf(newLikeCount);
-                            holder.iv_heart.setImageResource(R.drawable.active_heart_ico);
+                            holder.iv_heart.setImageResource(R.drawable.active_like_ico);
+                            eventsArrayList.get(myPos).getEvent().isEventLike = "1";
                         } else {
                             int newLikeCount = likeCount - 1;
                             holder.like_count_txt.setText(likeCount >= 0 ? newLikeCount + "" : "0");
                             object.getEvent().likeCount = String.valueOf(newLikeCount);
-                            holder.iv_heart.setImageResource(R.drawable.inactive_heart_ico);
+                            holder.iv_heart.setImageResource(R.drawable.inactive_like_ico);
+                            eventsArrayList.get(myPos).getEvent().isEventLike = "0";
                         }
                     }
                 } catch (Exception e) {
@@ -377,7 +458,8 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             dots[i].setImageResource(R.drawable.dot_ico);
     }
 
-    private void setRecyclerView(ViewHolder holder, final ArrayList<KeyInUserModal> keyInUserModalList,final Events object) {
+    @SuppressLint("ClickableViewAccessibility")
+    private void setRecyclerView(ViewHolder holder, final ArrayList<KeyInUserModal> keyInUserModalList, final Events object) {
 
 
         CircularImageView comeInUserProfile = null;
@@ -421,7 +503,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(15 * i, 0, 0, 0);
+                    params.setMargins(20 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
                     String image = "";
@@ -445,7 +527,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(15 * i, 0, 0, 0);
+                    params.setMargins(20 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
                     String image = "";
@@ -469,7 +551,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                             RelativeLayout.LayoutParams.WRAP_CONTENT,
                             RelativeLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(15 * i, 0, 0, 0);
+                    params.setMargins(20 * i, 0, 0, 0);
                     marginlayout.setLayoutParams(params);
                     holder.parent.addView(v, i);
                     no_count.setText(" +" + (keyInUserModalList.size() - i));
@@ -490,6 +572,32 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             }
         });
 
+    holder.iv_summery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(activity, Summary_Activity.class);
+                intent.putExtra("event_id", object.getEvent().event_id);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                activity.startActivity(intent);
+            }
+        });
+
+
+       /* holder.iv_summery.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (!isclick){
+                    isclick =true;
+                Intent intent = new Intent(activity, Summary_Activity.class);
+                intent.putExtra("event_id", object.getEvent().event_id);
+                intent.putExtra("object", object);
+                intent.putExtra("currentLatLng", currentLatLng);
+                activity.startActivity(intent);}
+                return false;
+            }
+        });*/
 
     }
 
@@ -505,7 +613,7 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         private RelativeLayout rl_main;
         private TextView like;
         private ViewPager viewPager;
-        private LinearLayout indicator_linear_layout;
+        private LinearLayout indicator_linear_layout,rl_anim;
         private ImageView iv_group;
         private ImageView iv_comment;
         private ViewGroup parent;
@@ -513,13 +621,19 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
         private TextView txt_live;
         private ImageView green_dot;
         private ImageView iv_note_book;
+        private ImageView iv_summery;
         AppCompatImageView iv_add;
+        FrameLayout frame_keyinbutton;
         TextView tv_follow;
+        private LinearLayout ll_summery;
 
         ViewHolder(View view) {
             super(view);
 
             rl_main = view.findViewById(R.id.rl_main);
+            iv_summery = view.findViewById(R.id.iv_summery);
+            iv_summery = view.findViewById(R.id.iv_summery);
+            rl_anim = view.findViewById(R.id.rl_anim);
             img_event = view.findViewById(R.id.img_event);
             txt_eventName = view.findViewById(R.id.txt_eventName);
             txt_eventAdress = view.findViewById(R.id.txt_eventAdress);
@@ -541,6 +655,8 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             iv_add = view.findViewById(R.id.iv_add);
             iv_comment = view.findViewById(R.id.iv_comment);
             tv_follow = view.findViewById(R.id.tv_follow);
+            frame_keyinbutton = view.findViewById(R.id.frame_keyinbutton);
+
         }
     }
 }

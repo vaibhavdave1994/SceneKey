@@ -5,13 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scenekey.R;
@@ -26,7 +29,9 @@ import com.scenekey.model.Venue;
 import com.scenekey.util.Utility;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,6 +42,7 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
     private CustomProgressBar customProgressBar;
     NewSearchkFragment newSearchkFragment;
     FollowUnfollowLIstner followUnfollowLIstner;
+    private ArrayList<TagModal>sublist;
 
     public Tags_SpecialAdapter(Context context, ArrayList<TagModal> tagList, FollowUnfollowLIstner followUnfollowLIstner) {
         this.tagList = tagList;
@@ -64,7 +70,48 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
 
         TagModal tagModal = tagList.get(position);
 
-        if(tagModal.category_name.equalsIgnoreCase("Specials")) {
+        if (tagModal.tag_text == null || tagModal.tag_text.equals("")) {
+            holder.tag__special_name.setText(tagModal.tag_name);
+            holder.tag__special_text.setText(tagModal.category_name);
+
+            if (tagModal.category_name.equalsIgnoreCase("Happy Hour")) {
+                holder.tag__special_name.setText(tagModal.category_name);
+                holder.tag__special_text.setText(tagModal.tag_name);
+                holder.tv_follow.setVisibility(View.GONE);
+                holder.tv_unfollow.setVisibility(View.GONE);
+            }
+            else {
+                holder.tv_follow.setVisibility(View.VISIBLE);
+                holder.tv_unfollow.setVisibility(View.VISIBLE);
+            }
+
+        }else{
+
+            holder.tag__special_name.setText(tagModal.tag_text);
+            holder.tag__special_text.setText(tagModal.tag_name);
+
+            holder.tv_follow.setVisibility(View.VISIBLE);
+            holder.tv_unfollow.setVisibility(View.VISIBLE);
+
+
+            if(tagModal.tag_text.equalsIgnoreCase("Specials") ||
+                    tagModal.tag_text.equalsIgnoreCase("Happy Hour")){
+
+                holder.tag__special_name.setText(tagModal.tag_name);
+                holder.tag__special_text.setText(tagModal.tag_text);
+
+                holder.tv_follow.setVisibility(View.VISIBLE);
+                holder.tv_unfollow.setVisibility(View.VISIBLE);
+
+            }else{
+                holder.tv_follow.setVisibility(View.GONE);
+                holder.tv_unfollow.setVisibility(View.GONE);
+            }
+        }
+
+
+
+       /* if(tagModal.category_name.equalsIgnoreCase("Specials")) {
             if (!tagModal.makeOwnItem) {
                 holder.tag__special_name.setText(tagModal.tag_text);
                 holder.tag__special_text.setText(tagModal.tag_name);
@@ -98,10 +145,29 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
                 holder.tag__special_text.setText(tagModal.category_name);
                 holder.tag__special_text.setVisibility(View.VISIBLE);
             }
-
+*/
         holder.outerBouder.setBorderColor(Color.parseColor(tagModal.color_code));
-        Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
-                .error(R.drawable.app_icon).into(holder.iv_tag__special_circulerImage);
+
+            if (tagModal.isVenue != null && tagModal.isVenue.equals("0"))
+            {
+                Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+                        .error(R.drawable.app_icon).into(holder.iv_tag__special_circulerImage);
+                holder.iv_tag__special_circulerImage.setVisibility(View.VISIBLE);
+
+            }
+           else if (tagModal.category_name.equalsIgnoreCase("Specials") || tagModal.category_name.equalsIgnoreCase("Happy Hour"))
+            {
+                Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+                        .error(R.drawable.app_icon).into(holder.iv_tag__special_circulerImage);
+                holder.iv_tag__special_circulerImage.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.iv_tag__special_circulerImage.setVisibility(View.GONE);
+                Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+                        .into(holder.outerBouder);
+
+
+            }
 
         if(tagModal.status.equalsIgnoreCase("active")){
             holder.blurView.setVisibility(View.GONE);
@@ -125,10 +191,18 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
                 tagModal.category_name.equalsIgnoreCase("Happy Hour")){
 
             if(!tagModal.makeOwnItem){
+                if (!tagModal.tag_text.equalsIgnoreCase("")){
                 holder.tv_follow.setVisibility(View.GONE);
                 holder.tv_unfollow.setVisibility(View.GONE);
+                }
             }
         }
+
+      /*  if (tagModal.tag_text.equalsIgnoreCase("Specials") ||
+                tagModal.tag_text.equalsIgnoreCase("Happy Hour")){
+            holder.tv_follow.setVisibility(View.GONE);
+            holder.tv_unfollow.setVisibility(View.GONE);
+        }*/
 
         holder.mainRoomView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -151,7 +225,7 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
         private View view;
         private View blurView;
         private LinearLayout mainRoomView;
-        TextView tv_follow,tv_unfollow;
+        RelativeLayout tv_follow,tv_unfollow;
         View view_followed;
 
         ViewHolder(View itemView) {
@@ -179,8 +253,30 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
             switch (view.getId()) {
                 case R.id.mainRoomView:
                     if(tagModal.makeOwnItem){
+
+                        sublist = new ArrayList<>();
+                        for (int i = 0; i < tagList.size() ; i++) {
+
+                            if (tagList.get(i).category_name.equalsIgnoreCase("Specials")){
+                                if (!tagList.get(i).tag_text.equalsIgnoreCase("") && !tagList.get(i).tag_text.equalsIgnoreCase("Specials") && tagModal.biz_tag_id.equalsIgnoreCase(tagList.get(i).biz_tag_id)){
+                                    TagModal tagModal1 = tagList.get(i);
+                                    sublist.add(tagModal1);
+                                }
+                            }
+                            else {
+                                if (!tagList.get(i).tag_text.equalsIgnoreCase("") && !tagList.get(i).tag_text.equalsIgnoreCase("Happy Hour") && tagModal.biz_tag_id.equalsIgnoreCase(tagList.get(i).biz_tag_id)){
+                                    TagModal tagModal1 = tagList.get(i);
+                                    sublist.add(tagModal1);
+                                }
+                            }
+
+                        }
+
                         Intent  intent = new Intent(context, SearchSubCategoryActivity.class);
                         intent.putExtra("tagModal", tagModal);
+                        Bundle args = new Bundle();
+                        args.putSerializable("ARRAYLIST",(Serializable)sublist);
+                        intent.putExtra("BUNDLE",args);
                         intent.putExtra("catId", tagModal.cat_id);
                         intent.putExtra("fromSpecial", true);
                         context.startActivity(intent);
@@ -278,4 +374,13 @@ public class Tags_SpecialAdapter extends RecyclerView.Adapter<Tags_SpecialAdapte
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 }

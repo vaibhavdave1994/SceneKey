@@ -31,7 +31,7 @@
                 android:gravity="center_vertical"
                 android:visibility="gone">
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tablayout"
                     style="@style/MyTabLayout"
                     android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:background="@color/white"
                 android:visibility="gone">
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tablayout_alert"
                     style="@style/MyTabLayout"
                     android:layout_width="match_parent"
@@ -89,10 +89,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1dp"
                     android:layout_alignParentBottom="true"
                     android:background="@color/m_f_gender_color"
-                    android:visibility="gone" />
+                    />
 
             </RelativeLayout>
 
@@ -118,7 +118,7 @@
                     android:gravity="center"
                     android:text="@string/enter"
                     android:textColor="@color/title_color"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <include
                     android:id="@+id/key"
@@ -268,7 +268,7 @@
 
                     </LinearLayout>-->
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tablayout_home"
                     style="@style/MyTabLayout"
                     android:layout_width="match_parent"
@@ -333,9 +333,9 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/img_home_logo"
-                    android:layout_width="@dimen/_26sdp"
+                    android:layout_width="@dimen/_30sdp"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/_2sdp"
@@ -361,14 +361,13 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_alert"
-                        android:layout_width="@dimen/_26sdp"
-                        android:layout_height="match_parent"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:paddingBottom="@dimen/_2sdp"
                         android:scaleType="fitCenter"
-                        android:tint="@color/black30p"
                         app:srcCompat="@drawable/alert" />
 
 
@@ -399,9 +398,9 @@
                 android:orientation="vertical">
 
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/img_five"
-                    android:layout_width="@dimen/_26sdp"
+                    android:layout_width="@dimen/_30sdp"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/_2sdp"
@@ -419,9 +418,9 @@
                 android:layout_weight="1"
                 android:gravity="center">
 
-                <android.support.v7.widget.AppCompatImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/img_four"
-                    android:layout_width="@dimen/_30sdp"
+                    android:layout_width="@dimen/_32sdp"
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:scaleType="fitCenter"
@@ -436,7 +435,8 @@
                     android:paddingLeft="@dimen/_7sdp"
                     android:paddingRight="@dimen/_5sdp"
                     android:text=""
-                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_5sdp"
                     android:textStyle="bold"
                     android:fontFamily="@font/montserrat_medium"
                     />

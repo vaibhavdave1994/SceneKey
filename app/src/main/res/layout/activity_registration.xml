@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
     android:focusableInTouchMode="true"
     android:id="@+id/registerView"
     tools:context="com.scenekey.activity.RegistrationActivity">
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
@@ -31,8 +30,7 @@
                     android:layout_width="@dimen/_200sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_gravity="center"
-                    android:src="@drawable/sk_logo_with_key_1" />
-
+/>
                 <!--<TextView
                     android:id="@+id/tvSplashLogoName"
                     android:layout_width="wrap_content"
@@ -61,7 +59,7 @@
                         android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/user_placeholder"
+
                         app:siBorderColor="@color/white"
                         app:siBorderWidth="@dimen/_1sdp" />
 
@@ -99,7 +97,7 @@
                         android:layout_alignRight="@+id/imgUserImage"
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
-                        android:background="@drawable/camera_ico" />
+                     />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -122,7 +120,7 @@
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/user_ico" />
+                         />
 
                     <EditText
                         android:id="@+id/etRegiFirstName"
@@ -159,7 +157,7 @@
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/user_ico" />
+                         />
 
                     <EditText
                         android:id="@+id/etRegiLastName"
@@ -196,7 +194,7 @@
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/mail_ico" />
+                        />
 
                     <EditText
                         android:id="@+id/etRegiEmail"
@@ -233,7 +231,7 @@
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="@dimen/_20sdp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/lock_ico" />
+                         />
 
                     <EditText
                         android:id="@+id/etRegiPwd"
@@ -290,7 +288,7 @@
                             android:layout_width="@dimen/_40sdp"
                             android:layout_height="@dimen/_40sdp"
                             android:padding="@dimen/_2sdp"
-                            android:src="@drawable/inactive_male_ico" />
+                             />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -316,7 +314,7 @@
                             android:layout_width="@dimen/_40sdp"
                             android:layout_height="@dimen/_40sdp"
                             android:padding="@dimen/_2sdp"
-                            android:src="@drawable/inactive_female_ico" />
+                           />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -474,6 +472,6 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

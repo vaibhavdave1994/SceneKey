@@ -16,7 +16,7 @@
         android:layout_height="@dimen/_50sdp"
         android:background="@drawable/bg_top_bar">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_eventDetail_back"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/top_bar_profile"
@@ -54,7 +54,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="@dimen/_10sdp"
-                android:src="@drawable/black_circle_user_ico"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -72,17 +71,17 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/feedLIstRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomBar"
         android:layout_below="@id/toolbar"
         android:background="@color/white"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_alignParentRight="true"
@@ -90,7 +89,7 @@
         android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginBottom="@dimen/_70sdp"
         android:visibility="gone"
-        app:srcCompat="@drawable/add_ico" />
+         />
 
     <View
         android:layout_width="match_parent"

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +27,7 @@ public class VenueBoardAdapter extends RecyclerView.Adapter<VenueBoardAdapter.Vi
     private ArrayList<VenueBoard.EventTagBean> venue_boardList;
     private Context context;
     boolean fromTrending;
+    private VenueBoardInnerAdapter venueBoardInnerAdapter;
 
     public VenueBoardAdapter(Context context, ArrayList<VenueBoard.EventTagBean> venue_boardList,boolean fromTrending) {
 
@@ -76,7 +77,7 @@ public class VenueBoardAdapter extends RecyclerView.Adapter<VenueBoardAdapter.Vi
             holder.venuRecyclerView.setLayoutParams(marginLayoutParams);
 
             holder.venuRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            VenueBoardInnerAdapter venueBoardInnerAdapter = new VenueBoardInnerAdapter(context, venue_boardList_inner_vertical, fromTrending,false);
+            venueBoardInnerAdapter = new VenueBoardInnerAdapter(context, venue_boardList_inner_vertical, fromTrending,false);
             holder.venuRecyclerView.setAdapter(venueBoardInnerAdapter);
         }
         else {
@@ -99,9 +100,12 @@ public class VenueBoardAdapter extends RecyclerView.Adapter<VenueBoardAdapter.Vi
                 venue_boardList_inner = new ArrayList<>();
             }
 
-            VenueBoardInnerAdapter venueBoardInnerAdapter = new VenueBoardInnerAdapter(context, venue_boardList_inner, fromTrending,true);
+            venueBoardInnerAdapter = new VenueBoardInnerAdapter(context, venue_boardList_inner, fromTrending,true);
             holder.venuRecyclerView.setAdapter(venueBoardInnerAdapter);
+
         }
+
+        venueBoardInnerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -125,5 +129,15 @@ public class VenueBoardAdapter extends RecyclerView.Adapter<VenueBoardAdapter.Vi
             toolbar = itemView.findViewById(R.id.toolbar);
             toolbar.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 }

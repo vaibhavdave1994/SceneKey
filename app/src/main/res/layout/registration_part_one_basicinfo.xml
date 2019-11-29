@@ -21,7 +21,7 @@
         android:layout_height="@dimen/top_bar"
         android:gravity="center_vertical">
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_back"
             android:layout_width="@dimen/top_bar_profile"
             android:layout_height="match_parent"
@@ -33,7 +33,7 @@
             android:paddingBottom="@dimen/_2sdp"
             app:srcCompat="@drawable/ic_back_icon" />
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_report"
             android:layout_width="@dimen/_180sdp"
             android:layout_height="match_parent"
@@ -100,7 +100,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             >
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_firstname"
                 android:layout_width="@dimen/_13sdp"
                 android:layout_height="@dimen/_13sdp"
@@ -113,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/img_firstname"
                 android:hint="First Name"
+                android:cursorVisible="true"
                 android:textColorHint="@color/email_hint_new_reg"
                 android:textColor="@color/email_text_new_reg"
                 android:textSize="@dimen/_11sdp"
@@ -136,7 +137,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             >
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_lastname"
                 android:layout_width="@dimen/_13sdp"
                 android:layout_height="@dimen/_13sdp"
@@ -149,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/img_lastname"
                 android:hint="Last Name"
+                android:cursorVisible="true"
                 android:textColorHint="@color/email_hint_new_reg"
                 android:textColor="@color/email_text_new_reg"
                 android:textSize="@dimen/_11sdp"
@@ -167,7 +169,7 @@
             android:background="@color/border_line_new_reg"/>
 
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

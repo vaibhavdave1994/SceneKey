@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -486,7 +486,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             //utility.snackBar(mainLayout, getString(R.string.internetConnectivityError), 0);
-            utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
+//            utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -882,7 +882,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     activity.dismissProgDialog();
-                    Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -899,7 +899,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
+//            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -961,7 +961,7 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
+//            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }

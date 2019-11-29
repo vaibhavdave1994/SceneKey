@@ -1,6 +1,6 @@
 package com.scenekey.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +27,13 @@ public class ZoomImageActivity extends AppCompatActivity {
         ImageView img_f1_back = findViewById(R.id.img_f1_back);
 
         img_f1_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        mainView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

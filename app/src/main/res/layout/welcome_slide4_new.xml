@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Get discounts!"
+        android:text="Get awesome rewards"
         android:textColor="@color/colorPrimaryDark_new"
-        android:textSize="@dimen/_18sdp"
+        android:textSize="@dimen/_18ssp"
         android:fontFamily="@font/montserrat_semibold"/>
 
     <TextView
@@ -22,18 +22,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Use your keypoints to get discounts and rewards. The more active you are, the more rewards you can get. "
+        android:text="Use your points to get discounts and rewards to local businesses. The more active you are, the more rewards you get."
         android:textColor="@color/reward_day_color"
-        android:textSize="@dimen/_12sdp"
+        android:textSize="@dimen/_11ssp"
         android:fontFamily="@font/montserrat_regular"/>
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_30sdp"
         android:layout_marginRight="@dimen/_30sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_gravity="center"
-        android:src="@drawable/vp_slide4"/>
+        android:src="@drawable/four"/>
 
 </LinearLayout>

@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.TagModal;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -38,9 +41,10 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
     TagsActivity activity;
     FollowUnfollowLIstner followUnfollowLIstner;
     boolean fromProfile = false;
+    private View view;
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public Tags_Adapter(boolean fromProfile, Context context, ArrayList<TagModal> tagList,String catId,String category_name,
+    public Tags_Adapter(View view,boolean fromProfile, Context context, ArrayList<TagModal> tagList,String catId,String category_name,
                         FollowUnfollowLIstner followUnfollowLIstner) {
         this.tagList = tagList;
         this.context = context;
@@ -49,6 +53,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
         this.category_name = category_name;
         this.followUnfollowLIstner = followUnfollowLIstner;
         this.fromProfile = fromProfile;
+        this.view = view;
     }
 
     @NonNull
@@ -65,17 +70,41 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
         holder.tag_name.setText(tagModal.tag_name);
 
         holder.iv_tag_circulerImage.setBorderColor(Color.parseColor(tagModal.color_code));
-        if(tagModal.isVenue == null){
+        /*if(tagModal.isVenue == null){
             tagModal.isVenue = "0";
-        }
+        }*/
 //        if(tagModal.isVenue.equalsIgnoreCase("1")){
 //            Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
 //                    .error(R.drawable.app_icon).into(holder.iv_tag_circulerImage);
 //        }
 //        else {
+          /*  Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+                    .error(R.drawable.app_icon).into(holder.iv_tag_circulerImage);*/
+       // }
+
+
+
+        if (tagModal.isVenue != null && tagModal.isVenue.equals("0"))
+        {
             Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
                     .error(R.drawable.app_icon).into(holder.iv_imageView);
-       // }
+            holder.iv_imageView.setVisibility(View.VISIBLE);
+
+        }
+        else if (tagModal.category_name.equalsIgnoreCase("Specials") || tagModal.category_name.equalsIgnoreCase("Happy Hour"))
+        {
+            Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+                    .error(R.drawable.app_icon).into(holder.iv_imageView);
+            holder.iv_imageView.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.iv_imageView.setVisibility(View.GONE);
+            Picasso.with(context).load(tagModal.tag_image).placeholder(R.drawable.app_icon)
+                    .error(R.drawable.app_icon).into(holder.iv_tag_circulerImage);
+
+
+        }
+
 
         if(!fromProfile){
             if(tagModal.is_tag_follow.equalsIgnoreCase("0")){
@@ -170,10 +199,11 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
 
     private void followUnfollowDialog(final Object object, final int followUnfollow) {
 
-        final Dialog dialog = new Dialog(context);
+//        view.setVisibility(View.VISIBLE);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_follow_unfollow_dialog_layout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
 
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
@@ -189,6 +219,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 TagModal tagModal = (TagModal) object;
+//                view.setVisibility(View.GONE);
 //                followUnfollowLIstner.getFollowUnfollow(1,tagModal.biz_tag_id);
                 activity.tagFollowUnfollow(1,tagModal.biz_tag_id,"",1);
                 dialog.dismiss();
@@ -198,6 +229,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 TagModal tagModal = (TagModal) object;
+//                view.setVisibility(View.GONE);
 //                followUnfollowLIstner.getFollowUnfollow(0,tagModal.biz_tag_id);
                 activity.tagFollowUnfollow(0,tagModal.biz_tag_id,"",1);
                 dialog.dismiss();
@@ -208,6 +240,7 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                view.setVisibility(View.GONE);
                 dialog.dismiss();
             }
         });
@@ -221,6 +254,16 @@ public class Tags_Adapter extends RecyclerView.Adapter<Tags_Adapter.ViewHolder> 
             follow_text.setVisibility(View.VISIBLE);
         }
         dialog.show();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 }
 

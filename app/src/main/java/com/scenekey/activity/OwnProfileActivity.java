@@ -1,32 +1,26 @@
 package com.scenekey.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.core.widget.NestedScrollView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +46,7 @@ import com.scenekey.base.BaseActivity;
 import com.scenekey.fragment.Event_Fragment;
 import com.scenekey.fragment.Key_In_Event_Fragment;
 import com.scenekey.helper.Constant;
+import com.scenekey.helper.OnDragTouchListener;
 import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.VerticalViewPager;
 import com.scenekey.helper.WebServices;
@@ -81,9 +76,23 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class OwnProfileActivity extends BaseActivity implements  View.OnClickListener{
+public class OwnProfileActivity extends BaseActivity implements View.OnClickListener {
 
+    public static boolean shouldRefresh = false;
     private final String TAG = OwnProfileActivity.class.toString();
+    String userImage = "";
+    ArrayList<BucketDataModel> alOfBucketData;
+    UserInfo userInfo;
+    //---new code------
+    CircleImageView outerBouder, outerBouder1, outerBouder2, outerBouder3, outerBouder4;
+    ImageView iv_tag__special_circulerImage, iv_tag__special_circulerImage1, iv_tag__special_circulerImage2, iv_tag__special_circulerImage3,
+            iv_tag__special_circulerImage4;
+    TextView tag__special_name, tag__special_name1, tag__special_name2, tag__special_name3, tag__special_name4;
+    RelativeLayout rl, rl1, rl2, rl3, rl4, rl_error, rl_view;
+    TextView tv_viewall_interest, follow_tokens;
+    LinearLayout ll_donothavebio;
+    TagModal tagModal, tagModal1, tagModal2, tagModal3, tagModal4;
+    NestedScrollView bottom_sheet;
     private Context context;
     private OwnProfileActivity activity;
     private Utility utility;
@@ -92,54 +101,41 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
     private boolean myProfile;
     private Event_Fragment event_fragment;
     private Key_In_Event_Fragment key_in_event_fragment;
-    
     private ArrayList<Feeds> feedsList;
     private ArrayList<ImagesUpload> imageList;
     private int currentImage, pageToshow = 1;
     private boolean clicked;
-    private TextView tv_user_name;
-
+    private TextView tv_user_name, tvHomeTitle, tv_key_points;
     private EditText tv_bio;
-
-    private ImageView btn1, btn2, btn3, btn4, btn5;
+    private ImageView btn1;
+    private ImageView btn2;
+    private ImageView btn3;
+    private ImageView btn4;
+    private ImageView btn5;
     //private RelativeLayout ly_match_profile;
-   // private BottomSheetBehavior<View> mBottomSheetBehavior;
-   // private View bottom_sheet;
+    // private BottomSheetBehavior<View> mBottomSheetBehavior;
+    // private View bottom_sheet;
     private int profilePos;
     //private RelativeLayout customizeView;
     private ProfileImagePagerAdapter pagerAdapter;
-    String userImage ="";
     private LinearLayout demo_View_dot;
-    ArrayList<BucketDataModel> alOfBucketData;
 
-    UserInfo userInfo;
-
-    //---new code------
-    CircleImageView outerBouder,outerBouder1,outerBouder2,outerBouder3,outerBouder4;
-    ImageView iv_tag__special_circulerImage,iv_tag__special_circulerImage1,iv_tag__special_circulerImage2,iv_tag__special_circulerImage3,
-            iv_tag__special_circulerImage4;
-    TextView tag__special_name,tag__special_name1,tag__special_name2,tag__special_name3,tag__special_name4;
-    RelativeLayout rl,rl1,rl2,rl3,rl4,rl_error;
-    TextView tv_viewall_interest,follow_tokens;
-    LinearLayout ll_donothavebio;
-    public static boolean shouldRefresh = false;
-    TagModal tagModal,tagModal1,tagModal2,tagModal3,tagModal4;
-    NestedScrollView bottom_sheet;
-
-
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_fragment_profile_new_fragment);
+        setContentView(R.layout.activity_owne_profile);
+
 
         this.context = this;
         activity = OwnProfileActivity.this;
         utility = new Utility(context);
         userInfo = new UserInfo();
-        bottom_sheet = findViewById(R.id.bottom_sheet);
+        /*bottom_sheet = findViewById(R.id.bottom_sheet);
 
-        bottom_sheet.smoothScrollTo(0,90);
+
+        bottom_sheet.smoothScrollTo(0,90);*/
         outerBouder = findViewById(R.id.outerBouder);
         outerBouder1 = findViewById(R.id.outerBouder1);
         outerBouder2 = findViewById(R.id.outerBouder2);
@@ -161,11 +157,19 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
         rl2 = findViewById(R.id.rl2);
         rl3 = findViewById(R.id.rl3);
         rl4 = findViewById(R.id.rl4);
+        rl_view = findViewById(R.id.rl_view);
+        ImageView img_setting = findViewById(R.id.img_setting);
+        ImageView iv_back = findViewById(R.id.iv_back);
+        tvHomeTitle = findViewById(R.id.tvHomeTitle);
+        tv_key_points = findViewById(R.id.tv_key_points);
         rl.setOnClickListener(this);
         rl1.setOnClickListener(this);
         rl2.setOnClickListener(this);
         rl3.setOnClickListener(this);
         rl4.setOnClickListener(this);
+        rl_view.setOnClickListener(this);
+        img_setting.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
 
         rl_error = findViewById(R.id.rl_error);
         ll_donothavebio = findViewById(R.id.ll_donothavebio);
@@ -186,6 +190,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
         // mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         imageList = new ArrayList<>();
 
+
         //customizeView = findViewById(R.id.customizeView);
         demo_View_dot = findViewById(R.id.demo_View_dot);
 
@@ -205,25 +210,63 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
 
         int dpHeight = outMetrics.heightPixels;
         int dpWidth = outMetrics.widthPixels;
-    }
+        tv_bio.setCursorVisible(false);
+        tv_bio.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                tv_bio.setCursorVisible(true);
+                return false;
+            }
+        });
 
-   
+
+        final RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
+
+        //rl_update_bio = v.findViewById(R.id.rl_update_bio);
+        relativeLayout.setOnTouchListener(new OnDragTouchListener(relativeLayout));
+//        tv_update_bio.setOnTouchListener(new OnDragTouchListener(relativeLayout));
+    }
 
 
     private void setProfileData() {
 
         UserInfo userInfo = SessionManager.getInstance().getUserInfo();
 
+        tvHomeTitle.setText(userInfo.fullname);
+
+      /*  if (!SceneKey.sessionManager.getkeypoint().equals(""))
+        {
+            if (Integer.parseInt(SceneKey.sessionManager.getkeypoint()) > 1000) {
+                HomeActivity.tv_key_points.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getkeypoint()), 0));
+                HomeActivity.tv_key_points_new.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getkeypoint()), 0));
+            } else {
+                HomeActivity.tv_key_points.setText(SceneKey.sessionManager.getkeypoint());
+                HomeActivity.tv_key_points_new.setText(SceneKey.sessionManager.getkeypoint());
+
+            }
+        }else {
+
+        }*/
+
+        if (Integer.parseInt(SceneKey.sessionManager.getUserInfo().key_points) > 1000) {
+            tv_key_points.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getUserInfo().key_points), 0));
+        } else {
+            tv_key_points.setText(SceneKey.sessionManager.getUserInfo().key_points);
+
+        }
         if (!userInfo.lastName.equals("0"))
             tv_user_name.setText(userInfo.fullname + " " + userInfo.lastName);
         else
             tv_user_name.setText(userInfo.fullname);
 
         if (userInfo.bio.equals("")) {
+            ll_donothavebio.setVisibility(View.VISIBLE);
+
 
         } else {
             tv_bio.setText(userInfo.bio);
             ll_donothavebio.setVisibility(View.GONE);
+
         }
 
 //        if (userInfo.user_status != null) {
@@ -267,8 +310,12 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
 
         switch (v.getId()) {
 
+            case R.id.iv_back:
+                onBackPressed();
+                break;
+
             case R.id.iv_image_upload:
-                if (myProfile) {
+                 {
                     Intent i = new Intent(context, ImageUploadActivity.class);
                     i.putExtra("from", "profile");
                     i.putExtra("alOfBucketData", alOfBucketData);
@@ -277,18 +324,40 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                 }
                 break;
 
+            case R.id.img_setting:
+
+                Intent seetingIntet = new Intent(this, SettingActivtiy.class);
+                startActivity(seetingIntet);
+                // }
+
+                break;
+
+
             case R.id.tv_update_bio:
-                if(!tv_bio.getText().toString().trim().equalsIgnoreCase(""))
-                updateBio(tv_bio.getText().toString().trim());
+                if (tv_bio.getVisibility() == View.VISIBLE) {
+                    if (!tv_bio.getText().toString().trim().equalsIgnoreCase("")) {
+                        updateBio(tv_bio.getText().toString().trim());
+                        tv_bio.setCursorVisible(false);
+                    }
                 else
                     utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
+                }
+                else {
+                    tv_bio.setCursorVisible(false);
+                    Intent bioIntent = new Intent(OwnProfileActivity.this, BioActivity.class);
+                    bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    bioIntent.putExtra("from", "setting");
+                    startActivity(bioIntent);
+                }
+
+
                 break;
 
             case R.id.img_cross:
                 crossImgClicked();
                 break;
 
-                case R.id.img_right:
+            case R.id.img_right:
                 setImage(true);
                 break;
             case R.id.img_left:
@@ -304,13 +373,13 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                 startActivity(intent);
                 break;
 
-             case R.id.follow_tokens:
-                 Intent intent1 = new Intent(context, HomeActivity.class);
-                 intent1.putExtra("fromSearch", true);
-                 intent1.putExtra("name", "");
-                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                 startActivity(intent1);
-                 finish();
+            case R.id.follow_tokens:
+                Intent intent1 = new Intent(context, HomeActivity.class);
+                intent1.putExtra("fromSearch", true);
+                intent1.putExtra("name", "");
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent1);
+                finish();
                 break;
 
             case R.id.rl:
@@ -347,9 +416,9 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
 
     @Override
     public void onResume() {
-     //   setProfileData();
+        //   setProfileData();
         super.onResume();
-        if(shouldRefresh){
+        if (shouldRefresh) {
             // Reload current fragment
 //            Fragment frg = null;
 //            frg = activity.getSupportFragmentManager().findFragmentByTag(getFragmentManager().getFragments().getClass().getName());
@@ -598,7 +667,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                     e.printStackTrace();
                 }
 
-                    setUpView();
+                setUpView();
 
                 Log.e("step10", "pass");
             }
@@ -681,21 +750,26 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
 
         viewPager.setAdapter(pagerAdapter);
 
-
         userImage = SceneKey.sessionManager.getUserInfo().getUserImage();
-        if (userImage != null) {
+        if (imageList.size() > 1) {
+            if (userImage != null) {
 
-            for (int i = 0; i < imageList.size(); i++) {
+                for (int i = 0; i < imageList.size(); i++) {
 
-                if (userImage.equals(imageList.get(i).getPath())) {
-                    profilePos = i;
-                    break;
+                    if (userImage.equals(imageList.get(i).getPath())) {
+                        profilePos = i;
+                        break;
+                    }
+
                 }
 
-            }
+                viewPager.setCurrentItem(profilePos);
+                initButton(profilePos);
 
-            viewPager.setCurrentItem(profilePos);
-            initButton(0);
+            }
+        }
+        else {
+            demo_View_dot.setVisibility(View.GONE);
         }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -719,7 +793,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
     }
 
     private void initButton(int position) {
-        if(imageList.size() == 0){
+        if (imageList.size() == 0) {
 
         }
         switch (position) {
@@ -844,7 +918,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     activity.dismissProgDialog();
-                    Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(context, context.getResources().getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -861,7 +935,8 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -923,7 +998,8 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
     }
@@ -933,7 +1009,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.GET_BUCKET_DATA, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                   // activity.dismissProgDialog();
+                    // activity.dismissProgDialog();
                     // get response
                     try {
                         JSONObject jo = new JSONObject(response);
@@ -944,45 +1020,45 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                 try {
 
                                     JSONArray jsonArray = new JSONArray();
-                                    if(jo.has("bucketInfo")){
+                                    if (jo.has("bucketInfo")) {
                                         imageList = new ArrayList<>();
                                         jsonArray = jo.getJSONArray("bucketInfo");
-                                        for(int i =0; i<jsonArray.length(); i++){
-                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
 //                                             if(jsonObject.has("Key"))
                                             String Key = jsonObject.getString("Key");
                                             String LastModified = jsonObject.getString("LastModified");
                                             String ETag = jsonObject.getString("ETag");
                                             String Size = jsonObject.getString("Size");
                                             String StorageClass = jsonObject.getString("StorageClass");
-                                            JSONObject Owner  = jsonObject.getJSONObject("Owner");
+                                            JSONObject Owner = jsonObject.getJSONObject("Owner");
 
                                             String DisplayName = Owner.getString("DisplayName");
                                             String ID = Owner.getString("ID");
-                                            OwnerModel ownerModel = new OwnerModel(DisplayName,ID);
-                                            alOfBucketData.add(new BucketDataModel(Key,LastModified,ETag,Size,
-                                                    StorageClass,ownerModel));
+                                            OwnerModel ownerModel = new OwnerModel(DisplayName, ID);
+                                            alOfBucketData.add(new BucketDataModel(Key, LastModified, ETag, Size,
+                                                    StorageClass, ownerModel));
 
                                             imageList.add(new ImagesUpload(Key));
                                         }
                                         setUpView();
                                     }
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                      }
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
-                  //  activity.dismissProgDialog();
+                    //  activity.dismissProgDialog();
                 }
             }) {
                 @Override
@@ -1013,12 +1089,13 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                 try {
 
                                     JSONArray jsonArray = new JSONArray();
-                                    if(jo.has("followTag")){
+                                    if (jo.has("followTag")) {
                                         jsonArray = jo.getJSONArray("followTag");
-                                        if(jsonArray.length()>0){
+                                        if (jsonArray.length() > 0) {
                                             rl_error.setVisibility(View.GONE);
                                         }
-                                        for(int i =0; i<jsonArray.length(); i++){
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            rl_view.setVisibility(View.VISIBLE);
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                                             String biz_tag_id = jsonObject.getString("biz_tag_id");
                                             String tag_name = jsonObject.getString("tag_name");
@@ -1026,14 +1103,13 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                             String tag_image = jsonObject.getString("tag_image");
                                             String isVenue = jsonObject.getString("isVenue");
 
-                                            switch (i){
+                                            switch (i) {
                                                 case 0:
                                                     outerBouder.setBorderColor(Color.parseColor(color_code));
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage);
                                                     }
@@ -1048,11 +1124,10 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                                     break;
                                                 case 1:
                                                     outerBouder1.setBorderColor(Color.parseColor(color_code));
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder1);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage1);
                                                     }
@@ -1069,11 +1144,10 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                                 case 2:
                                                     outerBouder2.setBorderColor(Color.parseColor(color_code));
 
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder2);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage2);
                                                     }
@@ -1089,11 +1163,10 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                                 case 3:
                                                     outerBouder3.setBorderColor(Color.parseColor(color_code));
 
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder3);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage3);
                                                     }
@@ -1110,11 +1183,10 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                                                 case 4:
                                                     outerBouder4.setBorderColor(Color.parseColor(color_code));
 
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder4);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage4);
                                                     }
@@ -1129,8 +1201,8 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
 
                                                     break;
 
-                                                    default:
-                                                        break;
+                                                default:
+                                                    break;
                                             }
                                         }
                                     }
@@ -1142,7 +1214,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
                         }
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -1166,7 +1238,7 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
         }
     }
 
-    public void goToTagSearchInEvent(TagModal tagModal){
+    public void goToTagSearchInEvent(TagModal tagModal) {
         Intent intent;
 //        if(category_name.equalsIgnoreCase("Specials")){
 //            intent = new Intent(context, SearchSubCategoryActivity.class);
@@ -1174,12 +1246,12 @@ public class OwnProfileActivity extends BaseActivity implements  View.OnClickLis
 //            intent.putExtra("catId", catId);
 //        }
 //        else {
-            intent = new Intent(context, TrendinSearchActivity.class);
-            intent.putExtra("tag_name", tagModal.tag_name);
-            intent.putExtra("tag_image", tagModal.tag_image);
-            intent.putExtra("tagmodel", tagModal);
-            intent.putExtra("from_tagadapter", true);
-       // }
+        intent = new Intent(context, TrendinSearchActivity.class);
+        intent.putExtra("tag_name", tagModal.tag_name);
+        intent.putExtra("tag_image", tagModal.tag_image);
+        intent.putExtra("tagmodel", tagModal);
+        intent.putExtra("from_tagadapter", true);
+        // }
         context.startActivity(intent);
     }
 

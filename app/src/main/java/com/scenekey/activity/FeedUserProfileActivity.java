@@ -2,10 +2,10 @@ package com.scenekey.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -437,7 +437,8 @@ public class FeedUserProfileActivity extends AppCompatActivity implements View.O
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showToast(this, getResources().getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            Utility.showToast(this, getResources().getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }
@@ -495,7 +496,7 @@ public class FeedUserProfileActivity extends AppCompatActivity implements View.O
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     dismissProgDialog();
-                    Utility.showToast(FeedUserProfileActivity.this, getResources().getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(FeedUserProfileActivity.this, getResources().getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -511,7 +512,8 @@ public class FeedUserProfileActivity extends AppCompatActivity implements View.O
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showToast(FeedUserProfileActivity.this, getResources().getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            Utility.showToast(FeedUserProfileActivity.this, getResources().getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }
@@ -567,7 +569,7 @@ public class FeedUserProfileActivity extends AppCompatActivity implements View.O
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     dismissProgDialog();
-                    Utility.showToast(FeedUserProfileActivity.this, getString(R.string.somethingwentwrong), 0);
+//                    Utility.showToast(FeedUserProfileActivity.this, getString(R.string.somethingwentwrong), 0);
                 }
             }) {
                 @Override
@@ -587,7 +589,8 @@ public class FeedUserProfileActivity extends AppCompatActivity implements View.O
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this,"No network connection","","");
+//            utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }

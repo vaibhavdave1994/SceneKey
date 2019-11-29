@@ -2,7 +2,7 @@ package com.scenekey.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -89,5 +89,10 @@ public class VerticalViewPager extends ViewPager {
             return true;
         }
 
+    }
+
+    @Override
+    public void setOnDragListener(OnDragListener l) {
+        super.setOnDragListener(l);
     }
 }

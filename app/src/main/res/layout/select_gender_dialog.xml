@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_10sdp"
@@ -41,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:padding="@dimen/_4sdp"
-                    android:src="@drawable/close_icon_sk" />
+                     />
             </RelativeLayout>
 
             <TextView
@@ -78,7 +78,7 @@
                         android:id="@+id/imgRegiMale"
                         android:layout_width="@dimen/_45sdp"
                         android:layout_height="@dimen/_45sdp"
-                        android:src="@drawable/inactive_male_ico" />
+                         />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                         android:id="@+id/imgRegiFemale"
                         android:layout_width="@dimen/_45sdp"
                         android:layout_height="@dimen/_45sdp"
-                        android:src="@drawable/inactive_female_ico" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -137,6 +137,6 @@
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -50,7 +50,6 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/_1sdp"
             android:layout_marginBottom="@dimen/_2sdp"
-            android:text="📚"
             android:textColor="@color/black"
             android:textSize="12dp" />
 

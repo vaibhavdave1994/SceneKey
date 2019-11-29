@@ -5,6 +5,11 @@
     <string name="facebook_app_id">1602336283352167</string>
 
     <string name="google_maps_key">AIzaSyDXrcBF_T_oZkOMwOmvq6knqGImKwiotw0</string>
+    <string name="google_key">AIzaSyBj6W7zUHkvo3H74j7ihnpNxVMfxPsoBHk</string>
+    <!--    <string name="google_key">AIzaSyAzlqPc1OwdMSrrVPLllUCKubclM_rcox0</string>-->
+    <!--
+    <string name="google_key">AIzaSyDMV1uzq03U9G6zARwl-zHXwOybTJD-XVs</string>
+-->
 
     <!-- Login & Registration  -->
     <string name="email">Email</string>
@@ -51,7 +56,7 @@
     <string name="high_accuracy">  please check GPS and set Location Service to high accuracy mode. </string>
     <string name="gps_new"> \"SceneKey\" requires \n Location Service to work. </string>
     <string name="try_again"> Try Again.</string>
-    <string name="ok"> OK</string>
+    <string name="ok">OK</string>
     <string name="locationServicesNotActive">Location Services Not Active</string>
     <string name="couldntGetLocation"> Couldn\'t get location. Please try again. </string>
 
@@ -1096,7 +1101,7 @@
     <string name="success_uploaded">Photo has successfully\n uploaded.</string>
     <string name="ques_deleted">Are you sure you want to \n Delete Photo ? </string>
     <string name="ques_tag_follow">Are you sure you want to \n Follow this tag ? </string>
-    <string name="ques_tag_unfollow">Are you sure you want to \n Unollow this tag ? </string>
+    <string name="ques_tag_unfollow">Are you sure you want to \n Unfollow this tag ? </string>
     <string name="default_deleted_title"> Cannot Delete Default Picture </string>
     <string name="default_deleted_msg"> Sorry, you are unable to delete the \n default profile picture </string>
 
@@ -1119,6 +1124,7 @@
 
     <!--Select Gender Dialog-->
     <string name="alert">Alert</string>
+    <string name="acceptterms">Please accept terms and conditions</string>
     <string name="select_your_gender">Select your gender</string>
     <string name="done">Done</string>
 
@@ -1147,7 +1153,8 @@
     <string name="PTBS2">  ❤️ this event or share to this scene page.You will help other Scenesters see what\'s happening here in real time!</string>  <!--Post to the big screen!-->
     <string name="sorry4"> Unfortunately, there a no \n rewards being offered in your \n area at this time. Please check \n back for updates.</string>
     <string name="sorry4_new">You have no alerts at this time.</string>
-    <string name="sorry5"> You have no rewards in your \n wallet at this moment. You can \n add rewards from the offer \n page.</string>
+    <string name="sorry6"> You have no rewards in your \n wallet at this moment. You can \n add rewards from the offer \n page.</string>
+    <string name="sorry5">You have no rewards at the moment. \n You can add rewards offered \n to you from the alerts \n tab</string>
 
     <!--Events Fragment-->
     <string name="no_members_in_room">No members in room</string>
@@ -1158,7 +1165,7 @@
     <string name="sorrytrending"> Unfortunately, there are no \n events occurring in your area at \n this time. Please check back for \n updates.</string>
 
     <string name="the_room">The Room</string>
-    <string name="success_check_wallet">Success! Check your wallet</string>
+    <string name="success_check_wallet">Success! Check the reward tab</string>
     <string name="enter_report">Please enter report</string>
     <string name="report_submitted_successfully">Report submitted successfully</string>
     <string name="reward_redeem_successfully">Reward redeemed successfully</string>
@@ -1173,4 +1180,21 @@
     <string name="basic_info"> Enter your basic info </string>
     <string name="tnc"> <u> Term &amp; Conditions </u> </string>
     <string name="privacy_policy"> <u> Privacy &amp; policy </u> </string>
+    <string name="use_15_keypoints_to_get_this_reward">Use 15 keypoints to get this reward?</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="invite">Invite</string>
+    <string name="unknown">Unknown</string>
+    <string name="resend">Resend</string>
+    <string name="sent">Sent</string>
+    <string name="send_invite">Send Invite</string>
+    <string name="noname">No name</string>
+    <string name="emozi">📚</string>
+    <string name="board">Board</string>
+    <string name="status">Status</string>
+    <string name="people">People</string>
+    <string name="summary">Summary</string>
+    <string name="cancel1">CANCEL</string>
+    <string name="not_enough_keypoint">You do not have enough keypoint to get this reward</string>
+    <string name="description">Description</string>
+    <string name="mapstr">this will close SceneKey and open the maps application.Continue</string>
 </resources>

@@ -2,11 +2,11 @@ package com.scenekey.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,6 +27,7 @@ import com.scenekey.R;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.adapter.Search_tag_Adapter;
 import com.scenekey.adapter.Tags_SpecialAdapter;
+import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.FollowUnfollowLIstner;
 import com.scenekey.model.Events;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -60,6 +62,7 @@ public class NewSearchkFragment extends Fragment {
     private ArrayList<TagModal> tag_list;
     private ArrayList<TagModal> tag_listDeactive;
     private ArrayList<TagModal> specialTag_list;
+    private ArrayList<TagModal> specialsubTag_list;
     private Tags_SpecialAdapter tags_specialAdapter;
     private UserInfo userInfo;
     EditText et_serch_post;
@@ -68,12 +71,22 @@ public class NewSearchkFragment extends Fragment {
     boolean onBack = false;
     RelativeLayout no_data_found;
     ImageView iv;
+    private boolean boolhh = false;
+    private boolean boolS = false;
+    private int ints =0,inthh=0;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_new_searchk, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         inItView(view);
+        SessionManager sessionManager = new SessionManager(context);
+        sessionManager.backOrIntent(false);
+        SceneKey.sessionManager.putMapFragment("");
+        if(!Utility.checkInternetConnection1(activity)){
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+        }
         return view;
     }
 
@@ -139,7 +152,7 @@ public class NewSearchkFragment extends Fragment {
 
         if (utility.checkInternetConnection()) {
 
-            activity.showProgDialog(true, "TAG");
+             activity.showProgDialog(true, "TAG");
 
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.SEARCH_TAG, new Response.Listener<String>() {
                 @Override
@@ -212,7 +225,8 @@ public class NewSearchkFragment extends Fragment {
             request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
 
         } else {
-            utility.snackBar(searchContianer, getString(R.string.internetConnectivityError), 0);
+//            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(searchContianer, getString(R.string.internetConnectivityError), 0);
         }
     }
 
@@ -255,6 +269,9 @@ public class NewSearchkFragment extends Fragment {
                                 tagModal.venue_id = jsonObject.getString("venue_id");
                                 tagModal.biz_tag_id = jsonObject.getString("biz_tag_id");
                                 tagModal.tag_name = jsonObject.getString("tag_name");
+
+                                if (jsonObject.has("isVenue")){
+                                tagModal.isVenue = jsonObject.getString("isVenue");}
                                 tagModal.category_name = jsonObject.getString("category_name");
                                 tagModal.color_code = jsonObject.getString("color_code");
                                 tagModal.tag_text = jsonObject.getString("tag_text");
@@ -271,7 +288,11 @@ public class NewSearchkFragment extends Fragment {
                                 Log.v("tag_list", "" + tag_list.size());
                             }
 
+                            List<Integer> Datahh = new ArrayList<Integer>();
+                            List<Integer> Datas = new ArrayList<Integer>();
                             JSONArray specialTagList = jo.getJSONArray("specialTagList");
+                            String tagnametesthh = "1";
+                            String tagnametests = "1";
 
                             for (int i = 0; i < specialTagList.length(); i++) {
 
@@ -287,10 +308,28 @@ public class NewSearchkFragment extends Fragment {
                                 tagModal.status = jsonObjectSTL.getString("status");
                                 tagModal.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
 
+
+                                if (jsonObjectSTL.getString("category_name").equalsIgnoreCase("Happy Hour")) {
+                                    if (!tagnametesthh.equalsIgnoreCase(tagModal.tag_name)){
+                                        tagnametesthh = jsonObjectSTL.getString("tag_name");
+//                                        boolhh =true;
+                                        inthh = i;
+                                        Datahh.add(inthh);
+                                    }
+                                }
+                                Log.e("tagnametests",tagnametests);
+                                if (jsonObjectSTL.getString("category_name").equalsIgnoreCase("Specials")) {
+                                    if (!tagnametests.equalsIgnoreCase(tagModal.tag_name)){
+                                        tagnametests = jsonObjectSTL.getString("tag_name");
+//                                        boolS =true;
+                                        ints = i;
+                                        Datahh.add(ints);
+                                    }
+                                }
+
                                 if(jsonObjectSTL.getString("status").equalsIgnoreCase("active")){
                                     System.out.println("specialTag_list : "+specialTag_list.size());
                                     specialTag_list.add(tagModal);
-                                    System.out.println("specialTag_list : "+specialTag_list.size());
                                 }
 //                                else {
 //                                    tag_listDeactive.add(tagModal);
@@ -299,22 +338,57 @@ public class NewSearchkFragment extends Fragment {
                                 Log.v("tag_list2", "" + specialTag_list.size());
                             }
 
-                            if(specialTag_list.size() >0){
-                                TagModal tagModalNew = new TagModal();
-                                JSONObject jsonObjectSTL = specialTagList.getJSONObject(0);
-                                tagModalNew.venue_id = jsonObjectSTL.getString("venue_id");
-                                tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
-                                tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
-                                tagModalNew.category_name = jsonObjectSTL.getString("category_name");
-                                tagModalNew.color_code = jsonObjectSTL.getString("color_code");
-                                tagModalNew.tag_name = jsonObjectSTL.getString("tag_name");
-                                tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
-                                tagModalNew.status = jsonObjectSTL.getString("status");
-                                tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
-                                tagModalNew.cat_id = jsonObjectSTL.getString("cat_id");
-                                tagModalNew.makeOwnItem =true;
-                                specialTag_list.add(0,tagModalNew);
-                            }
+
+                                if (specialTag_list.size() > 0) {
+                                    for (int i = 0; i < Datas.size(); i++) {
+
+
+                                        TagModal tagModalNew = new TagModal();
+                                        Log.e("ints", String.valueOf(ints));
+                                        JSONObject jsonObjectSTL = specialTagList.getJSONObject(Datas.get(i));
+                                        tagModalNew.venue_id = jsonObjectSTL.getString("venue_id");
+                                        tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
+                                        tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
+                                        tagModalNew.category_name = jsonObjectSTL.getString("category_name");
+                                        tagModalNew.color_code = jsonObjectSTL.getString("color_code");
+                                        tagModalNew.tag_name = jsonObjectSTL.getString("tag_name");
+                                        tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
+                                        tagModalNew.status = jsonObjectSTL.getString("status");
+                                        tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                        tagModalNew.cat_id = jsonObjectSTL.getString("cat_id");
+                                        tagModalNew.makeOwnItem = true;
+                                        specialTag_list.add(0, tagModalNew);
+                                    }
+                                }
+
+
+
+
+                                if (specialTag_list.size() > 0) {
+                                    for (int i = 0; i < Datahh.size(); i++) {
+                                        TagModal tagModalNew = new TagModal();
+                                        JSONObject jsonObjectSTL = specialTagList.getJSONObject(Datahh.get(i));
+                                        tagModalNew.venue_id = jsonObjectSTL.getString("venue_id");
+                                        tagModalNew.biz_tag_id = jsonObjectSTL.getString("biz_tag_id");
+                                        tagModalNew.tag_text = jsonObjectSTL.getString("category_name");
+                                        tagModalNew.category_name = jsonObjectSTL.getString("category_name");
+                                        tagModalNew.color_code = jsonObjectSTL.getString("color_code");
+                                        tagModalNew.tag_name = jsonObjectSTL.getString("tag_name");
+                                        tagModalNew.tag_image = jsonObjectSTL.getString("tag_image");
+                                        tagModalNew.status = jsonObjectSTL.getString("status");
+                                        tagModalNew.is_tag_follow = jsonObjectSTL.getString("is_tag_follow");
+                                        tagModalNew.cat_id = jsonObjectSTL.getString("cat_id");
+                                        tagModalNew.makeOwnItem = true;
+                                        specialTag_list.add(0, tagModalNew);
+                                    }
+                                }
+
+
+
+
+
+
+
                             tag_list.addAll(specialTag_list);
                             tag_list.addAll(tag_listDeactive);
 
@@ -365,7 +439,8 @@ public class NewSearchkFragment extends Fragment {
             VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
         } else {
-            utility.snackBar(searchContianer, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+//            utility.snackBar(searchContianer, getString(R.string.internetConnectivityError), 0);
         }
     }
 
@@ -440,7 +515,7 @@ public class NewSearchkFragment extends Fragment {
 
                     } catch (Exception e) {
                         activity.dismissProgDialog();
-                        Utility.showToast(context, context.getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, context.getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -465,6 +540,7 @@ public class NewSearchkFragment extends Fragment {
             VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
+            Utility.showCheckConnPopup(activity,"No network connection","","");
             // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }

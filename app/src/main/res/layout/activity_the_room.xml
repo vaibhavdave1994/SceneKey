@@ -21,7 +21,7 @@
         android:layout_height="@dimen/_45sdp"
        >
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_f11_back"
             android:layout_width="@dimen/top_bar_profile"
             android:layout_height="@dimen/top_bar_profile"
@@ -35,12 +35,24 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/montserrat_medium"
-            android:gravity="center_vertical"
-            android:maxWidth="@dimen/_230sdp"
-            android:singleLine="true"
+            android:gravity="center"
+            android:maxLines="2"
+            android:layout_marginStart="@dimen/_60sdp"
+            android:layout_marginEnd="@dimen/_60sdp"
             android:text="@string/the_room"
             android:textColor="@color/black2"
-            android:textSize="@dimen/_14ssp" />
+            android:textSize="@dimen/_13ssp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_dot"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/top_bar_profile"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/_12sdp"
+            app:srcCompat="@drawable/threedots_ico" />
+
 
         <RelativeLayout
             android:id="@+id/lnrLeft"
@@ -48,14 +60,16 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
 
             <ImageView
                 android:id="@+id/img_ListIcon"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/note_book_ico" />
+                />
 
             <RelativeLayout
                 android:id="@+id/comeInUser_lnr"
@@ -80,7 +94,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:src="@drawable/chat_ico" />
+                 />
 
         </RelativeLayout>
 
@@ -93,12 +107,13 @@
         android:layout_below="@+id/toolbar"
         android:background="@color/m_f_gender_color"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/theRoomRecyclerView"
         android:layout_below="@+id/v_1"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -132,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_120sdp"
                     android:layout_gravity="center"
-                    android:src="@drawable/team" />
+                     />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -156,11 +171,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/raleway_regular"
-                android:text="There is no member join in this room yet.After joining the room members will appear here."
+                android:text="There is no member join in this room yet. After joining the room members will appear here."
                 android:textSize="@dimen/_15ssp" />
 
         </LinearLayout>
 
     </ScrollView>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/transparent1"
+        />
 
 </RelativeLayout>

@@ -26,7 +26,7 @@
         android:gravity="top|center_horizontal"
         android:orientation="vertical">
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/a6_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -51,6 +51,7 @@
         android:layout_weight=".28"
         android:layout_gravity="center"
         android:gravity="top"
+        android:background="@color/white"
        >
 
     <TextView
@@ -64,7 +65,7 @@
         android:textColor="@color/new_reg_login_signup"
         />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_continue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -117,10 +118,12 @@
             android:orientation="horizontal"
             android:weightSum="1"
             android:gravity="center"
+
+            android:background="#ffffff"
             android:layout_below="@+id/ll_or"
             android:layout_marginTop="@dimen/_5sdp">
 
-            <android.support.v7.widget.AppCompatButton
+            <TextView
                 android:id="@+id/btn_fb"
                 android:layout_width="0dp"
                 android:layout_weight=".5"
@@ -137,7 +140,7 @@
                 android:background="@drawable/facebook_btn_border"
                 android:text="Facebook"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <TextView
                 android:id="@+id/btn_google"
                 android:layout_width="0dp"
                 android:layout_weight=".5"

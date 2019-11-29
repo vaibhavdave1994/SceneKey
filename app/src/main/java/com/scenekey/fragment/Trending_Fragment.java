@@ -7,11 +7,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +33,8 @@ import com.scenekey.R;
 import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.adapter.Trending_Adapter;
+import com.scenekey.helper.CustomProgressBar;
+import com.scenekey.helper.SessionManager;
 import com.scenekey.helper.WebServices;
 import com.scenekey.listener.CheckEventStatusListener;
 import com.scenekey.listener.FollowUnfollowLIstner;
@@ -44,10 +51,12 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,15 +65,17 @@ public class Trending_Fragment extends Fragment {
     private static Timer timerHttp;
     private final String TAG = Trending_Fragment.class.toString();
     public boolean canCallWebservice;
+    UserInfo myUserInfo;
     private Context context;
     private HomeActivity activity;
     private Utility utility;
+    private CustomProgressBar progressBar;
     private RecyclerView rcViewTrending;
     private String lat = "", lng = "";
     private Trending_Adapter trendingAdapter;
     private ArrayList<Events> eventsArrayList;
     private ScrollView no_data_trending;
-    UserInfo myUserInfo;
+    private int pos = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -74,6 +85,14 @@ public class Trending_Fragment extends Fragment {
         rcViewTrending = v.findViewById(R.id.rcViewTrending);
         no_data_trending = v.findViewById(R.id.no_data_trending);
         activity.setTitleVisibility(View.VISIBLE);
+
+        SessionManager sessionManager = new SessionManager(context);
+        progressBar = new CustomProgressBar(context);
+
+        sessionManager.backOrIntent(true);
+        SceneKey.sessionManager.putMapFragment("trending");
+
+//        recalling();
         return v;
     }
 
@@ -81,6 +100,10 @@ public class Trending_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         activity.setTitle(context.getResources().getString(R.string.trending));
+
+        if(!Utility.checkInternetConnection1(activity)){
+            Utility.showCheckConnPopup(activity,"No network connection","","");
+        }
         trendingData();
     }
 
@@ -93,11 +116,30 @@ public class Trending_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        activity.showProgDialog(true,"");
+//        recalling();
         canCallWebservice = true;
-        if (timerHttp == null) setDataTimer();
+//        if (timerHttp == null) setDataTimer();
 
-        getTrendingData();
+//        getTrendingData();
     }
+
+    /*private void recalling(){
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        // your code here
+                       getTrendingData();
+
+
+
+//                      trendingAdapter.notifyItemChanged(0);
+                    }
+                },
+                60000
+        );
+    }*/
 
     private void trendingData() {
         String[] latLng = activity.getLatLng();
@@ -109,7 +151,8 @@ public class Trending_Fragment extends Fragment {
             lng = latLng[1];
             retryLocation();
         } else {
-            activity.showProgDialog(false, TAG);
+//            progressBar.show();
+//            activity.showProgDialog(false, TAG);
             getTrendingData();
             if (timerHttp == null) setDataTimer();
         }
@@ -136,13 +179,14 @@ public class Trending_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+//                progressBar.show();
                 activity.showProgDialog(false, TAG);
                 new Handler().postDelayed(new Runnable() {
                     // Using handler with postDelayed called runnable run method
                     @Override
                     public void run() {
 
-                        if (utility.checkNetworkProvider() | utility.checkGPSProvider()) {
+                        if (utility.checkNetworkProvider() || utility.checkGPSProvider()) {
                             trendingData();
                         } else {
                             utility.checkGpsStatus();
@@ -156,7 +200,8 @@ public class Trending_Fragment extends Fragment {
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.dismissProgDialog();
+                progressBar.dismiss();
+//                activity.dismissProgDialog();
                 dialog.cancel();
 
             }
@@ -182,30 +227,63 @@ public class Trending_Fragment extends Fragment {
             },
                     new FollowUnfollowLIstner() {
                         @Override
-                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id,Object object,int position) {
-                           Events events = (Events) object;
-                            tagFollowUnfollow(followUnfollow,biz_tag_id,events.getVenue().getVenue_id(),position);
+                        public void getFollowUnfollow(int followUnfollow, String biz_tag_id, Object object, int position) {
+                            Events events = (Events) object;
+                            tagFollowUnfollow(followUnfollow, biz_tag_id, events.getVenue().getVenue_id(), position);
                         }
                     });
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(activity) {
+
+                @Override
+                public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+                    LinearSmoothScroller smoothScroller = new LinearSmoothScroller(activity) {
+
+                        private static final float SPEED = 300f;
+
+                        @Override
+                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                            return SPEED / displayMetrics.densityDpi;
+                        }
+
+                    };
+                    smoothScroller.setTargetPosition(position);
+                    startSmoothScroll(smoothScroller);
+                }
+
+            };
+
             rcViewTrending.setLayoutManager(layoutManager);
             rcViewTrending.setAdapter(trendingAdapter);
             trendingAdapter.notifyDataSetChanged();
             rcViewTrending.setHasFixedSize(true);
-        }
-        else {
+        } else {
             trendingAdapter.notifyDataSetChanged();
             rcViewTrending.setHasFixedSize(true);
         }
     }
 
     public void getTrendingData() {
+
+        activity.showProgDialog(true,"");
+        activity.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                if (pos == 0) {
+                    rcViewTrending.scrollToPosition(0);
+                }
+            }
+        });
+
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TRENDING, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     // get response
+                    activity.dismissProgDialog();
                     try {
                         JSONObject jo = new JSONObject(response);
 
@@ -213,6 +291,8 @@ public class Trending_Fragment extends Fragment {
                             int status = jo.getInt("status");
                             if (status == 0) {
                                 activity.dismissProgDialog();
+                                progressBar.dismiss();
+
                                 try {
                                     no_data_trending.setVisibility(View.VISIBLE);
                                 } catch (Exception e) {
@@ -288,19 +368,22 @@ public class Trending_Fragment extends Fragment {
                                     if (user.has("bio"))
                                         userInfo.bio = (user.getString("bio"));
 
-                                    activity.updateSession(userInfo);
+
                                     myUserInfo = userInfo;
+                                    activity.updateSession(myUserInfo);
+
                                     if (user.getString("fullname").equals("")) {
                                         SceneKey.sessionManager.logout(activity);
                                     }
                                 }
                             } catch (Exception e) {
-                                if(e.getMessage().equals("Value [] at userInfo of type org.json.JSONArray cannot be converted to JSONObject"))
-                                {
+                                if (e.getMessage().equals("Value [] at userInfo of type org.json.JSONArray cannot be converted to JSONObject")) {
                                     SceneKey.sessionManager.logout(getActivity());
                                 }
                                 e.printStackTrace();
                                 activity.dismissProgDialog();
+                                progressBar.dismiss();
+
                             }
 
 
@@ -318,11 +401,22 @@ public class Trending_Fragment extends Fragment {
                                     if (object.has("events"))
                                         events.setEventJson(object.getJSONObject("events"));
                                     try {
-                                        events.setOngoing(events.checkWithTime(events.getEvent().event_date, events.getEvent().interval));
+                                        String dateSplit = "0.0";
+                                        if (events.getEvent().interval != null) {
+                                            String interval = String.valueOf(events.getEvent().interval);
 
+                                            if (interval.contains(":")) {
+                                                dateSplit = (interval.replace(":", "."));
+                                            } else {
+                                                dateSplit = String.valueOf(events.getEvent().interval);
+                                            }
+
+                                            events.setOngoing(events.checkWithTime(events.getEvent().event_date, Double.parseDouble(dateSplit)));
+                                        }
 
                                         // New Code
-                                        checkWithDate(events.getEvent().event_date, events.getEvent().rating, events);
+//                                        checkWithDate(events.getEvent().event_date, events.getEvent().rating, events);
+                                        newCheckWithDate(events.getEvent().event_date, events.getEvent().rating, events);
                                     } catch (Exception e) {
                                         Utility.e("Date exception", e.toString());
                                     }
@@ -352,14 +446,29 @@ public class Trending_Fragment extends Fragment {
                                     Toast.makeText(activity, "No Event found near your location", Toast.LENGTH_LONG).show();
                                 }
                                 setRecyclerView();
+
+                                for (int i = 0; i < eventsArrayList.size(); i++) {
+
+                                    if (SceneKey.sessionManager.getPosTrendingList().equalsIgnoreCase(eventsArrayList.get(i).getEvent().event_id)) {
+                                        pos = i;
+
+                                    }
+                                }
+                                rcViewTrending.scrollToPosition(pos);
+                                SceneKey.sessionManager.putPosTrendingList("");
+                                pos=0;
+
                             }
+                            progressBar.dismiss();
                             activity.dismissProgDialog();
                             no_data_trending.setVisibility(View.GONE);
                         }
+                        progressBar.dismiss();
                         activity.dismissProgDialog();
                     } catch (Exception e) {
                         activity.dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+                        progressBar.dismiss();
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -367,6 +476,8 @@ public class Trending_Fragment extends Fragment {
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     activity.dismissProgDialog();
+                    progressBar.dismiss();
+
                 }
             }) {
                 @Override
@@ -383,8 +494,12 @@ public class Trending_Fragment extends Fragment {
             VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
         } else {
-            utility.snackBar(rcViewTrending, getString(R.string.internetConnectivityError), 0);
+//            utility.snackBar(rcViewTrending, getString(R.string.internetConnectivityError), 0);
+//            Utility.showCheckConnPopup(activity,"No network connection","","");
+
             activity.dismissProgDialog();
+            progressBar.dismiss();
+
         }
     }
 
@@ -404,7 +519,9 @@ public class Trending_Fragment extends Fragment {
                                                       try {
 
                                                           if (canCallWebservice) {
+                                                              SceneKey.sessionManager.putPosTrendingList("");
                                                               getTrendingData();
+
                                                           }
                                                       } catch (Exception e) {
                                                           e.printStackTrace();
@@ -448,6 +565,8 @@ public class Trending_Fragment extends Fragment {
                     JSONObject jsonObject;
                     try {
                         activity.dismissProgDialog();
+                        progressBar.dismiss();
+
                         jsonObject = new JSONObject(Response);
 
                         String status = jsonObject.getString("status");
@@ -460,6 +579,7 @@ public class Trending_Fragment extends Fragment {
                         if (!isKeyInAble && activity.userInfo().key_points.equals("0")) {
                             Toast.makeText(context, "Sorry! you have run out of key points! Earn more by connecting on the scene!", Toast.LENGTH_SHORT).show();
                         } else {
+
                             Intent intent = new Intent(context, EventDetailsActivity.class);
                             intent.putExtra("event_id", event_id);
                             intent.putExtra("fromTab", "trending");
@@ -470,6 +590,7 @@ public class Trending_Fragment extends Fragment {
                             intent.putExtra("venueId", venue_name.getVenue_id());
                             intent.putExtra("fromTrending", true);
                             intent.putExtra("isKeyInAble", isKeyInAble);
+
                             startActivity(intent);
 
                          /*   Event_Fragment fragment = Event_Fragment.newInstance("trending");
@@ -478,6 +599,7 @@ public class Trending_Fragment extends Fragment {
                         }
 
                     } catch (Exception ex) {
+                        progressBar.dismiss();
                         activity.dismissProgDialog();
                         ex.printStackTrace();
                     }
@@ -487,6 +609,8 @@ public class Trending_Fragment extends Fragment {
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     activity.dismissProgDialog();
+                    progressBar.dismiss();
+
                 }
             }) {
                 @Override
@@ -502,124 +626,222 @@ public class Trending_Fragment extends Fragment {
             request.setRetryPolicy(new DefaultRetryPolicy(30000, 0, 1));
         } else {
             Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+//            Utility.showCheckConnPopup(activity,"No network connection","","");
             activity.dismissProgDialog();
+            progressBar.dismiss();
+
         }
     }
 
-    public void checkWithDate(final String startDate, final String rating, Events events) {  //2018-11-12 18:00:00TO08:00:00
+    public void newCheckWithDate(final String startDate, final String rating, Events events) {
         String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
         try {
-            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).parse(dateSplit[0] + " " + dateSplit[1]);
 
-           // Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            //String formattedDate = df.format(c.getTime());
-             Date date = df.parse(myUserInfo.currentDate);
-             String formattedDate = df.format(date);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
-            Date curTime = df.parse(formattedDate);
+            //1current date
+            UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+            Date currentdate = simpleDateFormat.parse(userInfo.currentDate);
 
-            getDayDifference(startTime, curTime, rating, events);
+            //2start date
+            Date startdate = simpleDateFormat.parse(dateSplit[0] + " " + dateSplit[1]);
+
+
+            //3 End date
+            Date enddate = simpleDateFormat.parse(dateSplit[0] + " " + dateSplit[2]);
+
+
+            compareDateLiveOrNot(currentdate, startdate, enddate, rating, events);
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    //********** day diffrence  ****************//
-    public void getDayDifference(Date startDate, Date endDate, String rating, Events events) {
-        //milliseconds
-        long different = startDate.getTime() - endDate.getTime();
+    public void compareDateLiveOrNot(Date currentdate, Date startDate, Date endDate, String rating, Events events) {
 
-        long secondsInMilli = 1000;
-        long minutesInMilli = secondsInMilli * 60;
-        long hoursInMilli = minutesInMilli * 60;
-        long daysInMilli = hoursInMilli * 24;
+        if (currentdate.compareTo(startDate) < 0) {
+            events.getEvent().strStatus = 2;
 
-        long elapsedDays = different / daysInMilli;
-        different = different % daysInMilli;
-
-        long elapsedHours = different / hoursInMilli;
-        different = different % hoursInMilli;
-
-        long elapsedMinutes = different / minutesInMilli;
-        different = different % minutesInMilli;
-
-        long elapsedSeconds = different / secondsInMilli;
-
-        if (different > 0) {
-            if (elapsedHours > 0) {
-                events.getEvent().returnDay = elapsedHours + "hr";
-                events.getEvent().strStatus = 2;
-            } else if (elapsedMinutes > 0) {
-                events.getEvent().returnDay = elapsedMinutes + "mins";
-                events.getEvent().strStatus = 2;
-            } else if (elapsedSeconds > 0) {
-                events.getEvent().returnDay = elapsedSeconds + "secs";
-                //strStatus = 2;
-                events.getEvent().strStatus = 2;
-            } else {
-                if (rating.equals("0")) {
-                    events.getEvent().returnDay = "--";
-                    //strStatus = 0;
-                    events.getEvent().strStatus = 0;
-                } else {
-                    //strStatus = 1;
-                    events.getEvent().strStatus = 1;
-                    // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
-                    events.getEvent().returnDay = rating;
-                }
-            }
         } else {
-            /*returnDay = "--";
-            strStatus = 0;*/
-
-            if (rating.equals("0")) {
-                events.getEvent().returnDay = "--";
-                //strStatus = 0;
-                events.getEvent().strStatus = 0;
+            if (currentdate.compareTo(endDate) < 0) {
+                events.getEvent().strStatus = 2;
             } else {
-                events.getEvent().strStatus = 1;
-                //strStatus = 1;
-                // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
-                events.getEvent().returnDay = rating;
+                events.getEvent().strStatus = 0;
             }
+        }
+
+    }
+
+
+    public void checkWithDate(final String startDate, final String rating, Events events) {  //2018-11-12 18:00:00TO08:00:00
+        String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
+        try {
+//            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).parse(dateSplit[0] + " " + dateSplit[1]);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            Date startTime = simpleDateFormat.parse(dateSplit[0] + " " + dateSplit[1]);
+
+            //3 End date
+            Date Enddate = simpleDateFormat.parse(dateSplit[0] + " " + dateSplit[2]);
+
+
+//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
+            Date date = simpleDateFormat.parse(userInfo.currentDate);
+           /* String formattedDate = df.format(date);
+            Date curTime = df.parse(formattedDate);*/
+//            getDayDifference(startTime, Enddate, rating, events);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
+//    //********** day diffrence  ****************//
+//    public void getDayDifference(Date startDate, Date endDate, String rating, Events events) {
+//        //milliseconds
+//        long different = startDate.getTime() - endDate.getTime();
+//
+//
+//        Log.v("different", "" + different);
+//
+//        long secondsInMilli = 1000;
+//        long minutesInMilli = secondsInMilli * 60;
+//        long hoursInMilli = minutesInMilli * 60;
+//        long daysInMilli = hoursInMilli * 24;
+//
+//        long elapsedDays = different / daysInMilli;
+//        different = different % daysInMilli;
+//
+//        long elapsedHours = different / hoursInMilli;
+//        different = different % hoursInMilli;
+//
+//        long elapsedMinutes = different / minutesInMilli;
+//        different = different % minutesInMilli;
+//
+//        long elapsedSeconds = different / secondsInMilli;
+//
+//
+//        //befor Change 6.21 minute
+//       /* if (different > 0) {
+//            if (elapsedHours > 0) {
+//                events.getEvent().returnDay = elapsedHours + "hr";
+//                events.getEvent().strStatus = 2;
+//            } else if (elapsedMinutes > 0) {
+//                events.getEvent().returnDay = elapsedMinutes + "mins";
+//                events.getEvent().strStatus = 2;
+//            } else if (elapsedSeconds > 0) {
+//                events.getEvent().returnDay = elapsedSeconds + "secs";
+//                //strStatus = 2;
+//                events.getEvent().strStatus = 2;
+//            } else {
+//                if (rating.equals("0")) {
+//                    events.getEvent().returnDay = "--";
+//                    //strStatus = 0;
+//                    events.getEvent().strStatus = 0;
+//                } else {
+//                    //strStatus = 1;
+//                    events.getEvent().strStatus = 1;
+//                    // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
+//                    events.getEvent().returnDay = rating;
+//                }
+//            }
+//        } else {
+//            *//*returnDay = "--";
+//            strStatus = 0;*//*
+//
+//            if (rating.equals("0")) {
+//                events.getEvent().returnDay = "--";
+//                //strStatus = 0;
+//                events.getEvent().strStatus = 0;
+//            } else {
+//                events.getEvent().strStatus = 1;
+//                //strStatus = 1;
+//                // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
+//                events.getEvent().returnDay = rating;
+//            }
+//        }*/
+//
+//        // change by shubham 6.21 minute
+//
+//        if (different > 0) {
+//            if (elapsedHours > 0) {
+//                events.getEvent().returnDay = elapsedHours + "hr";
+//                events.getEvent().strStatus = 2;
+//            } else if (elapsedMinutes > 0) {
+//                events.getEvent().returnDay = elapsedMinutes + "mins";
+//                events.getEvent().strStatus = 2;
+//            } else if (elapsedSeconds > 0) {
+//                events.getEvent().returnDay = elapsedSeconds + "secs";
+//                //strStatus = 2;
+//                events.getEvent().strStatus = 2;
+//            } else {
+//                if (rating.equals("0")) {
+//                    events.getEvent().returnDay = "--";
+//                    //strStatus = 0;
+//                    events.getEvent().strStatus = 0;
+//                } else {
+//                    //strStatus = 1;
+//                    events.getEvent().strStatus = 1;
+//                    // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
+//                    events.getEvent().returnDay = rating;
+//                }
+//            }
+//        } else {
+//            /*returnDay = "--";
+//            strStatus = 0;*/
+//
+//            if (rating.equals("0")) {
+//                events.getEvent().returnDay = "--";
+//                //strStatus = 0;
+//                events.getEvent().strStatus = 0;
+//            } else {
+//                events.getEvent().strStatus = 1;
+//                //strStatus = 1;
+//                // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
+//                events.getEvent().returnDay = rating;
+//            }
+//        }
+//    }
+
     //----------------follow / unfollow----------------
-    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id,final String venueId, final int pos) {
+    public void tagFollowUnfollow(final int followUnfollow, final String biz_tag_id, final String venueId, final int pos) {
         if (utility.checkInternetConnection()) {
-            activity.showProgDialog(true, "TAG");
+//            activity.showProgDialog(true, "TAG");
+            progressBar.show();
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TAG_FOLLOW_UNFOLLOW, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     activity.dismissProgDialog();
+                    progressBar.dismiss();
+
                     // get response
                     try {
                         JSONObject jo = new JSONObject(response);
-                        if(jo.has("status")){
-                            if(jo.getString("status").equalsIgnoreCase("success")){
-                                if(followUnfollow == 0){
+                        if (jo.has("status")) {
+                            if (jo.getString("status").equalsIgnoreCase("success")) {
+                                if (followUnfollow == 0) {
                                     Venue venue = eventsArrayList.get(pos).getVenue();
                                     venue.setIs_tag_follow("0");
                                     eventsArrayList.get(pos).setVenue(venue);
-                                    trendingAdapter.notifyItemChanged(pos);
-                                }else {
+                                    trendingAdapter.notifyDataSetChanged();
+                                } else {
                                     Venue venue = eventsArrayList.get(pos).getVenue();
                                     venue.setIs_tag_follow("1");
                                     eventsArrayList.get(pos).setVenue(venue);
-                                    trendingAdapter.notifyItemChanged(pos);
+                                    trendingAdapter.notifyDataSetChanged();
                                 }
 //                                setRecyclerView();
-                               // getTrendingData();
+                                // getTrendingData();
 
                             }
                         }
 
                     } catch (Exception e) {
+                        progressBar.dismiss();
                         activity.dismissProgDialog();
-                        Utility.showToast(getActivity(), getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(getActivity(), getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -627,12 +849,14 @@ public class Trending_Fragment extends Fragment {
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
                     activity.dismissProgDialog();
+                    progressBar.dismiss();
+
                 }
             }) {
                 @Override
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("biz_tag_id",biz_tag_id);
+                    params.put("biz_tag_id", biz_tag_id);
                     params.put("follow_status", String.valueOf(followUnfollow));
                     params.put("user_id", SceneKey.sessionManager.getUserInfo().userid);
                     params.put("venue_id", venueId);
@@ -644,8 +868,11 @@ public class Trending_Fragment extends Fragment {
             VolleySingleton.getInstance(context).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-           // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
+
+            // utility.snackBar(continer, getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
+            progressBar.dismiss();
+
         }
     }
 }

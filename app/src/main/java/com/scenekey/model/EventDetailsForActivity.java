@@ -240,7 +240,7 @@ public class EventDetailsForActivity {
                // fragment.txt_event_name.setText(profile_rating.getEvent_name().substring(0, 26) + "...");//Changed
 
         }
-        if (JSon.has("interval")) profile_rating.setInterval(JSon.getDouble("interval") + "");
+        if (JSon.has("interval")) profile_rating.setInterval(JSon.getString("interval") + "");
         if (JSon.has("event_date")) profile_rating.setEvent_date(JSon.getString("event_date"));
         if (JSon.has("key_in")) profile_rating.setKey_in(JSon.getString("key_in"));
         if (JSon.has("like")) {

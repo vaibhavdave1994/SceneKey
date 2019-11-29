@@ -2,7 +2,6 @@ package com.scenekey.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +21,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -67,13 +66,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.scenekey.BuildConfig;
 import com.scenekey.R;
+import com.scenekey.Retrofitprocess.RetrofitClient;
+import com.scenekey.activity.invite_friend.InviteFriendsActivity;
+import com.scenekey.activity.new_reg_flow.RegistrationActivityNewCreatePassword;
 import com.scenekey.activity.new_reg_flow.RegistrationActivityNewEmail;
 import com.scenekey.aws_service.AWSImage;
-import com.scenekey.cropper.CropImage;
-import com.scenekey.cropper.CropImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.scenekey.helper.Constant;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.ImageSessionManager;
@@ -89,6 +93,7 @@ import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,6 +108,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 import static com.scenekey.helper.Constant.MY_PERMISSIONS_REQUEST_LOCATION;
 
@@ -136,6 +146,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Dialog genderDialog;
     private CallbackManager objFbCallbackManager;
     private String fbUserImage = "";
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +168,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initView() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         customProgressBar = new CustomProgressBar(context);
         etRegiFirstName = findViewById(R.id.etRegiFirstName);
         etRegiLastName = findViewById(R.id.etRegiLastName);
@@ -266,7 +278,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             getAddressFromLatLong(latitude, longitude);
 
                             if (cb_terms.isChecked()) {
-                                doRegistration(firstName, lastName, email, pwd, maleFemale, "",profileImageBitmap,"");
+                                doRegistration(firstName, lastName, email, pwd, maleFemale, "", profileImageBitmap, "");
                             } else {
                                 //Toast.makeText(context, "Please accept terms and conditions", Toast.LENGTH_SHORT).show();
                                 utility.showCustomPopup("Please accept terms and conditions.", String.valueOf(R.font.montserrat_medium));
@@ -280,7 +292,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
 
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context, "No network connection", "", "");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
 
                 break;
@@ -296,7 +309,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
 
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context, "No network connection", "", "");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
 
@@ -311,7 +325,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
 
                 } else {
-                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                    Utility.showCheckConnPopup(context, "No network connection", "", "");
+//                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
 
                 break;
@@ -325,15 +340,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             case R.id.imgRegiMale:
                 maleFemale = "male";
 
-                imgRegiMale.setImageResource(R.drawable.active_male_ico);
-                imgRegiFemale.setImageResource(R.drawable.inactive_female_ico);
+//                imgRegiMale.setImageResource(R.drawable.active_male_ico);
+//                imgRegiFemale.setImageResource(R.drawable.inactive_female_ico);
                 break;
 
             case R.id.imgRegiFemale:
                 maleFemale = "female";
 
-                imgRegiMale.setImageResource(R.drawable.inactive_male_ico);
-                imgRegiFemale.setImageResource(R.drawable.active_female_ico);
+//                imgRegiMale.setImageResource(R.drawable.inactive_male_ico);
+//                imgRegiFemale.setImageResource(R.drawable.active_female_ico);
                 break;
         }
     }
@@ -343,82 +358,83 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
             if (latitude != 0.0d && longitude != 0.0d) {
 
-        showProgDialog(false);
-        loginstatus = "facebook";
-        objFbCallbackManager = CallbackManager.Factory.create();
+                showProgDialog(false);
+                loginstatus = "facebook";
+                objFbCallbackManager = CallbackManager.Factory.create();
 
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
-        LoginManager.getInstance().registerCallback(objFbCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
+                LoginManager.getInstance().registerCallback(objFbCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
 
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
+                        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
 
-                                try {
-                                    UserInfo userInfo = new UserInfo();
-                                    AccessToken token = AccessToken.getCurrentAccessToken();
+                                        try {
+                                            UserInfo userInfo = new UserInfo();
+                                            AccessToken token = AccessToken.getCurrentAccessToken();
 
-                                    userInfo.userFacebookId = object.get("id").toString();
-                                    userInfo.userAccessToken = String.valueOf(token);
-                                    userInfo.fullname = object.get("first_name").toString();
-                                    userInfo.lastName = object.get("last_name").toString();
-                                    userInfo.userImage = "https://graph.facebook.com/" + userInfo.userFacebookId + "/picture?type=large";
-                                    userInfo.userGender = "";//object.getString("gender");
-                                    userInfo.gender = "";//object.getString("gender");
-                                    userInfo.loginstatus = "facebook";
-                                    // New Code
-                                    if (object.has("email")) {
-                                        userInfo.userEmail = object.getString("email");
-                                    } else {
-                                        userInfo.userEmail = object.get("name").toString();
+                                            userInfo.userFacebookId = object.get("id").toString();
+                                            userInfo.userAccessToken = String.valueOf(token);
+                                            userInfo.fullname = object.get("first_name").toString();
+                                            userInfo.lastName = object.get("last_name").toString();
+                                            userInfo.userImage = "https://graph.facebook.com/" + userInfo.userFacebookId + "/picture?type=large";
+                                            userInfo.userGender = "";//object.getString("gender");
+                                            userInfo.gender = "";//object.getString("gender");
+                                            userInfo.loginstatus = "facebook";
+                                            // New Code
+                                            if (object.has("email")) {
+                                                userInfo.userEmail = object.getString("email");
+                                            } else {
+                                                userInfo.userEmail = object.get("name").toString();
+                                            }
+
+                                            fbUserImage = userInfo.userImage;
+                                            if (fbUserImage != null && !fbUserImage.equalsIgnoreCase("")) {
+                                                getBitmapFromURL(userInfo.userImage, userInfo);
+                                            } else {
+                                                checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId, userInfo.userEmail);
+                                                getAddressFromLatLong(latitude, longitude);
+                                            }
+                                            //registerSocialDetails(userInfo);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
                                     }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name,first_name,last_name,email,gender,birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                    }
 
-                                    fbUserImage = userInfo.userImage;
-                                    if (fbUserImage != null && !fbUserImage.equalsIgnoreCase("")) {
-                                        getBitmapFromURL(userInfo.userImage, userInfo);
-                                    } else {
-                                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
-                                        getAddressFromLatLong(latitude, longitude);
-                                    }
-                                    //registerSocialDetails(userInfo);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                    @Override
+                    public void onCancel() {
+                        //Utility.showToast(context, getString(R.string.cancel), 1);
+                        dismissProgDialog();
+                    }
 
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,first_name,last_name,email,gender,birthday");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-                //Utility.showToast(context, getString(R.string.cancel), 1);
-                dismissProgDialog();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                dismissProgDialog();
-                Utility.showToast(context, error.getMessage(), 1);
-            }
-        });
+                    @Override
+                    public void onError(FacebookException error) {
+                        dismissProgDialog();
+                        Utility.showToast(context, error.getMessage(), 1);
+                    }
+                });
 
             } else if (!checkGPS) {
                 //initLocation();
-               utility.checkGpsStatus();
+                utility.checkGpsStatus();
             } else {
                 initLocation();
                 showErrorPopup("facebook");
             }
 
         } else {
-            Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(context, "No network connection", "", "");
+//            Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
         }
     }
     /* facebook api end here */
@@ -448,12 +464,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
 
         } else {
-            Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(context, "No network connection", "", "");
+//            Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
         }
-        }
+    }
 
     protected void showErrorPopup(final String type) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -484,10 +501,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         //btnRegiSignUp.callOnClick();
                         if (type.equals("facebook")) {
-                           // btnFBSignUp.callOnClick();
+                            // btnFBSignUp.callOnClick();
                             facebookLoginApi();
                         } else if (type.equals("gmail")) {
-                           // btnRegiSignUp.callOnClick();
+                            // btnRegiSignUp.callOnClick();
                             gmialLoginApi();
                         } else {
                             //btnRegiSignUp.callOnClick();
@@ -707,7 +724,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(RegistrationActivity.this).addToRequestQueue(multipartRequest);
         } else {
-            Toast.makeText(RegistrationActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
+//            Toast.makeText(RegistrationActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -721,9 +739,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (latitude != 0.0d && longitude != 0.0d) {
             getAddressFromLatLong(latitude, longitude);
         } else if (!checkGPS) {
+            RegistrationActivityNewCreatePassword.click =0;
             utility.checkGpsStatus();
             return;
         } else {
+            RegistrationActivityNewCreatePassword.click =0;
             showErrorPopup("register");
             return;
         }
@@ -881,6 +901,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             }
 
                         } else {
+                            RegistrationActivityNewCreatePassword.click =0;
                             dismissProgDialog();
                             Toast.makeText(RegistrationActivity.this, message, Toast.LENGTH_SHORT).show();
                         }
@@ -927,7 +948,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(RegistrationActivity.this).addToRequestQueue(multipartRequest);
         } else {
-            Toast.makeText(RegistrationActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
+//            Toast.makeText(RegistrationActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -991,8 +1013,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     protected void showProgDialog(boolean b) {
-        if(customProgressBar != null) {
-            if(!customProgressBar.isShowing()) {
+        if (customProgressBar != null) {
+            if (!customProgressBar.isShowing()) {
                 customProgressBar.setCanceledOnTouchOutside(b);
                 customProgressBar.setCancelable(b);
                 customProgressBar.show();
@@ -1083,6 +1105,92 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             switch (requestCode) {
                 case Constant.RESULT_LOAD:
                     Uri uri = data.getData();
+                    long time = System.currentTimeMillis();
+                    String str = String.valueOf(time);
+                    String destinatiomPath = str + "dovies.jpg";
+
+                    UCrop.Options options = new UCrop.Options();
+                    options.setHideBottomControls(true);
+                    UCrop.of(uri, Uri.fromFile(new File(destinatiomPath)))
+                            .withAspectRatio(1f, 1f)
+                            .withMaxResultSize(450, 450)
+                            .withOptions(options)
+                            .start(this);
+                    break;
+
+                case Constant.REQUEST_CAMERA:
+                    // New Code
+                    UCrop.Options options1 = new UCrop.Options();
+                    options1.setHideBottomControls(true);
+                    Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
+                    UCrop.of(uri1, Uri.fromFile(new File(mCurrentPhotoPath)))
+                            .withAspectRatio(1f, 1f)
+                            .withMaxResultSize(450, 450)
+                            .withOptions(options1)
+                            .start(this);
+                    break;
+
+                // New Code
+                case UCrop.REQUEST_CROP:// Image Cropper
+                    final Uri result = UCrop.getOutput(data);
+                    try {
+                        if (result != null) {
+                            profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result);
+                            profileImageUrl = Utility.getImageUri(this, profileImageBitmap).toString();
+                            String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, profileImageBitmap));
+                            ImageSessionManager.getInstance().createImageSession(uri_path, false);
+
+                            Log.e("UPLOAD PATH", uri_path);
+                            Picasso.with(RegistrationActivity.this).load(profileImageUrl).into(imgUserImage);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, getResources().getString(R.string.alertImageException), Toast.LENGTH_SHORT).show();
+                    } catch (OutOfMemoryError error) {
+                        Toast.makeText(context, getResources().getString(R.string.alertOutOfMemory), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+
+                case 2:
+//                    maleFemale=data.getStringExtra("gender");
+//
+//                    if (!maleFemale.equalsIgnoreCase("")) {
+//                        fbUserInfo.userGender = maleFemale;
+//                        showProgDialog(false);
+//                        //doRegistration(fbUserInfo.fullname, fbUserInfo.lastName, fbUserInfo.userEmail, fbUserInfo.password, fbUserInfo.userGender, fbUserInfo.userFacebookId,profileImageBitmap);
+//                    } else {
+//                        Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
+//                    }
+
+                    break;
+
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
+                    break;
+            }
+        }
+    }
+/*
+ // New Code
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //   Bitmap bitmap;
+
+        if (loginstatus.equals("facebook")) {
+
+            objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
+        } else if (loginstatus.equals("gmail")) {
+
+            if (requestCode == RC_SIGN_IN) {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                handleSignInResult(result);
+            }
+        }
+
+        if (resultCode != 0) {
+            switch (requestCode) {
+                case Constant.RESULT_LOAD:
+                    Uri uri = data.getData();
                     // New Code
                     if (uri != null) {
                         // Calling Image Cropper
@@ -1145,6 +1253,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         }
     }
+*/
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -1154,7 +1263,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             // Signe in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
 
+            assert acct != null;
             String str = acct.getDisplayName();
+            assert str != null;
             String[] fullName = str.split("\\s+");
             for (int i = 0; i < fullName.length; i++) {
                 if (i == 0) {
@@ -1171,6 +1282,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             userInfo.userImage = "";
             if (acct.getPhotoUrl() != null)
                 userInfo.userImage = acct.getPhotoUrl().toString();
+//                userInfo.userImage = acct.getPhotoUrl().getPath();
             userInfo.userEmail = acct.getEmail();
             userInfo.userAccessToken = FirebaseInstanceId.getInstance().getToken();
             userInfo.gender = "";
@@ -1183,19 +1295,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (userInfo.userImage != "" && userInfo.userImage != null) {
                                 getBitmapFromURL(userInfo.userImage, userInfo);
                             } else {
-                                checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                                checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId, userInfo.userEmail);
                                 getAddressFromLatLong(latitude, longitude);
                             }
                         }
                     });
 
-        }
-        else {
+        } else {
             signOut();
         }
     }
 
-    private void checkSocialDetail(final UserInfo userInfo, final String loginstatus, final String userloginid) {
+    private void checkSocialDetail(final UserInfo userInfo, final String loginstatus, final String userloginid, final String email) {
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.CHECK_FB_LOGIN, new Response.Listener<String>() {
                 @Override
@@ -1213,14 +1324,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         // New Code
                         String status = jsonObject.getString("status");
                         if (status.equals("success")) {
-                            doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,loginstatus);
+                            doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId, profileImageBitmap, loginstatus);
                             //doNewRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId);
                         } else {
                             fbUserInfo = userInfo;
                             dismissProgDialog();
-
                             startActivity(new Intent(RegistrationActivity.this, RegistrationActivityNewEmail.class)
-                                    .putExtra("userInfo",fbUserInfo));
+                                    .putExtra("userInfo", fbUserInfo));
 
 //                            Intent intentForResult = new Intent(RegistrationActivity.this, RegistrationActivityNewGender.class);
 //                            intentForResult.putExtra("from","social");
@@ -1247,6 +1357,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     // New Code
                     params.put("userFacebookId", userloginid);
                     params.put("socialType", loginstatus);
+                    params.put("email", email);
 
                     Utility.e("Params", params.toString());
                     return params;
@@ -1255,7 +1366,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             VolleySingleton.getInstance(this.getBaseContext()).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            utility.snackBar(registerView, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
+//            utility.snackBar(registerView, getString(R.string.internetConnectivityError), 0);
             customProgressBar.cancel();
         }
     }
@@ -1294,7 +1406,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (!maleFemale.equalsIgnoreCase("")) {
                     fbUserInfo.userGender = maleFemale;
                     showProgDialog(false);
-                   // doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap);
+                    // doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap);
                 } else {
                     Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
                 }
@@ -1318,27 +1430,27 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             //userInfo.profileImageBitmap = bitmap;
                         }
 
-                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId, userInfo.userEmail);
                         getAddressFromLatLong(latitude, longitude);
                     } catch (Exception e) {
                         // some action
-                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
-                        getAddressFromLatLong(latitude, longitude);
+//                        checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId,userInfo.userEmail);
+//                        getAddressFromLatLong(latitude, longitude);
                         e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
+                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId, userInfo.userEmail);
                     getAddressFromLatLong(latitude, longitude);
                 }
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId);
-                    getAddressFromLatLong(latitude, longitude);
-                   // Toast.makeText(context, "onPrepareLoad", Toast.LENGTH_SHORT).show();
+//                    checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId,userInfo.userEmail);
+//                    getAddressFromLatLong(latitude, longitude);
+                    // Toast.makeText(context, "onPrepareLoad", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -1462,7 +1574,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         // setImage();
                     } catch (Exception e) {
                         dismissProgDialog();
-                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
+//                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -1497,10 +1609,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
 //            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
-            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            dismissProgDialog();
-            startActivity(intent);
+            activeRewardApiData(SceneKey.sessionManager.getUserInfo().userid);
             // showDefaultDialog(getString(R.string.default_profile_title), getString(R.string.default_profile_msg));
         } else {
             setDefaultImageOnServer(WebServices.USER_IMAGE + s, s);
@@ -1562,10 +1671,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     SceneKey.sessionManager.createSession(userInfo);
 
 //                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
-                    Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    dismissProgDialog();
-                    startActivity(intent);
+                    activeRewardApiData(SceneKey.sessionManager.getUserInfo().userid);
+
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -1616,5 +1723,72 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    public void activeRewardApiData(String userid) {
+        Call<ResponseBody> call = RetrofitClient.getInstance()
+                .getAnotherApi().getActiveReward(userid);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
+                try {
+                    dismissProgDialog();
+                    switch (response.code()) {
+                        case 200: {
+//                            {"status":"success","message":"Reward Sent successfully."}
+                            String stresult = Objects.requireNonNull(response.body()).string();
+                            Log.d("response", stresult);
+                            JSONObject jsonObject = new JSONObject(stresult);
+                            String status = jsonObject.getString("status");
+                            String message = jsonObject.getString("message");
+                            if (status.equals("success")){
+                                if (message.equals("Reward Sent successfully."))
+                                {
+                                    setBadgeCountToFireBase();
+                                }
+                                Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                                startActivity(intent);
+                            }
+
+
+                            break;
+                        }
+                        case 400: {
+                            String result = Objects.requireNonNull(response.errorBody()).string();
+                            Log.d("response400", result);
+                            JSONObject jsonObject = new JSONObject(result);
+                            String statusCode = jsonObject.optString("status");
+                            String msg = jsonObject.optString("message");
+                            if (statusCode.equals("true")) {
+                                Toast.makeText(RegistrationActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                            break;
+                        }
+                        case 401:
+                            try {
+                                Log.d("ResponseInvalid", Objects.requireNonNull(response.errorBody()).string());
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
+                            }
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+            }
+        });
+
+    }
+    public void setBadgeCountToFireBase() {
+        mDatabase.child("dev").child("reward").child(SceneKey.sessionManager.getUserInfo().userid).child("count").setValue("1");
     }
 }
