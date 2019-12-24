@@ -5,14 +5,14 @@ import java.util.List;
 
 public class SummeryModel implements Serializable {
 
-
     /**
      * status : success
-     * event : {"event_name":"Tuesday@World cup","venue_name":"World cup","venue_lat":"22.7093523","venue_long":"75.9014392","venue_address":"Pipliyahana, Indore, Madhya Pradesh, India","description":"","venue_type":"cafe","event_date":"2019-11-12","open_today":"10A-10P","venue_hour":[{"id":"803","venue_id":"159875","sunday":"Closed-Closed","monday":"10A-10P","tuesday":"2:30P-10P","wednesday":"10A-10P","thursday":"10A-10P","friday":"10A-12A","saturday":"10:30A-10P"}],"image":"https://s3-us-west-1.amazonaws.com/scenekey-venues/dev/5d2c30745d681venue.jpg","menu":"","feedPost":[{"id":"8477","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/dev/5dcabd01371e7.jpg"},{"id":"8476","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/dev/5dcabcf029aee.jpg"}],"keyInUser":[{"userid":"2161","userImage":"dev-2161/5dc9206d1536buserImage.jpg","userName":"sandesh","bio":"Thtbg","userFacebookId":"2161","user_status":"1","keyIn":"1"},{"userid":"1430","userImage":"dev-1654378237975621/1654378237975621.jpg","userName":"Santosh","bio":"Hello","userFacebookId":"1654378237975621","user_status":"1","keyIn":"1"}]}
+     * event : {"event_name":"Monday@dovies","venue_name":"dovies","venue_lat":"22.7051382","venue_long":"75.9090618","venue_address":"MINDIII Systems Pvt. Ltd., Main Road, Brajeshwari Extension, Pipliyahana, Indore, Madhya Pradesh, India","description":"","venue_type":"Pub","event_date":"2019-12-16","open_today":"5P-2A","venue_hour":[{"id":"5696","venue_id":"145210","sunday":"5P-2A","monday":"5P-2A","tuesday":"5P-2A","wednesday":"5P-2A","thursday":"5P-2A","friday":"5P-2A","saturday":"5P-2A"}],"image":"https://s3-us-west-1.amazonaws.com/scenekey-venues/prod/5b8e9688c5743venue.jpg","menu":"","feedPost":[{"id":"2169","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d9ef1a48df20.jpg"},{"id":"2166","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d9b3c52a29e8.jpg"},{"id":"2157","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d96f1871b48f.jpg"},{"id":"1745","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5bd9aacab86be.jpg"},{"id":"1734","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5bd94b232e3ec.jpg"},{"id":"1617","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5ba4999c082e5.jpg"},{"id":"1611","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5ba496809c0e9.jpg"},{"id":"1610","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5ba49668ea9fe.jpg"}],"keyInUser":[]}
      */
 
     private String status;
     private EventBean event;
+
 
     public String getStatus() {
         return status;
@@ -30,23 +30,25 @@ public class SummeryModel implements Serializable {
         this.event = event;
     }
 
-    public static class EventBean {
+    public static class EventBean implements Serializable {
         /**
-         * event_name : Tuesday@World cup
-         * venue_name : World cup
-         * venue_lat : 22.7093523
-         * venue_long : 75.9014392
-         * venue_address : Pipliyahana, Indore, Madhya Pradesh, India
+         * event_name : Monday@dovies
+         * venue_name : dovies
+         * venue_lat : 22.7051382
+         * venue_long : 75.9090618
+         * venue_address : MINDIII Systems Pvt. Ltd., Main Road, Brajeshwari Extension, Pipliyahana, Indore, Madhya Pradesh, India
          * description :
-         * venue_type : cafe
-         * event_date : 2019-11-12
-         * open_today : 10A-10P
-         * venue_hour : [{"id":"803","venue_id":"159875","sunday":"Closed-Closed","monday":"10A-10P","tuesday":"2:30P-10P","wednesday":"10A-10P","thursday":"10A-10P","friday":"10A-12A","saturday":"10:30A-10P"}]
-         * image : https://s3-us-west-1.amazonaws.com/scenekey-venues/dev/5d2c30745d681venue.jpg
+         * venue_type : Pub
+         * event_date : 2019-12-16
+         * open_today : 5P-2A
+         * venue_hour : [{"id":"5696","venue_id":"145210","sunday":"5P-2A","monday":"5P-2A","tuesday":"5P-2A","wednesday":"5P-2A","thursday":"5P-2A","friday":"5P-2A","saturday":"5P-2A"}]
+         * image : https://s3-us-west-1.amazonaws.com/scenekey-venues/prod/5b8e9688c5743venue.jpg
          * menu :
-         * feedPost : [{"id":"8477","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/dev/5dcabd01371e7.jpg"},{"id":"8476","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/dev/5dcabcf029aee.jpg"}]
-         * keyInUser : [{"userid":"2161","userImage":"dev-2161/5dc9206d1536buserImage.jpg","userName":"sandesh","bio":"Thtbg","userFacebookId":"2161","user_status":"1","keyIn":"1"},{"userid":"1430","userImage":"dev-1654378237975621/1654378237975621.jpg","userName":"Santosh","bio":"Hello","userFacebookId":"1654378237975621","user_status":"1","keyIn":"1"}]
+         * feedPost : [{"id":"2169","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d9ef1a48df20.jpg"},{"id":"2166","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d9b3c52a29e8.jpg"},{"id":"2157","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d96f1871b48f.jpg"},{"id":"1745","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5bd9aacab86be.jpg"},{"id":"1734","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5bd94b232e3ec.jpg"},{"id":"1617","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5ba4999c082e5.jpg"},{"id":"1611","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5ba496809c0e9.jpg"},{"id":"1610","feed_image":"https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5ba49668ea9fe.jpg"}]
+         * keyInUser : []
          */
+
+
 
         private String event_name;
         private String venue_name;
@@ -61,7 +63,7 @@ public class SummeryModel implements Serializable {
         private String menu;
         private List<VenueHourBean> venue_hour;
         private List<FeedPostBean> feedPost;
-        private List<KeyInUserBean> keyInUser;
+        private List<?> keyInUser;
 
         public String getEvent_name() {
             return event_name;
@@ -167,25 +169,25 @@ public class SummeryModel implements Serializable {
             this.feedPost = feedPost;
         }
 
-        public List<KeyInUserBean> getKeyInUser() {
+        public List<?> getKeyInUser() {
             return keyInUser;
         }
 
-        public void setKeyInUser(List<KeyInUserBean> keyInUser) {
+        public void setKeyInUser(List<?> keyInUser) {
             this.keyInUser = keyInUser;
         }
 
         public static class VenueHourBean implements Serializable {
             /**
-             * id : 803
-             * venue_id : 159875
-             * sunday : Closed-Closed
-             * monday : 10A-10P
-             * tuesday : 2:30P-10P
-             * wednesday : 10A-10P
-             * thursday : 10A-10P
-             * friday : 10A-12A
-             * saturday : 10:30A-10P
+             * id : 5696
+             * venue_id : 145210
+             * sunday : 5P-2A
+             * monday : 5P-2A
+             * tuesday : 5P-2A
+             * wednesday : 5P-2A
+             * thursday : 5P-2A
+             * friday : 5P-2A
+             * saturday : 5P-2A
              */
 
             private String id;
@@ -271,10 +273,10 @@ public class SummeryModel implements Serializable {
             }
         }
 
-        public static class FeedPostBean implements  Serializable{
+        public static class FeedPostBean implements Serializable{
             /**
-             * id : 8477
-             * feed_image : https://s3-us-west-1.amazonaws.com/scenekey-events/dev/5dcabd01371e7.jpg
+             * id : 2169
+             * feed_image : https://s3-us-west-1.amazonaws.com/scenekey-events/prod/5d9ef1a48df20.jpg
              */
 
             private String id;
@@ -294,82 +296,6 @@ public class SummeryModel implements Serializable {
 
             public void setFeed_image(String feed_image) {
                 this.feed_image = feed_image;
-            }
-        }
-
-        public static class KeyInUserBean implements Serializable{
-            /**
-             * userid : 2161
-             * userImage : dev-2161/5dc9206d1536buserImage.jpg
-             * userName : sandesh
-             * bio : Thtbg
-             * userFacebookId : 2161
-             * user_status : 1
-             * keyIn : 1
-             */
-
-            private String userid;
-            private String userImage;
-            private String userName;
-            private String bio;
-            private String userFacebookId;
-            private String user_status;
-            private String keyIn;
-
-            public String getUserid() {
-                return userid;
-            }
-
-            public void setUserid(String userid) {
-                this.userid = userid;
-            }
-
-            public String getUserImage() {
-                return userImage;
-            }
-
-            public void setUserImage(String userImage) {
-                this.userImage = userImage;
-            }
-
-            public String getUserName() {
-                return userName;
-            }
-
-            public void setUserName(String userName) {
-                this.userName = userName;
-            }
-
-            public String getBio() {
-                return bio;
-            }
-
-            public void setBio(String bio) {
-                this.bio = bio;
-            }
-
-            public String getUserFacebookId() {
-                return userFacebookId;
-            }
-
-            public void setUserFacebookId(String userFacebookId) {
-                this.userFacebookId = userFacebookId;
-            }
-
-            public String getUser_status() {
-                return user_status;
-            }
-
-            public void setUser_status(String user_status) {
-                this.user_status = user_status;
-            }
-
-            public String getKeyIn() {
-                return keyIn;
-            }
-
-            public void setKeyIn(String keyIn) {
-                this.keyIn = keyIn;
             }
         }
     }

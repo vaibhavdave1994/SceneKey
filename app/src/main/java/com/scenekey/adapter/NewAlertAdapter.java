@@ -377,7 +377,8 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
                 String image = "";
 
                 if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
-                    image = "dev-" + keyInUserModalList.get(i).getUserimage();
+                    image =  keyInUserModalList.get(i).getUserimage();
+//                    image = "dev-" + keyInUserModalList.get(i).getUserimage();
                 } else {
                     //image = keyInUserModalList.get(i).userImage;
                     image = keyInUserModalList.get(i).getUserimage();
@@ -403,7 +404,8 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
                     String image = "";
 
                     if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
-                        image = "dev-" + keyInUserModalList.get(i).getUserimage();
+                        image =  keyInUserModalList.get(i).getUserimage();
+//                        image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
                     }
@@ -427,7 +429,8 @@ public class NewAlertAdapter extends RecyclerView.Adapter<NewAlertAdapter.ViewHo
                     String image = "";
 
                     if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
-                        image = "dev-" + keyInUserModalList.get(i).getUserimage();
+                        image =  keyInUserModalList.get(i).getUserimage();
+//                        image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
                     }

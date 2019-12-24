@@ -47,7 +47,8 @@ public class UserInAdapter extends RecyclerView.Adapter<UserInAdapter.ViewHolder
             holder.no_count.setText("+" + "" + restCount);
 
             if(!comeInUserList.get(i).getUserimage().contains("dev-")){
-                String image = "dev-"+comeInUserList.get(i).getUserimage();
+                String image = comeInUserList.get(i).getUserimage();
+//                String image = "dev-"+comeInUserList.get(i).getUserimage();
                 Glide.with(context).load(image)
                         .thumbnail(0.5f)
                         .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -81,7 +82,8 @@ public class UserInAdapter extends RecyclerView.Adapter<UserInAdapter.ViewHolder
         }
 
        if(!comeInUserList.get(i).getUserimage().contains("dev-")){
-            String image = "dev-"+comeInUserList.get(i).getUserimage();
+            String image = comeInUserList.get(i).getUserimage();
+//            String image = "dev-"+comeInUserList.get(i).getUserimage();
             //Picasso.with(context).load(image).error(R.drawable.placeholder_img).into(holder.comeInUserProfile);
             Glide.with(context).load(image)
                     .thumbnail(0.5f)

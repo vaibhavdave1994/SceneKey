@@ -1,7 +1,6 @@
 package com.scenekey.activity.trending_summery;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.scenekey.R;
-import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.trending_summery.Model.MapModel;
 
 public class MapActivity extends AppCompatActivity {
@@ -128,26 +126,12 @@ public class MapActivity extends AppCompatActivity {
                     }
                 }, 2000);
 
-               /* Glide.with(MapActivity.this).load(mapModel.getImg())
-                        .thumbnail(0.5f)
-                        .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(R.drawable.sk_logo_image)
-                        .error(R.drawable.sk_logo_image)
-                        .into(customInfoWindow.img);*/
 
-                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(Marker marker) {
-                        Log.e("map", "map");
-                    }
-                });
+                googleMap.setOnInfoWindowClickListener(marker -> Log.e("map", "map"));
 
-                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        Log.e("map", "map");
-                        return false;
-                    }
+                googleMap.setOnMarkerClickListener(marker -> {
+                    Log.e("map", "map");
+                    return false;
                 });
 
 
@@ -157,14 +141,10 @@ public class MapActivity extends AppCompatActivity {
     }
 
     public void showCustomMapPopup() {
-        final Dialog dialog = new Dialog(MapActivity.this);
+        final Dialog dialog = new Dialog(MapActivity.this,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_reward);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        //      deleteDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation; //style id
-
         TextView tvPopupOk, tvMessages, tvPopupCancel;
 
         tvMessages = dialog.findViewById(R.id.tvMessages);
@@ -174,35 +154,25 @@ public class MapActivity extends AppCompatActivity {
         tvPopupCancel.setText("YES");
         tvPopupOk.setText("NO");
 
-
-
-        tvPopupOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Show location settings when the user acknowledges the alert dialog
-                dialog.dismiss();
-            }
+        tvPopupOk.setOnClickListener(view -> {
+            dialog.dismiss();
         });
 
-        tvPopupCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Show location settings when the user acknowledges the alert dialog
-                Uri.Builder builder = new Uri.Builder();
-                builder.scheme("https")
-                        .authority("www.google.com")
-                        .appendPath("maps")
-                        .appendPath("dir")
-                        .appendPath("")
-                        .appendQueryParameter("api", "1")
-                        .appendQueryParameter("destination", Double.parseDouble(lat) + "," + Double.parseDouble(lng));
-                String url = builder.build().toString();
-                Log.d("Directions", url);
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-                dialog.dismiss();
-            }
+        tvPopupCancel.setOnClickListener(view -> {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority("www.google.com")
+                    .appendPath("maps")
+                    .appendPath("dir")
+                    .appendPath("")
+                    .appendQueryParameter("api", "1")
+                    .appendQueryParameter("destination", Double.parseDouble(lat) + "," + Double.parseDouble(lng));
+            String url = builder.build().toString();
+            Log.d("Directions", url);
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+            dialog.dismiss();
         });
 
         dialog.show();

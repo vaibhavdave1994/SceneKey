@@ -6,15 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.core.widget.NestedScrollView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -28,6 +19,12 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -80,10 +77,24 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileNewActivity extends BaseActivity implements  View.OnClickListener{
+public class ProfileNewActivity extends BaseActivity implements View.OnClickListener {
 
-    View v;
     private final String TAG = ProfileNewActivity.class.toString();
+    View v;
+    String userImage = "";
+    ArrayList<BucketDataModel> alOfBucketData;
+    //---new code------
+    CircleImageView outerBouder, outerBouder1, outerBouder2, outerBouder3, outerBouder4;
+    ImageView iv_tag__special_circulerImage, iv_tag__special_circulerImage1, iv_tag__special_circulerImage2, iv_tag__special_circulerImage3,
+            iv_tag__special_circulerImage4;
+    TextView tag__special_name, tag__special_name1, tag__special_name2, tag__special_name3, tag__special_name4;
+    RelativeLayout rl, rl1, rl2, rl3, rl4, rl_error;
+    TextView tv_viewall_interest, follow_tokens;
+    LinearLayout ll_donothavebio;
+    TagModal tagModal, tagModal1, tagModal2, tagModal3, tagModal4;
+    RelativeLayout toolbar;
+    AppCompatImageView img_f11_back;
+    TextView txt_event_name;
     private Context context;
     private Utility utility;
     private CognitoCredentialsProvider credentialsProvider;
@@ -91,40 +102,21 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
     private boolean myProfile;
     private Event_Fragment event_fragment;
     private Key_In_Event_Fragment key_in_event_fragment;
-
     private ListView listViewFragProfile;
     private ImageView img_cross, img_left, img_right;
     private ImageView img_green, img_yellow, img_red;
     private TextView txt_event_count, txt_dimmer;
-
     private ArrayList<Feeds> feedsList;
     private ArrayList<ImagesUpload> imageList;
     private int currentImage, pageToshow = 1;
     private boolean clicked;
     private TextView tv_user_name;
-
     private EditText tv_bio;
-
     private ImageView btn1, btn2, btn3, btn4, btn5;
     private int profilePos;
     //private RelativeLayout customizeView;
     private ProfileImagePagerAdapter pagerAdapter;
-    String userImage ="";
     private LinearLayout demo_View_dot;
-    ArrayList<BucketDataModel> alOfBucketData;
-
-    //---new code------
-    CircleImageView outerBouder,outerBouder1,outerBouder2,outerBouder3,outerBouder4;
-    ImageView iv_tag__special_circulerImage,iv_tag__special_circulerImage1,iv_tag__special_circulerImage2,iv_tag__special_circulerImage3,
-            iv_tag__special_circulerImage4;
-    TextView tag__special_name,tag__special_name1,tag__special_name2,tag__special_name3,tag__special_name4;
-    RelativeLayout rl,rl1,rl2,rl3,rl4,rl_error;
-    TextView tv_viewall_interest,follow_tokens;
-    LinearLayout ll_donothavebio;
-    TagModal tagModal,tagModal1,tagModal2,tagModal3,tagModal4;
-    RelativeLayout toolbar;
-    AppCompatImageView img_f11_back;
-    TextView txt_event_name;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -149,7 +141,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
         relativeLayout.setOnTouchListener(new OnDragTouchListener(relativeLayout));
 
 
-        outerBouder =  findViewById(R.id.outerBouder);
+        outerBouder = findViewById(R.id.outerBouder);
         outerBouder1 = findViewById(R.id.outerBouder1);
         outerBouder2 = findViewById(R.id.outerBouder2);
         outerBouder3 = findViewById(R.id.outerBouder3);
@@ -233,7 +225,6 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
     }
 
 
-
     @Override
     public void onClick(View v) {
 
@@ -251,13 +242,12 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
 
 
             case R.id.tv_update_bio:
-                if(tv_bio.getVisibility() == View.VISIBLE) {
+                if (tv_bio.getVisibility() == View.VISIBLE) {
                     if (!tv_bio.getText().toString().trim().equalsIgnoreCase(""))
                         updateBio(tv_bio.getText().toString().trim());
                     else
                         utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
-                }
-                else {
+                } else {
                     Intent bioIntent = new Intent(this, BioActivity.class);
                     bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     bioIntent.putExtra("from", "setting");
@@ -270,7 +260,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                 crossImgClicked();
                 break;
 
-                case R.id.img_right:
+            case R.id.img_right:
                 setImage(true);
                 break;
             case R.id.img_left:
@@ -286,13 +276,13 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                 startActivity(intent);
                 break;
 
-             case R.id.follow_tokens:
-                 Intent intent1 = new Intent(context, HomeActivity.class);
-                 intent1.putExtra("fromSearch", true);
-                 intent1.putExtra("name", "");
-                 intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                 startActivity(intent1);
-                 finish();
+            case R.id.follow_tokens:
+                Intent intent1 = new Intent(context, HomeActivity.class);
+                intent1.putExtra("fromSearch", true);
+                intent1.putExtra("name", "");
+                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent1);
+                finish();
                 break;
 
             case R.id.rl:
@@ -330,7 +320,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-         }
+    }
 
 
     private void crossImgClicked() {
@@ -338,8 +328,6 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //img_profile_pic2.setAlpha(1.0f);
-                //img_profile_pic2.setBorderColor(getResources().getColor(R.color.colorPrimary));
                 Animation dimmer = AnimationUtils.loadAnimation(ProfileNewActivity.this, R.anim.alpha_to_o);
                 img_right.startAnimation(dimmer);
                 img_left.startAnimation(dimmer);
@@ -421,9 +409,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
-            //utility.snackBar(mainLayout, getString(R.string.internetConnectivityError), 0);
-            //utility.snackBar(ly_match_profile, getString(R.string.internetConnectivityError), 0);
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Toast.makeText(context, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -481,13 +467,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                 if (i == 1) dismissProgDialog();
                 Log.e("step4", "Pass");
             }
-            //adapter.notifyDataSetChanged();
         }
-
-     /*   if (feedsList.size() == 0) {
-            //  Utility.showToast(context, " No event found !", 0);
-          //  adapter.notifyDataSetChanged();
-        }*/
 
         try {
             if (object.has("keyin_count")) {
@@ -502,8 +482,6 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             e.printStackTrace();
             Log.e("step05", "Pass");
         }
-        //setRecyclerView();
-        //rclv_f3_trending.setHasFixedSize(true);
     }
 
     /* get image from server start here*/
@@ -523,7 +501,8 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                         Log.v("getFacebookId", SceneKey.sessionManager.getFacebookId());
 
                         Log.v("url", Constant.BUCKET + "," + Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
-                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
+                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET,  SceneKey.sessionManager.getFacebookId());           //   live
+//                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());  //dev
                         List<S3ObjectSummary> summaries = listing.getObjectSummaries();
 
                         while (listing.isTruncated()) {
@@ -563,38 +542,12 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                 for (S3ObjectSummary obj : summaries) {
                     imageList.add(new ImagesUpload(obj.getKey()));
                 }
-                try {
-                    //Picasso.with(activity).load(imageList.get(currentImage).path).transform(new CircleTransform()).placeholder(R.drawable.image_default_profile).into(img_profile_pic2);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                    setUpView();
+                setUpView();
 
                 Log.e("step10", "pass");
             }
         });
     }
-
-    /* get image from server end here*/
-
-   /* public CognitoCredentialsProvider getCredentials() {
-        CognitoCredentialsProvider credentialsProvider = new CognitoCredentialsProvider("us-west-2:86b58a3e-0dbd-4aad-a4eb-e82b1a4ebd91", Regions.US_WEST_2);
-        AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
-        TransferUtility transferUtility = new TransferUtility(s3, context);
-
-        Map<String, String> logins = new HashMap<String, String>();
-
-        try {
-            logins.put("graph.facebook.com", AccessToken.getCurrentAccessToken().getToken());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        credentialsProvider.setLogins(logins);
-        return credentialsProvider;
-    }*/
 
     private CognitoCredentialsProvider getCredentials() {
         CognitoCredentialsProvider credentialsProvider = new CognitoCredentialsProvider("us-west-2:86b58a3e-0dbd-4aad-a4eb-e82b1a4ebd91", Regions.US_WEST_2);
@@ -690,7 +643,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
     }
 
     private void initButton(int position) {
-        if(imageList.size() == 0){
+        if (imageList.size() == 0) {
 
         }
         switch (position) {
@@ -832,7 +785,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -895,7 +848,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -906,7 +859,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.GET_BUCKET_DATA, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                   // activity.dismissProgDialog();
+                    // activity.dismissProgDialog();
                     // get response
                     try {
                         JSONObject jo = new JSONObject(response);
@@ -917,35 +870,35 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                 try {
 
                                     JSONArray jsonArray = new JSONArray();
-                                    if(jo.has("bucketInfo")){
+                                    if (jo.has("bucketInfo")) {
                                         imageList = new ArrayList<>();
                                         jsonArray = jo.getJSONArray("bucketInfo");
-                                        for(int i =0; i<jsonArray.length(); i++){
-                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
 //                                             if(jsonObject.has("Key"))
                                             String Key = jsonObject.getString("Key");
                                             String LastModified = jsonObject.getString("LastModified");
                                             String ETag = jsonObject.getString("ETag");
                                             String Size = jsonObject.getString("Size");
                                             String StorageClass = jsonObject.getString("StorageClass");
-                                            JSONObject Owner  = jsonObject.getJSONObject("Owner");
+                                            JSONObject Owner = jsonObject.getJSONObject("Owner");
 
                                             String DisplayName = Owner.getString("DisplayName");
                                             String ID = Owner.getString("ID");
-                                            OwnerModel ownerModel = new OwnerModel(DisplayName,ID);
-                                            alOfBucketData.add(new BucketDataModel(Key,LastModified,ETag,Size,
-                                                    StorageClass,ownerModel));
+                                            OwnerModel ownerModel = new OwnerModel(DisplayName, ID);
+                                            alOfBucketData.add(new BucketDataModel(Key, LastModified, ETag, Size,
+                                                    StorageClass, ownerModel));
 
                                             imageList.add(new ImagesUpload(Key));
                                         }
                                         setUpView();
                                     }
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                      }
                     } catch (Exception e) {
                         //activity.dismissProgDialog();
 //                        Utility.showToast(context, getString(R.string.somethingwentwrong), 0);
@@ -955,7 +908,7 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                 @Override
                 public void onErrorResponse(VolleyError e) {
                     utility.volleyErrorListner(e);
-                  //  activity.dismissProgDialog();
+                    //  activity.dismissProgDialog();
                 }
             }) {
                 @Override
@@ -986,15 +939,14 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                 try {
 
                                     JSONArray jsonArray = new JSONArray();
-                                    if(jo.has("followTag")){
+                                    if (jo.has("followTag")) {
                                         jsonArray = jo.getJSONArray("followTag");
-                                        if(jsonArray.length()>0){
+                                        if (jsonArray.length() > 0) {
                                             rl_error.setVisibility(View.GONE);
-                                        }
-                                        else {
+                                        } else {
                                             rl_error.setVisibility(View.VISIBLE);
                                         }
-                                        for(int i =0; i<jsonArray.length(); i++){
+                                        for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                                             String biz_tag_id = jsonObject.getString("biz_tag_id");
                                             String tag_name = jsonObject.getString("tag_name");
@@ -1002,14 +954,13 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                             String tag_image = jsonObject.getString("tag_image");
                                             String isVenue = jsonObject.getString("isVenue");
 
-                                            switch (i){
+                                            switch (i) {
                                                 case 0:
                                                     outerBouder.setBorderColor(Color.parseColor(color_code));
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage);
                                                     }
@@ -1024,11 +975,10 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                                     break;
                                                 case 1:
                                                     outerBouder1.setBorderColor(Color.parseColor(color_code));
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder1);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage1);
                                                     }
@@ -1045,11 +995,10 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                                 case 2:
                                                     outerBouder2.setBorderColor(Color.parseColor(color_code));
 
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder2);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage2);
                                                     }
@@ -1065,11 +1014,10 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                                 case 3:
                                                     outerBouder3.setBorderColor(Color.parseColor(color_code));
 
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder3);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage3);
                                                     }
@@ -1086,11 +1034,10 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
                                                 case 4:
                                                     outerBouder4.setBorderColor(Color.parseColor(color_code));
 
-                                                    if(isVenue.equalsIgnoreCase("1")){
+                                                    if (isVenue.equalsIgnoreCase("1")) {
                                                         Picasso.with(context).load(tag_image).placeholder(R.drawable.app_icon)
                                                                 .error(R.drawable.app_icon).into(outerBouder4);
-                                                    }
-                                                    else {
+                                                    } else {
                                                         Glide.with(context).load(tag_image).centerCrop().placeholder(R.drawable.app_icon)
                                                                 .into(iv_tag__special_circulerImage4);
                                                     }
@@ -1105,8 +1052,8 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
 
                                                     break;
 
-                                                    default:
-                                                        break;
+                                                default:
+                                                    break;
                                             }
                                         }
                                     }
@@ -1142,20 +1089,14 @@ public class ProfileNewActivity extends BaseActivity implements  View.OnClickLis
         }
     }
 
-    public void goToTagSearchInEvent(TagModal tagModal){
+    public void goToTagSearchInEvent(TagModal tagModal) {
         Intent intent;
-//        if(category_name.equalsIgnoreCase("Specials")){
-//            intent = new Intent(context, SearchSubCategoryActivity.class);
-//            intent.putExtra("tagModal", tagModal);
-//            intent.putExtra("catId", catId);
-//        }
-//        else {
-            intent = new Intent(context, TrendinSearchActivity.class);
-            intent.putExtra("tag_name", tagModal.tag_name);
-            intent.putExtra("tag_image", tagModal.tag_image);
-            intent.putExtra("tagmodel", tagModal);
-            intent.putExtra("from_tagadapter", true);
-       // }
+        intent = new Intent(context, TrendinSearchActivity.class);
+        intent.putExtra("tag_name", tagModal.tag_name);
+        intent.putExtra("tag_image", tagModal.tag_image);
+        intent.putExtra("tagmodel", tagModal);
+        intent.putExtra("from_tagadapter", true);
+
         context.startActivity(intent);
     }
 

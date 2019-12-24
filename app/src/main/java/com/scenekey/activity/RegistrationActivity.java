@@ -52,6 +52,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
@@ -420,7 +421,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onError(FacebookException error) {
                         dismissProgDialog();
+                        if (error instanceof FacebookAuthorizationException) {
+                            if (AccessToken.getCurrentAccessToken() != null) {
+                                LoginManager.getInstance().logOut();
+                            }
+                        }
                         Utility.showToast(context, error.getMessage(), 1);
+                        Log.e("facebook_error",error.getMessage());
                     }
                 });
 
@@ -860,9 +867,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 userInfo.lat = userDetail.getString("lat");
                                 userInfo.longi = userDetail.getString("longi");
 
-                            /*userInfo.adminLat = userDetail.getString("adminLat");
-                            userInfo.adminLong = userDetail.getString("adminLong");*/
-
                                 if (userDetail.getString("adminLat").isEmpty()) {
                                     userInfo.adminLat = userDetail.getString("lat");
                                     userInfo.adminLong = userDetail.getString("longi");
@@ -1170,90 +1174,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         }
     }
-/*
- // New Code
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //   Bitmap bitmap;
-
-        if (loginstatus.equals("facebook")) {
-
-            objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
-        } else if (loginstatus.equals("gmail")) {
-
-            if (requestCode == RC_SIGN_IN) {
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                handleSignInResult(result);
-            }
-        }
-
-        if (resultCode != 0) {
-            switch (requestCode) {
-                case Constant.RESULT_LOAD:
-                    Uri uri = data.getData();
-                    // New Code
-                    if (uri != null) {
-                        // Calling Image Cropper
-                        CropImage.activity(uri).setCropShape(CropImageView.CropShape.RECTANGLE)
-                                .setAspectRatio(4, 4).start(this);
-                    } else {
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-
-                case Constant.REQUEST_CAMERA:
-                    // New Code
-                    Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
-                    if (uri1 != null) {
-                        // Calling Image Cropper
-                        CropImage.activity(uri1).setCropShape(CropImageView.CropShape.RECTANGLE)
-                                .setAspectRatio(4, 4).start(this);
-                    } else {
-                        Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-
-                // New Code
-                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:// Image Cropper
-                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                    try {
-                        if (result != null) {
-                            profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), result.getUri());
-                            profileImageUrl = Utility.getImageUri(this, profileImageBitmap).toString();
-                            String uri_path = Utility.getRealPathFromURI(this, Utility.getImageUri(this, profileImageBitmap));
-                            ImageSessionManager.getInstance().createImageSession(uri_path, false);
-
-                            Log.e("UPLOAD PATH", uri_path);
-                            Picasso.with(RegistrationActivity.this).load(profileImageUrl).into(imgUserImage);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Toast.makeText(context, getResources().getString(R.string.alertImageException), Toast.LENGTH_SHORT).show();
-                    } catch (OutOfMemoryError error) {
-                        Toast.makeText(context, getResources().getString(R.string.alertOutOfMemory), Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-
-                case 2:
-//                    maleFemale=data.getStringExtra("gender");
-//
-//                    if (!maleFemale.equalsIgnoreCase("")) {
-//                        fbUserInfo.userGender = maleFemale;
-//                        showProgDialog(false);
-//                        //doRegistration(fbUserInfo.fullname, fbUserInfo.lastName, fbUserInfo.userEmail, fbUserInfo.password, fbUserInfo.userGender, fbUserInfo.userFacebookId,profileImageBitmap);
-//                    } else {
-//                        Toast.makeText(context, "Please select gender", Toast.LENGTH_SHORT).show();
-//                    }
-
-                    break;
-
-                default:
-                    super.onActivityResult(requestCode, resultCode, data);
-                    break;
-            }
-        }
-    }
-*/
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -1603,15 +1523,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     //---------set default image----------------
     public void setImage(String s) {
-        if (!s.contains(Constant.DEV_TAG)) {
+      /*  if (!s.contains(Constant.DEV_TAG)) {
             s = Constant.DEV_TAG + s;
-        }
+        }*/ //dev
+
 
         if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
 //            Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
             activeRewardApiData(SceneKey.sessionManager.getUserInfo().userid);
             // showDefaultDialog(getString(R.string.default_profile_title), getString(R.string.default_profile_msg));
         } else {
+            activeRewardApiData(SceneKey.sessionManager.getUserInfo().userid);
             setDefaultImageOnServer(WebServices.USER_IMAGE + s, s);
             //setDefoultProfileImage(s,"Default Profile Image","Are you sure you want to make this your defoult Profile Photo?");
         }
@@ -1671,7 +1593,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     SceneKey.sessionManager.createSession(userInfo);
 
 //                    Intent intent = new Intent(RegistrationActivity.this, IntroActivity.class);
-                    activeRewardApiData(SceneKey.sessionManager.getUserInfo().userid);
 
                 }
             }, new Response.ErrorListener() {

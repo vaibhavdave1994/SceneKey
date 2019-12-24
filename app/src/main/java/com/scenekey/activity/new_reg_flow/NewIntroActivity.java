@@ -3,9 +3,6 @@ package com.scenekey.activity.new_reg_flow;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.widget.AppCompatButton;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,20 +12,45 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
 
-public class NewIntroActivity extends RegistrationActivity{
+public class NewIntroActivity extends RegistrationActivity {
 
+    AppCompatButton btn_continue;
     private TextView[] dots;
     private int[] layouts;
     private LinearLayout dotsLayout;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private int position;
+    //  viewpager change listener
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageSelected(int position) {
+            addBottomDots(position);
+            NewIntroActivity.this.position = position;
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+
+
+    };
     private int lastClick = 0;
-    AppCompatButton btn_continue;
-    private TextView btn_google,btn_fb;
+    private TextView btn_google, btn_fb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +59,7 @@ public class NewIntroActivity extends RegistrationActivity{
         initView();
     }
 
-    public void initView(){
+    public void initView() {
         btn_fb = findViewById(R.id.btn_fb);
         btn_google = findViewById(R.id.btn_google);
         btn_continue = findViewById(R.id.btn_continue);
@@ -61,29 +83,13 @@ public class NewIntroActivity extends RegistrationActivity{
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btn_fb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (lastClick != R.id.btn_fb) {
-                    facebookLoginApi();
-                }
+        btn_fb.setOnClickListener(v -> {
+            if (lastClick != R.id.btn_fb) {
+                facebookLoginApi();
             }
         });
-
-        btn_google.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                gmialLoginApi();
-            }
-        });
-
-        btn_continue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(NewIntroActivity.this, RegistrationActivityNewEmail.class));
-            }
-        });
+        btn_google.setOnClickListener(v -> gmialLoginApi());
+        btn_continue.setOnClickListener(v -> startActivity(new Intent(NewIntroActivity.this, RegistrationActivityNewEmail.class)));
     }
 
     private void addBottomDots(int currentPage) {
@@ -109,49 +115,8 @@ public class NewIntroActivity extends RegistrationActivity{
         return viewPager.getCurrentItem() + i;
     }
 
-    //  viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            addBottomDots(position);
-            NewIntroActivity.this.position = position;
-
-            // changing the next button text 'NEXT' / 'GOT IT'
-            if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
-//                btnNext.setText(getString(R.string.start));
-//                btnSkip.setVisibility(View.VISIBLE);
-            } else {
-                // still pages are left
-//                btnNext.setText(getString(R.string.next));
-//                btnSkip.setVisibility(View.GONE);
-            }
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-            //Util.printLog("Scroll",position+" : "+arg0);
-           /* if(position==layouts.length-1 && arg0==1){
-                launchHomeScreen();
-            }*/
-
-        }
-
-
-    };
-
-    /**
-     * Making notification bar transparent
-     */
+    //changing statusbar color
     private void changeStatusBarColor() {
-
-        //changing statusbar color
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -160,63 +125,16 @@ public class NewIntroActivity extends RegistrationActivity{
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
-
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(getResources().getColor(R.color.white));
-        }
-
-        View top_status = findViewById(R.id.top_status);
-
-      if (!(SceneKey.sessionManager.isSoftKey())) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-
-                StatusBarUtil.setStatusBarTranslucent(this, true);
-
-            } else {
-                top_status.setVisibility(View.GONE);
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                View decor = getWindow().getDecorView();
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                top_status.setBackgroundResource(R.color.white);
-            } else {
-                StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-                top_status.setVisibility(View.VISIBLE);
-            }
-        }else{
-            StatusBarUtil.setStatusBarColor(this,R.color.white);
-            top_status.setVisibility(View.GONE);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                View decor = getWindow().getDecorView();
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                top_status.setBackgroundResource(R.color.white);
-            } else {
-                StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-            }
-        }*/
-
     }
 
-    /**
-     * View pager adapter
-     */
     public class MyViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater layoutInflater;
 
-        public MyViewPagerAdapter() {
-        }
-
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(layouts[position], container, false);
             container.addView(view);
-
             return view;
         }
 
@@ -226,13 +144,13 @@ public class NewIntroActivity extends RegistrationActivity{
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object obj) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object obj) {
             return view == obj;
         }
 
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
+        public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
             View view = (View) object;
             container.removeView(view);
         }

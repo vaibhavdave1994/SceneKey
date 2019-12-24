@@ -454,6 +454,7 @@ public class NewSearchkFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        activity.dismissProgDialog();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         if(et_serch_post != null){
             if(!et_serch_post.getText().toString().equalsIgnoreCase("")){
@@ -545,4 +546,5 @@ public class NewSearchkFragment extends Fragment {
             activity.dismissProgDialog();
         }
     }
+
 }

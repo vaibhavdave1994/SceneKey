@@ -38,6 +38,7 @@ import com.scenekey.activity.EventDetailsActivity;
 import com.scenekey.activity.HomeActivity;
 import com.scenekey.activity.OnBoardActivity;
 import com.scenekey.activity.TheRoomActivity;
+import com.scenekey.activity.invite_friend.InviteFriendsActivity;
 import com.scenekey.activity.trending_summery.Model.SummeryModel;
 import com.scenekey.activity.trending_summery.Model.VenueHourModel;
 import com.scenekey.activity.trending_summery.adapter.Gallery_Adapter;
@@ -46,11 +47,13 @@ import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.CustomProgressBar;
 import com.scenekey.helper.WebServices;
 import com.scenekey.model.Events;
+import com.scenekey.model.UserInfo;
 import com.scenekey.model.Venue;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -81,7 +84,12 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
     private String[] currentLatLng;
     private boolean fromTrending = false;
     private List<VenueHourModel> venueHourModelList;
+    private List<SummeryModel.EventBean.FeedPostBean> feedPostBeanList;
     private View view1;
+    private ImageView img_dot;
+    private SummeryModel.EventBean eventBean;
+    private SummeryModel.EventBean.VenueHourBean venueHourBean;
+    private SummeryModel.EventBean.FeedPostBean feedPostBean;
 
 
     @Override
@@ -89,28 +97,38 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary_);
         progressBar = new CustomProgressBar(this);
+
+        summeryModel = new SummeryModel();
+        eventBean = new SummeryModel.EventBean();
+        feedPostBean = new SummeryModel.EventBean.FeedPostBean();
+        venueHourBean = new SummeryModel.EventBean.VenueHourBean();
         inItView();
         getIntentData();
-        getSummeryDataApiData();
+
 
     }
 
     private void getIntentData() {
 
-        venue_id = getIntent().getStringExtra("venue_id");
+        venue_id = getIntent().getStringExtra("venue_id") != null ? getIntent().getStringExtra("venue_id") : "";
 
-        if (venue_id != null &&!venue_id.equals("")) {
+
+
+        if (venue_id != null && !venue_id.equals("")) {
             SceneKey.sessionManager.putMapFragment("");
         }
 
-        event_id = getIntent().getStringExtra("event_id");
-        object = (Events) getIntent().getSerializableExtra("object");
+        event_id = getIntent().getStringExtra("event_id") != null ? getIntent().getStringExtra("event_id") : "";
+        fromTrending = getIntent().getBooleanExtra("fromTrending", false);
+        if (getIntent().getSerializableExtra("object") != null) {
+            object = (Events) getIntent().getSerializableExtra("object");
+        }
         currentLatLng = (String[]) getIntent().getSerializableExtra("currentLatLng");
         if (currentLatLng == null) {
             currentLatLng = new String[]{userInfo().lat, userInfo().longi};
         }
-        fromTrending = getIntent().getBooleanExtra("fromTrending", false);
 
+        getSummeryDataApiData();
     }
 
     private void inItView() {
@@ -127,7 +145,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
         rl_addedgallery = findViewById(R.id.rl_addedgallery);
         ImageView img_back = findViewById(R.id.img_back);
         txt_event_name = findViewById(R.id.txt_event_name);
-        ImageView img_dot = findViewById(R.id.img_dot);
+        img_dot = findViewById(R.id.img_dot);
         txt_notyet = findViewById(R.id.txt_notyet);
         iv_menuarrow = findViewById(R.id.iv_menuarrow);
         iv_menuarrow = findViewById(R.id.iv_menuarrow);
@@ -135,17 +153,17 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
         LinearLayout ll_today = findViewById(R.id.ll_today);
         RelativeLayout rl_map = findViewById(R.id.rl_map);
         view1 = findViewById(R.id.view);
-        setClicks(img_back, img_dot, ll_menu, rl_map, ll_today);
+        setClicks(img_back, img_dot, ll_menu, ll_getdirection, ll_today, iv_map);
     }
 
     private void setClicks(View... views) {
         for (View view : views) view.setOnClickListener(this);
     }
 
-    private void gallaryAdapter(SummeryModel summeryModel) {
+    private void gallaryAdapter(List<SummeryModel.EventBean.FeedPostBean> feedPostBeanList) {
 
-        if (summeryModel.getEvent().getFeedPost() != null) {
-            if (summeryModel.getEvent().getFeedPost().size() == 0) {
+        if (feedPostBeanList != null) {
+            if (feedPostBeanList.size() == 0) {
                 rl_addedgallery.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             } else {
@@ -153,7 +171,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                 recyclerView.setVisibility(View.VISIBLE);
             }
         }
-        adapter = new Gallery_Adapter(Summary_Activity.this, summeryModel.getEvent().getFeedPost());
+        adapter = new Gallery_Adapter(Summary_Activity.this, feedPostBeanList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Summary_Activity.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -163,6 +181,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
 
 
     public void getSummeryDataApiData() {
+
         progressBar.show();
         Call<ResponseBody> call = RetrofitClient.getInstance()
                 .getAnotherApi().eventSummary(event_id, venue_id);
@@ -178,15 +197,60 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                             String stresult = Objects.requireNonNull(response.body()).string();
                             Log.d("response", stresult);
                             JSONObject jsonObject = new JSONObject(stresult);
-                            String status = jsonObject.optString("status");
-                            if (status.equals("success")) {
+                            String statusCode = jsonObject.optString("status");
+                            if (statusCode.equals("success")) {
 
-                                Gson gson = new Gson();
-                                summeryModel = gson.fromJson(stresult, SummeryModel.class);
-                                putSummeryData(summeryModel);
+
+
+
+                                JSONObject event = jsonObject.getJSONObject("event");
+                                eventBean.setEvent_name(event.getString("event_name"));
+                                eventBean.setVenue_name(event.getString("venue_name"));
+                                eventBean.setVenue_lat(event.getString("venue_lat"));
+                                eventBean.setVenue_long(event.getString("venue_long"));
+                                eventBean.setVenue_address(event.getString("venue_address"));
+                                eventBean.setDescription(event.getString("description"));
+                                eventBean.setVenue_type(event.getString("venue_type"));
+                                eventBean.setEvent_date(event.getString("event_date"));
+                                eventBean.setOpen_today(event.getString("open_today"));
+                                eventBean.setImage(event.getString("image"));
+                                eventBean.setMenu(event.getString("menu"));
+
+
+
+                                JSONArray venue_hour = event.getJSONArray("venue_hour");
+                                JSONObject venue_hourobj = venue_hour.getJSONObject(0);
+//                                venueHourBean.setId(venue_hourobj.getString("id"));
+//                                venueHourBean.setVenue_id(venue_hourobj.getString("venue_id"));
+                                venueHourBean.setSunday(venue_hourobj.getString("sunday"));
+                                venueHourBean.setMonday(venue_hourobj.getString("monday"));
+                                venueHourBean.setTuesday(venue_hourobj.getString("tuesday"));
+                                venueHourBean.setWednesday(venue_hourobj.getString("wednesday"));
+                                venueHourBean.setThursday(venue_hourobj.getString("thursday"));
+                                venueHourBean.setFriday(venue_hourobj.getString("friday"));
+                                venueHourBean.setSaturday(venue_hourobj.getString("saturday"));
+
+
+                                feedPostBeanList = new ArrayList<>();
+                                if (!event.getJSONArray("feedPost").equals("[]")){
+                                    JSONArray feedPostArray = event.getJSONArray("feedPost");
+                                    for (int i = 0; i < feedPostArray.length(); i++) {
+                                        JSONObject feedPostObject = feedPostArray.getJSONObject(i);
+                                        feedPostBean.setId(feedPostObject.getString("id"));
+                                        feedPostBean.setFeed_image(feedPostObject.getString("feed_image"));
+                                        feedPostBeanList.add(feedPostBean);
+                                    }
+                                }
+
+
+                                putSummeryData(eventBean,venueHourBean,feedPostBeanList);
+
+
+
+                               /* Gson gson = new Gson();
+                                summeryModel = gson.fromJson(jsonObject.toString(), SummeryModel.class);
+                                putSummeryData(summeryModel);*/
                             }
-
-
                             break;
                         }
                         case 400: {
@@ -205,27 +269,33 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                                 Log.d("ResponseInvalid", Objects.requireNonNull(response.errorBody()).string());
                             } catch (Exception e1) {
                                 e1.printStackTrace();
+                                System.out.println("myErroLog : 401 " + e1.getMessage());
+
                             }
                             break;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    System.out.println("myErroLog : exc " + e.getMessage());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 progressBar.dismiss();
+                System.out.println("myErroLog : faliure " + t.getMessage());
+
             }
         });
 
+
     }
 
-    private void putSummeryData(SummeryModel summeryModel) {
+    private void putSummeryData(SummeryModel.EventBean eventBean,SummeryModel.EventBean.VenueHourBean venueHourBean,List<SummeryModel.EventBean.FeedPostBean> feedPostBeanList ) {
 
 
-        gallaryAdapter(summeryModel);
-        Glide.with(this).load(summeryModel.getEvent().getImage())
+        gallaryAdapter(feedPostBeanList);
+        Glide.with(this).load(eventBean.getImage())
                 .thumbnail(0.5f)
                 .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.sk_logo_image)
@@ -233,27 +303,30 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                 .into(iv_eventimg);
 
         if (venue_id != null && !venue_id.equals("")) {
-            txt_eventname.setText(summeryModel.getEvent().getVenue_name());
+            txt_eventname.setText(eventBean.getVenue_name());
+            img_dot.setVisibility(View.GONE);
 
         } else {
-            txt_eventname.setText(summeryModel.getEvent().getEvent_name());
+            txt_eventname.setText(eventBean.getEvent_name());
+            img_dot.setVisibility(View.VISIBLE);
+
 
         }
-        txt_eventAdress.setText(summeryModel.getEvent().getVenue_address());
+        txt_eventAdress.setText(eventBean.getVenue_address());
 //        txt_event_name.setText(summeryModel.getEvent().getEvent_name());
 
 
         venueHourModelList = new ArrayList<>();
-        venueHourModelList.add(new VenueHourModel("Monday", summeryModel.getEvent().getVenue_hour().get(0).getMonday()));
-        venueHourModelList.add(new VenueHourModel("Tuesday", summeryModel.getEvent().getVenue_hour().get(0).getTuesday()));
-        venueHourModelList.add(new VenueHourModel("Wednesday", summeryModel.getEvent().getVenue_hour().get(0).getWednesday()));
-        venueHourModelList.add(new VenueHourModel("Thursday", summeryModel.getEvent().getVenue_hour().get(0).getThursday()));
-        venueHourModelList.add(new VenueHourModel("Friday", summeryModel.getEvent().getVenue_hour().get(0).getFriday()));
-        venueHourModelList.add(new VenueHourModel("Saturday", summeryModel.getEvent().getVenue_hour().get(0).getSaturday()));
-        venueHourModelList.add(new VenueHourModel("Sunday", summeryModel.getEvent().getVenue_hour().get(0).getSunday()));
+        venueHourModelList.add(new VenueHourModel("Monday", venueHourBean.getMonday()));
+        venueHourModelList.add(new VenueHourModel("Tuesday", venueHourBean.getTuesday()));
+        venueHourModelList.add(new VenueHourModel("Wednesday", venueHourBean.getWednesday()));
+        venueHourModelList.add(new VenueHourModel("Thursday", venueHourBean.getThursday()));
+        venueHourModelList.add(new VenueHourModel("Friday", venueHourBean.getFriday()));
+        venueHourModelList.add(new VenueHourModel("Saturday", venueHourBean.getSaturday()));
+        venueHourModelList.add(new VenueHourModel("Sunday", venueHourBean.getSunday()));
 
 
-        if (summeryModel.getEvent().getMenu().isEmpty()) {
+        if (eventBean.getMenu().isEmpty()) {
             txt_notyet.setVisibility(View.VISIBLE);
             iv_menuarrow.setVisibility(View.GONE);
         } else {
@@ -262,22 +335,22 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
 
         }
 
-        if (summeryModel.getEvent().getDescription().isEmpty()) {
+        if (eventBean.getDescription().isEmpty()) {
 
             txt_content.setVisibility(View.GONE);
             rl_tag.setVisibility(View.VISIBLE);
-            txt_tag.setText(summeryModel.getEvent().getVenue_type());
+            txt_tag.setText(eventBean.getVenue_type());
 
 
         } else {
             rl_tag.setVisibility(View.GONE);
             txt_content.setVisibility(View.VISIBLE);
-            txt_content.setText(summeryModel.getEvent().getDescription());
+            txt_content.setText(eventBean.getDescription());
         }
 
 
-        if (summeryModel.getEvent().getOpen_today().contains("-")) {
-            String[] separated = summeryModel.getEvent().getOpen_today().split("-");
+        if (eventBean.getOpen_today().contains("-")) {
+            String[] separated = eventBean.getOpen_today().split("-");
             String open = separated[0];
             String close = separated[1];
 
@@ -293,14 +366,14 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                 char openap = open.charAt(1);
                 String close2 = close.substring(0, 2);
                 char closeap = close.charAt(2);
-                txt_opentime.setText(String.format("%s-%s", String.format("0%s:00" + openap, open1), String.format("0%s:00" + closeap, close2)));
+                txt_opentime.setText(String.format("%s-%s", String.format("0%s:00" + openap, open1), String.format("%s:00" + closeap, close2)));
 
             } else if (open.length() == 3 && close.length() == 2) {
                 String open2 = open.substring(0, 2);
                 char close1 = close.charAt(0);
                 char closeap = close.charAt(1);
                 char openap = open.charAt(2);
-                txt_opentime.setText(String.format("%s-%s", String.format("0%s:00" + openap, open2), String.format("0%s:00" + closeap, close1)));
+                txt_opentime.setText(String.format("%s-%s", String.format("%s:00" + openap, open2), String.format("0%s:00" + closeap, close1)));
 
             } else if (open.length() == 3 && close.length() == 3) {
                 String open2 = open.substring(0, 2);
@@ -362,7 +435,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
 
 
             } else if (!open.contains(":") && close.contains(":")) {
-                String open3="", close3;
+                String open3 = "", close3;
                 String[] colen1 = close.split(":");
                 String value1 = colen1[0];
 
@@ -392,7 +465,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
             }
 
         } else {
-            txt_opentime.setText(String.format("%s-%s", summeryModel.getEvent().getOpen_today(), summeryModel.getEvent().getOpen_today()));
+            txt_opentime.setText(String.format("%s-%s", eventBean.getOpen_today(), eventBean.getOpen_today()));
         }
 
 
@@ -435,7 +508,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
             case R.id.ll_menu: {
                 if (!summeryModel.getEvent().getMenu().isEmpty()) {
                     Intent intent = new Intent(Summary_Activity.this, MenuActivity.class);
-                    intent.putExtra("pdf", summeryModel.getEvent().getMenu());
+                    intent.putExtra("pdf", eventBean.getMenu());
                     startActivity(intent);
 
                 }
@@ -446,12 +519,22 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
             }
             break;
 
-            case R.id.rl_map: {
+            case R.id.ll_getdirection: {
                 Intent intent = new Intent(Summary_Activity.this, MapActivity.class);
-                intent.putExtra("lat", summeryModel.getEvent().getVenue_lat());
-                intent.putExtra("long", summeryModel.getEvent().getVenue_long());
-                intent.putExtra("img", summeryModel.getEvent().getImage());
-                intent.putExtra("vname", summeryModel.getEvent().getVenue_name());
+                intent.putExtra("lat", eventBean.getVenue_lat());
+                intent.putExtra("long", eventBean.getVenue_long());
+                intent.putExtra("img", eventBean.getImage());
+                intent.putExtra("vname", eventBean.getVenue_name());
+                startActivity(intent);
+            }
+
+            break;
+            case R.id.iv_map: {
+                Intent intent = new Intent(Summary_Activity.this, MapActivity.class);
+                intent.putExtra("lat", eventBean.getVenue_lat());
+                intent.putExtra("long", eventBean.getVenue_long());
+                intent.putExtra("img", eventBean.getImage());
+                intent.putExtra("vname", eventBean.getVenue_name());
                 startActivity(intent);
             }
             break;
@@ -470,9 +553,7 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                 intent.putExtra("currentLatLng", currentLatLng);
                 if (fromTrending) {
                     intent.putExtra("fromTrending", true);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-//                    finish();
                 } else {
                     startActivity(intent);
                 }
@@ -488,13 +569,10 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                 intent1.putExtra("currentLatLng", currentLatLng);
                 if (fromTrending) {
                     intent1.putExtra("fromTrending", true);
-//                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent1);
-//                    finish();
                 } else {
                     startActivity(intent1);
                 }
-                //}
 
             }
             break;
@@ -510,7 +588,9 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void callCheckEventStatusApi(final String event_name, final String event_id, final Venue venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
+    private void callCheckEventStatusApi(final String event_name, final String event_id,
+                                         final Venue venue_name, final Events object, final String[] currentLatLng,
+                                         final String[] strings) {
         final Utility utility = new Utility(this);
         showProgDialog(false, "");
         if (utility.checkInternetConnection()) {
@@ -544,29 +624,22 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
                             intent.putExtra("venueId", venue_name.getVenue_id());
                             if (fromTrending) {
                                 intent.putExtra("fromTrending", true);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
-//                                finish();
                             } else {
                                 startActivity(intent);
                             }
-
-                         /*   Event_Fragment fragment = Event_Fragment.newInstance("trending");
-                            fragment.setData(event_id, venue_name, object, currentLatLng, strings, isKeyInAble);
-                            activity.addFragment(fragment, 0);*/
                         }
 
                     } catch (Exception ex) {
                         dismissProgDialog();
+                        System.out.println("myErroLog : callCheckEventStatusApi " + ex.getMessage());
                         ex.printStackTrace();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    dismissProgDialog();
-                }
+            }, e -> {
+                utility.volleyErrorListner(e);
+                System.out.println("myErroLog : callCheckEventStatusApi1 " + e.getMessage());
+                dismissProgDialog();
             }) {
                 @Override
                 public Map<String, String> getParams() {
@@ -585,43 +658,6 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
             dismissProgDialog();
         }
     }
-
-  /*  public void showvenueHourList() {
-
-        final Dialog dialog = new Dialog(this);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(R.layout.venuhourlayout);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
-
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.gravity = Gravity.BOTTOM;
-        dialog.getWindow().setAttributes(lp);
-
-
-        RecyclerView recycler_view = dialog.findViewById(R.id.recycler_view);
-        ImageView iv_close = dialog.findViewById(R.id.iv_close);
-
-
-        Venuehour_Adapter adapter = new Venuehour_Adapter(Summary_Activity.this, venueHourModelList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Summary_Activity.this);
-        recycler_view.setLayoutManager(mLayoutManager);
-        recycler_view.setItemAnimator(new DefaultItemAnimator());
-        recycler_view.setAdapter(adapter);
-
-        iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Show location settings when the user acknowledges the alert dialog
-                dialog.cancel();
-            }
-        });
-
-        dialog.show();
-    }*/
-
 
     private void showvenueHourList() {
         final Dialog dialog = new Dialog(Summary_Activity.this);
@@ -651,13 +687,9 @@ public class Summary_Activity extends BaseActivity implements View.OnClickListen
         recycler_view.setItemAnimator(new DefaultItemAnimator());
         recycler_view.setAdapter(adapter);
 
-        iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Show location settings when the user acknowledges the alert dialog
-                view1.setVisibility(View.GONE);
-                dialog.cancel();
-            }
+        iv_close.setOnClickListener(view -> {
+            view1.setVisibility(View.GONE);
+            dialog.cancel();
         });
 
         dialog.show();

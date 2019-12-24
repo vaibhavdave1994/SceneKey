@@ -1,7 +1,6 @@
 package com.scenekey.activity;
 
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -13,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
@@ -35,20 +36,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener{
+public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static UserInfo userInfo;
     private final String TAG = ChangePasswordActivity.class.toString();
     private EditText et_oldPassword, et_newPassword, et_confirmPassword;
     private TextView txt_updatePassword;
     private Utility utility;
     private SessionManager sessionManager;
     private CustomProgressBar customProgressBar;
-    private ImageView iv_conPass,iv_newPass;
+    private ImageView iv_conPass, iv_newPass;
     private boolean isChecked = true;
     private boolean isnewPass = false;
     private ImageView img_f1_back;
     private Animation shake;
-    public static UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         shake = AnimationUtils.loadAnimation(this, R.anim.shakeanim);
 
         sessionManager = new SessionManager(this);
-        customProgressBar=new CustomProgressBar(this);
+        customProgressBar = new CustomProgressBar(this);
         et_oldPassword = findViewById(R.id.et_oldPassword);
         et_newPassword = findViewById(R.id.et_newPassword);
         et_confirmPassword = findViewById(R.id.et_confirmPassword);
@@ -78,7 +79,6 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         et_newPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         et_confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
-
 
 
     @Override
@@ -98,10 +98,10 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                     // show password
                     iv_conPass.setImageResource(R.drawable.eye_show);
                     et_confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    isChecked =true;
+                    isChecked = true;
                 } else {
                     // hide password
-                    isChecked =false;
+                    isChecked = false;
                     iv_conPass.setImageResource(R.drawable.eye_hide);
                     et_confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
@@ -151,11 +151,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             //Utility.showToast(context, getString(R.string.CANNOT_SAME_PASSWORD), 0);
             utility.showCustomPopup(this.getString(R.string.CANNOT_SAME_PASSWORD), String.valueOf(R.font.montserrat_medium));
             confirmPassword.requestFocus();
-        }else if (OldPassword.equals(NewPassword)) {
+        } else if (OldPassword.equals(NewPassword)) {
             //Utility.showToast(context, getString(R.string.SAME_PASSWORD), 0);
             utility.showCustomPopup(this.getString(R.string.SAME_PASSWORD), String.valueOf(R.font.montserrat_medium));
             confirmPassword.requestFocus();
-        }else if (!sessionManager.getPassword().equals(OldPassword)) {
+        } else if (!sessionManager.getPassword().equals(OldPassword)) {
             //Utility.showToast(context, getString(R.string.VALID_PASSWORD), 0);
             utility.showCustomPopup(this.getString(R.string.VALID_PASSWORD), String.valueOf(R.font.montserrat_medium));
             oldPassword.startAnimation(shake);
@@ -163,9 +163,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             if (utility.checkInternetConnection()) {
                 updatePassword_Api(OldPassword, NewPassword, ConfirmPassword);
             } else {
-                Utility.showCheckConnPopup(this,"No network connection","","");
-//                utility.showCustomPopup(this.getString(R.string.internetConnectivityError), String.valueOf(R.font.montserrat_medium));
-                //Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
+                Utility.showCheckConnPopup(this, "No network connection", "", "");
             }
         }
     }
@@ -231,7 +229,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(this).addToRequestQueue(multipartRequest);
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }

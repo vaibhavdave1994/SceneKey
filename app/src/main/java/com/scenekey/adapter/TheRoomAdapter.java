@@ -68,7 +68,10 @@ public class TheRoomAdapter  extends RecyclerView.Adapter<TheRoomAdapter.ViewHol
         holder.et_comeInName.setText(eventAttendyArrayList.get(i).username);
         Log.v("image",  eventAttendyArrayList.get(i).getUserimage());
 
-        if(!eventAttendyArrayList.get(i).getUserimage().contains("dev-")){
+        Picasso.with(context).load(eventAttendyArrayList.get(i).getUserimage()).placeholder(R.drawable.placeholder_img)
+                .error(R.drawable.placeholder_img).into(holder.comeInUserProfile);
+
+        /*if(!eventAttendyArrayList.get(i).getUserimage().contains("dev-")){
             String image = "dev-"+eventAttendyArrayList.get(i).getUserimage();
 
             Picasso.with(context).load(image).placeholder(R.drawable.placeholder_img)
@@ -77,7 +80,7 @@ public class TheRoomAdapter  extends RecyclerView.Adapter<TheRoomAdapter.ViewHol
 
             Picasso.with(context).load(eventAttendyArrayList.get(i).getUserimage()).placeholder(R.drawable.placeholder_img)
                     .error(R.drawable.placeholder_img).into(holder.comeInUserProfile);
-        }
+        }*/
 
     }
 

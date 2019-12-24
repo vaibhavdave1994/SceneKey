@@ -12,9 +12,6 @@ import com.scenekey.model.UserInfo;
 
 public class DemoUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView img_demoUserback, img_red_demo, img_yellow_demo, img_green_demo;
-    private EditText tv_bio_demo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +20,11 @@ public class DemoUserProfileActivity extends AppCompatActivity implements View.O
     }
 
     private void inItView() {
-        img_demoUserback = findViewById(R.id.img_demoUserback);
-        tv_bio_demo = findViewById(R.id.tv_bio_demo);
-        img_red_demo = findViewById(R.id.img_red_demo);
-        img_yellow_demo = findViewById(R.id.img_yellow_demo);
-        img_green_demo = findViewById(R.id.img_green_demo);
+        ImageView img_demoUserback = findViewById(R.id.img_demoUserback);
+        EditText tv_bio_demo = findViewById(R.id.tv_bio_demo);
+        ImageView img_red_demo = findViewById(R.id.img_red_demo);
+        ImageView img_yellow_demo = findViewById(R.id.img_yellow_demo);
+        ImageView img_green_demo = findViewById(R.id.img_green_demo);
 
         setOnClick(img_demoUserback, img_red_demo, img_yellow_demo, img_green_demo);
 

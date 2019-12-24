@@ -109,16 +109,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
                         if (status.equalsIgnoreCase("SUCCESS")) {
                             dismissProgDialog();
-
-                               /* JSONObject userDetail = jsonObject.getJSONObject("userDetail");
-                                UserInfo userInfo = new UserInfo();
-                                userInfo.userID = userDetail.getString("userid");
-*/
                             Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
                             onBackPressed();
-                            /*Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);*/
 
                         } else {
                             Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
@@ -130,15 +122,12 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         dismissProgDialog();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    NetworkResponse networkResponse = error.networkResponse;
-                    Log.i("Error", networkResponse + "");
-                    Toast.makeText(ForgotPasswordActivity.this, networkResponse + "", Toast.LENGTH_SHORT).show();
-                    dismissProgDialog();
-                    error.printStackTrace();
-                }
+            }, error -> {
+                NetworkResponse networkResponse = error.networkResponse;
+                Log.i("Error", networkResponse + "");
+                Toast.makeText(ForgotPasswordActivity.this, networkResponse + "", Toast.LENGTH_SHORT).show();
+                dismissProgDialog();
+                error.printStackTrace();
             }) {
                 @Override
                 protected Map<String, String> getParams() {

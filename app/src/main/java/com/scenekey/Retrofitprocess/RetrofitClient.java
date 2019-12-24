@@ -4,7 +4,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private final String BASE_URL = "https://dev.scenekey.com/event/";
+//    private final String BASE_URL = "https://dev.scenekey.com/event/";//dev
+    private final String BASE_URL = "https://scenekey.com/event/"; ;//live
     private static RetrofitClient minstance;
     private Retrofit retrofit;
 

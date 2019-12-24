@@ -111,6 +111,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static boolean fromSearch = false;
     public static boolean fromSearch1 = false;
     public static boolean fromSearch2 = false;
+    public static boolean boolpos = false;
     public static String name = "";
     private static TextView tvHomeTitle;
     public static TextView tv_key_points;
@@ -224,8 +225,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         userInfo = SceneKey.sessionManager.getUserInfo();
         FirebaseApp.initializeApp(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-            getDataFromFB();
+        getDataFromFB();
 
 
         img_alert = findViewById(R.id.img_alert);
@@ -407,6 +407,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         //  tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                         //replaceFragment(new Search_Fragment());
                         View tabView = tab.getCustomView();
+                        boolpos =true;
                         // get inflated children Views the icon and the label by their id
                         TextView tab_label = (TextView) tabView.findViewById(R.id.nav_label);
                         ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
@@ -419,6 +420,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     case 2:
                         if (isPermissionAvail) {
                             assert tab.getIcon() != null;
+                            boolpos =true;
                             // tab.getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
                             //setBottomBar((RelativeLayout) v, lastclicked);
                             tabView = tab.getCustomView();
@@ -646,10 +648,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case "30": {
 
                 lastClick = 0;
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("dev").child("reward").child(SceneKey.sessionManager.getUserInfo().userid).child("count").setValue("0");
                 isPermissionAvail = true;
-                rtlv_alert.callOnClick();
+                    lastClick = R.id.rtlv_alert;
+                    rl_toolbar_alert.setVisibility(View.VISIBLE);
+                    rl_title_view_home.setVisibility(View.GONE);
+                    rl_title_main_view.setVisibility(View.GONE);
+                    rl_profileView.setVisibility(View.GONE);
+//                    tv_title.setText("My Scene");
+                    tv_title.setText("Alerts");
 
-            }
+                    if (isPermissionAvail) {
+                        // replaceFragment(new Alert_fragment());
+                        replaceFragment(new OfferSFragment());
+                        setBottomBar(rtlv_alert, lastclicked);
+                    } else {
+                        utility.snackBar(rtlv_home, "Location permission not available", 0);
+                    }
+                }
+
+
 
                 break;
         }
@@ -658,7 +677,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void forMakeAdmin(String s) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_push);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -709,7 +728,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //        dimmedEffect();
         isPermissionAvail = permission.checkLocationPermission();
 
-        replaceFragment(new Home_No_Event_Fragment());
+        replaceFragment(new Trending_Fragment());
         try {
             if (userInfo.makeAdmin.equals(Constant.ADMIN_YES)) {
                 latitude = Double.parseDouble(userInfo.adminLat);
@@ -728,6 +747,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (getIntent().getStringExtra("reward") != null && getIntent().getStringExtra("reward").equalsIgnoreCase("reward")) {
             rtlv_reward.callOnClick();
+            lastClick =0;
 
         }
         else if(isseclect.equalsIgnoreCase("3"))
@@ -929,12 +949,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (lastClick != R.id.rtlv_alert) {
                     lastClick = R.id.rtlv_alert;
+                    mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.child("dev").child("reward").child(SceneKey.sessionManager.getUserInfo().userid).child("count").setValue("0");
                     rl_toolbar_alert.setVisibility(View.VISIBLE);
                     rl_title_view_home.setVisibility(View.GONE);
                     rl_title_main_view.setVisibility(View.GONE);
                     rl_profileView.setVisibility(View.GONE);
 //                    tv_title.setText("My Scene");
                     tv_title.setText("Alerts");
+                    boolpos =true;
 
                     if (isPermissionAvail) {
                         // replaceFragment(new Alert_fragment());
@@ -951,6 +974,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (lastClick != R.id.img_setting) {
                     lastClick = R.id.img_setting;
+                    boolpos =true;
                     Intent seetingIntet = new Intent(this, SettingActivtiy.class);
                     startActivity(seetingIntet);
                 }
@@ -961,6 +985,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (lastClick != R.id.rtlv_profile) {
                     lastClick = R.id.rtlv_profile;
+                    boolpos =true;
                     rl_profileView.setVisibility(View.VISIBLE);
                     rl_toolbar_alert.setVisibility(View.GONE);
                     rl_title_view_home.setVisibility(View.GONE);
@@ -986,22 +1011,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (lastClick != R.id.rtlv_reward) {
                     lastClick = R.id.rtlv_reward;
-                    //                    rl_toolbar_alert.setVisibility(View.GONE);
-//                    rl_title_view_home.setVisibility(View.GONE);
-//                    rl_title_main_view.setVisibility(View.VISIBLE);
-//                    rl_profileView.setVisibility(View.GONE);
-                    //checkFregment();
-
+                    boolpos =true;
                     rl_toolbar_alert.setVisibility(View.VISIBLE);
                     rl_title_view_home.setVisibility(View.GONE);
                     rl_title_main_view.setVisibility(View.GONE);
                     rl_profileView.setVisibility(View.GONE);
                     tv_title.setText("Rewards");
                     hideKeyBoard();
-                    //replaceFragment(new OfferSFragment());
                     replaceFragment(new WalletsFragment());
                     setBottomBar((RelativeLayout) v, lastclicked);
-                    // txt_five.setTextColor(getResources().getColor(R.color.selected_bb_text));
                 }
 
                 break;
@@ -1010,6 +1028,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (lastClick != R.id.img_profile) {
                     lastClick = R.id.img_profile;
+                    boolpos =true;
                     try {
                         EventAttendy attendy = new EventAttendy();
                         attendy.userid = (userInfo.userid);
@@ -1039,9 +1058,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             event_fragment.getAllData();
             event_fragment.onResume();
         } else if (fragment instanceof ProfileNew_fragment) {
-//            ProfileNew_fragment profileNew_fragment = (ProfileNew_fragment) fragment;
-//            tvHomeTitle.setText(userInfo().fullname);
-//            profileNew_fragment.onResume();
             lastClick = 0;
             rtlv_profile.performClick();
         } else if (fragment instanceof Trending_Fragment) {
@@ -1053,8 +1069,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ImageView tab_icon = (ImageView) tabView.findViewById(R.id.nav_icon);
             tab_label.setTextColor(getResources().getColor(R.color.colorPrimaryDark_new));
             tab_icon.setImageResource(tabIconsActive[0]);
-
-            // tablayout_home.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimaryDark_new), PorterDuff.Mode.SRC_IN);
             tablayout_home.getTabAt(0).select();
         }
         super.onResume();
@@ -1067,12 +1081,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setBottomBar(RelativeLayout v, final RelativeLayout lastClicked) {
-        //setRtlvText(v, true);
 
         if (lastClicked != null) {
-
-            // setRtlvText(lastClicked, false);
-
             switch (lastClicked.getId()) {
 
                 case R.id.rtlv_home:
@@ -1269,7 +1279,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         if (jo.has("status")) {
                             int status = jo.getInt("status");
                             if (status == 0) {
-                                replaceFragment(new Home_No_Event_Fragment());
+//                                replaceFragment(new Home_No_Event_Fragment());
                                 //Utility.showToast(context, jo.getString("message"), 0);
                             }
                             if (jo.has("userInfo")) {
@@ -1308,7 +1318,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                     SceneKey.sessionManager.logout(HomeActivity.this);
                                 }
                             }
-                            //else if()
                         } else {
                             if (jo.has("userInfo")) {
                                 if (userInfo == null)
@@ -1327,12 +1336,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                                 if (user.has("longi"))
                                     userInfo.longi = (user.getString("longi"));
-
-                                /*if (user.has("adminLat"))
-                                    userInfo.adminLat = (user.getString("adminLat"));
-
-                                if (user.has("adminLong"))
-                                    userInfo.adminLong = (user.getString("adminLong"));*/
 
                                 if (user.has("adminLat")) {
                                     if (user.getString("adminLat").isEmpty()) {
@@ -1410,25 +1413,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                     if (eventsNearbyList.size() != 0)
                                         onNearByEventFound();
                                     else {
-                                        replaceFragment(new Home_No_Event_Fragment());
+//                                        replaceFragment(new Home_No_Event_Fragment());
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
 
-                           /* else{
-                                try {
-                                    Utility.e("Near Event Size", String.valueOf(eventsNearbyList.size()));
-                                    if (eventsNearbyList.size() != 0)
-                                        onNearByEventFound();
-                                    else {
-                                        replaceFragment(new Home_No_Event_Fragment());
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }*/
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1446,12 +1437,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError e) {
-                    utility.volleyErrorListner(e);
-                    dismissProgDialog();
-                }
+            }, e -> {
+                utility.volleyErrorListner(e);
+                dismissProgDialog();
             }) {
                 @Override
                 public Map<String, String> getParams() {
@@ -1470,17 +1458,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             VolleySingleton.getInstance(this.getBaseContext()).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-//            utility.snackBar(frame_fragments, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
     }
 
     private boolean isLocation() {
         try {
-            /* if(Double.parseDouble(userInfo.longitude)==0.0D){
-                return false;
-            }
-            else return !(Double.parseDouble(userInfo.latitude) == 0.0D);*/
             return !(Double.parseDouble(userInfo.longi) == 0.0D) && !(Double.parseDouble(userInfo.lat) == 0.0D);
         } catch (Exception e) {
             return false;
@@ -1527,10 +1510,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 rtlv_home.callOnClick();
                                 break;
 
-                           /* case "atLng":
-                                getCurrentLatLng();
-                                break;*/
-
                         }
                     }
                 }, 3 * 1000); // wait for 3 seconds
@@ -1565,9 +1544,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             endLocation.setLatitude(Double.parseDouble(events.getVenue().getLatitude()));
             endLocation.setLongitude(Double.parseDouble(events.getVenue().getLongitude()));
-
-            //   Log.e("START LOC", startLocation.getLatitude() + "---" + startLocation.getLongitude());
-            //  Log.e("END LOC", endLocation.getLatitude() + "---" + endLocation.getLongitude());
             double distance = endLocation.distanceTo(startLocation);
 
             try {
@@ -1579,7 +1555,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             } catch (Exception e) {
                 e.printStackTrace();
-                //Toast.makeText(this, getResources().getString(R.string.somethingwentwrong), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1595,17 +1570,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void kjgfhkg(Events events) {
-        /*Location startLocation = new Location("Location My");
-
-        startLocation.setLatitude(Double.parseDouble(getLatLng()[0]));
-        startLocation.setLongitude(Double.parseDouble(getLatLng()[1]));
-
-        Location endLocation = new Location("Location end");
-
-        endLocation.setLatitude(Double.parseDouble(events.getVenue().getLatitude()));
-        endLocation.setLongitude(Double.parseDouble(events.getVenue().getLongitude()));
-        */
-        // double distance = endLocation.distanceTo(startLocation);
 
         float distance = getDistancBetweenTwoPoints(Double.parseDouble(getLatLng()[0]), Double.parseDouble(getLatLng()[1]), Double.parseDouble(events.getVenue().getLatitude()), Double.parseDouble(events.getVenue().getLongitude()));
 
@@ -1626,26 +1590,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /*********************************
-     * Chekcing the Events
-     ******************************************************/
-
-    /*public boolean checkWithTime(final String date, double interval) throws ParseException {
-        String[] dateSplit = (date.replace("TO", "T")).replace(" ", "T").split("T");
-        Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).parse(dateSplit[0] + " " + dateSplit[1]);
-        //   Date endTime = new Date(startTime.getTime() + (long) (interval * 60 * 60 * 1000));
-
-        long currentTime = Calendar.getInstance().getTime().getTime();
-
-        Log.e("STEP 2", (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).format(Calendar.getInstance().getTime()) + "");
-        Log.e("STEP 2 - START DATE", (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).format(startTime) + "");
-        *//*Utility.e(TAG, "STEP 2 - Event Date " + dateSplit[0] + " " + dateSplit[1]);
-        Utility.e(TAG, " Date " + currentTime + " " + startTime.getTime());*//*
-        return currentTime > startTime.getTime();  //old ios logic
-
-        //  return currentTime < endTime.getTime() && currentTime > startTime.getTime();
-
-    }*/
     public boolean checkWithTime(final String date, double interval) throws ParseException {
         String[] dateSplit = (date.replace("TO", "T")).replace(" ", "T").split("T");
         Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).parse(dateSplit[0] + " " + dateSplit[1]);
@@ -1835,9 +1779,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (ViewDot == View.GONE) {
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) frame_fragments.getLayoutParams();
-                   /* if (SceneKey.sessionManager.isSoftKey())
-                        layoutParams.bottomMargin = ActivitybottomMarginOne;
-                    else layoutParams.bottomMargin = 0;*/
                     frame_fragments.setLayoutParams(layoutParams);
                     rl_title_view.setVisibility(View.GONE);
                     frm_bottmbar.setVisibility(View.GONE);
@@ -2003,39 +1944,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
-  /*  Runnable notiRunnable = new Runnable() {
-        @Override
-        public void run() {
-            *//*................................................>*//*
-            if (!eventId.isEmpty() && notificationType1.equals("2")) {
-                Events nEvent = new Events();
-                String venue_name = "";
-                String[] venuLatLng = new String[2];
-                venuLatLng[0] = String.valueOf(latitude);
-                venuLatLng[1] = String.valueOf(longitude);
-                if (eventsArrayList == null) eventsArrayList = new ArrayList<>();
-                for (Events event : eventsArrayList) {
-                    if (eventId.equals(event.getEvent().event_id)) {
-                        nEvent = event;
-                        venue_name = event.getVenue().getVenue_name();
-                        venuLatLng[0] = event.getVenue().getLatitude();
-                        venuLatLng[1] = event.getVenue().getLongitude();
-                        break;
-                    }
-                }
-                Event_Fragment fragment = Event_Fragment.newInstance("home");
-                fragment.setData(eventId, venue_name, nEvent, new String[]{getLatLng()[0], getLatLng()[1]}, venuLatLng, false);
-                addFragment(fragment, 1);
-
-            } else {
-                Fragment fragment = getCurrentFragment();
-                if (fragment != null && fragment instanceof Event_Fragment) {
-                    Event_Fragment event_fragment = (Event_Fragment) fragment;
-                    event_fragment.getAllData();
-                }
-            }
-        }
-    };*/
 
     public void forBackGroundNotification() {
         if (!eventId.isEmpty() && notificationType1.equals("2") || notificationType1.equals("1") || notificationType1.equals("22")) {
@@ -2059,9 +1967,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("event_id", eventId);
             startActivity(intent);
 
-           /* Event_Fragment fragment = Event_Fragment.newInstance("homeTab");
-            fragment.setData(eventId, venue_name, nEvent, new String[]{getLatLng()[0], getLatLng()[1]}, venuLatLng, false);
-            addFragment(fragment, 1);*/
+
 
         } else {
             Fragment fragment = getCurrentFragment();
@@ -2367,9 +2273,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         else {
                             img_alert.setImageResource(R.drawable.alert_dot);
 
+
                         }
-//                        tv_alert_badge_count.setText(val);
-//                        tv_alert_badge_count.setVisibility(View.VISIBLE);
                     } else {
                         if (currentScreen.equals("RewardScreen") || R.id.rtlv_alert == lastClick){
                             img_alert.setImageResource(R.drawable.alert_active);
@@ -2385,62 +2290,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
                 dismissProgDialog();
             }
         });
     }
 
-//    public void getOffersList() {
-//        if (utility.checkInternetConnection()) {
-//            StringRequest request = new StringRequest(Request.Method.POST, WebServices.REWARD_OFFER, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    Log.v("response", response);
-//                    // get response
-//                    try {
-//                        JSONObject jsonObject = new JSONObject(response);
-//                        String status = jsonObject.getString("status");
-//
-//                        if (status.equals("success")) {
-//                            JSONArray data = jsonObject.getJSONArray("allReward");
-//                            if(data.length()>0){
-//                                tv_alert_badge_count.setText(data.length());
-//                                tv_alert_badge_count.setVisibility(View.VISIBLE);
-//                            }
-//                            else {
-//                                tv_alert_badge_count.setVisibility(View.GONE);
-//                            }
-//
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError e) {
-//                    utility.volleyErrorListner(e);
-//                }
-//            }) {
-//                @Override
-//                public Map<String, String> getParams() {
-//                    Map<String, String> params = new HashMap<>();
-//                    params.put("lat", SceneKey.sessionManager.getUserInfo().lat);
-//                    params.put("long", SceneKey.sessionManager.getUserInfo().longi);
-//                    params.put("userId", SceneKey.sessionManager.getUserInfo().userid + "");
-////                    params.put("userId", "1384");
-//
-//                    Utility.e(TAG, " params " + params.toString());
-//                    return params;
-//                }
-//            };
-//            VolleySingleton.getInstance(context).addToRequestQueue(request);
-//            request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
-//        } else {
-//            //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
-//            Toast.makeText(context, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
 }

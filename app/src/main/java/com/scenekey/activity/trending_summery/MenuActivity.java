@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import com.scenekey.R;
 import com.scenekey.base.BaseActivity;
 import com.scenekey.helper.CustomProgressBar;
-import com.scenekey.model.Events;
 
 public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
@@ -39,6 +38,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
     }
+
     public void init() {
         webView = findViewById(R.id.webview);
         ImageView img_back = findViewById(R.id.img_back);
@@ -46,6 +46,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         getIntentData();
 
     }
+
     private void getIntentData() {
 
         pdf = getIntent().getStringExtra("pdf");
@@ -57,8 +58,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void showPdf(){
-//        pDialog.pdialog(TermActivity.this);
+    private void showPdf() {
         progressBar.show();
 
         webView.getSettings().setJavaScriptEnabled(true);
@@ -66,8 +66,6 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         webView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
-                // do your stuff here
-//                pDialog.hideDialog();
                 progressBar.dismiss();
             }
         });

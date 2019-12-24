@@ -2,15 +2,18 @@ package com.scenekey.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scenekey.R;
+import com.scenekey.activity.trending_summery.Summary_Activity;
 import com.scenekey.listener.MyRedeemListener;
 import com.scenekey.model.Wallets;
 import com.squareup.picasso.Picasso;
@@ -70,6 +73,7 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
         private TextView venue_wallets_address,wallets_offerUserName,btn_redeem_wallets,tv_reward_wallets_language,txt_wallets_exp_days;
 //        private ImageView venue_wallets_image;
         private CircleImageView venue_wallets_image;
+        private RelativeLayout rl_wallet;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -79,7 +83,9 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
             venue_wallets_image = itemView.findViewById(R.id.venue_wallets_image);
             btn_redeem_wallets = itemView.findViewById(R.id.btn_redeem_wallets);
             txt_wallets_exp_days = itemView.findViewById(R.id.txt_wallets_exp_days);
+            rl_wallet = itemView.findViewById(R.id.rl_wallet);
             btn_redeem_wallets.setOnClickListener(this);
+            rl_wallet.setOnClickListener(this);
         }
 
         @Override
@@ -89,6 +95,11 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
                 case R.id.btn_redeem_wallets:
                     redeemForReward(context,wallets);
                     break;
+                    case R.id.rl_wallet:
+                        Intent intent = new Intent(context, Summary_Activity.class);
+                        intent.putExtra("venue_id", wallets.venue_id);
+                        context.startActivity(intent);
+                    break;
             }
         }
     }
@@ -96,7 +107,7 @@ public class WalletsAdapter  extends RecyclerView.Adapter<WalletsAdapter.ViewHol
     /*........................diloagForAddtowallet().............................*/
     public void redeemForReward(final Context context, final Wallets wallets) {
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         //dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);

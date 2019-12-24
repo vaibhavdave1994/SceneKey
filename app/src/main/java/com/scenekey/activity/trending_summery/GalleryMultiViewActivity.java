@@ -9,12 +9,10 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.scenekey.R;
 import com.scenekey.activity.trending_summery.Model.SummeryModel;
-import com.scenekey.activity.trending_summery.adapter.Gallery_Adapter;
 import com.scenekey.activity.trending_summery.adapter.MultiGallery_Adapter;
 
 import java.util.List;
@@ -39,24 +37,19 @@ public class GalleryMultiViewActivity extends AppCompatActivity {
         }
     }
 
-    public void getIntentData(){
+    public void getIntentData() {
 
         List<SummeryModel.EventBean.FeedPostBean> feedPostlist = (List<SummeryModel.EventBean.FeedPostBean>) getIntent().getSerializableExtra("feedPostlist");
 
         RecyclerView recycler_view = findViewById(R.id.recycler_view);
         ImageView img_back = findViewById(R.id.img_back);
         MultiGallery_Adapter adapter = new MultiGallery_Adapter(GalleryMultiViewActivity.this, feedPostlist);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this,2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recycler_view.setLayoutManager(mLayoutManager);
         recycler_view.setItemAnimator(new DefaultItemAnimator());
         recycler_view.setAdapter(adapter);
 
-        img_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        img_back.setOnClickListener(view -> onBackPressed());
     }
 
 

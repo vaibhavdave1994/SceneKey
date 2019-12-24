@@ -48,39 +48,30 @@ public class IntroActivity extends AppCompatActivity {
         // adding bottom dots
         addBottomDots(0);
 
-        // making notification bar transparent
-        changeStatusBarColor();
-
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IntroActivity.this, ImageUploadActivity.class);
-                intent.putExtra("from", "intro");
-                // Closing all the Activities
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                // Add new Flag to start new Activity
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
+        btnSkip.setOnClickListener(v -> {
+            Intent intent = new Intent(IntroActivity.this, ImageUploadActivity.class);
+            intent.putExtra("from", "intro");
+            // Closing all the Activities
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // Add new Flag to start new Activity
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // checking for last page
-                // if last page home screen will be launched
-                int current = getItem(+1);
-                if (current < layouts.length) {
-                    // move to next screen
-                    viewPager.setCurrentItem(current);
-                } else {
-                    // launchHomeScreen();
-                }
+        btnNext.setOnClickListener(v -> {
+            // checking for last page
+            // if last page home screen will be launched
+            int current = getItem(+1);
+            if (current < layouts.length) {
+                // move to next screen
+                viewPager.setCurrentItem(current);
+            } else {
+                // launchHomeScreen();
             }
         });
 
@@ -109,11 +100,6 @@ public class IntroActivity extends AppCompatActivity {
         return viewPager.getCurrentItem() + i;
     }
 
-  /*  private void launchHomeScreen() {
-        new SessionManager(this).canTutorial(false);
-        startActivity(new Intent(IntroActivity.this, Image_uploade_Activity.class));
-        finish();
-    }*/
 
     //  viewpager change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -142,60 +128,11 @@ public class IntroActivity extends AppCompatActivity {
 
         @Override
         public void onPageScrollStateChanged(int arg0) {
-            //Util.printLog("Scroll",position+" : "+arg0);
-           /* if(position==layouts.length-1 && arg0==1){
-                launchHomeScreen();
-            }*/
-
         }
 
 
     };
 
-
-    /**
-     * Making notification bar transparent
-     */
-    private void changeStatusBarColor() {
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-
-        View top_status = findViewById(R.id.top_status);
-
-      if (!(SceneKey.sessionManager.isSoftKey())) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-
-                StatusBarUtil.setStatusBarTranslucent(this, true);
-
-            } else {
-                top_status.setVisibility(View.GONE);
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                View decor = getWindow().getDecorView();
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                top_status.setBackgroundResource(R.color.white);
-            } else {
-                StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-                top_status.setVisibility(View.VISIBLE);
-            }
-        }else{
-            StatusBarUtil.setStatusBarColor(this,R.color.white);
-            top_status.setVisibility(View.GONE);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                View decor = getWindow().getDecorView();
-                decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                top_status.setBackgroundResource(R.color.white);
-            } else {
-                StatusBarUtil.setStatusBarColor(this, R.color.new_white_bg);
-            }
-        }*/
-
-    }
 
     /**
      * View pager adapter

@@ -48,15 +48,6 @@ public class CustomInfoWindowGoogleMap implements GoogleMap.InfoWindowAdapter {
             not_first_time_showing_info_window = true;
             Picasso.with(context).load(mapModel.getImg()).into(img, new InfoWindowRefresher(marker));
         }
-
-       /* assert mapModel != null;
-        Glide.with(context).load(mapModel.getImg())
-                .thumbnail(0.5f)
-                .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.sk_logo_image)
-                .error(R.drawable.sk_logo_image)
-                .into(img);*/
-
         name_tv.setText(mapModel.getName());
         return view;
     }

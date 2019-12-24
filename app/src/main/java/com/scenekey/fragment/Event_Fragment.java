@@ -522,7 +522,7 @@ public class Event_Fragment extends Fragment implements View.OnClickListener, St
 
     private void captureImage() {
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_takephoto_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

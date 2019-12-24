@@ -851,9 +851,11 @@ public class LiveProfileActivity extends AppCompatActivity implements View.OnCli
                         ObjectListing listing;
 
                         if (!eventAttendy.userFacebookId.isEmpty()) {
-                            listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + eventAttendy.userFacebookId);
+                            listing = s3Client.listObjects(Constant.BUCKET,  eventAttendy.userFacebookId);
+//                            listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + eventAttendy.userFacebookId);
                         } else {
-                            listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + eventAttendy.userid);
+                            listing = s3Client.listObjects(Constant.BUCKET,  eventAttendy.userid);
+//                            listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + eventAttendy.userid);
                         }
 
                         List<S3ObjectSummary> summaries = listing.getObjectSummaries();

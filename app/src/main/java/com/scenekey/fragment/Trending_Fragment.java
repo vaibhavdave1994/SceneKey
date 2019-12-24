@@ -60,11 +60,15 @@ import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.scenekey.activity.HomeActivity.boolpos;
+
+
 public class Trending_Fragment extends Fragment {
 
     private static Timer timerHttp;
     private final String TAG = Trending_Fragment.class.toString();
     public boolean canCallWebservice;
+    public int pos = 0;
     UserInfo myUserInfo;
     private Context context;
     private HomeActivity activity;
@@ -75,7 +79,6 @@ public class Trending_Fragment extends Fragment {
     private Trending_Adapter trendingAdapter;
     private ArrayList<Events> eventsArrayList;
     private ScrollView no_data_trending;
-    private int pos = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -101,8 +104,8 @@ public class Trending_Fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         activity.setTitle(context.getResources().getString(R.string.trending));
 
-        if(!Utility.checkInternetConnection1(activity)){
-            Utility.showCheckConnPopup(activity,"No network connection","","");
+        if (!Utility.checkInternetConnection1(activity)) {
+            Utility.showCheckConnPopup(activity, "No network connection", "", "");
         }
         trendingData();
     }
@@ -116,7 +119,7 @@ public class Trending_Fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        activity.showProgDialog(true,"");
+        activity.showProgDialog(true, "");
 //        recalling();
         canCallWebservice = true;
 //        if (timerHttp == null) setDataTimer();
@@ -159,7 +162,7 @@ public class Trending_Fragment extends Fragment {
     }
 
     private void retryLocation() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context, R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -266,19 +269,23 @@ public class Trending_Fragment extends Fragment {
 
     public void getTrendingData() {
 
-        activity.showProgDialog(true,"");
+        activity.showProgDialog(true, "");
         activity.runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
 
-                if (pos == 0) {
+                if (boolpos) {
                     rcViewTrending.scrollToPosition(0);
+                    SceneKey.sessionManager.putPosTrendingList("");
+                    pos = 0;
+                    boolpos = false;
                 }
             }
         });
 
         if (utility.checkInternetConnection()) {
+
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.TRENDING, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -455,8 +462,7 @@ public class Trending_Fragment extends Fragment {
                                     }
                                 }
                                 rcViewTrending.scrollToPosition(pos);
-                                SceneKey.sessionManager.putPosTrendingList("");
-                                pos=0;
+
 
                             }
                             progressBar.dismiss();
@@ -520,6 +526,7 @@ public class Trending_Fragment extends Fragment {
 
                                                           if (canCallWebservice) {
                                                               SceneKey.sessionManager.putPosTrendingList("");
+                                                              pos = 0;
                                                               getTrendingData();
 
                                                           }

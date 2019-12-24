@@ -37,6 +37,7 @@ public class GallerySlideActivity extends AppCompatActivity implements View.OnCl
         ImageView img_back = findViewById(R.id.img_back);
         setClicks(iv_left_arrow, iv_right_arrow, img_back);
     }
+
     private void setStatusBarColor() {
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -61,14 +62,9 @@ public class GallerySlideActivity extends AppCompatActivity implements View.OnCl
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             public void onPageScrollStateChanged(int state) {
-
-
             }
 
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-
-
                 if (position == 0) {
                     iv_left_arrow.setVisibility(View.GONE);
                     iv_right_arrow.setVisibility(View.VISIBLE);
@@ -80,7 +76,7 @@ public class GallerySlideActivity extends AppCompatActivity implements View.OnCl
                     iv_right_arrow.setVisibility(View.VISIBLE);
                 }
 
-                if(feedPostlist.size() == 1){
+                if (feedPostlist.size() == 1) {
                     iv_left_arrow.setVisibility(View.GONE);
                     iv_right_arrow.setVisibility(View.GONE);
                 }

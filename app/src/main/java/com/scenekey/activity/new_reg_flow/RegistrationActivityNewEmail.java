@@ -2,20 +2,19 @@ package com.scenekey.activity.new_reg_flow;
 
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -29,18 +28,20 @@ import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleyMultipartRequest;
 import com.scenekey.volleymultipart.VolleySingleton;
+
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrationActivityNewEmail extends BaseActivity {
 
-     EditText et_email;
-     AppCompatImageView img_back;
-     AppCompatButton btn_next;
-     boolean isValidEmail = false;
-     Utility utility;
-     UserInfo userInfo = null;
+    EditText et_email;
+    AppCompatImageView img_back;
+    AppCompatButton btn_next;
+    boolean isValidEmail = false;
+    Utility utility;
+    UserInfo userInfo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,36 +70,28 @@ public class RegistrationActivityNewEmail extends BaseActivity {
 
         userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
 
-        if(userInfo != null){
-            if(!userInfo.userEmail.equalsIgnoreCase("") || userInfo.userEmail != null)
-            et_email.setText(userInfo.userEmail);
+        if (userInfo != null) {
+            if (!userInfo.userEmail.equalsIgnoreCase("") || userInfo.userEmail != null)
+                et_email.setText(userInfo.userEmail);
         }
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValidEmail){
-                        if(userInfo != null){
-                            Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
-                            userInfo.userEmail = et_email.getText().toString().trim();
-                            intent.putExtra("userInfo",userInfo);
-                            startActivity(intent);
-                    }
-
-                    else
-                    checkEmailRegisteration(et_email.getText().toString());
-                }
-                else {
+                if (isValidEmail) {
+                    if (userInfo != null) {
+                        Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
+                        userInfo.userEmail = et_email.getText().toString().trim();
+                        intent.putExtra("userInfo", userInfo);
+                        startActivity(intent);
+                    } else
+                        checkEmailRegisteration(et_email.getText().toString());
+                } else {
                     Toast.makeText(RegistrationActivityNewEmail.this, "Please Enter Valid Email", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        img_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        img_back.setOnClickListener(v -> onBackPressed());
     }
 
     //------text watcher-----------
@@ -120,12 +113,11 @@ public class RegistrationActivityNewEmail extends BaseActivity {
 
                 String searchText = editable.toString();
 
-                if (searchText.toLowerCase().matches(Constant.emailPattern)){
+                if (searchText.toLowerCase().matches(Constant.emailPattern)) {
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
                     btn_next.setTextColor(getResources().getColor(R.color.white));
                     isValidEmail = true;
-                }
-                else {
+                } else {
                     isValidEmail = false;
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_next_btn_desable));
                     btn_next.setTextColor(getResources().getColor(R.color.button_text_new_reg));
@@ -143,7 +135,7 @@ public class RegistrationActivityNewEmail extends BaseActivity {
 
         if (utility.checkInternetConnection()) {
 
-            showProgDialog(false,"RegistrationActivityNewEmail");
+            showProgDialog(false, "RegistrationActivityNewEmail");
 
             VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.CHECK_EMAIL_REG, new Response.Listener<NetworkResponse>() {
                 @Override
@@ -160,21 +152,19 @@ public class RegistrationActivityNewEmail extends BaseActivity {
                         if (status.equalsIgnoreCase("SUCCESS")) {
                             dismissProgDialog();
 
-                            if(message.equalsIgnoreCase("exist")){
+                            if (message.equalsIgnoreCase("exist")) {
                                 Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewPassword.class);
-                                intent.putExtra("email",email);
+                                intent.putExtra("email", email);
                                 startActivity(intent);
-                            }
-                            else {
-                                if(userInfo != null){
+                            } else {
+                                if (userInfo != null) {
                                     Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
                                     userInfo.userEmail = et_email.getText().toString().trim();
-                                    intent.putExtra("userInfo",userInfo);
+                                    intent.putExtra("userInfo", userInfo);
                                     startActivity(intent);
-                                }
-                                else {
+                                } else {
                                     Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
-                                    intent.putExtra("email",email);
+                                    intent.putExtra("email", email);
                                     startActivity(intent);
                                 }
 

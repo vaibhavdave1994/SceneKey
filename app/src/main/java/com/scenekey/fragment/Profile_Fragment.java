@@ -586,7 +586,8 @@ public class Profile_Fragment extends Fragment implements View.OnClickListener {
                         Log.v("getFacebookId", SceneKey.sessionManager.getFacebookId());
 
                         Log.v("url", Constant.BUCKET + "," + Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
-                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
+                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET,  SceneKey.sessionManager.getFacebookId());
+//                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
                         List<S3ObjectSummary> summaries = listing.getObjectSummaries();
 
                         while (listing.isTruncated()) {

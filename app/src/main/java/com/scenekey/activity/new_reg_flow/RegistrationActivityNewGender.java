@@ -6,30 +6,33 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.cardview.widget.CardView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.cardview.widget.CardView;
 
 import com.scenekey.R;
 import com.scenekey.activity.RegistrationActivity;
 import com.scenekey.model.UserInfo;
 import com.scenekey.util.Utility;
 
+import static com.scenekey.activity.new_reg_flow.RegistrationActivityNewCreatePassword.click;
+
 public class RegistrationActivityNewGender extends RegistrationActivity {
 
-     AppCompatImageView img_back;
-     AppCompatButton btn_next;
-     Utility utility;
-     Context context = this;
-     CardView cv_female,cv_male;
-     ImageView iv_male_chk,iv_female_chk;
-     boolean isMaleSelected = true;
-     UserInfo userInfo = null;
-     Bitmap profileImageBitmap = null;
+    AppCompatImageView img_back;
+    AppCompatButton btn_next;
+    Utility utility;
+    Context context = this;
+    CardView cv_female, cv_male;
+    ImageView iv_male_chk, iv_female_chk;
+    boolean isMaleSelected = true;
+    UserInfo userInfo = null;
+    Bitmap profileImageBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,82 +71,57 @@ public class RegistrationActivityNewGender extends RegistrationActivity {
 
         userInfo = (UserInfo) getIntent().getSerializableExtra("userInfo");
 
-        btn_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btn_next.setOnClickListener(v -> {
 
-                Intent intent = new Intent(context, RegistrationActivityNewCreatePassword.class);
-
-                if (userInfo != null) {
-                    if (isMaleSelected)
-                        userInfo.userGender = "male";
-                    else
-                        userInfo.userGender = "female";
-
-//                    if(profileImageBitmap == null)
-//                    profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), userInfo.userImage);
-
-                    if(userInfo.byteArray != null){
-                        profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
-                    }
-                    else{
-                        if(imageUri != null) {
-                            try {
-                                intent.putExtra("imageUri", imageUri);
-                                //profileImageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.parse(imageUri));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+            click = 0;
+            Intent intent1 = new Intent(context, RegistrationActivityNewCreatePassword.class);
+            if (userInfo != null) {
+                if (isMaleSelected)
+                    userInfo.userGender = "male";
+                else
+                    userInfo.userGender = "female";
+                if (userInfo.byteArray != null) {
+                    profileImageBitmap = BitmapFactory.decodeByteArray(userInfo.byteArray, 0, userInfo.byteArray.length);
+                } else {
+                    if (imageUri != null) {
+                        try {
+                            intent1.putExtra("imageUri", imageUri);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-
-                    intent.putExtra("userInfo", userInfo);
-
-
-                    //doRegistration(userInfo.fullname, userInfo.lastName, userInfo.userEmail, userInfo.password, userInfo.userGender, userInfo.userFacebookId,profileImageBitmap,userInfo.loginstatus);
                 }
-                else {
+                intent1.putExtra("userInfo", userInfo);
+            } else {
 
-                    intent.putExtra("imageUri", imageUri);
-                    intent.putExtra("f_name", fName);
-                    intent.putExtra("l_name", l_name);
-                    intent.putExtra("email", email);
-                    if (isMaleSelected)
-                        intent.putExtra("gender", "male");
-                    else
-                        intent.putExtra("gender", "female");
+                intent1.putExtra("imageUri", imageUri);
+                intent1.putExtra("f_name", fName);
+                intent1.putExtra("l_name", l_name);
+                intent1.putExtra("email", email);
+                if (isMaleSelected)
+                    intent1.putExtra("gender", "male");
+                else
+                    intent1.putExtra("gender", "female");
 
-                }
-                startActivity(intent);
+            }
+            startActivity(intent1);
+        });
+
+        img_back.setOnClickListener(v -> onBackPressed());
+
+        cv_male.setOnClickListener(v -> {
+            if (!isMaleSelected) {
+                isMaleSelected = true;
+                iv_male_chk.setImageDrawable(getResources().getDrawable(R.drawable.active_tick_ico));
+                iv_female_chk.setImageDrawable(getResources().getDrawable(R.drawable.inactive_dot_img));
             }
         });
 
-        img_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-        cv_male.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isMaleSelected){
-                    isMaleSelected = true;
-                    iv_male_chk.setImageDrawable(getResources().getDrawable(R.drawable.active_tick_ico));
-                    iv_female_chk.setImageDrawable(getResources().getDrawable(R.drawable.inactive_dot_img));
-                }
-            }
-        });
-
-        cv_female.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isMaleSelected){
-                    isMaleSelected = false;
-                    iv_female_chk.setImageDrawable(getResources().getDrawable(R.drawable.active_tick_ico));
-                    iv_male_chk.setImageDrawable(getResources().getDrawable(R.drawable.inactive_dot_img));
-                }
+        cv_female.setOnClickListener(v -> {
+            if (isMaleSelected) {
+                isMaleSelected = false;
+                iv_female_chk.setImageDrawable(getResources().getDrawable(R.drawable.active_tick_ico));
+                iv_male_chk.setImageDrawable(getResources().getDrawable(R.drawable.inactive_dot_img));
             }
         });
 

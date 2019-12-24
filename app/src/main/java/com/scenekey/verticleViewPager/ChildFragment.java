@@ -130,8 +130,10 @@ public class ChildFragment extends Fragment {
 
                         ObjectListing listing;
                         if (!facebookId.equals("")) {
-                            listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + facebookId);
+                            listing = s3Client.listObjects(Constant.BUCKET,  facebookId);
+//                            listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + facebookId);
                         } else {
+                            listing = s3Client.listObjects(Constant.BUCKET,  userId);
                             listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + userId);
                         }
 

@@ -52,6 +52,7 @@ public class WalletsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_wallets, container, false);
         inItView(view);
+
         return view;
     }
 
@@ -67,6 +68,7 @@ public class WalletsFragment extends Fragment {
 
         }
         }*/
+
         walletRecyclerView = view.findViewById(R.id.walletRecyclerView);
         no_data_inWallet = view.findViewById(R.id.no_data_inWallet);
         walletsArrayList = new ArrayList<>();
@@ -174,6 +176,7 @@ public class WalletsFragment extends Fragment {
                                 wallets.reward_language = jsonObject2.getString("reward_language");
                                 wallets.exp = jsonObject2.getString("exp");
                                 wallets.venue_name = jsonObject2.getString("venue_name");
+                                wallets.venue_id = jsonObject2.getString("venue_id");
                                 wallets.venue_address = jsonObject2.getString("venue_address");
                                 wallets.venue_image = jsonObject2.getString("venue_image");
                                 wallets.venue_lat = jsonObject2.getString("venue_lat");
@@ -222,4 +225,9 @@ public class WalletsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        activity.dismissProgDialog();
+    }
 }

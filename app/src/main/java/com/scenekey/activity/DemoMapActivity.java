@@ -2,11 +2,12 @@ package com.scenekey.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,11 +22,6 @@ import com.scenekey.util.Utility;
 
 public class DemoMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap gmap;
-    private TextView text_view;
-    private Utility utility;
-    private ImageView img_f10_back_map;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +33,9 @@ public class DemoMapActivity extends AppCompatActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
 
 
-        utility = new Utility(this);
-        text_view = findViewById(R.id.text_view);
-        img_f10_back_map = findViewById(R.id.img_f10_back_map);
+        Utility utility = new Utility(this);
+        TextView text_view = findViewById(R.id.text_view);
+        ImageView img_f10_back_map = findViewById(R.id.img_f10_back_map);
         text_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,12 +76,11 @@ public class DemoMapActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        gmap = googleMap;
-        gmap.setMinZoomPreference(12);
+        googleMap.setMinZoomPreference(12);
         LatLng ny = new LatLng(36.1699, 115.1398);
-        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ny));
 
-        gmap.addMarker(new MarkerOptions()
+        googleMap.addMarker(new MarkerOptions()
                 .position(ny)
                 .title("Las Vegas")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.inactive_map_ico)));

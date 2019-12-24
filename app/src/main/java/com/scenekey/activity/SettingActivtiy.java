@@ -188,24 +188,24 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
-    private void placeApi() {
+        private void placeApi() {
 
-        try {
+            try {
 
-            if (!Places.isInitialized()) {
-                Places.initialize(this, getString(R.string.google_key), Locale.US);
+                if (!Places.isInitialized()) {
+                    Places.initialize(this, getString(R.string.google_key), Locale.US);
+                }
+                List<Place.Field>  fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME,Place.Field.LAT_LNG);
+
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+                        .build(this);
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            List<Place.Field>  fields = Arrays.asList(Place.Field.ADDRESS, Place.Field.NAME,Place.Field.LAT_LNG);
-
-            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                    .build(this);
-            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

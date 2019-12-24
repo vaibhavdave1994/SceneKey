@@ -1,6 +1,5 @@
 package com.scenekey.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +8,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -35,13 +35,12 @@ import java.util.Map;
 
 public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static UserInfo userInfo;
     public final String TAG = Edit_NameFragment.class.toString();
     private EditText et_firstName, et_lastName;
     private Utility utility;
     private CustomProgressBar customProgressBar;
     private Animation shake;
-    public static UserInfo userInfo;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,7 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
         img_f1_back.setOnClickListener(this);
 
         String firstName = userInfo().fullname;
-        String lastName =  userInfo().lastName;
+        String lastName = userInfo().lastName;
 
         et_firstName.setText(firstName);
         et_lastName.setText(lastName);
@@ -82,7 +81,7 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
                     String lastName = et_lastName.getText().toString().trim();
                     updateName(firstName, lastName);
                 } else {
-                    Utility.showCheckConnPopup(this,"No network connection","","");
+                    Utility.showCheckConnPopup(this, "No network connection", "", "");
 //                    Utility.showToast(this, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
@@ -156,7 +155,7 @@ public class Edit_NAmeActivity extends AppCompatActivity implements View.OnClick
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
             //utility.snackBar(rcViewTrending,getString(R.string.internetConnectivityError),0);
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            Toast.makeText(this, R.string.internetConnectivityError, Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }

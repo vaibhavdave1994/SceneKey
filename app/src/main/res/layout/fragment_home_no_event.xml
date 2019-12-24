@@ -16,6 +16,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_marginTop="@dimen/_40sdp"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <LinearLayout

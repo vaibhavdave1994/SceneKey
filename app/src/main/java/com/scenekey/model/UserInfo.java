@@ -63,9 +63,10 @@ public class UserInfo implements Serializable {
     public String getUserImage() {
 
         if(userImage != null){
+/*
             if (!userImage.contains(Constant.DEV_TAG)) {
                 userImage = Constant.DEV_TAG + userImage;
-            }
+            }*/ //dev
             return (userImage.contains("https:") ? userImage : WebServices.USER_IMAGE + userImage);
         }else return WebServices.USER_IMAGE;
         //return (userImage.contains("https:") ? userImage : WebServices.USER_IMAGE + userImage);

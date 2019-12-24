@@ -220,7 +220,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
 
     private void followUnfollowDialog(final Object object, final int followUnfollow) {
 
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_follow_unfollow_dialog_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -324,7 +324,7 @@ public class VenueBoardInnerAdapter extends RecyclerView.Adapter<VenueBoardInner
     }
 
     public void showSearchConfirmDialog(final boolean isGridview, final VenueBoard.EventTagBean.TagListBean  socialMediaBean, String title, String msg) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

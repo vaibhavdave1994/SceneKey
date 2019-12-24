@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -22,6 +24,7 @@ import com.scenekey.activity.new_reg_flow.NewIntroActivity;
 import com.scenekey.helper.ImageSessionManager;
 import com.scenekey.util.SceneKey;
 import com.scenekey.util.Utility;
+import com.yalantis.ucrop.UCrop;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -36,6 +39,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         SceneKey.sessionManager.putbadgecount(0);
+//        printHash();
+
+//        getFacebookKeyHash();
 
     }
 
@@ -156,4 +162,13 @@ public class SplashActivity extends AppCompatActivity {
         }
         return hasSoftwareKeys;
     }
-}
+    private void printHash() {
+// A2:15:16:DD:EA:05:62:E9:81:5A:C0:4F:17:D0:B7:3B
+// 32:7A:4C:77:E4:8A:22:C2:02
+//        50:CC:F8:85:DF:13:3B:27:19:6F:EB:C2:76:62:56:0F:5E:C2:4F:35
+        byte[] bytes = {(byte) 0x89, (byte) 0xCC, (byte) 0xF8, (byte) 0x85, (byte) 0xDF,
+                (byte) 0x13,0x3B, (byte) 0x27, (byte) 0x19,0x6F, (byte) 0xEB,
+                (byte) 0xC2, (byte) 0x76,0x62, (byte) 0x56, (byte) 0x0F,
+                (byte) 0x5E, (byte) 0xC2, (byte) 0x4F,0x35};
+        Log.d("HASH", Base64.encodeToString(bytes,Base64.NO_WRAP));
+    }}

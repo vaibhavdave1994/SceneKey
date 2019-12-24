@@ -107,10 +107,17 @@ public class AWSImage {
         final String key1 = fbid + ".jpg";
         TransferObserver observer
                 = transferUtility.upload(
-                Constant.BUCKET + "/" + Constant.DEV_TAG + fbid,     /* The bucket to upload to */
+                Constant.BUCKET + "/"  + fbid,     /* The bucket to upload to */
                 key1,    /* The key for the uploaded object */
                 myPath, CannedAccessControlList.PublicReadWrite  /* The file where the data to upload exists */
         );
+        /*final String key1 = fbid + ".jpg";
+        TransferObserver observer
+                = transferUtility.upload(
+                Constant.BUCKET + "/" + Constant.DEV_TAG + fbid,     *//* The bucket to upload to *//*
+                key1,    *//* The key for the uploaded object *//*
+                myPath, CannedAccessControlList.PublicReadWrite  *//* The file where the data to upload exists *//*
+        );*/
         Utility.e("OBSERVER KEY", observer.getKey());
         imageKey = fbid + "/" + observer.getKey();
         observer.setTransferListener(new TransferListener() {
@@ -247,7 +254,8 @@ public class AWSImage {
                 @Override
                 public void run() {
                     try {
-                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG+fbId);
+                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, fbId);
+//                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG+fbId);
                         List<S3ObjectSummary> summaries = listing.getObjectSummaries();
 
                         imageList.clear();

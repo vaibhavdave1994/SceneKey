@@ -481,13 +481,14 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
             if (i == 0) {
                 holder.parent.addView(v, i);
                 String image = "";
+                image = keyInUserModalList.get(i).getUserimage();
 
-                if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                /*if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                     image = "dev-" + keyInUserModalList.get(i).getUserimage();
                 } else {
                     //image = keyInUserModalList.get(i).userImage;
                     image = keyInUserModalList.get(i).getUserimage();
-                }
+                }*/
 
                 Glide.with(activity).load(image)
                         .thumbnail(0.5f)
@@ -508,11 +509,13 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                     holder.parent.addView(v, i);
                     String image = "";
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    image = keyInUserModalList.get(i).getUserimage();
+
+                   /* if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)
@@ -532,11 +535,13 @@ public class TrendingSearchAdapter extends RecyclerView.Adapter<TrendingSearchAd
                     holder.parent.addView(v, i);
                     String image = "";
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    image = keyInUserModalList.get(i).getUserimage();
+
+                  /*  if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)

@@ -21,13 +21,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,15 +28,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -68,8 +66,6 @@ import com.scenekey.helper.Permission;
 import com.scenekey.helper.WebServices;
 import com.scenekey.lib_sources.SwipeCard.Card;
 import com.scenekey.listener.ForDeleteFeed;
-import com.scenekey.listener.GetZoomImageListener;
-import com.scenekey.listener.LikeFeedListener;
 import com.scenekey.model.EmoziesModal;
 import com.scenekey.model.EventAttendy;
 import com.scenekey.model.EventDetailsForActivity;
@@ -83,8 +79,6 @@ import com.scenekey.util.Utility;
 import com.scenekey.volleymultipart.VolleySingleton;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONArray;
@@ -253,6 +247,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
         //View Declartions...................
         ImageView img_eventDetail_back = findViewById(R.id.img_eventDetail_back);
         TextView txt_event_name = findViewById(R.id.txt_event_name);
+        RelativeLayout rl_eventdetail = findViewById(R.id.rl_eventdetail);
         addButtonForKeyInuser = findViewById(R.id.addButtonForKeyInuser);
         feedLIstRecyclerView = findViewById(R.id.feedLIstRecyclerView);
         detail_frame_fragments = findViewById(R.id.detail_frame_fragments);
@@ -270,7 +265,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
         cardsList = new ArrayList<>();
         reactionUserLIst = new ArrayList<>();
 
-        setOnClick(blurView, img_dot, img_no_member, blurView, img_eventDetail_back, addButtonForKeyInuser, txt_post_comment, et_comment_feed, img_postImage, img_ListIcon, et_comment_feed);
+        setOnClick(rl_eventdetail,blurView, img_dot, img_no_member, blurView, img_eventDetail_back, addButtonForKeyInuser, txt_post_comment, et_comment_feed, img_postImage, img_ListIcon, et_comment_feed);
 
         isKeyInAble = getIntent().getBooleanExtra("isKeyInAble", false);
         fromTrending = getIntent().getBooleanExtra("fromTrending", false);
@@ -307,19 +302,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
         String date = new SimpleDateFormat("dd-MMM-yyyy hh:mm", Locale.getDefault()).format(new Date());
         cutrrentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         Log.i("date", date);
-
-        //callAddEventApi() Api for trending tanb and map tab
-//        CustomeClick.getmInctance().setListner(new CustomeClick.ExploreSearchListener() {
-//            @Override
-//            public void onTextChange(UserInfo user) {
-//                if (from_tab.equals("trending") && !isKeyInAble) {
-//                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
-//                } else if (from_tab.equals("map_tab") && !isKeyInAble) {
-//                    callAddEventApi(eventId, venueName, event, currentLatLng, new String[]{latitude.toString(), longitude.toString()});
-//                }
-//            }
-//        });
-
         txt_event_name.setText(eventName);
 
         //......................................................
@@ -340,35 +322,22 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                 }
 
             }
-        }, new LikeFeedListener() {
-            @Override
-            public void likeFeedByReaction(String addFeedReaction, String deleteFeedRaction, String getReactionFromList) {
+        }, (addFeedReaction, deleteFeedRaction, getReactionFromList) -> {
 
-                if (!deleteFeedRaction.isEmpty()) {
-                    deletFeedRaction(deleteFeedRaction);
-                }
-
-                if (!getReactionFromList.isEmpty() && !addFeedReaction.isEmpty()) {
-                    addFeedFormListreaction(getReactionFromList, addFeedReaction);
-
-                } else {
-                    addFeedreaction(addFeedReaction);
-                }
+            if (!deleteFeedRaction.isEmpty()) {
+                deletFeedRaction(deleteFeedRaction);
             }
-        }, new GetZoomImageListener() {
-            @Override
-            public void getImageUrl(String imageUrl) {
-                Intent intent = new Intent(EventDetailsActivity.this, ZoomImageActivity.class);
-                intent.putExtra("imageUrl", imageUrl);
-//                if(fromTrending){
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//                else {
-                startActivity(intent);
-                //}
+
+            if (!getReactionFromList.isEmpty() && !addFeedReaction.isEmpty()) {
+                addFeedFormListreaction(getReactionFromList, addFeedReaction);
+
+            } else {
+                addFeedreaction(addFeedReaction);
             }
+        }, imageUrl -> {
+            Intent intent = new Intent(EventDetailsActivity.this, ZoomImageActivity.class);
+            intent.putExtra("imageUrl", imageUrl);
+            startActivity(intent);
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(EventDetailsActivity.this) {
@@ -419,17 +388,17 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
 
             }
             break;
+            case R.id.rl_eventdetail: {
+                hideKeyBoard();
+
+            }
+            break;
 
             case R.id.img_eventDetail_back:
                 onBackPressed();
                 break;
 
             case R.id.img_no_member:
-
-//                if (!userExistOrNotonActivty.equals("")) {
-//                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
-//
-//                } else {
                 Intent intent1 = new Intent(this, TheRoomActivity.class);
                 intent1.putExtra("noMemberYet", "No");
                 if (fromTrending) {
@@ -440,7 +409,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                 } else {
                     startActivity(intent1);
                 }
-                //}
+
                 break;
 
             case R.id.img_ListIcon:
@@ -466,27 +435,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
                         try {
                             keyInToEvent();
-//                            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-//                                addUserIntoEvent(-1);
-//                            } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date(), Double.parseDouble(eventDetails.getProfile_rating().getInterval()))) {
-//                                addUserIntoEvent(-1);
-//                            } else {
-//                                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
-//                                    blurView.setVisibility(View.VISIBLE);
-//                                    adapter.userExistOrNot = "notStart";
-//                                    userExistOrNotonActivty = "notStart";
-//
-//                                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-//                                    blurView.setVisibility(View.VISIBLE);
-//                                    adapter.userExistOrNot = "notStart";
-//                                    userExistOrNotonActivty = "notStart";
-//                                } else {
-//                                    blurView.setVisibility(View.VISIBLE);
-//                                    adapter.userExistOrNot = "notArrived";
-//                                    userExistOrNotonActivty = "notArrived";
-//                                }
-//                                //cantJoinDialog();
-//                            }
                         } catch (Exception d) {
                             d.getMessage();
                         }
@@ -502,9 +450,9 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     if (!eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST)) {
 
                         try {
-                            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES) && checkWithTime(eventDetails.getProfile_rating().getEvent_date())) {
+                            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
                                 captureImage();
-                            } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) < Constant.MAXIMUM_DISTANCE && checkWithTime(eventDetails.getProfile_rating().getEvent_date())) {
+                            } else if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) < Constant.MAXIMUM_DISTANCE) {
                                 captureImage();
 
                             } else {
@@ -512,7 +460,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-//                            Utility.showToast(this, getResources().getString(R.string.somethingwentwrong), 0);
                         }
                     } else {
                         cantJoinDialog();
@@ -547,7 +494,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-//                                Utility.showToast(this, getResources().getString(R.string.somethingwentwrong), 0);
                             }
 
                         } else {
@@ -644,7 +590,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                             et_comment_feed.setText("");
                             feedLIstRecyclerView.scrollToPosition(0);
                             feedLIstRecyclerView.smoothScrollToPosition(0);
-                            showKeyPoints("+2", false,2);
+                            showKeyPoints("+2", false, 2);
 
 
                             //incrementKeyPoints(getString(R.string.kp_keyin));
@@ -682,7 +628,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(20000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -732,7 +678,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(20000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -995,7 +941,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                         String status = jsonObject.getString("status");
 
                         if (status.equals("event_Added")) {
-                            showKeyPoints("+3", true,3);
+                            showKeyPoints("+3", true, 3);
                             isKeyInAble = true;
                             feedList.clear();
                             getAllData();
@@ -1038,13 +984,13 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
     }
 
-    private void showKeyPoints(String s, final boolean shouldMsgDialogShow,int value) {
+    private void showKeyPoints(String s, final boolean shouldMsgDialogShow, int value) {
 
         final Dialog dialog = new Dialog(this);
         dialog.setCanceledOnTouchOutside(false);
@@ -1204,7 +1150,8 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                 String image = "";
 
                 if (!list.get(i).getUserimage().contains("dev-")) {
-                    image = "dev-" + list.get(i).getUserimage();
+                    image =  list.get(i).getUserimage();
+//                    image = "dev-" + list.get(i).getUserimage();
                 } else {
                     //image = keyInUserModalList.get(i).userImage;
                     image = list.get(i).getUserimage();
@@ -1230,7 +1177,8 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     String image = "";
 
                     if (!list.get(i).getUserimage().contains("dev-")) {
-                        image = "dev-" + list.get(i).getUserimage();
+                        image = list.get(i).getUserimage();
+//                        image = "dev-" + list.get(i).getUserimage();
                     } else {
                         image = list.get(i).getUserimage();
                     }
@@ -1252,7 +1200,8 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     String image = "";
 
                     if (!list.get(i).getUserimage().contains("dev-")) {
-                        image = "dev-" + list.get(i).getUserimage();
+                        image =  list.get(i).getUserimage();
+//                        image = "dev-" + list.get(i).getUserimage();
                     } else {
                         image = list.get(i).getUserimage();
                     }
@@ -1279,28 +1228,20 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
 
         }
 
-        parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                if (!userExistOrNotonActivty.equals("")) {
-//                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
-//
-//                } else {
-                Intent intent = new Intent(EventDetailsActivity.this, TheRoomActivity.class);
-                intent.putExtra("commentPesionList", list);
-                intent.putExtra("eventid", event.getEvent());
-                intent.putExtra("venuid", event.getVenue());
-                intent.putExtra("object", event);
-                intent.putExtra("currentLatLng", currentLatLng);
-                if (fromTrending) {
-                    intent.putExtra("fromTrending", true);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    startActivity(intent);
-                }
-                //  }
+        parent.setOnClickListener(view -> {
+            Intent intent = new Intent(EventDetailsActivity.this, TheRoomActivity.class);
+            intent.putExtra("commentPesionList", list);
+            intent.putExtra("eventid", event.getEvent());
+            intent.putExtra("venuid", event.getVenue());
+            intent.putExtra("object", event);
+            intent.putExtra("currentLatLng", currentLatLng);
+            if (fromTrending) {
+                intent.putExtra("fromTrending", true);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                startActivity(intent);
             }
         });
     }
@@ -1323,18 +1264,9 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             blurView.setVisibility(View.VISIBLE);
             adapter.userExistOrNot = "notStart";
             userExistOrNotonActivty = "notStart";
-//            utility.showCustomPopup(getString(R.string.enotat), String.valueOf(R.font.montserrat_medium));
         } else {
             blurView.setVisibility(View.GONE);
-//            adapter.userExistOrNot = "notStart";
-//            userExistOrNotonActivty = "notStart";
-        } /*else {
-            blurView.setVisibility(View.VISIBLE);
-            adapter.userExistOrNot = "notArrived";
-            userExistOrNotonActivty = "notArrived";
-            utility.showCustomPopup(getString(R.string.enotat), String.valueOf(R.font.montserrat_medium));
-
-        }*/
+        }
 
         if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
             blurView.setVisibility(View.GONE);
@@ -1345,19 +1277,16 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
 
     /*.........................captureImage.............................*/
     private void captureImage() {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(this,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_takephoto_layout);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationBottTop; //style id
-
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.gravity = Gravity.BOTTOM;
         dialog.getWindow().setAttributes(lp);
-
         TextView tv_camera, tv_cancel;
-
         tv_camera = dialog.findViewById(R.id.tv_camera);
         tv_cancel = dialog.findViewById(R.id.tv_cancel);
 
@@ -1370,19 +1299,14 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             }
         });
 
-        tv_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
+        tv_cancel.setOnClickListener(v -> dialog.cancel());
         dialog.show();
     }
 
     /*.........................deleteFeed.............................*/
     private void deleteFeed(final String id) {
 
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(this,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_feed_delet);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -1723,23 +1647,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                             Constant.MY_PERMISSIONS_REQUEST_CAMERA);
                 }
                 break;
-
-               /* try {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + "image.jpg");
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imageUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID + ".provider", file);
-                    } else {
-                        imageUri = Uri.fromFile(file);
-                    }
-
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, Constant.INTENT_CAMERA);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
-
         }
     }
 
@@ -1761,13 +1668,8 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
     public boolean checkWithTime(final String date) throws ParseException {
         String[] dateSplit = (date.replace("TO", "T")).replace(" ", "T").split("T");
         Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)).parse(dateSplit[0] + " " + dateSplit[1]);
-
         long currentTime = Calendar.getInstance().getTime().getTime();
-
-
         return currentTime > startTime.getTime();  //old ios logic
-
-        //  return currentTime < endTime.getTime() && currentTime > startTime.getTime();
 
     }
 
@@ -1790,15 +1692,13 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        }
-        else if (SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("map")){
+        } else if (SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("map")) {
             Intent intent = new Intent(EventDetailsActivity.this, HomeActivity.class);
             intent.putExtra("fromSearch2", true);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
 
@@ -1872,7 +1772,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     if (new JSONObject(s).getInt("serverStatus") == 2) {
                         //   utility.showCustomPopup(msg, String.valueOf(R.font.arial_regular));
 
-                        showKeyPoints("-1", false,1);
+                        showKeyPoints("-1", false, 1);
                         userInfo.key_points = (points <= 0 ? 0 + "" : (points - 1) + "");
                         updateSession(userInfo);
                     }
@@ -1899,7 +1799,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     if (new JSONObject(s).getInt("serverStatus") == 2) {
                         Utility.e("Response", s);
                         userInfo.key_points = ((points + 1) + "");
-                        showKeyPoints("+1", false,1);
+                        showKeyPoints("+1", false, 1);
                         updateSession(userInfo);
                     }
                 } catch (IOException e) {
@@ -1911,51 +1811,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             }
         }.updateKeyPoint(points + 1, userInfo.userid);
     }
-
-
-//    private void showKeyPoints(String s) {
-//        final Dialog dialog = new Dialog(this);
-//
-//        try {
-//            dialog.setCanceledOnTouchOutside(false);
-//            dialog.setContentView(R.layout.custom_keypoint_layout);
-//            assert dialog.getWindow() != null;
-//            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-//            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimationLeftRight; //style id
-//
-//            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//            lp.copyFrom(dialog.getWindow().getAttributes());
-//            lp.gravity = Gravity.TOP;
-//            dialog.getWindow().setAttributes(lp);
-//
-//            TextView tvKeyPoint;
-//
-//            tvKeyPoint = dialog.findViewById(R.id.tvKeyPoint);
-//            tvKeyPoint.setText(s);
-//
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    try {
-//                        dialog.dismiss();
-//                    } catch (Exception e) {
-//
-//                        e.printStackTrace();
-//                        dialog.dismiss();
-//                    }
-//
-//
-//                }
-//            }, 1500);
-//
-//            dialog.show();
-//        } catch (Exception e) {
-//
-//            e.printStackTrace();
-//            dialog.dismiss();
-//        }
-//    }
 
     public String getCurrentTimeInFormat() {
         return (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).format(new Date(System.currentTimeMillis()));
@@ -2019,7 +1874,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -2040,7 +1895,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
                     getAllData();
                     try {
                         JSONObject respo = new JSONObject(response);
-                        showKeyPoints("+3", false,3);
+                        showKeyPoints("+3", false, 3);
 //                            Utility.showToast(EventDetailsActivity.this, respo.getString("msg"), 0);
 
                     } catch (Exception e) {
@@ -2072,7 +1927,7 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }
@@ -2083,133 +1938,33 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == Constant.REQUEST_CAMERA) {
+        if (requestCode == Constant.REQUEST_CAMERA) {
 
-                UCrop.Options options = new UCrop.Options();
-                options.setHideBottomControls(true);
-                Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
-                UCrop.of(uri1, Uri.fromFile(new File(mCurrentPhotoPath)))
-                        .withAspectRatio(1f, 1f)
-                        .withMaxResultSize(450, 450)
-                        .withOptions(options)
-                        .start(this);
+            UCrop.Options options = new UCrop.Options();
+            options.setHideBottomControls(true);
+            Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
+            UCrop.of(uri1, Uri.fromFile(new File(mCurrentPhotoPath)))
+                    .withAspectRatio(1f, 1f)
+                    .withMaxResultSize(450, 450)
+                    .withOptions(options)
+                    .start(this);
 
-            }else if (requestCode == UCrop.REQUEST_CROP) {
-                if (data != null) {
-                    handleCropResult(data);
-                }
+        } else if (requestCode == UCrop.REQUEST_CROP) {
+            if (data != null) {
+                handleCropResult(data);
             }
+        } else if (requestCode == 2 && data.hasExtra("incresePoint")) {
 
-             else if (requestCode == 2 && data.hasExtra("incresePoint")) {
+            if (data.hasExtra("incresePoint")) {
 
-                if (data.hasExtra("incresePoint")) {
+                String requiredValue = data.getStringExtra("incresePoint");
+                if (requiredValue.equals("1")) {
 
-                    String requiredValue = data.getStringExtra("incresePoint");
-                    if (requiredValue.equals("1")) {
-
-                    }
-                }
-            }
-
-    }
-
-
-   /* @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        if (resultCode == -1 || resultCode == 0) {
-            if (requestCode == Constant.REQUEST_CAMERA) {
-
-                Uri uri1 = Uri.fromFile(new File(mCurrentPhotoPath));
-                if (uri1 != null) {
-                    CropImage.activity(uri1).setCropShape(CropImageView.CropShape.RECTANGLE).setMinCropResultSize(160, 160).setMaxCropResultSize(4000, 3500).setAspectRatio(400, 300).start(this);
-                } else {
-                    Utility.showToast(this, getString(R.string.somethingwentwrong), 0);
-                }
-
-            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-
-                CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                try {
-                    if (result != null) {
-
-                        showProgDialog(false, TAG);
-                      *//*  Feeds feeds = new Feeds();
-                        feeds.type = Constant.FEED_TYPE_PICTURE;
-                        feeds.date = cutrrentDate;
-                        feeds.user_status = userInfo.user_status;
-                        feeds.userimage = userInfo.getUserImage();
-                        feeds.username = userInfo.userName;
-                        feeds.feed = result.getUri().toString();
-                        feeds.isUri = true;
-                        feedList.add(0, feeds);
-                        adapter.notifyDataSetChanged();
-                        feedLIstRecyclerView.scrollToPosition(0);*//*
-
-                        feedLIstRecyclerView.scrollToPosition(0);
-                        eventImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
-
-
-                        if (eventImg != null) {
-                            Picasso.with(this)
-                                    .load(result.getUri())
-                                    .into(new Target() {
-                                        @Override
-                                        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                                            //Set it in the ImageView
-                                            eventImg = bitmap;
-                                        }
-
-                                        @Override
-                                        public void onBitmapFailed(Drawable errorDrawable) {
-
-                                        }
-
-                                        @Override
-                                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                                        }
-                                    });
-                        }
-
-                        int value = 0;
-                        if (eventImg.getHeight() <= eventImg.getWidth()) {
-                            value = eventImg.getHeight();
-                        } else {
-                            value = eventImg.getWidth();
-                        }
-
-                        Bitmap finalBitmap = Bitmap.createBitmap(eventImg, 0, 0, value, value);
-
-                        if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST))
-                            keyInToEvent();
-                            // addUserIntoEvent(1);
-                        else sendPicture(finalBitmap);
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            } else if (requestCode == 2 && data.hasExtra("incresePoint")) {
-
-                if (data.hasExtra("incresePoint")) {
-
-                    String requiredValue = data.getStringExtra("incresePoint");
-                    if (requiredValue.equals("1")) {
-
-                    }
                 }
             }
         }
+
     }
-*/
-
-
-
 
     private void handleCropResult(Intent data) {
         final Uri result = UCrop.getOutput(data);
@@ -2264,38 +2019,6 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
             e.printStackTrace();
         }
     }
-
-
-//    private void keyInToEvent(){
-//
-//        try {
-//            if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-//                addUserIntoEvent(-1);
-//            } else if (getDistance(new Double[]{Double.valueOf(event.getVenue().getLatitude()), Double.valueOf(event.getVenue().getLongitude()), Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE
-//                    &&isEventOnline(event.getEvent().event_date,userInfo().currentDate)) {
-//                addUserIntoEvent(-1);
-//            } else {
-//                if (getDistance(new Double[]{latitude, longitude, Double.valueOf(currentLatLng[0]), Double.valueOf(currentLatLng[1])}) <= Constant.MAXIMUM_DISTANCE) {
-//                    blurView.setVisibility(View.VISIBLE);
-//                    adapter.userExistOrNot = "notStart";
-//                    userExistOrNotonActivty = "notStart";
-//
-//                } else if (userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
-//                    blurView.setVisibility(View.VISIBLE);
-//                    adapter.userExistOrNot = "notStart";
-//                    userExistOrNotonActivty = "notStart";
-//                } else {
-//                    blurView.setVisibility(View.VISIBLE);
-//                    adapter.userExistOrNot = "notArrived";
-//                    userExistOrNotonActivty = "notArrived";
-//                }
-//                //cantJoinDialog();
-//            }
-//        } catch (Exception d) {
-//            d.getMessage();
-//        }
-//
-//    }
 
     private boolean isEventOnline(String eventDate, String serverCurrentDate) {
         boolean returnValue = false;
@@ -2420,78 +2143,19 @@ public class EventDetailsActivity extends BaseActivity implements View.OnClickLi
         ImageSessionManager.getInstance().createImageSession(mCurrentPhotoPath, false);
         return image;
     }
-
-
+    public void hideKeyBoard() {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            assert inputManager != null;
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
 
 
-/*
-else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-
-        CropImage.ActivityResult result = CropImage.getActivityResult(data);
-        try {
-        if (result != null) {
-
-        showProgDialog(false, TAG);
-                      */
-/*  Feeds feeds = new Feeds();
-                        feeds.type = Constant.FEED_TYPE_PICTURE;
-                        feeds.date = cutrrentDate;
-                        feeds.user_status = userInfo.user_status;
-                        feeds.userimage = userInfo.getUserImage();
-                        feeds.username = userInfo.userName;
-                        feeds.feed = result.getUri().toString();
-                        feeds.isUri = true;
-                        feedList.add(0, feeds);
-                        adapter.notifyDataSetChanged();
-                        feedLIstRecyclerView.scrollToPosition(0);*//*
-
-
-        feedLIstRecyclerView.scrollToPosition(0);
-        eventImg = MediaStore.Images.Media.getBitmap(this.getContentResolver(), result.getUri());
-
-
-        if (eventImg != null) {
-        Picasso.with(this)
-        .load(result.getUri())
-        .into(new Target() {
-@Override
-public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-        //Set it in the ImageView
-        eventImg = bitmap;
-        }
-
-@Override
-public void onBitmapFailed(Drawable errorDrawable) {
-
-        }
-
-@Override
-public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-        });
-        }
-
-        int value = 0;
-        if (eventImg.getHeight() <= eventImg.getWidth()) {
-        value = eventImg.getHeight();
-        } else {
-        value = eventImg.getWidth();
-        }
-
-        Bitmap finalBitmap = Bitmap.createBitmap(eventImg, 0, 0, value, value);
-
-        if (eventDetails.getProfile_rating().getKey_in().equals(Constant.KEY_NOTEXIST))
-        keyInToEvent();
-        // addUserIntoEvent(1);
-        else sendPicture(finalBitmap);
-        }
-
-        } catch (IOException e) {
-        e.printStackTrace();
-        }
-
-        }*/

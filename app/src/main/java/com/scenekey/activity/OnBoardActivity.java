@@ -1,6 +1,5 @@
 package com.scenekey.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -88,6 +88,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     private TextView tag__vanue_name;
     private ArrayList<Events> eventsArrayList;
     private ImageView img_dot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,34 +130,28 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             venuid = getIntent().getStringExtra("venuid");
             frequency = getIntent().getStringExtra("frequency");
             String event_name = getIntent().getStringExtra("event_name");
-           /* String event_id = getIntent().getStringExtra("event_id");
-            String event_time = getIntent().getStringExtra("event_time");
-*/
             String week = Utility.checkWeek();
-            if (frequency.contains(",")){
-            String[] animalsArray = frequency.split(",");
-            for (String s : animalsArray) {
-                if (week.equals(s)) {
-                    frequency = s;
+            if (frequency.contains(",")) {
+                String[] animalsArray = frequency.split(",");
+                for (String s : animalsArray) {
+                    if (week.equals(s)) {
+                        frequency = s;
+                    }
+
                 }
-
             }
-            }
-
 
 
             String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
-            if (frequency.equalsIgnoreCase(date) || frequency.equalsIgnoreCase("daily") || week.equalsIgnoreCase(frequency)){
+            if (frequency.equalsIgnoreCase(date) || frequency.equalsIgnoreCase("daily") || week.equalsIgnoreCase(frequency)) {
                 img_dot.setVisibility(View.VISIBLE);
 
-            }
-            else {
+            } else {
                 img_dot.setVisibility(View.GONE);
             }
 
             getDataViaAlert(frequency, venuid);
-
 
 
         }
@@ -239,15 +234,13 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        }
-        else if (SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("map")){
+        } else if (SceneKey.sessionManager.getMapFragment().equalsIgnoreCase("map")) {
             Intent intent = new Intent(OnBoardActivity.this, HomeActivity.class);
             intent.putExtra("fromSearch2", true);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
 
@@ -417,7 +410,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                                         event = events.getEvent();
                                         venue = events.getVenue();
                                         object = events;
-                                        forAlertEventApi(object.getEvent().event_name,object.getEvent().event_id,object.getEvent().event_time);
+                                        forAlertEventApi(object.getEvent().event_name, object.getEvent().event_id, object.getEvent().event_time);
                                     }
                                 }
 
@@ -449,7 +442,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
         }
     }
@@ -470,21 +463,6 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             e.printStackTrace();
         }
 
-        /* String[] dateSplit = (startDate.replace("TO", "T")).replace(" ", "T").split("T");
-        try {
-            Date startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())).parse(dateSplit[0] + " " + dateSplit[1]);
-
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            String formattedDate = df.format(c.getTime());
-
-            Date curTime = df.parse(formattedDate);
-
-            getDayDifference(startTime, curTime, rating, events);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
     }
 
     //********** day diffrence  ****************//
@@ -528,22 +506,16 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 } else {
                     //strStatus = 1;
                     events.getEvent().strStatus = 1;
-                    // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
                     events.getEvent().returnDay = rating;
                 }
             }
         } else {
-            /*returnDay = "--";
-            strStatus = 0;*/
-
             if (rating.equals("0")) {
                 events.getEvent().returnDay = "--";
                 //strStatus = 0;
                 events.getEvent().strStatus = 0;
             } else {
                 events.getEvent().strStatus = 1;
-                //strStatus = 1;
-                // events.getEvent().returnDay = String.format("%.2f", Double.parseDouble(rating));
                 events.getEvent().returnDay = rating;
             }
         }
@@ -685,7 +657,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request, "HomeApi");
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            utility.snackBar(container, getString(R.string.internetConnectivityError), 0);
         }
     }
@@ -760,7 +732,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(OnBoardActivity.this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Toast.makeText(OnBoardActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -810,7 +782,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(20000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             //utility.snackBar(feedLIstRecyclerView, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
@@ -910,7 +882,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 String image = "";
 
                 if (!list.get(i).getUserimage().contains("dev-")) {
-                    image = "dev-" + list.get(i).getUserimage();
+                    image =  list.get(i).getUserimage();
+//                    image = "dev-" + list.get(i).getUserimage();
                 } else {
                     //image = keyInUserModalList.get(i).userImage;
                     image = list.get(i).getUserimage();
@@ -936,7 +909,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     String image = "";
 
                     if (!list.get(i).getUserimage().contains("dev-")) {
-                        image = "dev-" + list.get(i).getUserimage();
+                        image =  list.get(i).getUserimage();
+//                        image = "dev-" + list.get(i).getUserimage();
                     } else {
                         image = list.get(i).getUserimage();
                     }
@@ -958,7 +932,8 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     String image = "";
 
                     if (!list.get(i).getUserimage().contains("dev-")) {
-                        image = "dev-" + list.get(i).getUserimage();
+                        image =  list.get(i).getUserimage();
+//                        image = "dev-" + list.get(i).getUserimage();
                     } else {
                         image = list.get(i).getUserimage();
                     }
@@ -987,10 +962,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
         parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (!userExistOrNotonActivty.equals("")) {
-//                    cantJoinNotExixtUserDialog(userExistOrNotonActivty);
-//
-//                } else {
+
                 Intent intent = new Intent(OnBoardActivity.this, TheRoomActivity.class);
                 intent.putExtra("commentPesionList", list);
                 intent.putExtra("eventid", object.getEvent());
@@ -1059,10 +1031,6 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void manageFrequency(String frequency) {
-//        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-//        Date d = new Date();
-//        String dayOfTheWeek = sdf.format(d);
-//        Toast.makeText(this, dayOfTheWeek, Toast.LENGTH_SHORT).show();
 
         switch (frequency) {
             case "daily":
@@ -1125,7 +1093,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                     // get response
                     JSONObject jsonObject;
                     try {
-                            dismissProgDialog();
+                        dismissProgDialog();
                         jsonObject = new JSONObject(Response);
                         String status = jsonObject.getString("status");
 
@@ -1162,7 +1130,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
@@ -1377,7 +1345,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
 
     }
 
-    private void forAlertEventApi(final String event_name,String event_id,String event_time) {
+    private void forAlertEventApi(final String event_name, String event_id, String event_time) {
         final Utility utility = new Utility(this);
 
         if (utility.checkInternetConnection()) {
@@ -1414,7 +1382,7 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
                 public Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("userid", userInfo().userid);
-                    params.put("eventname",event_name);
+                    params.put("eventname", event_name);
                     params.put("eventid", event_id);
                     params.put("eventdate", event_time);
                     return params;
@@ -1424,14 +1392,11 @@ public class OnBoardActivity extends BaseActivity implements View.OnClickListene
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
             Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             dismissProgDialog();
         }
     }
-
-
-
 
 
 }

@@ -2,9 +2,13 @@
     <!--UMz4hd8TOycZb+vCdmJWD17CTzU=    (Release keyhash)-->
     <string name="app_name">SceneKey</string>
 
+<!--
     <string name="facebook_app_id">1602336283352167</string>
+-->
+    <string name="facebook_app_id">2533666673548500</string>
 
-    <string name="google_maps_key">AIzaSyDXrcBF_T_oZkOMwOmvq6knqGImKwiotw0</string>
+    <string name="google_maps_key">AIzaSyBj6W7zUHkvo3H74j7ihnpNxVMfxPsoBHk</string>
+<!--    <string name="google_maps_key">AIzaSyDXrcBF_T_oZkOMwOmvq6knqGImKwiotw0</string>-->
     <string name="google_key">AIzaSyBj6W7zUHkvo3H74j7ihnpNxVMfxPsoBHk</string>
     <!--    <string name="google_key">AIzaSyAzlqPc1OwdMSrrVPLllUCKubclM_rcox0</string>-->
     <!--

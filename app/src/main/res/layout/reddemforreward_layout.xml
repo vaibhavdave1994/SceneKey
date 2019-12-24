@@ -4,11 +4,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:animateLayoutChanges="true"
     android:layout_margin="@dimen/_5sdp"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
     card_view:cardCornerRadius="@dimen/_15sdp"
-    card_view:cardElevation="5dp"
-    android:orientation="vertical">
+    card_view:cardElevation="5dp">
 
 
     <LinearLayout
@@ -19,22 +19,35 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/custom_popup_tvMessage"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat_medium"
-            android:gravity="center"
-            android:lineSpacingExtra="@dimen/_5sdp"
-            android:minHeight="@dimen/_80sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:text="Redeem this reward?"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp" />
+            android:layout_height="@dimen/_80sdp">
+
+            <TextView
+                android:id="@+id/custom_popup_tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/montserrat_medium"
+                android:lineSpacingExtra="@dimen/_5sdp"
+                android:text="Redeem this reward?"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:fontFamily="@font/montserrat_regular"
+                android:lineSpacingExtra="@dimen/_5sdp"
+                android:text="Confirm with staff before selecting yes"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_12sdp" />
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

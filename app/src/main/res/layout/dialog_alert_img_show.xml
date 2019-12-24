@@ -12,12 +12,16 @@
         android:layout_width="@dimen/_28sdp"
         android:layout_height="@dimen/_28sdp"
         android:layout_alignParentRight="true"
-        app:srcCompat="@drawable/ic_close_white"/>
+        android:layout_marginEnd="@dimen/_10sdp"
+        app:srcCompat="@drawable/ic_close_white"
+        android:layout_marginRight="@dimen/_10sdp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:background="@color/white"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_5sdp"

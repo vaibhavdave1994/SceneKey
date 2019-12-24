@@ -17,9 +17,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,6 +33,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -100,10 +101,11 @@ import java.util.Map;
 
 import static com.scenekey.helper.Constant.REQUEST_ID_MULTIPLE_PERMISSIONS;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener,LocationListener , GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 007;
     private final String TAG = "LoginActivity";
+    public String loginstatus = "";
     private Context context = this;
     private EditText etEmail, etPwd;
     private Button btnLogin, btnFB, btnGmail;
@@ -123,7 +125,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private UserInfo fbUserInfo;
     private Bitmap profileImageBitmap;
     private GoogleApiClient mGoogleApiClient;
-    public String loginstatus = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setStatusBarColor();
         initView();
-       // utility.checkGpsStatus();
+        // utility.checkGpsStatus();
 
         sessionManager.setSoftKey(hasSoftKeys(getWindowManager()));
     }
@@ -243,7 +244,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         doLogin(email, password);
                     }
                 } else {
-                    Utility.showCheckConnPopup(context,"No network connection","","");
+                    Utility.showCheckConnPopup(context, "No network connection", "", "");
 //                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
@@ -252,15 +253,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
                     if (latitude != 0.0d && longiude != 0.0d) {
                         facebookLoginApi();
-                    }
-                    else if (!checkGPS) {
+                    } else if (!checkGPS) {
                         utility.checkGpsStatus();
                     } else {
                         showErrorPopup("facebook");
                     }
 
                 } else {
-                    Utility.showCheckConnPopup(context,"No network connection","","");
+                    Utility.showCheckConnPopup(context, "No network connection", "", "");
 //                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
@@ -269,14 +269,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (utility.checkInternetConnection() && permission.checkLocationPermission()) {
                     if (latitude != 0.0d && longiude != 0.0d) {
                         gmialLoginApi();
-                    }else if (!checkGPS) {
+                    } else if (!checkGPS) {
                         utility.checkGpsStatus();
                     } else {
                         showErrorPopup("gmail");
                     }
 
                 } else {
-                    Utility.showCheckConnPopup(context,"No network connection","","");
+                    Utility.showCheckConnPopup(context, "No network connection", "", "");
 //                    Utility.showToast(context, getString(R.string.internetConnectivityError), 0);
                 }
                 break;
@@ -312,16 +312,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.imgRegiMale:
                 maleFemale = "male";
-
-//                imgRegiMale.setImageResource(R.drawable.active_male_ico);
-//                imgRegiFemale.setImageResource(R.drawable.inactive_female_ico);
                 break;
 
             case R.id.imgRegiFemale:
                 maleFemale = "female";
-
-//                imgRegiMale.setImageResource(R.drawable.inactive_male_ico);
-//                imgRegiFemale.setImageResource(R.drawable.active_female_ico);
                 break;
         }
     }
@@ -331,8 +325,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        //updateUI(false);
-                        //Toast.makeText(context, "Gmail Logout", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -454,13 +446,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(multipartRequest);
         } else {
-            Utility.showCheckConnPopup(LoginActivity.this,"No network connection","","");
+            Utility.showCheckConnPopup(LoginActivity.this, "No network connection", "", "");
 //            Toast.makeText(LoginActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void showErrorPopup(final String type) {
-        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
+        final Dialog dialog = new Dialog(context, R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -489,11 +481,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void run() {
                         dialog.dismiss();
-                                if(type.equals("facebook")){
-                                    btnFB.callOnClick();
-                                }else if(type.equals("gmail")){
-                                    btnGmail.callOnClick();
-                                }
+                        if (type.equals("facebook")) {
+                            btnFB.callOnClick();
+                        } else if (type.equals("gmail")) {
+                            btnGmail.callOnClick();
+                        }
 
                     }
                 }, 3 * 1000); // wait for 3 seconds
@@ -544,10 +536,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     fbUserImage = userInfo.userImage;
 
-                                    if(fbUserImage != null && !fbUserImage.equalsIgnoreCase("")){
-                                        getBitmapFromURL(userInfo.userImage,userInfo);
-                                    }
-                                    else {
+                                    if (fbUserImage != null && !fbUserImage.equalsIgnoreCase("")) {
+                                        getBitmapFromURL(userInfo.userImage, userInfo);
+                                    } else {
                                         checkSocialDetail(userInfo, loginstatus);
                                         getAddressFromLatLong(latitude, longiude);
                                     }
@@ -587,8 +578,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     /* gmail api end here */
 
-    private void checkSocialDetail(final UserInfo userInfo, final String loginstatus)
-    {
+    private void checkSocialDetail(final UserInfo userInfo, final String loginstatus) {
         if (utility.checkInternetConnection()) {
             StringRequest request = new StringRequest(Request.Method.POST, WebServices.CHECK_FB_LOGIN, new Response.Listener<String>() {
                 @Override
@@ -639,7 +629,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             VolleySingleton.getInstance(this.getBaseContext()).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(LoginActivity.this,"No network connection","","");
+            Utility.showCheckConnPopup(LoginActivity.this, "No network connection", "", "");
 //            utility.snackBar(etEmail, getString(R.string.internetConnectivityError), 0);
             customProgressBar.cancel();
         }
@@ -696,55 +686,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
         }
-    }
-
-    private boolean manageSession(JSONObject jsonObject, UserInfo uInfo) {
-        /*try {
-            JSONObject objUserDetails = jsonObject.getJSONObject("userinfo");
-            UserInfo userInfo = new UserInfo();
-            userInfo.userID = (objUserDetails.getString("userID"));
-            userInfo.email = (objUserDetails.getString("email"));
-            userInfo.fullName = (objUserDetails.getString("fullname"));
-            userInfo.userName = (objUserDetails.getString("userName"));
-            userInfo.userGender = (objUserDetails.getString("userGender"));
-            if (objUserDetails.getString("userImage").isEmpty()) {
-                userInfo.userImage = uInfo.userImage;
-            } else {
-                userInfo.userImage = (objUserDetails.getString("userImage"));
-            }
-            userInfo.loginTime = (objUserDetails.getString("logintime"));
-            userInfo.stageName = (objUserDetails.getString("stagename"));
-            userInfo.venuName = (objUserDetails.getString("venuename"));
-            userInfo.artistType = (objUserDetails.getString("artisttype"));
-            userInfo.firstName = (objUserDetails.getString("firstname"));
-            userInfo.lastName = (objUserDetails.getString("lastname"));
-            userInfo.environment = (objUserDetails.getString("environment"));
-            userInfo.facebookId = uInfo.facebookId;
-
-            if (objUserDetails.has("lat")) userInfo.latitude = (objUserDetails.getString("lat"));
-            if (objUserDetails.has("longi"))
-                userInfo.longitude = (objUserDetails.getString("longi"));
-            if (objUserDetails.has("address"))
-                userInfo.address = (objUserDetails.getString("address"));
-            if (objUserDetails.has("bio")) userInfo.bio = (objUserDetails.getString("bio"));
-            if (objUserDetails.has("keyPoints"))
-                userInfo.keyPoints = (objUserDetails.getString("keyPoints"));
-            if (objUserDetails.has("makeAdmin"))
-                userInfo.makeAdmin = (objUserDetails.getString("makeAdmin"));
-            userInfo.userAccessToken = uInfo.userAccessToken;
-            Utility.e("Auth Token", userInfo.userAccessToken);
-            userInfo.firstTimeDemo = (true);
-
-            Utility.e("session data", jsonObject.toString());
-            //  Utility.showToast(context, message, 1);
-            SceneKey.sessionManager.createSession(userInfo);
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }*/
-        return false;
     }
 
     private void showProgDialog(boolean b) {
@@ -820,7 +761,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (loginstatus.equals("facebook")) {
 
-            Log.v("requestCode",""+requestCode);
+            Log.v("requestCode", "" + requestCode);
             objFbCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         } else if (loginstatus.equals("gmail")) {
@@ -872,15 +813,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String[] fullName = str.split("\\s+");
             for (int i = 0; i < fullName.length; i++) {
                 if (i == 0) {
-                    userInfo.userName ="";
+                    userInfo.userName = "";
                     userInfo.userName = fullName[0];
                 } else if (i == 1) {
-                    userInfo.lastName="";
+                    userInfo.lastName = "";
                     userInfo.lastName = fullName[1];
                 }
             }
 
-            userInfo.fullname = userInfo.userName+" "+ userInfo.lastName;
+            userInfo.fullname = userInfo.userName + " " + userInfo.lastName;
            /* String firstName = fullName[0];
             String lastName = fullName[1];*/
 
@@ -898,9 +839,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onResult(Status status) {
                             if (userInfo.userImage != "" && userInfo.userImage != null) {
-                                getBitmapFromURL(userInfo.userImage,userInfo);
-                            }
-                            else {
+                                getBitmapFromURL(userInfo.userImage, userInfo);
+                            } else {
                                 checkSocialDetail(userInfo, loginstatus);
                                 getAddressFromLatLong(latitude, longiude);
                             }
@@ -920,7 +860,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, WebServices.REGISTRATION, new Response.Listener<NetworkResponse>() {
                 @Override
                 public void onResponse(NetworkResponse response) {
-                    Log.v("respose", ""+response);
+                    Log.v("respose", "" + response);
                     String data = new String(response.data);
                     Log.e("Response", data);
 
@@ -991,12 +931,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             AWSImage awsImage = new AWSImage(LoginActivity.this);
 
                             try {
-                                if(profileImageBitmap == null){
-                                    profileImageBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.image_default_profile);
+                                if (profileImageBitmap == null) {
+                                    profileImageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image_default_profile);
                                 }
                                 if (profileImageBitmap != null) {
                                     // awsImage.initItem(profileImageBitmap);
-                                    uploadNewBase64(userInfo.userFacebookId,profileImageBitmap);
+                                    uploadNewBase64(userInfo.userFacebookId, profileImageBitmap);
                                     //dismissProgDialog();
                                 }
                             } catch (Exception e) {
@@ -1104,20 +1044,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     return params;
                 }
 
-               /* @Override
-                protected Map<String, DataPart> getByteData() {
-                    Map<String, DataPart> params = new HashMap<String, DataPart>();
-                    if (profileImageBitmap != null) {
-                        params.put("profileImage", new VolleyMultipartRequest.DataPart("profilePic.jpg", AppHelper.getFileDataFromDrawable(profileImageBitmap), "image/jpeg"));
-                    }
-                    return params;
-                }*/
             };
 
             multipartRequest.setRetryPolicy(new DefaultRetryPolicy(10000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             VolleySingleton.getInstance(LoginActivity.this).addToRequestQueue(multipartRequest);
         } else {
-            Utility.showCheckConnPopup(LoginActivity.this,"No network connection","","");
+            Utility.showCheckConnPopup(LoginActivity.this, "No network connection", "", "");
 //            Toast.makeText(LoginActivity.this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
         }
     }
@@ -1215,7 +1147,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     //-----------------new code to upload image 16-05-19---------
-    public void uploadNewBase64(final String userId, Bitmap bitmap){
+    public void uploadNewBase64(final String userId, Bitmap bitmap) {
         if (utility.checkInternetConnection()) {
             //showProgDialog(false);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1231,11 +1163,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     try {
                         JSONObject jo = new JSONObject(response);
                         if (jo.has("success")) {
-                            if(jo.getInt("success") == 1){
+                            if (jo.getInt("success") == 1) {
                                 String userImage = jo.getString("userImage");
                                 setImage(userImage);
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
                                 dismissProgDialog();
                             }
@@ -1270,11 +1201,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
     //---------set default image----------------
     public void setImage(String s) {
-        if (!s.contains(Constant.DEV_TAG)) {
+       /* if (!s.contains(Constant.DEV_TAG)) {
             s = Constant.DEV_TAG + s;
-        }
+        }*/
 
         if (SceneKey.sessionManager.getUserInfo().getUserImage().equalsIgnoreCase(WebServices.USER_IMAGE + s)) {
             Intent intent = new Intent(LoginActivity.this, IntroActivity.class);
@@ -1286,6 +1218,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //setDefoultProfileImage(s,"Default Profile Image","Are you sure you want to make this your defoult Profile Photo?");
         }
     }
+
     public void showDefaultDialog(String title, String msg) {
         final Dialog dialog = new Dialog(context);
         dialog.setCanceledOnTouchOutside(false);
@@ -1336,7 +1269,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     UserInfo userInfo = SceneKey.sessionManager.getUserInfo();
                     userInfo.userImage = key;
                     // Constant.DEF_PROFILE=key;
-                    HomeActivity.userInfo=userInfo;
+                    HomeActivity.userInfo = userInfo;
                     SceneKey.sessionManager.createSession(userInfo);
 
                     Intent intent = new Intent(LoginActivity.this, IntroActivity.class);

@@ -193,7 +193,7 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
     }
 
     private void retryLocation() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(context,R.style.DialogTheme);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.custom_popup_with_btn);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -1433,14 +1433,15 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
             if (i == 0) {
                 comeInUser_lnr.addView(v, i);
                 String image = "";
+                image = keyInUserModalList.get(i).getUserimage();
 
-                if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                /*if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                     image = "dev-" + keyInUserModalList.get(i).getUserimage();
                 } else {
                     //image = keyInUserModalList.get(i).userImage;
                     image = keyInUserModalList.get(i).getUserimage();
                 }
-
+*/
                 Glide.with(activity).load(image)
                         .thumbnail(0.5f)
                         .crossFade().diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -1459,12 +1460,13 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
                     marginlayout.setLayoutParams(params);
                     comeInUser_lnr.addView(v, i);
                     String image = "";
+                    image = keyInUserModalList.get(i).getUserimage();
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    /*if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)
@@ -1481,12 +1483,16 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
                     marginlayout.setLayoutParams(params);
                     comeInUser_lnr.addView(v, i);
                     String image = "";
+                    image = keyInUserModalList.get(i).getUserimage();
+
+/*
 
                     if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
                     }
+*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)
@@ -1507,11 +1513,13 @@ public class Map_Fragment extends Fragment implements GoogleMap.OnMarkerClickLis
                     no_count.setText(" +" + (keyInUserModalList.size() - i));
                     String image = "";
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    image = keyInUserModalList.get(i).getUserimage();
+
+                   /* if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)

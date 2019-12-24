@@ -139,7 +139,7 @@ public class BaseActivity extends AppCompatActivity {
 
 */
 
-    protected void hideKeyboard() {
+    public void hideKeyboard() {
         if (getCurrentFocus() == null) return;
 
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);

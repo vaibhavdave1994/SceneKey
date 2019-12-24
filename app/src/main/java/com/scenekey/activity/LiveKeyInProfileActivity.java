@@ -166,8 +166,6 @@ public class LiveKeyInProfileActivity extends AppCompatActivity implements View.
 
             for (int i = 0; i < imageList.size(); i++) {
 
-
-
             }
 
             viewPager.setCurrentItem(profilePos);

@@ -7,14 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.core.widget.NestedScrollView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -24,6 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.amazonaws.auth.CognitoCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
@@ -185,13 +185,7 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
         btn4 = findViewById(R.id.d_btn4);
         btn5 = findViewById(R.id.d_btn5);
 
-        //listViewFragProfile = findViewById(R.id.listViewFragProfile);
-        //bottom_sheet = findViewById(R.id.bottom_sheet);
-        // mBottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet);
         imageList = new ArrayList<>();
-
-
-        //customizeView = findViewById(R.id.customizeView);
         demo_View_dot = findViewById(R.id.demo_View_dot);
 
         Display display = activity.getWindowManager().getDefaultDisplay();
@@ -211,20 +205,14 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
         int dpHeight = outMetrics.heightPixels;
         int dpWidth = outMetrics.widthPixels;
         tv_bio.setCursorVisible(false);
-        tv_bio.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                tv_bio.setCursorVisible(true);
-                return false;
-            }
+        tv_bio.setOnTouchListener((view, motionEvent) -> {
+            tv_bio.setCursorVisible(true);
+            return false;
         });
 
 
         final RelativeLayout relativeLayout = findViewById(R.id.relativeLayout);
-
-        //rl_update_bio = v.findViewById(R.id.rl_update_bio);
         relativeLayout.setOnTouchListener(new OnDragTouchListener(relativeLayout));
-//        tv_update_bio.setOnTouchListener(new OnDragTouchListener(relativeLayout));
     }
 
 
@@ -233,20 +221,6 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
         UserInfo userInfo = SessionManager.getInstance().getUserInfo();
 
         tvHomeTitle.setText(userInfo.fullname);
-
-      /*  if (!SceneKey.sessionManager.getkeypoint().equals(""))
-        {
-            if (Integer.parseInt(SceneKey.sessionManager.getkeypoint()) > 1000) {
-                HomeActivity.tv_key_points.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getkeypoint()), 0));
-                HomeActivity.tv_key_points_new.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getkeypoint()), 0));
-            } else {
-                HomeActivity.tv_key_points.setText(SceneKey.sessionManager.getkeypoint());
-                HomeActivity.tv_key_points_new.setText(SceneKey.sessionManager.getkeypoint());
-
-            }
-        }else {
-
-        }*/
 
         if (Integer.parseInt(SceneKey.sessionManager.getUserInfo().key_points) > 1000) {
             tv_key_points.setText(Utility.coolFormat(Double.parseDouble(SceneKey.sessionManager.getUserInfo().key_points), 0));
@@ -259,43 +233,18 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
         else
             tv_user_name.setText(userInfo.fullname);
 
+
         if (userInfo.bio.equals("")) {
             ll_donothavebio.setVisibility(View.VISIBLE);
-
+            tv_bio.setVisibility(View.GONE);
 
         } else {
             tv_bio.setText(userInfo.bio);
             ll_donothavebio.setVisibility(View.GONE);
+            tv_bio.setVisibility(View.VISIBLE);
 
         }
 
-//        if (userInfo.user_status != null) {
-//            switch (userInfo.user_status) {
-//                case "1":
-//                    img_green.setImageResource(R.drawable.ic_active_grn_circle);
-//                    img_red.setImageResource(R.drawable.bg_red_ring);
-//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-//                    break;
-//
-//                case "2":
-//                    img_green.setImageResource(R.drawable.bg_green_ring);
-//                    img_red.setImageResource(R.drawable.bg_red_ring);
-//                    img_yellow.setImageResource(R.drawable.ic_active_ylw_circle);
-//                    break;
-//
-//                case "3":
-//                    img_green.setImageResource(R.drawable.bg_green_ring);
-//                    img_red.setImageResource(R.drawable.ic_active_red_circle);
-//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-//                    break;
-//
-//                default:
-//                    img_green.setImageResource(R.drawable.bg_green_ring);
-//                    img_red.setImageResource(R.drawable.ic_active_red_circle);
-//                    img_yellow.setImageResource(R.drawable.bg_yellow_ring);
-//
-//            }
-//        }
     }
 
     private void setClick(View... views) {
@@ -314,15 +263,14 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
                 onBackPressed();
                 break;
 
-            case R.id.iv_image_upload:
-                 {
-                    Intent i = new Intent(context, ImageUploadActivity.class);
-                    i.putExtra("from", "profile");
-                    i.putExtra("alOfBucketData", alOfBucketData);
-                    startActivityForResult(i, Constant.IMAGE_UPLOAD_CALLBACK);
-                    Constant.DONE_BUTTON_CHECK = 1;
-                }
-                break;
+            case R.id.iv_image_upload: {
+                Intent i = new Intent(context, ImageUploadActivity.class);
+                i.putExtra("from", "profile");
+                i.putExtra("alOfBucketData", alOfBucketData);
+                startActivityForResult(i, Constant.IMAGE_UPLOAD_CALLBACK);
+                Constant.DONE_BUTTON_CHECK = 1;
+            }
+            break;
 
             case R.id.img_setting:
 
@@ -338,11 +286,9 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
                     if (!tv_bio.getText().toString().trim().equalsIgnoreCase("")) {
                         updateBio(tv_bio.getText().toString().trim());
                         tv_bio.setCursorVisible(false);
-                    }
-                else
-                    utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
-                }
-                else {
+                    } else
+                        utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
+                } else {
                     tv_bio.setCursorVisible(false);
                     Intent bioIntent = new Intent(OwnProfileActivity.this, BioActivity.class);
                     bioIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -418,17 +364,7 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
     public void onResume() {
         //   setProfileData();
         super.onResume();
-        if (shouldRefresh) {
-            // Reload current fragment
-//            Fragment frg = null;
-//            frg = activity.getSupportFragmentManager().findFragmentByTag(getFragmentManager().getFragments().getClass().getName());
-//            final FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-//            ft.detach(frg);
-//            ft.attach(frg);
-//            ft.commit();
-//            getBucketDetatils();
-//            getMyFollowTag();
-        }
+
     }
 
 
@@ -437,21 +373,11 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                //img_profile_pic2.setAlpha(1.0f);
-                //img_profile_pic2.setBorderColor(getResources().getColor(R.color.colorPrimary));
                 Animation dimmer = AnimationUtils.loadAnimation(context, R.anim.alpha_to_o);
-//                img_right.startAnimation(dimmer);
-//                img_left.startAnimation(dimmer);
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-//                txt_dimmer.setVisibility(View.GONE);
-//                img_cross.setVisibility(View.GONE);
-//                //img_profile_pic2.setVisibility(View.GONE);
-//
-//                img_right.setVisibility(View.GONE);
-//                img_left.setVisibility(View.GONE);
                 StatusBarUtil.setColorNoTranslucent(activity, getResources().getColor(R.color.white));
             }
 
@@ -460,13 +386,11 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
                 Utility.e(TAG, "Animation Repeat");
             }
         });
-        //img_profile_pic2.startAnimation(animation);
     }
 
     private void setImage(boolean isRight) {
         if (imageList.size() != 0) {
             currentImage = (isRight ? (currentImage == imageList.size() - 1 ? 0 : currentImage + 1) : (currentImage == 0 ? imageList.size() - 1 : currentImage - 1));
-            //Picasso.with(activity).load(imageList.get(currentImage).path).transform(new CircleTransform()).placeholder(R.drawable.image_default_profile).into(img_profile_pic2);
         }
     }
 
@@ -621,7 +545,8 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
                         Log.v("getFacebookId", SceneKey.sessionManager.getFacebookId());
 
                         Log.v("url", Constant.BUCKET + "," + Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
-                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
+                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET,  SceneKey.sessionManager.getFacebookId());
+//                        ObjectListing listing = s3Client.listObjects(Constant.BUCKET, Constant.DEV_TAG + SceneKey.sessionManager.getFacebookId());
                         List<S3ObjectSummary> summaries = listing.getObjectSummaries();
 
                         while (listing.isTruncated()) {
@@ -673,26 +598,6 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
-
-    /* get image from server end here*/
-
-   /* public CognitoCredentialsProvider getCredentials() {
-        CognitoCredentialsProvider credentialsProvider = new CognitoCredentialsProvider("us-west-2:86b58a3e-0dbd-4aad-a4eb-e82b1a4ebd91", Regions.US_WEST_2);
-        AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
-        TransferUtility transferUtility = new TransferUtility(s3, context);
-
-        Map<String, String> logins = new HashMap<String, String>();
-
-        try {
-            logins.put("graph.facebook.com", AccessToken.getCurrentAccessToken().getToken());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        credentialsProvider.setLogins(logins);
-        return credentialsProvider;
-    }*/
 
     private CognitoCredentialsProvider getCredentials() {
         CognitoCredentialsProvider credentialsProvider = new CognitoCredentialsProvider("us-west-2:86b58a3e-0dbd-4aad-a4eb-e82b1a4ebd91", Regions.US_WEST_2);
@@ -767,8 +672,7 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
                 initButton(profilePos);
 
             }
-        }
-        else {
+        } else {
             demo_View_dot.setVisibility(View.GONE);
         }
 
@@ -935,7 +839,7 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
@@ -998,7 +902,7 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
             VolleySingleton.getInstance(context).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            Utility.showToast(context, context.getResources().getString(R.string.internetConnectivityError), 0);
             activity.dismissProgDialog();
         }
@@ -1240,31 +1144,18 @@ public class OwnProfileActivity extends BaseActivity implements View.OnClickList
 
     public void goToTagSearchInEvent(TagModal tagModal) {
         Intent intent;
-//        if(category_name.equalsIgnoreCase("Specials")){
-//            intent = new Intent(context, SearchSubCategoryActivity.class);
-//            intent.putExtra("tagModal", tagModal);
-//            intent.putExtra("catId", catId);
-//        }
-//        else {
         intent = new Intent(context, TrendinSearchActivity.class);
         intent.putExtra("tag_name", tagModal.tag_name);
         intent.putExtra("tag_image", tagModal.tag_image);
         intent.putExtra("tagmodel", tagModal);
         intent.putExtra("from_tagadapter", true);
-        // }
         context.startActivity(intent);
     }
 
     public void updateSession(UserInfo user) {
         SceneKey.sessionManager.createSession(user);
         userInfo = SceneKey.sessionManager.getUserInfo();
-        try {
-            //Picasso.with(this).load(userInfo.getUserImage()).placeholder(R.drawable.image_default_profile).into(img_profile);
-//            tv_key_points.setText(userInfo.key_points);
-//            tv_key_points_new.setText(userInfo.key_points);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
     }
 }

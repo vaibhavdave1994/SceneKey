@@ -2,13 +2,14 @@ package com.scenekey.activity;
 
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -67,11 +68,11 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
         img_f1_back.setOnClickListener(this);
 
 
-        if(getIntent().getStringExtra("lat")!= null){
-             lat  = getIntent().getStringExtra("lat");
-             lng  = getIntent().getStringExtra("lng");
-             selected  = getIntent().getStringExtra("selected");
-             list = (ArrayList<Tags>) getIntent().getSerializableExtra("list");
+        if (getIntent().getStringExtra("lat") != null) {
+            lat = getIntent().getStringExtra("lat");
+            lng = getIntent().getStringExtra("lng");
+            selected = getIntent().getStringExtra("selected");
+            list = (ArrayList<Tags>) getIntent().getSerializableExtra("list");
         }
         setRecyclerView();
         getSearched();
@@ -92,14 +93,14 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
             public void getCheckEventStatusListener(String eventName, String eventId, Venue event_id, Events object, String[] currentLatLng, String[] strings) {
                /* Search_Fragment  Search_Fragment = new Search_Fragment();
                 Search_Fragment.*/
-                callCheckEventStatusApi(eventName,eventId, event_id.getVenue_name(), object, currentLatLng, strings);
+                callCheckEventStatusApi(eventName, eventId, event_id.getVenue_name(), object, currentLatLng, strings);
             }
         }));
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.img_f1_back:
                 onBackPressed();
                 break;
@@ -165,7 +166,7 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
                         if (list_events.size() <= 0) {
                             Utility.showToast(getApplicationContext(), "No Event found near your location", 0);
                         } else {
-                          //  activity.keyPointsUpdate();
+                            //  activity.keyPointsUpdate();
                         }
                         setRecyclerViewEvent();
                         activity.dismissProgDialog();
@@ -217,9 +218,8 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
     }
 
 
-
     // New Code
-    private void callCheckEventStatusApi(final String eventName,final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
+    private void callCheckEventStatusApi(final String eventName, final String event_id, final String venue_name, final Events object, final String[] currentLatLng, final String[] strings) {
         final Utility utility = new Utility(this);
 
         if (utility.checkInternetConnection()) {
@@ -273,7 +273,7 @@ public class EventSearch_tag_Activity extends AppCompatActivity implements View.
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            Toast.makeText(this, getString(R.string.internetConnectivityError), Toast.LENGTH_SHORT).show();
             activity.dismissProgDialog();
         }

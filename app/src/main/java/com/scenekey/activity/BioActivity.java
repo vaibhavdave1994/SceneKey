@@ -2,12 +2,13 @@ package com.scenekey.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -31,12 +32,12 @@ import java.util.Map;
 public class BioActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final String TAG = BioActivity.class.toString();
+    Utility utility;
     private UserInfo userInfo;
     private TextView tv_for_remainChar;
     private EditText et_for_enterTxt;
     private CustomProgressBar prog;
-    private String fromScreen ="";
-    Utility utility;
+    private String fromScreen = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +76,8 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
         et_for_enterTxt.addTextChangedListener(textWatcher);
 
 
-        if(getIntent().getStringExtra("from")!= null){
-            fromScreen  = getIntent().getStringExtra("from");
+        if (getIntent().getStringExtra("from") != null) {
+            fromScreen = getIntent().getStringExtra("from");
         }
 
     }
@@ -98,15 +99,10 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.btn_for_done:
                 try {
                     String bio = et_for_enterTxt.getText().toString();
-                    /*if (bio.isEmpty()){
-                        callIntent();
-                    }else
-                        updateBio(bio);*/
-
                     // New Code
                     if (bio.isEmpty()) {
                         utility.showCustomPopup("Please enter bio", String.valueOf(R.font.montserrat_medium));
-                       // Toast.makeText(this, "Please enter Bio", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(this, "Please enter Bio", Toast.LENGTH_SHORT).show();
                     } else {
                         updateBio(bio);
                     }
@@ -153,14 +149,14 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
                             userInfo.bio = bio;
                             SceneKey.sessionManager.createSession(userInfo);
 
-                            if(fromScreen.equals("setting")){
-                              onBackPressed();
-                            }else {
+                            if (fromScreen.equals("setting")) {
+                                onBackPressed();
+                            } else {
                                 callIntent();
                             }
 
                         } else {
-                            Utility.showCheckConnPopup(BioActivity.this,"No network connection","","");
+                            Utility.showCheckConnPopup(BioActivity.this, "No network connection", "", "");
 //                            Utility.showToast(BioActivity.this, message, 0);
                         }
 
@@ -188,7 +184,7 @@ public class BioActivity extends AppCompatActivity implements View.OnClickListen
             VolleySingleton.getInstance(this).addToRequestQueue(request);
             request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, 1));
         } else {
-            Utility.showCheckConnPopup(this,"No network connection","","");
+            Utility.showCheckConnPopup(this, "No network connection", "", "");
 //            utility.snackBar(et_for_enterTxt, getString(R.string.internetConnectivityError), 0);
             dismissProgDialog();
         }

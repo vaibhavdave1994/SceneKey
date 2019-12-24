@@ -18,6 +18,13 @@
     <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
     <application
         android:name=".util.SceneKey"
         android:allowBackup="true"
@@ -173,7 +180,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="0445c68fedcc2d2c04d5210e1b5b51dceaf192af" /> <!-- New Code -->
+            android:value="2ec06576d6c5248cca082ad82d40935731f442c4" /> <!-- New Code -->
         <activity
             android:name=".activity.ForgotPasswordActivity"
             android:screenOrientation="portrait" />

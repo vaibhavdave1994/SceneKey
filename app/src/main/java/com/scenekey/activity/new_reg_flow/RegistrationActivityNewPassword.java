@@ -2,8 +2,6 @@ package com.scenekey.activity.new_reg_flow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,18 +9,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.scenekey.R;
 import com.scenekey.activity.ForgotPasswordActivity;
 import com.scenekey.activity.LoginActivity;
 
 public class RegistrationActivityNewPassword extends LoginActivity {
 
-     EditText et_password;
-     AppCompatButton btn_signin;
-     String email;
-     AppCompatImageView img_back;
-     TextView tv_forgot_pass;
-     int click =0;
+    EditText et_password;
+    AppCompatButton btn_signin;
+    String email;
+    AppCompatImageView img_back;
+    TextView tv_forgot_pass;
+    int click = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,36 +50,20 @@ public class RegistrationActivityNewPassword extends LoginActivity {
         tv_forgot_pass = findViewById(R.id.tv_forgot_pass);
         email = getIntent().getStringExtra("email");
 
-        btn_signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                String password = et_password.getText().toString().trim();
-                if(!password.equalsIgnoreCase("")){
-                    doLogin(email, password);
-
-                }
-                else {
-                    Toast.makeText(RegistrationActivityNewPassword.this, "Enter Password", Toast.LENGTH_SHORT).show();
-                }
-                }
-
-        });
-
-        img_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+        btn_signin.setOnClickListener(v -> {
+            String password = et_password.getText().toString().trim();
+            if (!password.equalsIgnoreCase("")) {
+                doLogin(email, password);
+            } else {
+                Toast.makeText(RegistrationActivityNewPassword.this, "Enter Password", Toast.LENGTH_SHORT).show();
             }
         });
 
-        tv_forgot_pass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent forgotPassword = new Intent(RegistrationActivityNewPassword.this, ForgotPasswordActivity.class);
-                startActivity(forgotPassword);
-            }
+        img_back.setOnClickListener(v -> onBackPressed());
+
+        tv_forgot_pass.setOnClickListener(v -> {
+            Intent forgotPassword = new Intent(RegistrationActivityNewPassword.this, ForgotPasswordActivity.class);
+            startActivity(forgotPassword);
         });
     }
 

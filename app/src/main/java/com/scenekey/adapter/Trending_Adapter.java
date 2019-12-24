@@ -607,12 +607,14 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                 holder.parent.addView(v, i);
                 String image = "";
 
-                if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                image = keyInUserModalList.get(i).getUserimage();
+
+              /*  if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                     image = "dev-" + keyInUserModalList.get(i).getUserimage();
                 } else {
                     //image = keyInUserModalList.get(i).userImage;
                     image = keyInUserModalList.get(i).getUserimage();
-                }
+                }*/
 
                 Glide.with(activity).load(image)
                         .thumbnail(0.5f)
@@ -633,11 +635,13 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                     holder.parent.addView(v, i);
                     String image = "";
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    image = keyInUserModalList.get(i).getUserimage();
+
+                   /* if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)
@@ -655,11 +659,13 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                     holder.parent.addView(v, i);
                     String image = "";
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    image = keyInUserModalList.get(i).getUserimage();
+
+                    /*if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)
@@ -680,11 +686,13 @@ Trending_Adapter extends RecyclerView.Adapter<Trending_Adapter.ViewHolder> {
                     no_count.setText(" +" + (keyInUserModalList.size() - i));
                     String image = "";
 
-                    if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
+                    image = keyInUserModalList.get(i).getUserimage();
+
+                    /*if (!keyInUserModalList.get(i).userImage.contains("dev-")) {
                         image = "dev-" + keyInUserModalList.get(i).getUserimage();
                     } else {
                         image = keyInUserModalList.get(i).getUserimage();
-                    }
+                    }*/
 
                     Glide.with(activity).load(image)
                             .thumbnail(0.5f)

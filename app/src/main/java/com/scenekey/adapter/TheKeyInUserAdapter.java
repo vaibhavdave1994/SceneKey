@@ -65,7 +65,9 @@ public class TheKeyInUserAdapter extends RecyclerView.Adapter<TheKeyInUserAdapte
         holder.et_comeInName.setText(keyInUserModal.userName);
         Log.v("image",  keyInUserModal.getUserimage());
 
-        if(!keyInUserModalsList.get(i).getUserimage().contains("dev-")){
+        Picasso.with(context).load(keyInUserModalsList.get(i).getUserimage()).placeholder(R.drawable.placeholder_img)
+                .error(R.drawable.placeholder_img).into(holder.comeInUserProfile);
+       /* if(!keyInUserModalsList.get(i).getUserimage().contains("dev-")){
             String image = "dev-"+keyInUserModal.getUserimage();
 
             Picasso.with(context).load(image).placeholder(R.drawable.placeholder_img)
@@ -74,8 +76,7 @@ public class TheKeyInUserAdapter extends RecyclerView.Adapter<TheKeyInUserAdapte
 
             Picasso.with(context).load(keyInUserModalsList.get(i).getUserimage()).placeholder(R.drawable.placeholder_img)
                     .error(R.drawable.placeholder_img).into(holder.comeInUserProfile);
-        }
-
+        }*/
     }
 
     @Override
