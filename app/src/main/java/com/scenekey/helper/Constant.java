@@ -52,6 +52,7 @@ public class Constant {
     public static String FEED_TYPE_COMMENT = "Comment";
     public static int DONE_BUTTON_CHECK = 0;
     public static String BUCKET = "scenekey-profile-images";
+//    public static String BUCKET = "scenekey-profile-images/dev-";
 
     // New Code
     public static String DEV_TAG = "dev-";

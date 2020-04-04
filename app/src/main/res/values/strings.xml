@@ -57,6 +57,7 @@
 
 
     <!-- Custom popup message -->
+
     <string name="high_accuracy">  please check GPS and set Location Service to high accuracy mode. </string>
     <string name="gps_new"> \"SceneKey\" requires \n Location Service to work. </string>
     <string name="try_again"> Try Again.</string>

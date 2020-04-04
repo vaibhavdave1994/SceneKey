@@ -29,8 +29,8 @@ android {
         applicationId "com.scenekey"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 7
+        versionName "1.0.6"
         multiDexEnabled true
 
         vectorDrawables.useSupportLibrary = true
@@ -144,6 +144,14 @@ dependencies {
     implementation 'com.github.tamir7.contacts:contacts:1.1.7'
     implementation 'com.github.yalantis:ucrop:2.2.3'
     implementation 'com.appolica:interactive-info-window:v1.0.6'
+
+
+    // required for all Android apps
+    implementation 'io.branch.sdk.android:library:4.+'
+
+    // required if your app is in the Google Play Store (tip: avoid using bundled play services libs)
+    implementation 'com.google.firebase:firebase-appindexing:19.0.0' // App indexing
+    implementation 'com.google.android.gms:play-services-ads:16+' // GAID matching
 
 
 }

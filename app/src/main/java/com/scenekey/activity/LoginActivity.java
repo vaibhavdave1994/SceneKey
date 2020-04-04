@@ -99,6 +99,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import io.branch.referral.Branch;
+
 import static com.scenekey.helper.Constant.REQUEST_ID_MULTIPLE_PERMISSIONS;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LocationListener, GoogleApiClient.OnConnectionFailedListener {
@@ -403,7 +405,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             sessionManager.createSession(userInfo);
                             sessionManager.setPassword(password);
-
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);

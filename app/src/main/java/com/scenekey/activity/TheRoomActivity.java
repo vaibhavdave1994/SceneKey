@@ -171,7 +171,7 @@ public class TheRoomActivity extends BaseActivity implements View.OnClickListene
                 public void getRoomData(int pos, ArrayList<KeyInUserModal> keyInUserModalArrayList) {
 
 
-                    if (keyInUserModalList.get(pos).keyIn.equals("0") && !userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
+                    if (keyInUserModalList.get(pos).keyIn != null && keyInUserModalList.get(pos).keyIn.equals("0") && !userInfo().makeAdmin.equals(Constant.ADMIN_YES)) {
 
                         utility.showCustomPopup("Sorry! you must be at this venue to see profiles", String.valueOf(R.font.montserrat_medium));
 

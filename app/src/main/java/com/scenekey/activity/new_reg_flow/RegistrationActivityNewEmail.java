@@ -78,7 +78,7 @@ public class RegistrationActivityNewEmail extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (isValidEmail) {
-                    if (userInfo != null) {
+                    if (userInfo != null && !userInfo.userEmail.equals("")) {
                         Intent intent = new Intent(RegistrationActivityNewEmail.this, RegistrationActivityNewBasicInfo.class);
                         userInfo.userEmail = et_email.getText().toString().trim();
                         intent.putExtra("userInfo", userInfo);
@@ -106,14 +106,16 @@ public class RegistrationActivityNewEmail extends BaseActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
                 String searchText = editable.toString();
+                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
-                if (searchText.toLowerCase().matches(Constant.emailPattern)) {
+                if (searchText.matches(emailPattern)) {
                     btn_next.setBackgroundDrawable(getResources().getDrawable(R.drawable.new_reg_btn_back_primary));
                     btn_next.setTextColor(getResources().getColor(R.color.white));
                     isValidEmail = true;

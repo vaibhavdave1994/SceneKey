@@ -300,7 +300,7 @@ public class Utility {
         tvPopupOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Show location settings when the user acknowledges the alert dialog
+                // Show location settings when the user acknowledges the  dialog
                 dialog.dismiss();
             }
         });

@@ -25,6 +25,7 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
+
     <application
         android:name=".util.SceneKey"
         android:allowBackup="true"
@@ -35,6 +36,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:launchMode="singleTask"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity android:name=".activity.trending_summery.GallerySlideActivity">
@@ -67,13 +69,15 @@
             android:name=".activity.TagsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".activity.OnBoardActivity"
-            android:theme="@style/MyCustomTheme"
-            />
+        <activity
+            android:name=".activity.OnBoardActivity"
+            android:theme="@style/MyCustomTheme" />
         <activity android:name=".activity.ZoomImageActivity" />
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
+            android:allowTaskReparenting="true"
             android:theme="@style/Splash">
 
             <!-- <activity -->
@@ -85,7 +89,43 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+             <!--Branch URI Scheme-->
+            <!--<intent-filter>
+                <data
+                    android:scheme="yourapp"
+                    android:host="open" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>-->
+            <intent-filter>
+                <category android:name="android.intent.category.VIEW" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="9v6cd.app.link"
+                    />
+            </intent-filter>
+
         </activity>
+
+        <!-- Branch init -->
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="key_live_mlVSrEC1BYFmi1KphRAXDakesElT5U00" />
+        <meta-data
+            android:name="io.branch.sdk.BranchKey.test"
+            android:value="secret_live_XJuTX8MHSOUPAzTACvZfLzu3qjetHHZY" />
+        <meta-data
+            android:name="io.branch.sdk.TestMode"
+            android:value="false" />     <!-- Set to true to use Branch_Test_Key (useful when simulating installs and/or switching between debug and production flavors) -->
+
         <activity
             android:name=".activity.new_reg_flow.NewIntroActivity"
             android:theme="@style/MyCustomTheme"
@@ -93,14 +133,12 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme"
-            />
+            android:theme="@style/MyCustomTheme" />
         <activity
             android:name=".activity.RegistrationActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/MyCustomTheme"
-            />
+            android:theme="@style/MyCustomTheme" />
         <activity
             android:name=".activity.new_reg_flow.RegistrationActivityNewEmail"
             android:theme="@style/MyCustomTheme"

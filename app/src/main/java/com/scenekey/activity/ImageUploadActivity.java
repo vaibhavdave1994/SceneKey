@@ -245,16 +245,23 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
         final String key1 = fbId + ".jpg";
         TransferObserver observer
                 = transferUtility.upload(
-                Constant.BUCKET + "/" + fbId,     /* The bucket to upload to */
+                Constant.BUCKET + fbId,     /* The bucket to upload to */
                 key1,    /* The key for the uploaded object */
                 myPath, CannedAccessControlList.PublicReadWrite  /* The file where the data to upload exists */
         );   //live
-        /*TransferObserver observer
+        /*final String key1 = fbId + ".jpg";
+        TransferObserver observer
                 = transferUtility.upload(
-                Constant.BUCKET + "/" + Constant.DEV_TAG + fbId,     *//* The bucket to upload to *//*
+                Constant.BUCKET + "/" + fbId,     *//* The bucket to upload to *//*
                 key1,    *//* The key for the uploaded object *//*
                 myPath, CannedAccessControlList.PublicReadWrite  *//* The file where the data to upload exists *//*
-        );*/        //dev
+        );   //live*/
+       /* TransferObserver observer
+                = transferUtility.upload(
+                Constant.BUCKET + "/" + Constant.DEV_TAG + fbId,
+                key1,
+                myPath, CannedAccessControlList.PublicReadWrite
+        ); */       //dev
         Utility.e("OBSERVER KEY", observer.getKey());
         key = fbId + "/" + observer.getKey();
         observer.setTransferListener(new TransferListener() {
@@ -442,7 +449,7 @@ public class ImageUploadActivity extends AppCompatActivity implements View.OnCli
 
         TransferObserver observer
                 = transferUtility.upload(
-                Constant.BUCKET + "/"  + fbid,     /* The bucket to upload to */
+                Constant.BUCKET + fbid,     /* The bucket to upload to */
                 key1,    /* The key for the uploaded object */
                 file, CannedAccessControlList.PublicRead     /* The file where the data to upload exists */
         );  //live

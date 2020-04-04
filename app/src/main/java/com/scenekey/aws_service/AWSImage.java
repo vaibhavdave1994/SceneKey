@@ -107,7 +107,7 @@ public class AWSImage {
         final String key1 = fbid + ".jpg";
         TransferObserver observer
                 = transferUtility.upload(
-                Constant.BUCKET + "/"  + fbid,     /* The bucket to upload to */
+                Constant.BUCKET + fbid,     /* The bucket to upload to */
                 key1,    /* The key for the uploaded object */
                 myPath, CannedAccessControlList.PublicReadWrite  /* The file where the data to upload exists */
         );

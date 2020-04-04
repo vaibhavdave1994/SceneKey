@@ -13,6 +13,7 @@ import com.crashlytics.android.Crashlytics;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.ios.IosEmojiProvider;
 
+import io.branch.referral.Branch;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -51,6 +52,12 @@ public class SceneKey extends Application {
         sessionManager = new SessionManager(instance.getApplicationContext());
         imageSessionManager = new ImageSessionManager(instance.getApplicationContext());
         EmojiManager.install(new IosEmojiProvider());
+
+        /*// Branch logging for debugging
+        Branch.enableDebugMode();*/
+
+        // Branch object initialization
+        Branch.getAutoInstance(this);
 
     }
 

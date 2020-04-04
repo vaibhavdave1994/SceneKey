@@ -111,6 +111,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import io.branch.referral.Branch;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -234,7 +235,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
             if (!checkGPS && !checkNetwork) {
                 Utility.e(TAG, "GPS & Provider not available");
-                // utility.checkGpsStatus();
+                 utility.checkGpsStatus();
             } else {
                 if (checkGPS) {
                     assert locationManager != null;
@@ -388,8 +389,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                             // New Code
                                             if (object.has("email")) {
                                                 userInfo.userEmail = object.getString("email");
-                                            } else {
-                                                userInfo.userEmail = object.get("name").toString();
                                             }
 
                                             fbUserImage = userInfo.userImage;
@@ -1175,56 +1174,56 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            final UserInfo userInfo = new UserInfo();
+                private void handleSignInResult(GoogleSignInResult result) {
+                    Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+                    if (result.isSuccess()) {
+                        final UserInfo userInfo = new UserInfo();
 
-            // Signe in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
+                        // Signe in successfully, show authenticated UI.
+                        GoogleSignInAccount acct = result.getSignInAccount();
 
-            assert acct != null;
-            String str = acct.getDisplayName();
-            assert str != null;
-            String[] fullName = str.split("\\s+");
-            for (int i = 0; i < fullName.length; i++) {
-                if (i == 0) {
-                    userInfo.userName = "";
-                    userInfo.userName = fullName[0];
-                } else if (i == 1) {
-                    userInfo.lastName = "";
-                    userInfo.lastName = fullName[1];
-                }
-            }
-
-            userInfo.fullname = userInfo.userName + " " + userInfo.lastName;
-            userInfo.userFacebookId = acct.getId();
-            userInfo.userImage = "";
-            if (acct.getPhotoUrl() != null)
-                userInfo.userImage = acct.getPhotoUrl().toString();
-//                userInfo.userImage = acct.getPhotoUrl().getPath();
-            userInfo.userEmail = acct.getEmail();
-            userInfo.userAccessToken = FirebaseInstanceId.getInstance().getToken();
-            userInfo.gender = "";
-            userInfo.loginstatus = "gmail";
-
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            if (userInfo.userImage != "" && userInfo.userImage != null) {
-                                getBitmapFromURL(userInfo.userImage, userInfo);
-                            } else {
-                                checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId, userInfo.userEmail);
-                                getAddressFromLatLong(latitude, longitude);
+                        assert acct != null;
+                        String str = acct.getDisplayName();
+                        assert str != null;
+                        String[] fullName = str.split("\\s+");
+                        for (int i = 0; i < fullName.length; i++) {
+                            if (i == 0) {
+                                userInfo.userName = "";
+                                userInfo.userName = fullName[0];
+                            } else if (i == 1) {
+                                userInfo.lastName = "";
+                                userInfo.lastName = fullName[1];
                             }
                         }
-                    });
 
-        } else {
-            signOut();
-        }
-    }
+                        userInfo.fullname = userInfo.userName + " " + userInfo.lastName;
+                        userInfo.userFacebookId = acct.getId();
+                        userInfo.userImage = "";
+                        if (acct.getPhotoUrl() != null)
+                            userInfo.userImage = acct.getPhotoUrl().toString();
+            //                userInfo.userImage = acct.getPhotoUrl().getPath();
+                        userInfo.userEmail = acct.getEmail();
+                        userInfo.userAccessToken = FirebaseInstanceId.getInstance().getToken();
+                        userInfo.gender = "";
+                        userInfo.loginstatus = "gmail";
+
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                                new ResultCallback<Status>() {
+                                    @Override
+                                    public void onResult(Status status) {
+                                        if (userInfo.userImage != "" && userInfo.userImage != null) {
+                                            getBitmapFromURL(userInfo.userImage, userInfo);
+                                        } else {
+                                            checkSocialDetail(userInfo, loginstatus, userInfo.userFacebookId, userInfo.userEmail);
+                                            getAddressFromLatLong(latitude, longitude);
+                                        }
+                                    }
+                                });
+
+                    } else {
+                        signOut();
+                    }
+                }
 
     private void checkSocialDetail(final UserInfo userInfo, final String loginstatus, final String userloginid, final String email) {
         if (utility.checkInternetConnection()) {

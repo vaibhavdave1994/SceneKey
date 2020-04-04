@@ -78,6 +78,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import io.branch.referral.Branch;
+
 public class SettingActivtiy extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
     public static UserInfo userInfo;
@@ -308,6 +310,7 @@ public class SettingActivtiy extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
 
             case R.id.txt_logout:
+                Branch.getInstance().logout();
                 SceneKey.sessionManager.logout(this);
                 break;
 
